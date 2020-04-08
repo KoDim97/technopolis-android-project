@@ -45,10 +45,12 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
             dateTextView.setText(schedulerItem.getDate());
             startTimeTextView.setText(schedulerItem.getStartTime());
             endTimeTextView.setText(schedulerItem.getEndTime());
-            lessonTypeTextView.setText(schedulerItem.getLessonType());
             subjectNameTextView.setText(schedulerItem.getSubjectName());
             lessonNameTextView.setText(schedulerItem.getLessonName());
             lessonLocationTextView.setText(schedulerItem.getLocation());
+
+            String lessonType = schedulerItem.getLessonType();
+            lessonTypeTextView.setText(lessonType.length() > 8 ? lessonType.substring(0, 8) + "..." : lessonType);
         }
     }
 
