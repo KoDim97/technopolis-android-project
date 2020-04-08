@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    tools:context=".ProfileActivity">
+
+
+<!--    <android.support.constraint.Guideline-->
+<!--        android:id="@+id/guideline"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        app:layout_constraintGuide_end="398dp" />-->
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        tools:layout_editor_absoluteX="29dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Олег Морозенков"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:drawableStart="@drawable/ic_navigate_before_black_24dp"
+            android:gravity="start" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/bio"
+        android:layout_width="match_parent"
+        android:layout_height="114dp"
+        android:background="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:layout_editor_absoluteX="16dp">
+
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="74dp"
+            android:layout_height="74dp"
+            android:layout_margin="6dp"
+            android:src="@drawable/image7_3x" />
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@id/profile_image"
+            android:text="Олег Морозенков"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/profile_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_name"
+            android:layout_margin="5dp"
+            android:layout_toEndOf="@id/profile_image"
+            android:text="Выпускник факультатива"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/profile_status"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@id/profile_image"
+            android:layout_marginLeft="5dp"
+            android:text="Рейтинг 6.4"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:background="#FFFFFF"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/bio">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="O себе"
+            android:layout_marginLeft="13dp"
+            android:padding="3dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Студент ИУ-7"
+            android:layout_marginTop="6dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="13dp"
+            android:padding="3dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/groups"
+        app:layout_constraintTop_toBottomOf="@id/about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Группы"
+            android:background="#FFFFFF"
+            android:paddingLeft="13dp"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="iOS-11"
+            android:textAllCaps="false"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:paddingLeft="13dp"
+            android:layout_marginTop="1dp"
+            android:drawableEnd="@drawable/ic_chevron_right_black_24dp"/>
+        <!--separator-->
+        <View
+            android:layout_width="13dp"
+            android:layout_height="1dp"
+            android:background="#FFFFFF"
+            android:layout_gravity="start"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="iOS-11"
+            android:textAllCaps="false"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:paddingLeft="13dp"
+            android:layout_marginTop="0dp"
+            android:drawableEnd="@drawable/ic_chevron_right_black_24dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contacts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/groups">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Группы"
+            android:background="#FFFFFF"
+            android:paddingLeft="13dp"
+            android:paddingBottom="3dp"
+            android:paddingTop="3dp"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="+7 (916) 065 3055"
+            android:textAllCaps="false"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:paddingLeft="13dp"
+            android:layout_marginTop="1dp"
+            android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
+            android:drawableStart="@drawable/icons8_iphone_96"
+            android:drawablePadding="6dp"/>
+        <!--separator-->
+        <View
+            android:layout_width="13dp"
+            android:layout_height="1dp"
+            android:background="#FFFFFF"
+            android:layout_gravity="start"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:text="o.morozenkov@corp.mail.ru"
+            android:textAllCaps="false"
+            android:background="#FFFFFF"
+            android:gravity="center_vertical"
+            android:paddingLeft="13dp"
+            android:layout_marginTop="0dp"
+            android:drawableStart="@drawable/icons8_mail_96"
+            android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
+            android:drawablePadding="6dp"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
