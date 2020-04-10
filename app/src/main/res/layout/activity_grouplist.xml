@@ -6,6 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".grouplist.GroupListActivity">
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activity_grouplist__rv"
         android:layout_width="0dp"
@@ -15,5 +17,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
