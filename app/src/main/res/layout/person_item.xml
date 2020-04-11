@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="74dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/person_item__image"
@@ -33,7 +33,7 @@
         android:maxLines="1"
         android:fontFamily="@font/roboto_regular"
         android:singleLine="true"
-        android:textSize="14sp"
+        android:textSize="15sp"
         android:textColor="@color/black"
         tools:text="Дмитрий Махнев"/>
 
