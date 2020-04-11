@@ -53,7 +53,7 @@ public class SchedulerActivity extends AppCompatActivity {
                         "онлайн",
                         "2020-04-08T00:00:00Z",
                         false,
-                        false,
+                        true,
                         ""
                 ),
                 new SchedulerItem(
@@ -66,8 +66,8 @@ public class SchedulerActivity extends AppCompatActivity {
                         "онлайн",
                         "2020-04-09T00:00:00Z",
                         false,
-                        false,
-                        ""
+                        true,
+                        "linkToFeedback.com"
                 ),
                 new SchedulerItem(
                         12123L,
@@ -78,7 +78,7 @@ public class SchedulerActivity extends AppCompatActivity {
                         "2020-04-15T21:30:00Z",
                         "онлайн",
                         "2020-04-15T00:00:00Z",
-                        false,
+                        true,
                         false,
                         ""
                 ),

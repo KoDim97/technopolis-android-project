@@ -161,6 +161,16 @@
                 android:text="Отметиться"
                 />
 
+            <ImageView
+                android:id="@+id/scheduler_accept_report_icon"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginEnd="5dp"
+                android:layout_below="@id/scheduler_item_lesson_name"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/accept_report_icon"
+                />
+
         </RelativeLayout>
 
     </LinearLayout>

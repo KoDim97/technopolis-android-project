@@ -1,10 +1,12 @@
 package com.example.technopark.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,6 +44,7 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
         private TextView lessonNameTextView;
         private TextView lessonLocationTextView;
         private Button onActionButton;
+        private ImageView acceptReportImageView;
 
         public SchedulerItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -56,12 +59,11 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
             lessonNameTextView = itemView.findViewById(R.id.scheduler_item_lesson_name);
             lessonLocationTextView = itemView.findViewById(R.id.scheduler_item_lesson_location);
             onActionButton = itemView.findViewById(R.id.scheduler_item_button);
+            acceptReportImageView = itemView.findViewById(R.id.scheduler_accept_report_icon);
         }
 
         public void bind(SchedulerItem schedulerItem) {
             dateTextView.setText(schedulerItem.getDate());
-//            startTimeTextView.setText(schedulerItem.getStartTime());
-//            endTimeTextView.setText(schedulerItem.getEndTime());
             subjectNameTextView.setText(schedulerItem.getSubjectName());
             lessonNameTextView.setText(schedulerItem.getLessonName());
             lessonLocationTextView.setText(schedulerItem.getLocation());
@@ -72,7 +74,6 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
             bindDate(schedulerItem);
             bindLessonTime(startTimeTextView, schedulerItem.getStartTime());
             bindLessonTime(endTimeTextView, schedulerItem.getEndTime());
-//            onActionButton.setVisibility(View.INVISIBLE);
         }
 
         private void bindDate(SchedulerItem schedulerItem) {
@@ -101,10 +102,35 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
         }
 
         private void bindActionButton(SchedulerItem schedulerItem) {
-            Date currentDate = Calendar.getInstance().getTime();
-            onActionButton.setText("123");
-            onActionButton.setBackground(ContextCompat.getDrawable(currParent.getContext(),R.drawable.scheduler_on_rate_element));
-            onActionButton.setTextColor(ContextCompat.getColor(currParent.getContext(),R.color.colorWhite));
+            if (schedulerItem.isCheckInOpen()) {
+                setButtonCharacteristics(
+                        "Отметиться",
+                        ContextCompat.getDrawable(currParent.getContext(), R.drawable.scheduler_on_present_element),
+                        ContextCompat.getColor(currParent.getContext(), R.color.colorBlue)
+                );
+                onActionButton.setVisibility(View.VISIBLE);
+                acceptReportImageView.setVisibility(View.INVISIBLE);
+            } else if (!schedulerItem.getFeedbackUrl().isEmpty()) {
+                setButtonCharacteristics(
+                        "Оценить",
+                        ContextCompat.getDrawable(currParent.getContext(), R.drawable.scheduler_on_rate_element),
+                        ContextCompat.getColor(currParent.getContext(), R.color.colorWhite)
+                );
+                onActionButton.setVisibility(View.VISIBLE);
+                acceptReportImageView.setVisibility(View.INVISIBLE);
+            } else if (schedulerItem.isAttended()) {
+                onActionButton.setVisibility(View.INVISIBLE);
+                acceptReportImageView.setVisibility(View.VISIBLE);
+            } else {
+                onActionButton.setVisibility(View.INVISIBLE);
+                acceptReportImageView.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        private void setButtonCharacteristics(String buttonText, Drawable background, int textColor) {
+            onActionButton.setText(buttonText);
+            onActionButton.setBackground(background);
+            onActionButton.setTextColor(textColor);
         }
 
         private String processDate(String formattedDate) {
