@@ -3,4 +3,12 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+
+    <color name="colorNewsTopBar">#5994cc</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorMainBackground">#f0eff5</color>
+    <color name="colorName">#2E678D</color>
+    <color name="ColorSectionDate">#959596</color>
+    <color name="colorBlack">#000000</color>
+
 </resources>
