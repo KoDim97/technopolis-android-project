@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Технопарк</string>
+    <string name="login">Почта или логин</string>
+    <string name="password">Пароль</string>
+    <string name="enter">Войти</string>
+</resources>
