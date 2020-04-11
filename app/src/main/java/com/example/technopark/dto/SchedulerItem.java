@@ -11,15 +11,22 @@ public class SchedulerItem {
     private String location;
     private String date;
 
-    public SchedulerItem(long id, String subjectName, String lessonName, String lessonType, String startTime, String endTime, String location, String date) {
+    private boolean isCheckInOpen;
+    private boolean isAttended;
+    private String feedbackUrl;
+
+    public SchedulerItem(long id, String subjectName, String lessonName, String lessonType, String startTime, String endTime, String location, String date, boolean isCheckInOpen, boolean isAttended, String feedbackUrl) {
         this.id = id;
         this.subjectName = subjectName;
         this.lessonName = lessonName;
         this.lessonType = lessonType;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.startTime = startTime.replace("T", " ").substring(0, startTime.length());
+        this.endTime = endTime.replace("T", " ").substring(0, endTime.length());
         this.location = location;
-        this.date = date;
+        this.date = date.replace("T", " ").substring(0, date.length());
+        this.isCheckInOpen = isCheckInOpen;
+        this.isAttended = isAttended;
+        this.feedbackUrl = feedbackUrl;
     }
 
     public long getId() {
@@ -52,5 +59,17 @@ public class SchedulerItem {
 
     public String getDate() {
         return date;
+    }
+
+    public boolean isCheckInOpen() {
+        return isCheckInOpen;
+    }
+
+    public boolean isAttended() {
+        return isAttended;
+    }
+
+    public String getFeedbackUrl() {
+        return feedbackUrl;
     }
 }
