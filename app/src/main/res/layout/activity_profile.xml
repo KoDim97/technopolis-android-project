@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -28,7 +29,7 @@
         android:background="@color/colorBackground">
 
 
-        <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorBackground"
@@ -124,7 +125,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:background="#FFFFFF"
                     android:paddingLeft="13dp"
                     android:paddingTop="9dp"
@@ -135,12 +136,12 @@
                 <Button
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="37dp"
                     android:layout_marginTop="1dp"
                     android:background="#FFFFFF"
                     android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="13dp"
+                    android:paddingStart="13dp"
                     android:text="iOS-11"
                     android:textAllCaps="false"
                     android:textColor="#000000" />
@@ -155,11 +156,11 @@
                 <Button
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
+                    android:layout_height="37dp"
                     android:background="#FFFFFF"
                     android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="13dp"
+                    android:paddingStart="13dp"
                     android:text="iOS-11"
                     android:textAllCaps="false"
                     android:textColor="#000000" />
@@ -174,7 +175,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginTop="15dp"
                     android:background="#FFFFFF"
                     android:paddingLeft="13dp"
                     android:paddingTop="9dp"
@@ -185,7 +186,7 @@
                 <!--separator-->
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="37dp"
                     android:layout_marginTop="1dp"
                     android:background="#FFFFFF"
                     android:drawableStart="@drawable/icons8_iphone_96"
@@ -207,7 +208,7 @@
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="37dp"
                     android:layout_marginTop="0dp"
                     android:background="#FFFFFF"
                     android:drawableStart="@drawable/icons8_mail_96"
@@ -221,7 +222,97 @@
                     android:textColor="#000000"
                     android:textSize="14sp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/accounts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="#FFFFFF"
+                    android:paddingLeft="13dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="9dp"
+                    android:text="Аккаунты"
+                    android:textSize="13sp" />
+
+                <!--separator-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:layout_marginTop="1dp"
+                    android:background="#FFFFFF"
+                    android:drawableStart="@drawable/ic_ok_48"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="13dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="9dp"
+                    android:text="https://ok.ru/profile/574569200229"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+
+                <View
+                    android:layout_width="13dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="start"
+                    android:background="#FFFFFF" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:layout_marginTop="0dp"
+                    android:background="#FFFFFF"
+                    android:drawableStart="@drawable/ic_github_mark_24"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="13dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="9dp"
+                    android:text="https://github.com/Jhoysbou"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+                <View
+                    android:layout_width="13dp"
+                    android:layout_height="1dp"
+                    android:layout_gravity="start"
+                    android:background="#FFFFFF" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="37dp"
+                    android:layout_marginTop="0dp"
+                    android:background="#FFFFFF"
+                    android:drawableStart="@drawable/ic_vk_logo_24"
+                    android:drawablePadding="6dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="13dp"
+                    android:paddingTop="9dp"
+                    android:paddingBottom="9dp"
+                    android:text="https://vk.com/haxephado"
+                    android:textAllCaps="false"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="37dp"
+                android:background="#FFFFFF"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="45dp"
+                android:text="Выйти"
+                android:textColor="#C95C5F"
+                style="?android:attr/borderlessButtonStyle"/>
         </LinearLayout>
+
+
 
 
     </ScrollView>
