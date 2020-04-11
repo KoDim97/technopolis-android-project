@@ -10,4 +10,5 @@
     <color name="colorSchedulerItemStatus">#B1B1B1</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorSchedulerNameOfLesson">#929294</color>
+    <color name="colorBlue">#5994CC</color>
 </resources>
