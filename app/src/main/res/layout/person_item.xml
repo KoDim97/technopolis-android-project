@@ -32,7 +32,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:singleLine="true"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="@color/black"
         tools:text="Дмитрий Махнев"/>
 
