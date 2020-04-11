@@ -18,9 +18,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Олег Морозенков"
-            android:textColor="#ffffff"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/colorWhite"
+            android:textSize="15sp" />
     </androidx.appcompat.widget.Toolbar>
 
     <ScrollView
@@ -41,7 +41,7 @@
                 android:id="@+id/bio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF">
+                android:background="@color/colorWhite">
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -60,9 +60,9 @@
                     android:layout_marginTop="12dp"
                     android:layout_toEndOf="@id/profile_image"
                     android:text="Олег Морозенков"
-                    android:textColor="#000000"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14sp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/roboto_bold" />
 
                 <TextView
                     android:id="@+id/profile_status"
@@ -73,6 +73,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_toEndOf="@id/profile_image"
                     android:text="Выпускник факультатива"
+                    android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
                 <TextView
@@ -83,6 +84,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="9.5dp"
                     android:layout_toEndOf="@id/profile_image"
+                    android:fontFamily="@font/roboto_regular"
                     android:text="Рейтинг 6.4"
                     android:textSize="12sp" />
             </RelativeLayout>
@@ -92,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
-                android:background="#FFFFFF"
+                android:background="@color/colorWhite"
                 android:orientation="vertical">
 
                 <TextView
@@ -102,6 +104,7 @@
                     android:layout_marginTop="7dp"
                     android:padding="3dp"
                     android:text="O себе"
+                    android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
                 <TextView
@@ -112,7 +115,8 @@
                     android:layout_marginBottom="9dp"
                     android:padding="3dp"
                     android:text="Студент ИУ-7"
-                    android:textColor="#000000"
+                    android:fontFamily="@font/roboto_regular"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -126,11 +130,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:background="#FFFFFF"
+                    android:background="@color/colorWhite"
                     android:paddingLeft="13dp"
                     android:paddingTop="9dp"
                     android:paddingBottom="6dp"
                     android:text="Группы"
+                    android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
                 <Button
@@ -138,32 +143,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="1dp"
-                    android:background="#FFFFFF"
+                    android:background="@color/colorWhite"
                     android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
                     android:gravity="center_vertical"
                     android:paddingStart="13dp"
                     android:text="iOS-11"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAllCaps="false"
-                    android:textColor="#000000" />
+                    android:textColor="@color/colorBlack" />
 
                 <!--separator-->
                 <View
                     android:layout_width="13dp"
                     android:layout_height="1dp"
                     android:layout_gravity="start"
-                    android:background="#FFFFFF" />
+                    android:background="@color/colorWhite" />
 
                 <Button
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
-                    android:background="#FFFFFF"
+                    android:background="@color/colorWhite"
                     android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
                     android:gravity="center_vertical"
                     android:paddingStart="13dp"
                     android:text="iOS-11"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAllCaps="false"
-                    android:textColor="#000000" />
+                    android:textColor="@color/colorBlack" />
             </LinearLayout>
 
             <LinearLayout
@@ -176,11 +183,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:background="#FFFFFF"
+                    android:background="@color/colorWhite"
                     android:paddingLeft="13dp"
                     android:paddingTop="9dp"
                     android:paddingBottom="9dp"
                     android:text="Контакты"
+                    android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
                 <!--separator-->
@@ -188,7 +196,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="1dp"
-                    android:background="#FFFFFF"
+                    android:background="@color/colorWhite"
                     android:drawableStart="@drawable/icons8_iphone_96"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
@@ -196,21 +204,22 @@
                     android:paddingTop="9dp"
                     android:paddingBottom="9dp"
                     android:text="+7 (916) 065 3055"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAllCaps="false"
-                    android:textColor="#000000"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14sp" />
 
                 <View
                     android:layout_width="13dp"
                     android:layout_height="1dp"
                     android:layout_gravity="start"
-                    android:background="#FFFFFF" />
+                    android:background="@color/colorWhite" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="0dp"
-                    android:background="#FFFFFF"
+                    android:background="@color/colorWhite"
                     android:drawableStart="@drawable/icons8_mail_96"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
@@ -218,8 +227,9 @@
                     android:paddingTop="9dp"
                     android:paddingBottom="9dp"
                     android:text="o.morozenkov@corp.mail.ru"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAllCaps="false"
-                    android:textColor="#000000"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -233,7 +243,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
-                    android:background="#FFFFFF"
+                    android:background="@color/colorWhite"
                     android:paddingLeft="13dp"
                     android:paddingTop="9dp"
                     android:paddingBottom="9dp"
@@ -245,7 +255,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="1dp"
-                    android:background="#FFFFFF"
+                    android:background="@color/colorWhite"
                     android:drawableStart="@drawable/ic_ok_48"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
@@ -253,21 +263,22 @@
                     android:paddingTop="9dp"
                     android:paddingBottom="9dp"
                     android:text="https://ok.ru/profile/574569200229"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAllCaps="false"
-                    android:textColor="#000000"
+                    android:textColor="@color/colorBlack"
                     android:textSize="14sp" />
 
                 <View
                     android:layout_width="13dp"
                     android:layout_height="1dp"
                     android:layout_gravity="start"
-                    android:background="#FFFFFF" />
+                    android:background="@color/colorWhite" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="0dp"
-                    android:background="#FFFFFF"
+                    android:background="@color/colorWhite"
                     android:drawableStart="@drawable/ic_github_mark_24"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
@@ -275,6 +286,7 @@
                     android:paddingTop="9dp"
                     android:paddingBottom="9dp"
                     android:text="https://github.com/Jhoysbou"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAllCaps="false"
                     android:textColor="#000000"
                     android:textSize="14sp" />
@@ -288,7 +300,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="0dp"
-                    android:background="#FFFFFF"
+                    android:background="@color/colorWhite"
                     android:drawableStart="@drawable/ic_vk_logo_24"
                     android:drawablePadding="6dp"
                     android:gravity="center_vertical"
@@ -296,6 +308,7 @@
                     android:paddingTop="9dp"
                     android:paddingBottom="9dp"
                     android:text="https://vk.com/haxephado"
+                    android:fontFamily="@font/roboto_regular"
                     android:textAllCaps="false"
                     android:textColor="#000000"
                     android:textSize="14sp" />
@@ -304,10 +317,11 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="37dp"
-                android:background="#FFFFFF"
+                android:background="@color/colorWhite"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="45dp"
                 android:text="Выйти"
+                android:fontFamily="@font/roboto_regular"
                 android:textColor="#C95C5F"
                 style="?android:attr/borderlessButtonStyle"/>
         </LinearLayout>
