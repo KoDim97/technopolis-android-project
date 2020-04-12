@@ -4,4 +4,7 @@
     <string name="login">Почта или логин</string>
     <string name="password">Пароль</string>
     <string name="enter">Войти</string>
+    <string name="profile">Профиль</string>
+    <string name="top_bar_button__main">Основные</string>
+    <string name="top_bar_button__sub">Подписки</string>
 </resources>
