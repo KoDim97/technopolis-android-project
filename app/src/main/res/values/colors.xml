@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
-    <color name="colorNewsTopBar">#5994cc</color>
-    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlue">#5994CC</color>
+    <color name="colorWhite">#FFFFFF</color>
     <color name="colorMainBackground">#f0eff5</color>
     <color name="colorName">#2E678D</color>
     <color name="ColorSectionDate">#959596</color>
