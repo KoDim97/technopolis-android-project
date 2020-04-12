@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".NewsActivity"
+    android:orientation="vertical"
+    >
+
+
+    <RadioGroup
+        android:id="@+id/activity_news__top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/colorBlue"
+
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+
+        <RadioButton
+            android:id="@+id/activity_news__radio_main"
+            android:layout_width="wrap_content"
+            android:background="@drawable/radio_flat_selector__left"
+            android:textColor="@color/radio_flat_text_selector"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:layout_height="wrap_content"
+            android:text="@string/top_bar_button__main"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+            android:button="@android:color/transparent"
+            android:checked="true"
+             />
+
+        <RadioButton
+            android:id="@+id/activity_news__radio_subs"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/radio_flat_selector__right"
+            android:textColor="@color/radio_flat_text_selector"
+            android:button="@android:color/transparent"
+            android:text="@string/top_bar_button__sub"
+            android:textSize="12sp"
+            android:textAllCaps="false"
+
+            />
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/activity_news__small_bar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/colorBackground"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activity_news__news_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground"
+
+
+         />
+
+
+</LinearLayout>
