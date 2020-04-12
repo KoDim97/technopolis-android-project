@@ -1,14 +1,14 @@
 package com.example.technopark;
 
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.technopark.adapter.NewsAdapter;
+import com.example.technopark.dto.News;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,7 @@
-package com.example.technopark;
+package com.example.technopark.controller;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +10,9 @@ import android.widget.ImageButton;
 
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.technopark.MainActivity;
+import com.example.technopark.R;
+import com.example.technopark.adapter.MyPager;
 import com.google.android.material.tabs.TabLayout;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
@@ -51,7 +53,7 @@ public class LoginController {
         });
     }
 
-    LoginController(MainActivity mainActivity){
+    public LoginController(MainActivity mainActivity){
         myPager = new MyPager(mainActivity);
         viewPager = mainActivity.findViewById(R.id.view_pager);
         viewPager.setAdapter(myPager);

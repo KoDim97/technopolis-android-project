@@ -1,4 +1,4 @@
-package com.example.technopark;
+package com.example.technopark.dto;
 
 public class News {
     private final String name;

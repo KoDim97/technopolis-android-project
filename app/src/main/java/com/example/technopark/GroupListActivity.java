@@ -1,4 +1,4 @@
-package com.example.technopark.grouplist;
+package com.example.technopark;
 
 import android.os.Bundle;
 
@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.R;
+import com.example.technopark.grouplist.Person;
+import com.example.technopark.grouplist.PersonAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

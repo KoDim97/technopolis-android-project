@@ -1,4 +1,4 @@
-package com.example.technopark;
+package com.example.technopark.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.example.technopark.R;
 
 public class MyPager extends PagerAdapter {
     private Context context;

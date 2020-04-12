@@ -1,4 +1,4 @@
-package com.example.technopark;
+package com.example.technopark.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,13 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.technopark.R;
+import com.example.technopark.dto.News;
+
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
     private final List<News> news;
 
-    NewsAdapter(List<News> news) {
+    public NewsAdapter(List<News> news) {
         this.news = news;
     }
 
