@@ -7,7 +7,7 @@
 
     <string name="profile">Profile</string>
     <string name="top_bar_button__main">Main</string>
-    <string name="top_bar_button__sub">Subscribers</string>
+    <string name="top_bar_button__sub">Subscriptions</string>
 
 
 </resources>
