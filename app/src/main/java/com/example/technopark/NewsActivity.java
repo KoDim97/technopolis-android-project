@@ -1,7 +1,10 @@
 package com.example.technopark;
 
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +23,21 @@ public class NewsActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_news);
         recyclerView = findViewById(R.id.activity_news__news_list);
+
+        final RadioGroup radioGroup = findViewById(R.id.activity_news__top_bar);
         NewsAdapter adapter = new NewsAdapter(generateNewsList());
+
+//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//
+//                @Override
+//                public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                    if (checkedId == R.id.activity_news__radio_main) {
+//                        adapter = generateNewsList();
+//                    }
+//                }
+//        });
+
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -91,8 +108,86 @@ public class NewsActivity extends AppCompatActivity {
                 R.drawable.dmitry,
                 "1"
         ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
 
         return news;
     }
+
+//    private List<News> generateSubsList() {
+//        List<News> news = new ArrayList<>();
+//        news.add(new News(
+//                "Дмитрий Щитинин",
+//                "Домашнее задание после второй лекции",
+//                "Алгоритмы и структуры данных",
+//                "3 октября 2019 г. 12:25",
+//                R.drawable.dmitry,
+//                "1"
+//        ));
+//        news.add(new News(
+//                "Дмитрий Щитинин",
+//                "Домашнее задание после второй лекции",
+//                "Алгоритмы и структуры данных",
+//                "3 октября 2019 г. 12:25",
+//                R.drawable.dmitry,
+//                "1"
+//        ));
+//        news.add(new News(
+//                "Дмитрий Щитинин",
+//                "Домашнее задание после второй лекции",
+//                "Алгоритмы и структуры данных",
+//                "3 октября 2019 г. 12:25",
+//                R.drawable.dmitry,
+//                "1"
+//        ));
+//        news.add(new News(
+//                "Дмитрий Щитинин",
+//                "Домашнее задание после второй лекции",
+//                "Алгоритмы и структуры данных",
+//                "3 октября 2019 г. 12:25",
+//                R.drawable.dmitry,
+//                "1"
+//        ));
+//        news.add(new News(
+//                "Дмитрий Щитинин",
+//                "Домашнее задание после второй лекции",
+//                "Алгоритмы и структуры данных",
+//                "3 октября 2019 г. 12:25",
+//                R.drawable.dmitry,
+//                "1"
+//        ));
+//
+//        return news;
+//    }
 
 }
