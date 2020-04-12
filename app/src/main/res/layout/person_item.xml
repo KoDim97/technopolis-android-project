@@ -34,7 +34,7 @@
         android:fontFamily="@font/roboto_regular"
         android:singleLine="true"
         android:textSize="15sp"
-        android:textColor="@color/black"
+        android:textColor="@color/colorBlack"
         tools:text="Дмитрий Махнев"/>
 
     <ImageView
