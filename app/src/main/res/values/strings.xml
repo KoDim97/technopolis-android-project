@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">technopark</string>
+    <string name="top_bar_button__main">Основные</string>
+    <string name="top_bar_button__sub">Подписки</string>
 </resources>

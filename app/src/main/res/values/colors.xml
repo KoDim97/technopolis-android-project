@@ -4,6 +4,11 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+    <color name="colorBackground">#EFEEF3</color>
+    <color name="colorName">#2E678D</color>
+    <color name="ColorSectionDate">#959596</color>
+
+
     <color name="colorSchedulerItem">#F7F7F7</color>
     <color name="colorSchedulerItemText">#8C8C8E</color>
     <color name="colorBlack">#000000</color>
@@ -11,4 +16,5 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorSchedulerNameOfLesson">#929294</color>
     <color name="colorBlue">#5994CC</color>
+
 </resources>
