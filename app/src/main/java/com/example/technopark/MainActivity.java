@@ -11,6 +11,5 @@ private LoginController loginController;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.authorization);
         loginController=new LoginController(this);
-
     }
 }

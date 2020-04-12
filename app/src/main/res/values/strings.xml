@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">technopark</string>
+
     <string name="login">Login or  e-mail</string>
     <string name="password">Password</string>
     <string name="enter">Enter</string>
+
+    <string name="profile">Профиль</string>
+    <string name="top_bar_button__main">Основные</string>
+    <string name="top_bar_button__sub">Подписки</string>
+
+
 </resources>
