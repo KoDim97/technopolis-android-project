@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".NewsActivity">
+    tools:context=".NewsActivity"
+    android:orientation="vertical"
+    >
 
 
     <RadioGroup
         android:id="@+id/activity_news__top_bar"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@color/colorNewsTopBar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+
         android:gravity="center"
         android:orientation="horizontal"
         >
@@ -50,26 +50,21 @@
             />
     </RadioGroup>
 
-<!--    <FrameLayout-->
-<!--        android:id="@+id/activity_news__small_bar"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:background="@color/colorMainBackground"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="activity_news__top_bar" -->
-<!--        />-->
+    <FrameLayout
+        android:id="@+id/activity_news__small_bar"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/colorMainBackground"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activity_news__news_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@color/colorMainBackground"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/activity_news__top_bar"
+
+
          />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
