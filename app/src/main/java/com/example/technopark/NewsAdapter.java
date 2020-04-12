@@ -15,7 +15,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
     private final List<News> news;
 
-    public NewsAdapter(List<News> news) {
+    NewsAdapter(List<News> news) {
         this.news = news;
     }
 
@@ -46,7 +46,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         private TextView tvDate;
         private ImageView ivUserpic;
 
-        public NewsHolder(@NonNull View itemView) {
+        private NewsHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.news_item__name);
             tvTitle = itemView.findViewById(R.id.news_item__title);
@@ -56,7 +56,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
             ivUserpic = itemView.findViewById(R.id.news_item__image);
         }
 
-        public void bind(News news) {
+        private void bind(News news) {
             ivUserpic.setImageResource(news.getUserpic());
             tvName.setText(news.getName());
             tvTitle.setText(news.getTitle());
