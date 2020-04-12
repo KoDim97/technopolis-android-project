@@ -42,7 +42,7 @@ public class LoginController {
                 boolean consumed = false;
                 if (keyCode == KEYCODE_ENTER) {
                     if(enterButton.isEnabled()){
-                        enterButton.callOnClick();
+                        enterButton.performClick();
                     }
                     consumed = true;
                 }
