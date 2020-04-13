@@ -1,4 +1,4 @@
-package com.example.technopark.grouplist;
+package com.example.technopark.dto;
 
 public class Person {
     public final String name;

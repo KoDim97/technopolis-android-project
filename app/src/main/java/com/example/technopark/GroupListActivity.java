@@ -8,9 +8,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.technopark.R;
-import com.example.technopark.grouplist.Person;
-import com.example.technopark.grouplist.PersonAdapter;
+import com.example.technopark.dto.Person;
+import com.example.technopark.adapter.PersonAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

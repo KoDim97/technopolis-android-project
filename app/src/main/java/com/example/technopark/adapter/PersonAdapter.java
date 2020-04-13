@@ -1,4 +1,4 @@
-package com.example.technopark.grouplist;
+package com.example.technopark.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.R;
+import com.example.technopark.dto.Person;
 
 import java.util.List;
 
 public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.PersonHolder> {
 
-    private final List<Person> groups;
+    private List<Person> groups;
 
     public PersonAdapter(List<Person> groups) {
         this.groups = groups;
+    }
+
+    public void updateList(List<Person> list){
+        groups = list;
+        notifyDataSetChanged();
     }
 
     @NonNull
