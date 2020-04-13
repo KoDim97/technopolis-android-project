@@ -2,8 +2,11 @@ package com.example.technopark;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.view.View;
@@ -23,11 +26,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnLongCli
 
         myClipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 
+//        Copy links
         findViewById(R.id.phone_number).setOnLongClickListener(this);
         findViewById(R.id.email).setOnLongClickListener(this);
         findViewById(R.id.odnoklassniki).setOnLongClickListener(this);
         findViewById(R.id.github).setOnLongClickListener(this);
         findViewById(R.id.vkontakte).setOnLongClickListener(this);
+
+//        Exit
+        findViewById(R.id.exitButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog exitDialog = new Dialog(ProfileActivity.this, android.R.style.Theme_Light_NoTitleBar);
+                exitDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(50, 0, 0, 0)));
+                exitDialog.setContentView(R.layout.fragment_exit_popup);
+                exitDialog.setCancelable(true);
+                exitDialog.show();
+            }
+
+        });
     }
 
 

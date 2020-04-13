@@ -10,6 +10,8 @@
     <string name="top_bar_button__sub">Subscriptions</string>
 
     <string name="copied">Copied</string>
+    <string name="exit">Sign out</string>
+    <string name="cancel">Cancel</string>
 
 
 </resources>
