@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.sip.SipSession;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,14 +38,29 @@ public class ProfileActivity extends AppCompatActivity implements View.OnLongCli
         findViewById(R.id.exitButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog exitDialog = new Dialog(ProfileActivity.this, android.R.style.Theme_Light_NoTitleBar);
+                final Dialog exitDialog = new Dialog(ProfileActivity.this, R.style.ExitDialogAnimation);
+                exitDialog.getWindow().getAttributes().windowAnimations = R.style.ExitDialogAnimation;
                 exitDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(50, 0, 0, 0)));
                 exitDialog.setContentView(R.layout.fragment_exit_popup);
                 exitDialog.setCancelable(true);
                 exitDialog.show();
-            }
 
+                exitDialog.findViewById(R.id.exitButtonApprove).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(), "log out in progress", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                exitDialog.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        exitDialog.dismiss();
+                    }
+                });
+            }
         });
+
+
     }
 
 

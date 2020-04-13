@@ -6,6 +6,7 @@
     android:orientation="vertical"
     android:layout_gravity="bottom"
     >
+
     <Button
         android:id="@+id/exitButtonApprove"
         android:layout_width="match_parent"
@@ -17,6 +18,7 @@
         android:textColor="@color/colorRed"
         android:fontFamily="@font/roboto_regular"
         android:textAllCaps="false"
+        style="?android:attr/borderlessButtonStyle"
         android:textSize="20sp"
         />
 
@@ -31,6 +33,7 @@
         android:textColor="@color/colorBlueBright"
         android:textAllCaps="false"
         android:fontFamily="@font/roboto_bold"
+        style="?android:attr/borderlessButtonStyle"
         android:textSize="20sp"
         />
 
