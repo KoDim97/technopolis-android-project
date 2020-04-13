@@ -7,4 +7,5 @@
     <string name="profile">Профиль</string>
     <string name="top_bar_button__main">Основные</string>
     <string name="top_bar_button__sub">Подписки</string>
+    <string name="copied">Скопировано</string>
 </resources>

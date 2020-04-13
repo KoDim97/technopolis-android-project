@@ -193,6 +193,7 @@
 
                 <!--separator-->
                 <TextView
+                    android:id="@+id/phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="1dp"
@@ -216,6 +217,7 @@
                     android:background="@color/colorWhite" />
 
                 <TextView
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="0dp"
@@ -252,6 +254,7 @@
 
                 <!--separator-->
                 <TextView
+                    android:id="@+id/odnoklassniki"
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="1dp"
@@ -275,6 +278,7 @@
                     android:background="@color/colorWhite" />
 
                 <TextView
+                    android:id="@+id/github"
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="0dp"
@@ -297,6 +301,7 @@
                     android:background="#FFFFFF" />
 
                 <TextView
+                    android:id="@+id/vkontakte"
                     android:layout_width="match_parent"
                     android:layout_height="37dp"
                     android:layout_marginTop="0dp"
