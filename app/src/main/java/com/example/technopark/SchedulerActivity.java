@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.adapter.SchedulerItemAdapter;
+import com.example.technopark.adapter.stickyHeader.SchedulerItemDecoration;
 import com.example.technopark.dto.SchedulerItem;
 
 import java.util.Arrays;
@@ -39,6 +40,7 @@ public class SchedulerActivity extends AppCompatActivity {
 
         schedulerItemAdapter = new SchedulerItemAdapter();
         schedulerItemsRecyclerView.setAdapter(schedulerItemAdapter);
+        schedulerItemsRecyclerView.addItemDecoration(new SchedulerItemDecoration(schedulerItemAdapter));
     }
 
     private Collection<SchedulerItem> getSchedulerItems() {
