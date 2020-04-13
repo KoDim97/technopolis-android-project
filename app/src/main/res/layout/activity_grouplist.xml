@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="@string/profile"
             android:fontFamily="@font/roboto_regular"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textColor="@color/colorWhite"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/activity_grouplist__back"
@@ -63,7 +63,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/activity_grouplist__searchbar"
         android:layout_width="match_parent"
         android:layout_height="65dp"
@@ -74,18 +74,37 @@
         app:layout_constraintTop_toBottomOf="@id/activity_groplist__topbar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintVertical_bias="0"
+        android:orientation="horizontal"
         >
 
         <EditText
-            android:layout_width="match_parent"
+            android:id="@+id/activity_grouplist__searchfield"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:inputType="text"
             android:background="@drawable/rounded_edittext"
             android:drawableStart="@drawable/ic_search"
             android:drawablePadding="8dp"
             android:padding="10dp"
+            app:endIconMode="clear_text"
             />
-    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/activity_grouplist__cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:background="@color/colorBlue"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/colorWhite"
+            android:visibility="gone"
+            android:gravity="center"
+            android:paddingStart="10dp"/>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/activity_grouplist__rv"

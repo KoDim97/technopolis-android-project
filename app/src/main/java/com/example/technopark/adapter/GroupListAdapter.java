@@ -10,20 +10,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.R;
-import com.example.technopark.dto.Person;
+import com.example.technopark.dto.PersonItem;
 
 import java.util.List;
 
-public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.PersonHolder> {
+public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.PersonHolder> {
 
-    private List<Person> groups;
+    private List<PersonItem> members;
 
-    public PersonAdapter(List<Person> groups) {
-        this.groups = groups;
+    public GroupListAdapter(List<PersonItem> members) {
+        this.members = members;
     }
 
-    public void updateList(List<Person> list){
-        groups = list;
+    public void updateList(List<PersonItem> list){
+        members = list;
         notifyDataSetChanged();
     }
 
@@ -36,12 +36,12 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.PersonHold
 
     @Override
     public void onBindViewHolder(@NonNull PersonHolder holder, int position) {
-        holder.bind(groups.get(position));
+        holder.bind(members.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return groups.size();
+        return members.size();
     }
 
     public class PersonHolder extends RecyclerView.ViewHolder{
@@ -53,7 +53,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.PersonHold
             tvName = itemView.findViewById(R.id.person_item__name);
         }
 
-        public void bind(Person person){
+        public void bind(PersonItem person){
             tvAvatar.setImageResource(person.avatar);
             tvName.setText(person.name);
         }
