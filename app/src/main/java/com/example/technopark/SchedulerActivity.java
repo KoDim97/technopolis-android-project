@@ -26,7 +26,6 @@ public class SchedulerActivity extends AppCompatActivity {
 
         initRecyclerView();
         loadUsers();
-
     }
 
     private void loadUsers() {
@@ -56,7 +55,7 @@ public class SchedulerActivity extends AppCompatActivity {
                         "2020-04-08T00:00:00Z",
                         false,
                         true,
-                        ""
+                        null
                 ),
                 new SchedulerItem(
                         11233L,
@@ -69,7 +68,7 @@ public class SchedulerActivity extends AppCompatActivity {
                         "2020-04-09T00:00:00Z",
                         false,
                         true,
-                        "linkToFeedback.com"
+                        "https://www.google.ru/"
                 ),
                 new SchedulerItem(
                         12123L,
@@ -82,7 +81,7 @@ public class SchedulerActivity extends AppCompatActivity {
                         "2020-04-15T00:00:00Z",
                         true,
                         false,
-                        ""
+                        null
                 ),
                 new SchedulerItem(
                         1L,
@@ -95,7 +94,7 @@ public class SchedulerActivity extends AppCompatActivity {
                         "2020-04-16T00:00:00Z",
                         false,
                         false,
-                        ""
+                        null
                 ),
                 new SchedulerItem(
                         333L,
@@ -108,7 +107,7 @@ public class SchedulerActivity extends AppCompatActivity {
                         "2020-04-22T00:00:00Z",
                         false,
                         false,
-                        ""
+                        null
                 ),
                 new SchedulerItem(
                         3211L,
@@ -121,7 +120,7 @@ public class SchedulerActivity extends AppCompatActivity {
                         "2020-04-23T00:00:00Z",
                         false,
                         false,
-                        ""
+                        null
                 ),
                 new SchedulerItem(
                         33873L,
@@ -134,7 +133,7 @@ public class SchedulerActivity extends AppCompatActivity {
                         "2020-04-29T00:00:00Z",
                         false,
                         false,
-                        ""
+                        null
                 ),
                 new SchedulerItem(
                         399211L,
@@ -147,7 +146,7 @@ public class SchedulerActivity extends AppCompatActivity {
                         "2020-04-30T00:00:00Z",
                         false,
                         false,
-                        ""
+                        null
                 )
         );
     }

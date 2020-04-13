@@ -72,4 +72,8 @@ public class SchedulerItem {
     public String getFeedbackUrl() {
         return feedbackUrl;
     }
+
+    public void setAttended(boolean attended) {
+        isAttended = attended;
+    }
 }

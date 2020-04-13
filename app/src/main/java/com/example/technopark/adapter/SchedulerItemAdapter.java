@@ -1,6 +1,9 @@
 package com.example.technopark.adapter;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import static androidx.core.content.ContextCompat.startActivity;
 
 public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeader {
 
@@ -52,7 +57,6 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     class SchedulerItemViewHolder extends RecyclerView.ViewHolder {
 
-//        private TextView dateTextView;
         private TextView startTimeTextView;
         private TextView endTimeTextView;
         private TextView lessonTypeTextView;
@@ -101,30 +105,65 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
         }
 
-        private void bindActionButton(SchedulerItem schedulerItem) {
-            if (schedulerItem.isCheckInOpen()) {
-                setButtonCharacteristics(
-                        "Отметиться",
-                        ContextCompat.getDrawable(currParent.getContext(), R.drawable.scheduler_on_present_element),
-                        ContextCompat.getColor(currParent.getContext(), R.color.colorBlue)
-                );
-                onActionButton.setVisibility(View.VISIBLE);
-                acceptReportImageView.setVisibility(View.INVISIBLE);
-            } else if (!schedulerItem.getFeedbackUrl().isEmpty()) {
-                setButtonCharacteristics(
-                        "Оценить",
-                        ContextCompat.getDrawable(currParent.getContext(), R.drawable.scheduler_on_rate_element),
-                        ContextCompat.getColor(currParent.getContext(), R.color.colorWhite)
-                );
-                onActionButton.setVisibility(View.VISIBLE);
-                acceptReportImageView.setVisibility(View.INVISIBLE);
+        private void bindActionButton(final SchedulerItem schedulerItem) {
+            if (schedulerItem.getFeedbackUrl() != null) {
+                setOnFeedback(schedulerItem);
             } else if (schedulerItem.isAttended()) {
-                onActionButton.setVisibility(View.INVISIBLE);
-                acceptReportImageView.setVisibility(View.VISIBLE);
+                setOnIsAttended();
+            }
+            else  if (schedulerItem.isCheckInOpen()) {
+                setOnIsCheckedInOpen(schedulerItem);
             } else {
                 onActionButton.setVisibility(View.INVISIBLE);
                 acceptReportImageView.setVisibility(View.INVISIBLE);
             }
+        }
+
+        private void setOnFeedback(final SchedulerItem schedulerItem) {
+            setButtonCharacteristics(
+                    "Оценить",
+                    ContextCompat.getDrawable(currParent.getContext(), R.drawable.scheduler_on_rate_element),
+                    ContextCompat.getColor(currParent.getContext(), R.color.colorWhite)
+            );
+            onActionButton.setVisibility(View.VISIBLE);
+            acceptReportImageView.setVisibility(View.INVISIBLE);
+            onActionButton.setOnClickListener(new View.OnClickListener() {
+                //need to use schedulerItem.getFeedbackUrl() instead of https://www.google.ru/
+                //when API will connected to the App
+                @Override
+                public void onClick(View v) {
+                    Intent viewIntent = new Intent(
+                            "android.intent.action.VIEW",
+                            Uri.parse(schedulerItem.getFeedbackUrl() == null
+                                    ? "https://www.google.ru/"
+                                    : schedulerItem.getFeedbackUrl())
+                    );
+                    startActivity(currParent.getContext(), viewIntent, new Bundle());
+                    setOnIsAttended();
+                }
+            });
+        }
+
+        private void setOnIsAttended() {
+            onActionButton.setVisibility(View.INVISIBLE);
+            acceptReportImageView.setVisibility(View.VISIBLE);
+        }
+
+        private void setOnIsCheckedInOpen(final SchedulerItem schedulerItem) {
+            setButtonCharacteristics(
+                    "Отметиться",
+                    ContextCompat.getDrawable(currParent.getContext(), R.drawable.scheduler_on_present_element),
+                    ContextCompat.getColor(currParent.getContext(), R.color.colorBlue)
+            );
+            onActionButton.setVisibility(View.VISIBLE);
+            acceptReportImageView.setVisibility(View.INVISIBLE);
+            onActionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    schedulerItem.setAttended(true);
+                    setOnFeedback(schedulerItem);
+                }
+            });
         }
 
         private void setButtonCharacteristics(String buttonText, Drawable background, int textColor) {
@@ -207,7 +246,7 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.View
         return position % 2 == 0;
     }
 
-    void bindDate(TextView dateTextView, String  rawDate) {
+    private void bindDate(TextView dateTextView, String rawDate) {
         SimpleDateFormat utcFormat = new SimpleDateFormat(RESPONSE_FORMAT, Locale.ROOT);
         Locale locale = new Locale("ru");
         SimpleDateFormat displayedFormat = new SimpleDateFormat(WEEK_DAY_NUMBER_FORMAT, locale);
