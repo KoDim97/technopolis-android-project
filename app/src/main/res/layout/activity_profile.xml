@@ -73,7 +73,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="5dp"
                     android:layout_toEndOf="@id/profile_image"
-                    android:text="Выпускник факультатива"
+                    android:text="@string/graduated"
                     android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
@@ -104,7 +104,7 @@
                     android:layout_marginLeft="13dp"
                     android:layout_marginTop="7dp"
                     android:padding="3dp"
-                    android:text="O себе"
+                    android:text="@string/about"
                     android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
@@ -135,7 +135,7 @@
                     android:paddingLeft="13dp"
                     android:paddingTop="9dp"
                     android:paddingBottom="6dp"
-                    android:text="Группы"
+                    android:text="@string/groups"
                     android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
@@ -188,7 +188,7 @@
                     android:paddingLeft="13dp"
                     android:paddingTop="9dp"
                     android:paddingBottom="9dp"
-                    android:text="Контакты"
+                    android:text="@string/contacts"
                     android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 

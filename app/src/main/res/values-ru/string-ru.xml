@@ -11,4 +11,12 @@
     <string name="copied">Скопировано</string>
     <string name="exit">Выйти</string>
     <string name="cancel">Отмена</string>
+    <string name="graduated">Выпускник факультатива</string>
+    <string name="about">О себе</string>
+    <string name="groups">Группы</string>
+    <string name="contacts">Контакты</string>
+    <string name="accounts">Аккаунты</string>
+
+
+
 </resources>
