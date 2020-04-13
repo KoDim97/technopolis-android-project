@@ -1,6 +1,5 @@
 package com.example.technopark.adapter;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,18 +13,18 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.R;
+import com.example.technopark.adapter.stickyHeader.StickyHeader;
 import com.example.technopark.dto.SchedulerItem;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdapter.SchedulerItemViewHolder> {
+public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements StickyHeader {
 
     private static final String RESPONSE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String WEEK_DAY_NUMBER_FORMAT = "EEEE, d MMMM";
@@ -34,9 +33,26 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
     private List<SchedulerItem> schedulerItemsList = new ArrayList<>();
     private View currParent;
 
-    class SchedulerItemViewHolder extends RecyclerView.ViewHolder {
+    class SchedulerItemHeaderViewHolder extends RecyclerView.ViewHolder {
 
         private TextView dateTextView;
+
+        public SchedulerItemHeaderViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            dateTextView = itemView.findViewById(R.id.scheduler_item_header);
+
+        }
+
+        private void bind(String date) {
+            bindDate(dateTextView, date);
+        }
+
+    }
+
+    class SchedulerItemViewHolder extends RecyclerView.ViewHolder {
+
+//        private TextView dateTextView;
         private TextView startTimeTextView;
         private TextView endTimeTextView;
         private TextView lessonTypeTextView;
@@ -51,7 +67,7 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
 
             currParent = itemView;
 
-            dateTextView = itemView.findViewById(R.id.scheduler_item_date_text_view);
+//            dateTextView = itemView.findViewById(R.id.scheduler_item_date_text_view);
             startTimeTextView = itemView.findViewById(R.id.scheduler_item_start_time);
             endTimeTextView = itemView.findViewById(R.id.scheduler_item_end_time);
             lessonTypeTextView = itemView.findViewById(R.id.scheduler_item_lesson_type);
@@ -63,7 +79,7 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
         }
 
         public void bind(SchedulerItem schedulerItem) {
-            dateTextView.setText(schedulerItem.getDate());
+//            dateTextView.setText(schedulerItem.getDate());
             subjectNameTextView.setText(schedulerItem.getSubjectName());
             lessonNameTextView.setText(schedulerItem.getLessonName());
             lessonLocationTextView.setText(schedulerItem.getLocation());
@@ -71,23 +87,24 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
             String lessonType = schedulerItem.getLessonType();
             lessonTypeTextView.setText(lessonType.length() > 8 ? lessonType.substring(0, 8) + "..." : lessonType);
             bindActionButton(schedulerItem);
-            bindDate(schedulerItem);
+//            bindDate(schedulerItem);
             bindLessonTime(startTimeTextView, schedulerItem.getStartTime());
             bindLessonTime(endTimeTextView, schedulerItem.getEndTime());
         }
 
-        private void bindDate(SchedulerItem schedulerItem) {
-            String rawDate = schedulerItem.getDate();
-            SimpleDateFormat utcFormat = new SimpleDateFormat(RESPONSE_FORMAT, Locale.ROOT);
-            Locale locale = new Locale("ru");
-            SimpleDateFormat displayedFormat = new SimpleDateFormat(WEEK_DAY_NUMBER_FORMAT, locale);
-            try {
-                Date date = utcFormat.parse(rawDate);
-                dateTextView.setText(processDate(displayedFormat.format(date)));
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-        }
+//        private void bindDate(SchedulerItem schedulerItem) {
+//            String rawDate = schedulerItem.getDate();
+//            SimpleDateFormat utcFormat = new SimpleDateFormat(RESPONSE_FORMAT, Locale.ROOT);
+//            Locale locale = new Locale("ru");
+//            SimpleDateFormat displayedFormat = new SimpleDateFormat(WEEK_DAY_NUMBER_FORMAT, locale);
+//            try {
+//                Date date = utcFormat.parse(rawDate);
+//                dateTextView.setText(processDate(displayedFormat.format(date)));
+//            } catch (ParseException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+
 
         private void bindLessonTime(TextView time, String rawDate) {
             SimpleDateFormat utcFormat = new SimpleDateFormat(RESPONSE_FORMAT, Locale.ROOT);
@@ -132,10 +149,6 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
             onActionButton.setBackground(background);
             onActionButton.setTextColor(textColor);
         }
-
-        private String processDate(String formattedDate) {
-            return formattedDate.substring(0, 1).toUpperCase().concat(formattedDate.substring(1));
-        }
     }
 
     public void setItems(Collection<SchedulerItem> schedulerItems) {
@@ -148,20 +161,82 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<SchedulerItemAdap
         notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position % 2;
+    }
+
     @NonNull
     @Override
-    public SchedulerItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.scheduler_item_view, parent, false);
-        return new SchedulerItemViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case 1:
+                View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.scheduler_item_view, parent, false);
+                return new SchedulerItemViewHolder(view1);
+            case 0:
+                View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.scheduler_item_header_view, parent, false);
+                return new SchedulerItemHeaderViewHolder(view2);
+            default:
+                throw new RuntimeException("Unexpected type of view");
+        }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SchedulerItemViewHolder holder, int position) {
-        holder.bind(schedulerItemsList.get(position));
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        switch (holder.getItemViewType()) {
+            case 1:
+                SchedulerItemViewHolder schedulerItemViewHolder = (SchedulerItemViewHolder) holder;
+                schedulerItemViewHolder.bind(schedulerItemsList.get(position / 2));
+                break;
+            case 0:
+                SchedulerItemHeaderViewHolder schedulerItemHeaderViewHolder = (SchedulerItemHeaderViewHolder) holder;
+                schedulerItemHeaderViewHolder.bind(schedulerItemsList.get(position / 2).getDate());
+                break;
+        }
     }
+
+
 
     @Override
     public int getItemCount() {
-        return schedulerItemsList.size();
+        return schedulerItemsList.size() * 2;
+    }
+
+    //Sticky header interface
+    @Override
+    public int getHeaderPositionForItem(int itemPosition) {
+        return itemPosition % 2 == 0 ? itemPosition : itemPosition - 1;
+    }
+
+    @Override
+    public int getHeaderLayout(int headerPosition) {
+        return R.layout.scheduler_item_header_view;
+    }
+
+    @Override
+    public void bindHeaderData(View header, int headerPosition) {
+        TextView dateText = header.findViewById(R.id.scheduler_item_header);
+        bindDate(dateText, schedulerItemsList.get(headerPosition / 2).getDate());
+    }
+
+    @Override
+    public boolean isHeader(int position) {
+        return position % 2 == 0;
+    }
+
+    void bindDate(TextView dateTextView, String  rawDate) {
+        SimpleDateFormat utcFormat = new SimpleDateFormat(RESPONSE_FORMAT, Locale.ROOT);
+        Locale locale = new Locale("ru");
+        SimpleDateFormat displayedFormat = new SimpleDateFormat(WEEK_DAY_NUMBER_FORMAT, locale);
+        try {
+            Date date = utcFormat.parse(rawDate);
+            dateTextView.setText(processDate(displayedFormat.format(date)));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String processDate(String formattedDate) {
+        return formattedDate.substring(0, 1).toUpperCase().concat(formattedDate.substring(1));
     }
 }
