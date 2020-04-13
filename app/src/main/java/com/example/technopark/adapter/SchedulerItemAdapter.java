@@ -67,7 +67,6 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             currParent = itemView;
 
-//            dateTextView = itemView.findViewById(R.id.scheduler_item_date_text_view);
             startTimeTextView = itemView.findViewById(R.id.scheduler_item_start_time);
             endTimeTextView = itemView.findViewById(R.id.scheduler_item_end_time);
             lessonTypeTextView = itemView.findViewById(R.id.scheduler_item_lesson_type);
@@ -79,7 +78,6 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
         public void bind(SchedulerItem schedulerItem) {
-//            dateTextView.setText(schedulerItem.getDate());
             subjectNameTextView.setText(schedulerItem.getSubjectName());
             lessonNameTextView.setText(schedulerItem.getLessonName());
             lessonLocationTextView.setText(schedulerItem.getLocation());
@@ -87,24 +85,9 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.View
             String lessonType = schedulerItem.getLessonType();
             lessonTypeTextView.setText(lessonType.length() > 8 ? lessonType.substring(0, 8) + "..." : lessonType);
             bindActionButton(schedulerItem);
-//            bindDate(schedulerItem);
             bindLessonTime(startTimeTextView, schedulerItem.getStartTime());
             bindLessonTime(endTimeTextView, schedulerItem.getEndTime());
         }
-
-//        private void bindDate(SchedulerItem schedulerItem) {
-//            String rawDate = schedulerItem.getDate();
-//            SimpleDateFormat utcFormat = new SimpleDateFormat(RESPONSE_FORMAT, Locale.ROOT);
-//            Locale locale = new Locale("ru");
-//            SimpleDateFormat displayedFormat = new SimpleDateFormat(WEEK_DAY_NUMBER_FORMAT, locale);
-//            try {
-//                Date date = utcFormat.parse(rawDate);
-//                dateTextView.setText(processDate(displayedFormat.format(date)));
-//            } catch (ParseException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-
 
         private void bindLessonTime(TextView time, String rawDate) {
             SimpleDateFormat utcFormat = new SimpleDateFormat(RESPONSE_FORMAT, Locale.ROOT);
