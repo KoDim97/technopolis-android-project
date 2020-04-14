@@ -32,7 +32,6 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.profile_fragment, container, false);
-        ((BaseActivity)getActivity()).setBarVisible(View.VISIBLE);
 
         myClipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         Bundle bundle = this.getArguments();
