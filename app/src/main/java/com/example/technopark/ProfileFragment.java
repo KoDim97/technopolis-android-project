@@ -31,9 +31,13 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.activity_profile, container, false);
+        View v = inflater.inflate(R.layout.profile_fragment, container, false);
 
         myClipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            showBackButton(v);
+        }
 
 //        Copy links
         v.findViewById(R.id.phone_number).setOnLongClickListener(this);
@@ -49,7 +53,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
                 final Dialog exitDialog = new Dialog(getActivity(), R.style.ExitDialogAnimation);
                 exitDialog.getWindow().getAttributes().windowAnimations = R.style.ExitDialogAnimation;
                 exitDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(50, 0, 0, 0)));
-                exitDialog.setContentView(R.layout.fragment_exit_popup);
+                exitDialog.setContentView(R.layout.exit_popup_view);
                 exitDialog.setCancelable(true);
                 exitDialog.show();
 
@@ -84,8 +88,6 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         return v;
     }
 
-
-
     @Override
     public boolean onLongClick(View v) {
         TextView textView = (TextView) v;
@@ -96,5 +98,10 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 
         Toast.makeText(getActivity(), R.string.copied, Toast.LENGTH_SHORT).show();
         return true;
+    }
+
+    private void showBackButton(View v) {
+        View toolBar = v.findViewById(R.id.toolbar);
+
     }
 }
