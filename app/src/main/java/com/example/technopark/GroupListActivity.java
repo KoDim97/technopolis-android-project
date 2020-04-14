@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.example.technopark.dto.PersonItem;
 import com.example.technopark.adapter.GroupListAdapter;
 import java.util.ArrayList;

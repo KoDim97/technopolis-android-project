@@ -8,6 +8,10 @@
     <string name="cancel">Отмена</string>
     <string name="top_bar_button__main">Основные</string>
     <string name="top_bar_button__sub">Подписки</string>
+
+    <string name="schedule">Расписание</string>
+
+
     <string name="copied">Скопировано</string>
     <string name="exit">Выйти</string>
     <string name="cancel">Отмена</string>
