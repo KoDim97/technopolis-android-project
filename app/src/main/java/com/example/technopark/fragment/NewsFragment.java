@@ -31,8 +31,7 @@ public class NewsFragment extends Fragment {
     private RecyclerView recyclerView;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_news, container, false);
         recyclerView = view.findViewById(R.id.activity_news__news_list);
         final RadioGroup radioGroup = view.findViewById(R.id.activity_news__top_bar);
