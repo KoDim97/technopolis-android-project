@@ -26,7 +26,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="5dp"
-                android:text="18:30"
                 android:textSize="20sp"
                 android:fontFamily="@font/helvetica_neue_medium"
                 android:textColor="@color/colorBlack"
@@ -40,7 +39,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="21:30"
                 android:textSize="20sp"
                 android:fontFamily="@font/helvetica_neue_medium"
                 android:textColor="@color/colorSchedulerItemText"
@@ -58,7 +56,6 @@
                 android:fontFamily="@font/helvetica_neue_medium"
                 android:maxLength="11"
                 android:textAlignment="center"
-                android:text="Л 6"
                 android:textColor="@color/colorWhite"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -88,7 +85,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/helvetica_neue_medium"
-                android:text="Использование баз данных"
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp" />
 
@@ -98,7 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:fontFamily="@font/helvetica_neue_medium"
-                android:text="Оптимизация запросов и индексирование"
                 android:textColor="@color/colorSchedulerNameOfLesson"
                 android:textSize="16sp"
                 android:layout_below="@id/scheduler_item_subject_name"/>
@@ -123,7 +118,6 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/font_awesome"
-                android:text="онлайн"
                 android:textColor="@color/colorSchedulerNameOfLesson"
                 android:textSize="13sp"
                 android:layout_below="@id/scheduler_item_lesson_name"
@@ -141,7 +135,6 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:textColor="@color/colorBlue"
                 android:background="@drawable/scheduler_on_present_element"
-                android:text="Отметиться"
                 />
 
             <ImageView

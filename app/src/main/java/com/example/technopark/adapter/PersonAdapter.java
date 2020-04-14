@@ -1,4 +1,4 @@
-package com.example.technopark.grouplist;
+package com.example.technopark.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.R;
+import com.example.technopark.dto.Person;
 
 import java.util.List;
 
