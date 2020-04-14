@@ -4,8 +4,8 @@
     <string name="login">Login or e-mail</string>
     <string name="password">Password</string>
     <string name="enter">Enter</string>
-
     <string name="profile">Profile</string>
+    <string name="cancel">Cancel</string>
     <string name="top_bar_button__main">Main</string>
     <string name="top_bar_button__sub">Subscriptions</string>
     <string name="top_bar_name">News</string>
