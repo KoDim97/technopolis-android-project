@@ -16,15 +16,10 @@ import java.util.List;
 
 public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.PersonHolder> {
 
-    private List<Person> groups;
+    private final List<Person> groups;
 
     public PersonAdapter(List<Person> groups) {
         this.groups = groups;
-    }
-
-    public void updateList(List<Person> list){
-        groups = list;
-        notifyDataSetChanged();
     }
 
     @NonNull

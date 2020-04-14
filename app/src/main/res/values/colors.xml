@@ -11,6 +11,8 @@
     <color name="colorRed">#EF4F3D</color>
     <color name="colorBlueBright">#3478F5</color>
 
+    <color name="colorDisabled">#A9AFBB</color>
+
     <color name="colorGrey">#C3C3C3</color>
 
     <color name="colorName">#2E678D</color>
