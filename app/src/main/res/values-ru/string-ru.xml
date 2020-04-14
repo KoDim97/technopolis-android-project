@@ -8,4 +8,5 @@
     <string name="cancel">Отмена</string>
     <string name="top_bar_button__main">Основные</string>
     <string name="top_bar_button__sub">Подписки</string>
+    <string name="top_bar_name">Новости</string>
 </resources>

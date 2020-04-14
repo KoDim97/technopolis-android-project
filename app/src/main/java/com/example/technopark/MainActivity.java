@@ -11,7 +11,7 @@ private LoginController loginController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.authorization);
-        loginController=new LoginController(this);
+        setContentView(R.layout.activity_main);
+        //loginController=new LoginController(this);
     }
 }

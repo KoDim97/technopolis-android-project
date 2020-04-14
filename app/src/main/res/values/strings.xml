@@ -8,6 +8,7 @@
     <string name="cancel">Cancel</string>
     <string name="top_bar_button__main">Main</string>
     <string name="top_bar_button__sub">Subscriptions</string>
+    <string name="top_bar_name">News</string>
 
 
 </resources>
