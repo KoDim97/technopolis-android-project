@@ -140,6 +140,7 @@
                     android:textSize="13sp" />
 
                 <Button
+                    android:id="@+id/group_1"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="43dp"
@@ -161,6 +162,7 @@
                     android:background="@color/colorWhite" />
 
                 <Button
+                    android:id="@+id/group_2"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="43dp"
@@ -168,7 +170,7 @@
                     android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
                     android:gravity="center_vertical"
                     android:paddingStart="13dp"
-                    android:text="iOS-11"
+                    android:text="iOS-13"
                     android:fontFamily="@font/roboto_regular"
                     android:textAllCaps="false"
                     android:textColor="@color/colorBlack" />
