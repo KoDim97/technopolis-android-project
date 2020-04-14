@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.sip.SipSession;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnLongCli
                 exitDialog.findViewById(R.id.exitButtonApprove).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+//                      TODO: make log out
                         Toast.makeText(getApplicationContext(), "log out in progress", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -60,6 +63,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnLongCli
             }
         });
 
+//        Show group members
+        findViewById(R.id.group_1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Button button = (Button) v;
+                Intent intent = new Intent(getApplicationContext(), GroupListActivity.class);
+                intent.putExtra("GroupName", button.getText());
+                ProfileActivity.this.startActivity(intent);
+            }
+        });
 
     }
 

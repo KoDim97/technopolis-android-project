@@ -1,5 +1,6 @@
 package com.example.technopark;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.technopark.dto.Person;
 import com.example.technopark.adapter.PersonAdapter;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +30,9 @@ public class GroupListActivity extends AppCompatActivity {
         DividerItemDecoration itemDecorator = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         itemDecorator.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
         recyclerView.addItemDecoration(itemDecorator);
+
+        Intent intent = getIntent();
+        System.out.println(intent.getStringExtra("GroupName"));
     }
 
     private List<Person> generatedGroupList(){
