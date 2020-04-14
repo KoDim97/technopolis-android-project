@@ -77,10 +77,6 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         v.findViewById(R.id.group_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Button button = (Button) v;
-                Intent intent = new Intent(getActivity(), GroupListActivity.class);
-                intent.putExtra("GroupName", button.getText());
-                ProfileFragment.this.startActivity(intent);
             }
         });
 

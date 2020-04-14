@@ -8,15 +8,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +30,15 @@ import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupListActivity extends AppCompatActivity {
+public class GroupListFragment extends Fragment {
+
+    public GroupListFragment(){
+    }
+
+    public static GroupListFragment newInstance() {
+        return new GroupListFragment();
+    }
+
     private RecyclerView recyclerView;
     private GroupListAdapter adapter;
     private List<PersonItem> members;
@@ -38,21 +47,20 @@ public class GroupListActivity extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_grouplist);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((BaseActivity)getActivity()).setBarVisible(View.GONE);
+        View view = inflater.inflate(R.layout.activity_grouplist, container, false);
         members = generatedGroupList();
-        recyclerView = findViewById(R.id.activity_grouplist__rv);
+        recyclerView = view.findViewById(R.id.activity_grouplist__rv);
         adapter = new GroupListAdapter(members);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        DividerItemDecoration itemDecorator = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        itemDecorator.setDrawable(ContextCompat.getDrawable(this, R.drawable.divider));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        DividerItemDecoration itemDecorator = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        itemDecorator.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.divider));
         recyclerView.addItemDecoration(itemDecorator);
 
-
-        cancel = findViewById(R.id.activity_grouplist__cancel);
-        searchField = findViewById(R.id.activity_grouplist__searchfield);
+        cancel = view.findViewById(R.id.activity_grouplist__cancel);
+        searchField = view.findViewById(R.id.activity_grouplist__searchfield);
         searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
 
         searchField.setOnTouchListener(new View.OnTouchListener() {
@@ -77,7 +85,7 @@ public class GroupListActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideKeyboard(getContext());
+                hideKeyboard(getActivity());
                 searchField.setText("");
                 cancel.setVisibility(View.GONE);
             }
@@ -112,6 +120,7 @@ public class GroupListActivity extends AppCompatActivity {
                 }, 20);
             }
         });
+        return view;
     }
 
     void filter(String text){
@@ -135,9 +144,6 @@ public class GroupListActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
-    public Activity getContext(){
-        return this;
-    }
 
     private List<PersonItem> generatedGroupList(){
         List<PersonItem> groups = new ArrayList<>();
