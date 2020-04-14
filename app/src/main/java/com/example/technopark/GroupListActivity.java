@@ -137,10 +137,6 @@ public class GroupListActivity extends AppCompatActivity {
 
     public Activity getContext(){
         return this;
-
-        Intent intent = getIntent();
-        System.out.println(intent.getStringExtra("GroupName"));
-
     }
 
     private List<PersonItem> generatedGroupList(){
