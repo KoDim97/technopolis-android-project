@@ -27,8 +27,7 @@ public class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
+        mOnNavigationItemSelectedListener=new BottomNavigationView.OnNavigationItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
@@ -45,6 +44,9 @@ public class BaseActivity extends AppCompatActivity {
                 return false;
             }
         };
+        loadFragment(TestFragment1.newInstance());
+
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }

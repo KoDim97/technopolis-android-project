@@ -2,6 +2,7 @@ package com.example.technopark;
 
 import android.os.Bundle;
 import android.view.Window;
+import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,12 +24,107 @@ public class NewsActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_news);
         recyclerView = findViewById(R.id.activity_news__news_list);
-
-        NewsAdapter adapter = new NewsAdapter(generateNewsList());
-
+        final RadioGroup radioGroup = findViewById(R.id.activity_news__top_bar);
+        final NewsAdapter adapter = new NewsAdapter(generateNewsList());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (R.id.activity_news__radio_subs == checkedId) {
+                    adapter.onReplace(generateSubsList());
+                } else if (R.id.activity_news__radio_main == checkedId) {
+                    adapter.onReplace(generateNewsList());
+                }
+            }
+        });
+    }
+
+    private List<News> generateSubsList() {
+        List<News> news = new ArrayList<>();
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+        news.add(new News(
+                "Дмитрий Щитинин",
+                "Домашнее задание после второй лекции",
+                "Алгоритмы и структуры данных",
+                "3 октября 2019 г. 12:25",
+                R.drawable.dmitry,
+                "1"
+        ));
+
+        return news;
     }
 
     private List<News> generateNewsList() {
@@ -48,86 +144,6 @@ public class NewsActivity extends AppCompatActivity {
                 "2 декабря 2019 г. 2:56",
                 R.drawable.filipp,
                 "0"
-        ));
-        news.add(new News(
-                "Дмитрий Щитинин",
-                "Домашнее задание после второй лекции",
-                "Алгоритмы и структуры данных",
-                "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
-                "1"
-        ));
-        news.add(new News(
-                "Дмитрий Щитинин",
-                "Домашнее задание после второй лекции",
-                "Алгоритмы и структуры данных",
-                "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
-                "1"
-        ));
-        news.add(new News(
-                "Дмитрий Щитинин",
-                "Домашнее задание после второй лекции",
-                "Алгоритмы и структуры данных",
-                "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
-                "1"
-        ));
-        news.add(new News(
-                "Дмитрий Щитинин",
-                "Домашнее задание после второй лекции",
-                "Алгоритмы и структуры данных",
-                "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
-                "1"
-        ));
-        news.add(new News(
-                "Дмитрий Щитинин",
-                "Домашнее задание после второй лекции",
-                "Алгоритмы и структуры данных",
-                "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
-                "1"
-        ));
-        news.add(new News(
-                "Дмитрий Щитинин",
-                "Домашнее задание после второй лекции",
-                "Алгоритмы и структуры данных",
-                "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
-                "1"
-        ));
-        news.add(new News(
-                "Дмитрий Щитинин",
-                "Домашнее задание после второй лекции",
-                "Алгоритмы и структуры данных",
-                "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
-                "1"
-        ));
-        news.add(new News(
-                "Дмитрий Щитинин",
-                "Домашнее задание после второй лекции",
-                "Алгоритмы и структуры данных",
-                "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
-                "1"
-        ));
-        news.add(new News(
-                "Дмитрий Щитинин",
-                "Домашнее задание после второй лекции",
-                "Алгоритмы и структуры данных",
-                "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
-                "1"
-        ));
-        news.add(new News(
-                "Дмитрий Щитинин",
-                "Домашнее задание после второй лекции",
-                "Алгоритмы и структуры данных",
-                "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
-                "1"
         ));
 
         return news;
