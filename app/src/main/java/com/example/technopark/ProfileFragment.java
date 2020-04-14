@@ -13,8 +13,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class ProfileFragment extends Fragment implements View.OnLongClickListener {
 
@@ -33,9 +36,10 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         View v = inflater.inflate(R.layout.profile_fragment, container, false);
         ((BaseActivity)getActivity()).setBarVisible(View.VISIBLE);
         myClipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+//        Back button
         Bundle bundle = this.getArguments();
         if (bundle == null) {
-            showBackButton(v);
+            hideBackButton(v);
         }
 
 //        Copy links
@@ -44,6 +48,10 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         v.findViewById(R.id.odnoklassniki).setOnLongClickListener(this);
         v.findViewById(R.id.github).setOnLongClickListener(this);
         v.findViewById(R.id.vkontakte).setOnLongClickListener(this);
+
+//        set up good scroll
+        ScrollView scrollView = (ScrollView) v.findViewById(R.id.profile_scroll_view);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
 
 //        Exit
         v.findViewById(R.id.exitButton).setOnClickListener(new View.OnClickListener() {
@@ -111,7 +119,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         return true;
     }
 
-    private void showBackButton(View v) {
+    private void hideBackButton(View v) {
         androidx.appcompat.widget.Toolbar toolBar = v.findViewById(R.id.toolbar);
         toolBar.setNavigationIcon(null);
     }
