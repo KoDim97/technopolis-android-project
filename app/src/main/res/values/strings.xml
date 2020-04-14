@@ -8,6 +8,7 @@
     <string name="profile">Profile</string>
     <string name="top_bar_button__main">Main</string>
     <string name="top_bar_button__sub">Subscriptions</string>
+    <string name="top_bar_name">News</string>
 
     <string name="copied">Copied</string>
     <string name="exit">Sign out</string>

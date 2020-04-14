@@ -40,6 +40,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         return news.size();
     }
 
+    public void onReplace(List<News> update) {
+        news.clear();
+        news.addAll(update);
+
+        notifyDataSetChanged();
+    }
+
     public class NewsHolder extends RecyclerView.ViewHolder {
 
         private TextView tvName;
