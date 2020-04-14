@@ -3,7 +3,6 @@ package com.example.technopark;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
@@ -16,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -25,7 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.dto.PersonItem;
 import com.example.technopark.adapter.GroupListAdapter;
-import java.sql.SQLOutput;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ public class GroupListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ((BaseActivity)getActivity()).setBarVisible(View.GONE);
-        View view = inflater.inflate(R.layout.activity_grouplist, container, false);
+        View view = inflater.inflate(R.layout.grouplist_fragment, container, false);
         members = generatedGroupList();
         recyclerView = view.findViewById(R.id.activity_grouplist__rv);
         adapter = new GroupListAdapter(members);
@@ -62,6 +61,18 @@ public class GroupListFragment extends Fragment {
         cancel = view.findViewById(R.id.activity_grouplist__cancel);
         searchField = view.findViewById(R.id.activity_grouplist__searchfield);
         searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
+
+        Toolbar toolbar = view.findViewById(R.id.activity_groplist__topbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProfileFragment profileFragment = new ProfileFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fl_content, profileFragment, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
 
         searchField.setOnTouchListener(new View.OnTouchListener() {
             @Override

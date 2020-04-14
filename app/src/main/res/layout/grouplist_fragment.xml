@@ -6,69 +6,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".GroupListFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/activity_groplist__topbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorBlue"
+        app:navigationIcon="@drawable/ic_navigate_before_black_24dp"
+        android:paddingLeft="-8dp"
         app:layout_constraintBottom_toTopOf="@id/activity_grouplist__searchbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/colorBlue"
-        android:padding="5dp"
-        >
-
-        <ImageView
-            android:id="@+id/activity_grouplist__back"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_backward"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintVertical_bias="0.68"/>
-
-        <TextView
-            android:id="@+id/activity_grouplist__tv_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/profile"
-            android:fontFamily="@font/roboto_regular"
-            android:textSize="16sp"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/activity_grouplist__back"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintVertical_bias="0.68"
-            />
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textColor="@color/colorWhite"
-            android:fontFamily="@font/roboto_medium"
+            android:layout_gravity="center"
             android:text="АПО-41"
-            android:textStyle="bold"
-            app:layout_constraintVertical_bias="0.68"/>
+            android:fontFamily="@font/roboto_bold"
+            android:textColor="@color/colorWhite"
+            android:textSize="15sp" />
+    </androidx.appcompat.widget.Toolbar>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <LinearLayout
         android:id="@+id/activity_grouplist__searchbar"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="55dp"
         android:background="@color/colorBlue"
-        android:padding="10dp"
+        android:paddingBottom="10dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
         app:layout_constraintBottom_toTopOf="@id/activity_grouplist__rv"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/activity_groplist__topbar"
