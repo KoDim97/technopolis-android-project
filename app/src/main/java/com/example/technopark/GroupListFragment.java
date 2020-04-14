@@ -29,7 +29,7 @@ import com.example.technopark.adapter.GroupListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupListFragment extends Fragment {
+public class GroupListFragment extends Fragment implements GroupListAdapter.Listener {
 
     public GroupListFragment(){
     }
@@ -51,7 +51,7 @@ public class GroupListFragment extends Fragment {
         View view = inflater.inflate(R.layout.grouplist_fragment, container, false);
         members = generatedGroupList();
         recyclerView = view.findViewById(R.id.activity_grouplist__rv);
-        adapter = new GroupListAdapter(members);
+        adapter = new GroupListAdapter(members, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         DividerItemDecoration itemDecorator = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
@@ -170,5 +170,15 @@ public class GroupListFragment extends Fragment {
         groups.add(new PersonItem("Михаил Марюфич", R.drawable.img9, 9));
         groups.add(new PersonItem("Александр Грицук", R.drawable.img10, 10));
         return groups;
+    }
+
+    @Override
+    public void onClick(PersonItem person) {
+        ProfileFragment profileFragment = new ProfileFragment();
+        profileFragment.setArguments(new Bundle());
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_content, profileFragment, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
     }
 }

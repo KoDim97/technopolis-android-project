@@ -23,9 +23,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="АПО-41"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/colorWhite"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
     </androidx.appcompat.widget.Toolbar>
 
 
