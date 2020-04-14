@@ -16,7 +16,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
     private BottomNavigationView navigation;
-    private boolean isBarVisible = true;
+    private int visibility = View.VISIBLE;
 
     private void loadFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -24,15 +24,27 @@ public class BaseActivity extends AppCompatActivity {
         ft.commit();
     }
 
-    public void changeBarVisibility(){
-        if(isBarVisible){
-            isBarVisible = !isBarVisible;
-            navigation.setVisibility(View.GONE);
-        }else {
-            isBarVisible = !isBarVisible;
-            navigation.setVisibility(View.VISIBLE);
+    public void setBarVisible(int state){
+        switch (state){
+            case View.VISIBLE:
+                navigation.setVisibility(View.VISIBLE);
+                visibility = View.VISIBLE;
+                break;
+            case View.GONE:
+                navigation.setVisibility(View.GONE);
+                visibility = View.GONE;
+                break;
+            case View.INVISIBLE:
+                navigation.setVisibility(View.INVISIBLE);
+                visibility = View.INVISIBLE;
+                break;
         }
     }
+
+    public int getVisibility(){
+        return visibility;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
