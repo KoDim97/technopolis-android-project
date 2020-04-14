@@ -4,11 +4,22 @@
     <string name="login">Login or e-mail</string>
     <string name="password">Password</string>
     <string name="enter">Enter</string>
-
     <string name="profile">Profile</string>
+    <string name="cancel">Cancel</string>
     <string name="top_bar_button__main">Main</string>
     <string name="top_bar_button__sub">Subscriptions</string>
+
     <string name="schedule">Schedule</string>
+    <string name="top_bar_name">News</string>
+
+    <string name="copied">Copied</string>
+    <string name="exit">Sign out</string>
+    <string name="cancel">Cancel</string>
+    <string name="graduated">Graduated</string>
+    <string name="about">About</string>
+    <string name="groups">Groups</string>
+    <string name="contacts">Contacts</string>
+    <string name="accounts">Accounts</string>
 
 
 </resources>
