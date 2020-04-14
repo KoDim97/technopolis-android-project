@@ -85,7 +85,8 @@
             android:inputType="text"
             android:background="@drawable/rounded_edittext"
             android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="8dp"
+            android:drawableEnd="@drawable/ic_clear"
+            android:drawablePadding="@dimen/icon_padding"
             android:padding="10dp"
             app:endIconMode="clear_text"
             />

@@ -1,9 +1,11 @@
 package com.example.technopark;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.dto.PersonItem;
 import com.example.technopark.adapter.GroupListAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class GroupListActivity extends AppCompatActivity {
     private TextView cancel;
     private EditText searchField;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +45,32 @@ public class GroupListActivity extends AppCompatActivity {
 
         cancel = findViewById(R.id.activity_grouplist__cancel);
         searchField = findViewById(R.id.activity_grouplist__searchfield);
+        searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
+
+        searchField.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if(event.getAction() == MotionEvent.ACTION_UP) {
+                    if(event.getRawX() >= (searchField.getRight() - searchField.getCompoundDrawablesRelative()[DRAWABLE_RIGHT].getBounds().width() - 30)) {
+                        cancel.setVisibility(View.GONE);
+                        adapter.updateList(members);
+                        searchField.setText("");
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
                 cancel.setVisibility(View.GONE);
                 adapter.updateList(members);
                 searchField.setText("");
@@ -57,6 +81,7 @@ public class GroupListActivity extends AppCompatActivity {
         searchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                searchField.getCompoundDrawablesRelative()[2].setAlpha(255);
                 cancel.setVisibility(View.VISIBLE);
             }
 
@@ -69,6 +94,7 @@ public class GroupListActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 final String str = s.toString();
                 if (str.length() == 0) {
+                    searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
                     cancel.setVisibility(View.GONE);
                     return;
                 }
