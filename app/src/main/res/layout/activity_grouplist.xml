@@ -76,15 +76,29 @@
         app:layout_constraintVertical_bias="0"
         >
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="text"
-            android:background="@drawable/rounded_edittext"
-            android:drawableStart="@drawable/ic_search"
-            android:drawablePadding="8dp"
-            android:padding="10dp"
-            />
+
+
+        <FrameLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="text"
+                android:background="@drawable/rounded_edittext"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="8dp"
+                android:padding="10dp"
+                />
+
+            <Button
+                android:id="@+id/calc_clear_txt_Prise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="right|center_vertical"
+                android:background="@drawable/" />
+
+        </FrameLayout>
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
