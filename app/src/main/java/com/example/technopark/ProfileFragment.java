@@ -77,6 +77,11 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         v.findViewById(R.id.group_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GroupListFragment groupListFragment = new GroupListFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fl_content, groupListFragment, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
