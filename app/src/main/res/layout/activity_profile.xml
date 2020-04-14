@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorBlue"
-        app:navigationIcon="@drawable/ic_navigate_before_black_24dp">
+        app:navigationIcon="@drawable/ic_navigate_before_black_24dp"
+        android:paddingLeft="-8dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -72,7 +73,7 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="5dp"
                     android:layout_toEndOf="@id/profile_image"
-                    android:text="Выпускник факультатива"
+                    android:text="@string/graduated"
                     android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
@@ -103,7 +104,7 @@
                     android:layout_marginLeft="13dp"
                     android:layout_marginTop="7dp"
                     android:padding="3dp"
-                    android:text="O себе"
+                    android:text="@string/about"
                     android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
@@ -134,14 +135,14 @@
                     android:paddingLeft="13dp"
                     android:paddingTop="9dp"
                     android:paddingBottom="6dp"
-                    android:text="Группы"
+                    android:text="@string/groups"
                     android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
                 <Button
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="43dp"
                     android:layout_marginTop="1dp"
                     android:background="@color/colorWhite"
                     android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
@@ -162,7 +163,7 @@
                 <Button
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="43dp"
                     android:background="@color/colorWhite"
                     android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
                     android:gravity="center_vertical"
@@ -187,14 +188,15 @@
                     android:paddingLeft="13dp"
                     android:paddingTop="9dp"
                     android:paddingBottom="9dp"
-                    android:text="Контакты"
+                    android:text="@string/contacts"
                     android:fontFamily="@font/roboto_regular"
                     android:textSize="13sp" />
 
                 <!--separator-->
                 <TextView
+                    android:id="@+id/phone_number"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="43dp"
                     android:layout_marginTop="1dp"
                     android:background="@color/colorWhite"
                     android:drawableStart="@drawable/icons8_iphone_96"
@@ -216,8 +218,9 @@
                     android:background="@color/colorWhite" />
 
                 <TextView
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="43dp"
                     android:layout_marginTop="0dp"
                     android:background="@color/colorWhite"
                     android:drawableStart="@drawable/icons8_mail_96"
@@ -252,8 +255,9 @@
 
                 <!--separator-->
                 <TextView
+                    android:id="@+id/odnoklassniki"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="43dp"
                     android:layout_marginTop="1dp"
                     android:background="@color/colorWhite"
                     android:drawableStart="@drawable/ic_ok_48"
@@ -275,8 +279,9 @@
                     android:background="@color/colorWhite" />
 
                 <TextView
+                    android:id="@+id/github"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="43dp"
                     android:layout_marginTop="0dp"
                     android:background="@color/colorWhite"
                     android:drawableStart="@drawable/ic_github_mark_24"
@@ -297,8 +302,9 @@
                     android:background="#FFFFFF" />
 
                 <TextView
+                    android:id="@+id/vkontakte"
                     android:layout_width="match_parent"
-                    android:layout_height="37dp"
+                    android:layout_height="43dp"
                     android:layout_marginTop="0dp"
                     android:background="@color/colorWhite"
                     android:drawableStart="@drawable/ic_vk_logo_24"
@@ -315,14 +321,16 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/exitButton"
                 android:layout_width="match_parent"
-                android:layout_height="37dp"
+                android:layout_height="43dp"
                 android:background="@color/colorWhite"
                 android:layout_marginTop="15dp"
-                android:layout_marginBottom="45dp"
-                android:text="Выйти"
+                android:layout_marginBottom="70dp"
+                android:text="@string/exit"
+                android:textAllCaps="false"
                 android:fontFamily="@font/roboto_regular"
-                android:textColor="#C95C5F"
+                android:textColor="@color/colorRed"
                 style="?android:attr/borderlessButtonStyle"/>
         </LinearLayout>
 
