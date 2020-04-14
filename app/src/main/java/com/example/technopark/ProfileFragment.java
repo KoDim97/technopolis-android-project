@@ -2,18 +2,17 @@ package com.example.technopark;
 
 import androidx.fragment.app.Fragment;
 
+
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +34,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         ((BaseActivity)getActivity()).setBarVisible(View.VISIBLE);
         myClipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         Bundle bundle = this.getArguments();
-        if (bundle != null) {
+        if (bundle == null) {
             showBackButton(v);
         }
 
@@ -102,7 +101,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     }
 
     private void showBackButton(View v) {
-        View toolBar = v.findViewById(R.id.toolbar);
-
+        androidx.appcompat.widget.Toolbar toolBar = v.findViewById(R.id.toolbar);
+        toolBar.setNavigationIcon(null);
     }
 }
