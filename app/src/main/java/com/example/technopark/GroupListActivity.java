@@ -1,12 +1,14 @@
 package com.example.technopark;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -57,10 +59,9 @@ public class GroupListActivity extends AppCompatActivity {
 
                 if(event.getAction() == MotionEvent.ACTION_UP) {
                     if(event.getRawX() >= (searchField.getRight() - searchField.getCompoundDrawablesRelative()[DRAWABLE_RIGHT].getBounds().width() - 30)) {
-                        cancel.setVisibility(View.GONE);
                         adapter.updateList(members);
                         searchField.setText("");
-                        return true;
+                        return false;
                     }
                 }
                 return false;
@@ -70,10 +71,9 @@ public class GroupListActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
-                cancel.setVisibility(View.GONE);
-                adapter.updateList(members);
+                hideKeyboard(getContext());
                 searchField.setText("");
+                cancel.setVisibility(View.GONE);
             }
         });
 
@@ -95,7 +95,7 @@ public class GroupListActivity extends AppCompatActivity {
                 final String str = s.toString();
                 if (str.length() == 0) {
                     searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
-                    cancel.setVisibility(View.GONE);
+                    adapter.updateList(members);
                     return;
                 }
                 Handler handler = new Handler();
@@ -116,6 +116,21 @@ public class GroupListActivity extends AppCompatActivity {
             }
         }
         adapter.updateList(temp);
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public Activity getContext(){
+        return this;
     }
 
     private List<PersonItem> generatedGroupList(){
