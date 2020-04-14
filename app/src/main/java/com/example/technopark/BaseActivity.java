@@ -8,17 +8,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BaseActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
+    private BottomNavigationView navigation;
+    private boolean isBarVisible = true;
 
     private void loadFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fl_content, fragment);
         ft.commit();
+    }
+
+    public void changeBarVisibility(){
+        if(isBarVisible){
+            isBarVisible = !isBarVisible;
+            navigation.setVisibility(View.GONE);
+        }else {
+            isBarVisible = !isBarVisible;
+            navigation.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -44,7 +57,7 @@ public class BaseActivity extends AppCompatActivity {
             }
         };
         loadFragment(TestFragment1.newInstance());
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation = findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
