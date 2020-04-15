@@ -19,6 +19,8 @@ import com.example.technopark.dto.SchedulerItem;
 import java.util.Arrays;
 import java.util.Collection;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
 public class SchedulerFragment extends Fragment {
 
     private RecyclerView schedulerItemsRecyclerView;
@@ -51,6 +53,7 @@ public class SchedulerFragment extends Fragment {
 
         schedulerItemAdapter = new SchedulerItemAdapter();
         schedulerItemsRecyclerView.setAdapter(schedulerItemAdapter);
+        OverScrollDecoratorHelper.setUpOverScroll(schedulerItemsRecyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
         schedulerItemsRecyclerView.addItemDecoration(new SchedulerItemDecoration(schedulerItemAdapter));
     }
 
