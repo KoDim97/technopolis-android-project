@@ -15,9 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,10 +64,10 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         recyclerView.addItemDecoration(itemDecorator);
         OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
+
         cancel = view.findViewById(R.id.grouplist_fragment__cancel);
         searchField = view.findViewById(R.id.grouplist_fragment__searchfield);
         clearButton = view.findViewById(R.id.grouplist_fragment__clearbutton);
-//        searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
 
 
 
@@ -81,11 +83,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileFragment profileFragment = new ProfileFragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fl_content, profileFragment, "findThisFragment")
-                        .addToBackStack(null)
-                        .commit();
+                getActivity().onBackPressed();
             }
         });
 
@@ -151,6 +149,15 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    @Override
+    public void onClick(PersonItem person) {
+        ProfileFragment profileFragment = new ProfileFragment();
+        profileFragment.setArguments(new Bundle());
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_content, profileFragment, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+    }
 
     private List<PersonItem> generatedGroupList(){
         List<PersonItem> groups = new ArrayList<>();
@@ -166,15 +173,5 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         groups.add(new PersonItem("Михаил Марюфич", R.drawable.img9, 9));
         groups.add(new PersonItem("Александр Грицук", R.drawable.img10, 10));
         return groups;
-    }
-
-    @Override
-    public void onClick(PersonItem person) {
-        ProfileFragment profileFragment = new ProfileFragment();
-        profileFragment.setArguments(new Bundle());
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_content, profileFragment, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
     }
 }
