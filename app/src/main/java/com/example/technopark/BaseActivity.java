@@ -49,7 +49,7 @@ public class BaseActivity extends AppCompatActivity {
         return visibility;
     }
 
-    void setAuthorizationView() {
+    public void setAuthorizationView() {
         authorized=false;
         setContentView(R.layout.authorization);
         AuthorizationFragment fragment=AuthorizationFragment.newInstance(this);

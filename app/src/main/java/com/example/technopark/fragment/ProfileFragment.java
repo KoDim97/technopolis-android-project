@@ -71,7 +71,11 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
                     @Override
                     public void onClick(View v) {
 //                      TODO: make log out
-                        Toast.makeText(getActivity(), "log out in progress", Toast.LENGTH_SHORT).show();
+                        exitDialog.dismiss();
+                        ((BaseActivity)getActivity()).setAuthorizationView();
+//                        Toast.makeText(getActivity(), "log out in progress", Toast.LENGTH_SHORT).show();
+
+
                     }
                 });
                 exitDialog.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
