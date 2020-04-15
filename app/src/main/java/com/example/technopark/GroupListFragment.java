@@ -69,8 +69,6 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         searchField = view.findViewById(R.id.grouplist_fragment__searchfield);
         clearButton = view.findViewById(R.id.grouplist_fragment__clearbutton);
 
-
-
         clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +88,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideKeyboard(getActivity());
+                hideKeyboard(getActivity(), searchField);
                 searchField.setText("");
                 cancel.setVisibility(View.GONE);
             }
@@ -138,7 +136,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         adapter.updateList(temp);
     }
 
-    public static void hideKeyboard(Activity activity) {
+    public static void hideKeyboard(Activity activity, EditText editText) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
         View view = activity.getCurrentFocus();
@@ -147,6 +145,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        editText.clearFocus();
     }
 
     @Override
