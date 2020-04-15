@@ -8,16 +8,18 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +30,8 @@ import com.example.technopark.adapter.GroupListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class GroupListFragment extends Fragment implements GroupListAdapter.Listener {
 
@@ -43,6 +47,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
     private List<PersonItem> members;
     private TextView cancel;
     private EditText searchField;
+    private Button clearButton;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -50,53 +55,40 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         ((BaseActivity)getActivity()).setBarVisible(View.GONE);
         View view = inflater.inflate(R.layout.grouplist_fragment, container, false);
         members = generatedGroupList();
-        recyclerView = view.findViewById(R.id.activity_grouplist__rv);
+        recyclerView = view.findViewById(R.id.grouplist_fragment__rv);
         adapter = new GroupListAdapter(members, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         DividerItemDecoration itemDecorator = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         itemDecorator.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.divider));
         recyclerView.addItemDecoration(itemDecorator);
+        OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
-        cancel = view.findViewById(R.id.activity_grouplist__cancel);
-        searchField = view.findViewById(R.id.activity_grouplist__searchfield);
-        searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
 
-        Toolbar toolbar = view.findViewById(R.id.activity_groplist__topbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        cancel = view.findViewById(R.id.grouplist_fragment__cancel);
+        searchField = view.findViewById(R.id.grouplist_fragment__searchfield);
+        clearButton = view.findViewById(R.id.grouplist_fragment__clearbutton);
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProfileFragment profileFragment = new ProfileFragment();
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fl_content, profileFragment, "findThisFragment")
-                        .addToBackStack(null)
-                        .commit();
+                adapter.updateList(members);
+                searchField.setText("");
             }
         });
 
-        searchField.setOnTouchListener(new View.OnTouchListener() {
+        Toolbar toolbar = view.findViewById(R.id.grouplist_fragment__topbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (searchField.getRight() - searchField.getCompoundDrawablesRelative()[DRAWABLE_RIGHT].getBounds().width() - 30)) {
-                        adapter.updateList(members);
-                        searchField.setText("");
-                        return false;
-                    }
-                }
-                return false;
+            public void onClick(View v) {
+                getActivity().onBackPressed();
             }
         });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideKeyboard(getActivity());
+                hideKeyboard(getActivity(), searchField);
                 searchField.setText("");
                 cancel.setVisibility(View.GONE);
             }
@@ -106,7 +98,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         searchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                searchField.getCompoundDrawablesRelative()[2].setAlpha(255);
+                clearButton.setVisibility(View.VISIBLE);
                 cancel.setVisibility(View.VISIBLE);
             }
 
@@ -119,7 +111,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
             public void afterTextChanged(Editable s) {
                 final String str = s.toString();
                 if (str.length() == 0) {
-                    searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
+                    clearButton.setVisibility(View.INVISIBLE);
                     adapter.updateList(members);
                     return;
                 }
@@ -144,7 +136,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         adapter.updateList(temp);
     }
 
-    public static void hideKeyboard(Activity activity) {
+    public static void hideKeyboard(Activity activity, EditText editText) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
         View view = activity.getCurrentFocus();
@@ -153,8 +145,18 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        editText.clearFocus();
     }
 
+    @Override
+    public void onClick(PersonItem person) {
+        ProfileFragment profileFragment = new ProfileFragment();
+        profileFragment.setArguments(new Bundle());
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fl_content, profileFragment, "findThisFragment")
+                .addToBackStack(null)
+                .commit();
+    }
 
     private List<PersonItem> generatedGroupList(){
         List<PersonItem> groups = new ArrayList<>();
@@ -170,15 +172,5 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         groups.add(new PersonItem("Михаил Марюфич", R.drawable.img9, 9));
         groups.add(new PersonItem("Александр Грицук", R.drawable.img10, 10));
         return groups;
-    }
-
-    @Override
-    public void onClick(PersonItem person) {
-        ProfileFragment profileFragment = new ProfileFragment();
-        profileFragment.setArguments(new Bundle());
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fl_content, profileFragment, "findThisFragment")
-                .addToBackStack(null)
-                .commit();
     }
 }

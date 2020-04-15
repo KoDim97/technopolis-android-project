@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".GroupListFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/activity_groplist__topbar"
+        android:id="@+id/grouplist_fragment__topbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorBlue"
         app:navigationIcon="@drawable/ic_navigate_before_black_24dp"
-        android:paddingLeft="-8dp"
-        app:layout_constraintBottom_toTopOf="@id/activity_grouplist__searchbar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        android:paddingLeft="-8dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -31,37 +28,55 @@
 
 
     <LinearLayout
-        android:id="@+id/activity_grouplist__searchbar"
+        android:id="@+id/grouplist_fragment__searchbar"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:background="@color/colorBlue"
         android:paddingBottom="10dp"
         android:paddingEnd="10dp"
         android:paddingStart="10dp"
-        app:layout_constraintBottom_toTopOf="@id/activity_grouplist__rv"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/activity_groplist__topbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0"
         android:orientation="horizontal"
         >
 
-        <EditText
-            android:id="@+id/activity_grouplist__searchfield"
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:inputType="text"
-            android:background="@drawable/rounded_edittext"
-            android:drawableStart="@drawable/ic_search"
-            android:drawableEnd="@drawable/ic_clear"
-            android:drawablePadding="@dimen/icon_padding"
-            android:padding="10dp"
-            app:endIconMode="clear_text"
-            />
+            android:layout_weight="1">
+            <EditText
+                android:id="@+id/grouplist_fragment__searchfield"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_edittext"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="@dimen/icon_padding"
+                android:inputType="text"
+                android:padding="10dp"/>
+            <Button
+                android:id="@+id/grouplist_fragment__clearbutton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="9dp"
+                android:background="@drawable/ic_clear"
+                android:visibility="invisible"/>
+        </FrameLayout>
+
+<!--        <EditText-->
+<!--            android:id="@+id/grouplist_fragment__searchfield"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:inputType="text"-->
+<!--            android:background="@drawable/rounded_edittext"-->
+<!--            android:drawableStart="@drawable/ic_search"-->
+<!--            android:drawableEnd="@drawable/ic_clear"-->
+<!--            android:drawablePadding="@dimen/icon_padding"-->
+<!--            android:padding="10dp"-->
+<!--            app:endIconMode="clear_text"-->
+<!--            />-->
 
         <TextView
-            android:id="@+id/activity_grouplist__cancel"
+            android:id="@+id/grouplist_fragment__cancel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/cancel"
@@ -76,16 +91,17 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_grouplist__rv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/activity_grouplist__searchbar"
-        android:overScrollMode="never"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/grouplist_fragment__rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never"/>
+
+    </FrameLayout>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
