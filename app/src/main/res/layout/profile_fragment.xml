@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/profile"
-            android:fontFamily="@font/roboto_regular"
+            android:fontFamily="@font/roboto_bold"
             android:textColor="@color/colorWhite"
             android:textSize="20sp" />
     </androidx.appcompat.widget.Toolbar>
