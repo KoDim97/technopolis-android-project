@@ -8,18 +8,44 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.example.technopark.fragment.NewsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BaseActivity extends AppCompatActivity {
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
+    private BottomNavigationView navigation;
+    private int visibility = View.VISIBLE;
 
     private void loadFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fl_content, fragment);
         ft.commit();
     }
+
+    public void setBarVisible(int state){
+        switch (state){
+            case View.VISIBLE:
+                navigation.setVisibility(View.VISIBLE);
+                visibility = View.VISIBLE;
+                break;
+            case View.GONE:
+                navigation.setVisibility(View.GONE);
+                visibility = View.GONE;
+                break;
+            case View.INVISIBLE:
+                navigation.setVisibility(View.INVISIBLE);
+                visibility = View.INVISIBLE;
+                break;
+        }
+    }
+
+    public int getVisibility(){
+        return visibility;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +57,19 @@ public class BaseActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch ( menuItem.getItemId()) {
                     case R.id.navigation_news:
-                        loadFragment(TestFragment1.newInstance());
+                        loadFragment(NewsFragment.newInstance());
                         return true;
                     case R.id.navigation_schedule:
                         loadFragment(TestFragment2.newInstance());
                         return true;
                     case R.id.navigation_profile:
-                        loadFragment(TestFragment3.newInstance());
+                        loadFragment(ProfileFragment.newInstance());
                         return true;
                 }
                 return false;
             }
         };
-        loadFragment(TestFragment1.newInstance());
+        loadFragment(NewsFragment.newInstance());
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);

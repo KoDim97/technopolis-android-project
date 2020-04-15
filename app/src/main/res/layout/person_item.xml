@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="74dp">
+    android:layout_height="60dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/person_item__image"
@@ -13,8 +13,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/person_item__name"
         tools:src="@drawable/img0"
-        android:layout_width="62dp"
-        android:layout_height="62dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginTop="7dp"
         android:layout_marginBottom="7dp"
         android:layout_marginStart="12dp"
@@ -33,7 +33,7 @@
         android:maxLines="1"
         android:fontFamily="@font/roboto_regular"
         android:singleLine="true"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:textColor="@color/colorBlack"
         tools:text="Дмитрий Махнев"/>
 
