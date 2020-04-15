@@ -8,10 +8,10 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
-import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator;
-import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter;
 
 public class GroupListFragment extends Fragment implements GroupListAdapter.Listener {
 
@@ -47,6 +45,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
     private List<PersonItem> members;
     private TextView cancel;
     private EditText searchField;
+    private Button clearButton;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -65,7 +64,18 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
 
         cancel = view.findViewById(R.id.grouplist_fragment__cancel);
         searchField = view.findViewById(R.id.grouplist_fragment__searchfield);
-        searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
+        clearButton = view.findViewById(R.id.grouplist_fragment__clearbutton);
+//        searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
+
+
+
+        clearButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.updateList(members);
+                searchField.setText("");
+            }
+        });
 
         Toolbar toolbar = view.findViewById(R.id.grouplist_fragment__topbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -76,25 +86,6 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
                         .replace(R.id.fl_content, profileFragment, "findThisFragment")
                         .addToBackStack(null)
                         .commit();
-            }
-        });
-
-        searchField.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                final int DRAWABLE_LEFT = 0;
-                final int DRAWABLE_TOP = 1;
-                final int DRAWABLE_RIGHT = 2;
-                final int DRAWABLE_BOTTOM = 3;
-
-                if(event.getAction() == MotionEvent.ACTION_UP) {
-                    if(event.getRawX() >= (searchField.getRight() - searchField.getCompoundDrawablesRelative()[DRAWABLE_RIGHT].getBounds().width() - 30)) {
-                        adapter.updateList(members);
-                        searchField.setText("");
-                        return false;
-                    }
-                }
-                return false;
             }
         });
 
@@ -111,7 +102,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         searchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                searchField.getCompoundDrawablesRelative()[2].setAlpha(255);
+                clearButton.setVisibility(View.VISIBLE);
                 cancel.setVisibility(View.VISIBLE);
             }
 
@@ -124,7 +115,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
             public void afterTextChanged(Editable s) {
                 final String str = s.toString();
                 if (str.length() == 0) {
-                    searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
+                    clearButton.setVisibility(View.INVISIBLE);
                     adapter.updateList(members);
                     return;
                 }

@@ -38,19 +38,42 @@
         android:orientation="horizontal"
         >
 
-        <EditText
-            android:id="@+id/grouplist_fragment__searchfield"
+        <FrameLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:inputType="text"
-            android:background="@drawable/rounded_edittext"
-            android:drawableStart="@drawable/ic_search"
-            android:drawableEnd="@drawable/ic_clear"
-            android:drawablePadding="@dimen/icon_padding"
-            android:padding="10dp"
-            app:endIconMode="clear_text"
-            />
+            android:layout_weight="1">
+            <EditText
+                android:id="@+id/grouplist_fragment__searchfield"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/rounded_edittext"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="@dimen/icon_padding"
+                android:inputType="text"
+                android:padding="10dp"/>
+            <Button
+                android:id="@+id/grouplist_fragment__clearbutton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="9dp"
+                android:background="@drawable/ic_clear"
+                android:visibility="invisible"/>
+        </FrameLayout>
+
+<!--        <EditText-->
+<!--            android:id="@+id/grouplist_fragment__searchfield"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:inputType="text"-->
+<!--            android:background="@drawable/rounded_edittext"-->
+<!--            android:drawableStart="@drawable/ic_search"-->
+<!--            android:drawableEnd="@drawable/ic_clear"-->
+<!--            android:drawablePadding="@dimen/icon_padding"-->
+<!--            android:padding="10dp"-->
+<!--            app:endIconMode="clear_text"-->
+<!--            />-->
 
         <TextView
             android:id="@+id/grouplist_fragment__cancel"
