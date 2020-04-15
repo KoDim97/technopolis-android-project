@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.R;
+import com.example.technopark.dto.Person;
 import com.example.technopark.dto.PersonItem;
 
 import java.util.List;
@@ -17,9 +18,11 @@ import java.util.List;
 public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.PersonHolder> {
 
     private List<PersonItem> members;
+    private Listener listener;
 
-    public GroupListAdapter(List<PersonItem> members) {
+    public GroupListAdapter(List<PersonItem> members, Listener listener) {
         this.members = members;
+        this.listener = listener;
     }
 
     public void updateList(List<PersonItem> list){
@@ -47,15 +50,30 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Pers
     public class PersonHolder extends RecyclerView.ViewHolder{
         private ImageView tvAvatar;
         private TextView tvName;
+        private PersonItem person;
+
         public PersonHolder(@NonNull View itemView) {
             super(itemView);
             tvAvatar = itemView.findViewById(R.id.person_item__image);
             tvName = itemView.findViewById(R.id.person_item__name);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (person != null){
+                        listener.onClick(person);
+                    }
+                }
+            });
         }
 
         public void bind(PersonItem person){
+            this.person = person;
             tvAvatar.setImageResource(person.avatar);
             tvName.setText(person.name);
         }
+    }
+
+    public interface Listener{
+        void onClick(PersonItem person);
     }
 }
