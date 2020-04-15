@@ -15,15 +15,20 @@ public class BaseActivity extends AppCompatActivity {
 
     private boolean authorized=false;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
-
     private void loadFragment(Fragment fragment) {
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.fl_content, fragment);
             ft.commit();
     }
 
+    void setAuthorizationView() {
+        authorized=false;
+        setContentView(R.layout.authorization);
+        AuthorizationFragment fragment=AuthorizationFragment.newInstance(this);
+    }
 
     void setMenuView(){
+        authorized=true;
         setContentView(R.layout.activity_base);
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
