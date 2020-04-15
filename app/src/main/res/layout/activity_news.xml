@@ -33,7 +33,9 @@
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        android:layout_marginBottom="10dp"
+        >
 
         <RadioButton
             android:id="@+id/activity_news__radio_main"
@@ -68,15 +70,9 @@
             android:text="@string/top_bar_button__sub"
             android:textAllCaps="false"
             android:textColor="@color/radio_flat_text_selector"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            />
     </RadioGroup>
-
-
-    <FrameLayout
-        android:id="@+id/activity_news__small_bar"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/colorBackground" />
 
     <RelativeLayout
         android:layout_width="match_parent"
