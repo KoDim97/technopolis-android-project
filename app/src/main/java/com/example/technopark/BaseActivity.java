@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.view.MenuItem;
-import android.view.View;
 
+import com.example.technopark.fragment.AuthorizationFragment;
 import com.example.technopark.fragment.NewsFragment;
+import com.example.technopark.fragment.ProfileFragment;
+import com.example.technopark.fragment.SchedulerFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BaseActivity extends AppCompatActivity {
@@ -29,7 +31,7 @@ public class BaseActivity extends AppCompatActivity {
         AuthorizationFragment fragment=AuthorizationFragment.newInstance(this);
     }
 
-    void setMenuView(){
+    public void setMenuView(){
         authorized=true;
         setContentView(R.layout.activity_base);
 
@@ -42,7 +44,7 @@ public class BaseActivity extends AppCompatActivity {
                         loadFragment(NewsFragment.newInstance());
                         return true;
                     case R.id.navigation_schedule:
-                        loadFragment(TestFragment2.newInstance());
+                        loadFragment(SchedulerFragment.newInstance());
                         return true;
                     case R.id.navigation_profile:
                         loadFragment(ProfileFragment.newInstance());
@@ -51,7 +53,7 @@ public class BaseActivity extends AppCompatActivity {
                 return false;
             }
         };
-        loadFragment(TestFragment1.newInstance());
+        loadFragment(NewsFragment.newInstance());
 
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -69,10 +71,10 @@ public class BaseActivity extends AppCompatActivity {
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                     switch (menuItem.getItemId()) {
                         case R.id.navigation_news:
-                            loadFragment(TestFragment1.newInstance());
+                            loadFragment(NewsFragment.newInstance());
                             return true;
                         case R.id.navigation_schedule:
-                            loadFragment(TestFragment2.newInstance());
+                            loadFragment(SchedulerFragment.newInstance());
                             return true;
                         case R.id.navigation_profile:
                             loadFragment(TestFragment3.newInstance());

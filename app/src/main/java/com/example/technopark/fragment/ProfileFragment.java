@@ -1,4 +1,4 @@
-package com.example.technopark;
+package com.example.technopark.fragment;
 
 import androidx.fragment.app.Fragment;
 
@@ -16,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.technopark.BaseActivity;
+import com.example.technopark.R;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 

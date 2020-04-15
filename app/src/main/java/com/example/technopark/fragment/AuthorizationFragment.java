@@ -1,4 +1,4 @@
-package com.example.technopark;
+package com.example.technopark.fragment;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,10 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.technopark.BaseActivity;
+import com.example.technopark.R;
 import com.example.technopark.adapter.MyPager;
 import com.google.android.material.tabs.TabLayout;
 
