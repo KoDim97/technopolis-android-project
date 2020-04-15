@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.technopark.fragment.NewsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BaseActivity extends AppCompatActivity {
@@ -56,7 +57,7 @@ public class BaseActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch ( menuItem.getItemId()) {
                     case R.id.navigation_news:
-                        loadFragment(TestFragment1.newInstance());
+                        loadFragment(NewsFragment.newInstance());
                         return true;
                     case R.id.navigation_schedule:
                         loadFragment(TestFragment2.newInstance());
@@ -68,8 +69,8 @@ public class BaseActivity extends AppCompatActivity {
                 return false;
             }
         };
-        loadFragment(TestFragment1.newInstance());
-        navigation = findViewById(R.id.navigation);
+        loadFragment(NewsFragment.newInstance());
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
