@@ -62,7 +62,7 @@ public class BaseActivity extends AppCompatActivity {
                         loadFragment(TestFragment2.newInstance());
                         return true;
                     case R.id.navigation_profile:
-                        loadFragment(TestFragment3.newInstance());
+                        loadFragment(ProfileFragment.newInstance());
                         return true;
                 }
                 return false;
