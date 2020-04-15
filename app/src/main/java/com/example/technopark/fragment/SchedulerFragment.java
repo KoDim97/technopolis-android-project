@@ -2,14 +2,13 @@ package com.example.technopark.fragment;
 
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.technopark.R;
 import com.example.technopark.adapter.SchedulerItemAdapter;
@@ -19,7 +18,12 @@ import com.example.technopark.dto.SchedulerItem;
 import java.util.Arrays;
 import java.util.Collection;
 
+import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.IOverScrollStateListener;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
 
 public class SchedulerFragment extends Fragment {
 
@@ -53,7 +57,23 @@ public class SchedulerFragment extends Fragment {
 
         schedulerItemAdapter = new SchedulerItemAdapter();
         schedulerItemsRecyclerView.setAdapter(schedulerItemAdapter);
-        OverScrollDecoratorHelper.setUpOverScroll(schedulerItemsRecyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(schedulerItemsRecyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+
+
+        decor.setOverScrollStateListener(new IOverScrollStateListener() {
+                                             @Override
+                                             public void onOverScrollStateChange(IOverScrollDecor decor, int oldState, int newState) {
+                                                 switch (newState) {
+                                                     case STATE_BOUNCE_BACK:
+                                                         if (oldState == STATE_DRAG_START_SIDE) {
+                                                            schedulerItemAdapter.updateItems(getSchedulerItems());
+                                                         }
+                                                         break;
+                                                 }
+                                             }
+                                         }
+        );
+
         schedulerItemsRecyclerView.addItemDecoration(new SchedulerItemDecoration(schedulerItemAdapter));
     }
 
