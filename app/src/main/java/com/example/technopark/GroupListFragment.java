@@ -29,6 +29,10 @@ import com.example.technopark.adapter.GroupListAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator;
+import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter;
+
 public class GroupListFragment extends Fragment implements GroupListAdapter.Listener {
 
     public GroupListFragment(){
@@ -50,19 +54,20 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         ((BaseActivity)getActivity()).setBarVisible(View.GONE);
         View view = inflater.inflate(R.layout.grouplist_fragment, container, false);
         members = generatedGroupList();
-        recyclerView = view.findViewById(R.id.activity_grouplist__rv);
+        recyclerView = view.findViewById(R.id.grouplist_fragment__rv);
         adapter = new GroupListAdapter(members, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         DividerItemDecoration itemDecorator = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         itemDecorator.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.divider));
         recyclerView.addItemDecoration(itemDecorator);
+        OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
-        cancel = view.findViewById(R.id.activity_grouplist__cancel);
-        searchField = view.findViewById(R.id.activity_grouplist__searchfield);
+        cancel = view.findViewById(R.id.grouplist_fragment__cancel);
+        searchField = view.findViewById(R.id.grouplist_fragment__searchfield);
         searchField.getCompoundDrawablesRelative()[2].setAlpha(0);
 
-        Toolbar toolbar = view.findViewById(R.id.activity_groplist__topbar);
+        Toolbar toolbar = view.findViewById(R.id.grouplist_fragment__topbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
