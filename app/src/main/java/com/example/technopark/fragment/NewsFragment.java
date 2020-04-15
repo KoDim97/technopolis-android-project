@@ -19,6 +19,20 @@ import com.example.technopark.dto.News;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.everything.android.ui.overscroll.HorizontalOverScrollBounceEffectDecorator;
+import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.IOverScrollStateListener;
+import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator;
+import me.everything.android.ui.overscroll.adapters.AbsListViewOverScrollDecorAdapter;
+import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter;
+
+import static androidx.drawerlayout.widget.DrawerLayout.STATE_IDLE;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_END_SIDE;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
+
 public class NewsFragment extends Fragment {
 
     public NewsFragment() {
@@ -34,10 +48,29 @@ public class NewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_news, container, false);
         recyclerView = view.findViewById(R.id.activity_news__news_list);
+
         final RadioGroup radioGroup = view.findViewById(R.id.activity_news__top_bar);
         final NewsAdapter adapter = new NewsAdapter(generateNewsList());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+//        OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+
+        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(recyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+
+
+        decor.setOverScrollStateListener(new IOverScrollStateListener() {
+            @Override
+            public void onOverScrollStateChange(IOverScrollDecor decor, int oldState, int newState) {
+                switch (newState) {
+                    case STATE_BOUNCE_BACK:
+                        if (oldState == STATE_DRAG_START_SIDE) {
+                            adapter.onReplace(generateSubsList());
+                        }
+                        break;
+                }
+            }
+        });
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
