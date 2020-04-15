@@ -106,7 +106,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
                 android:fontFamily="@font/font_awesome"
-                android:text="\uf041"
+                android:text="@string/schedule_icon"
                 android:textColor="@color/colorSchedulerNameOfLesson"
                 android:textSize="13sp"
                 android:layout_below="@id/scheduler_item_lesson_name"/>

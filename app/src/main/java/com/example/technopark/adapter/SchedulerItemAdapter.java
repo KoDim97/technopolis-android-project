@@ -178,8 +178,9 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.View
         notifyDataSetChanged();
     }
 
-    public void clearItems() {
+    public void updateItems(Collection<SchedulerItem> schedulerItems) {
         schedulerItemsList.clear();
+        schedulerItemsList.addAll(schedulerItems);
         notifyDataSetChanged();
     }
 
