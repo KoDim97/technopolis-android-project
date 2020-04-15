@@ -25,6 +25,6 @@
         app:itemIconSize="30dp"
         app:itemIconTint="@color/menu_selector"
         app:itemTextColor="@color/menu_selector"
-        app:menu="@menu/navigation"></com.google.android.material.bottomnavigation.BottomNavigationView>
+        app:menu="@menu/navigation"/>
 
 </LinearLayout>

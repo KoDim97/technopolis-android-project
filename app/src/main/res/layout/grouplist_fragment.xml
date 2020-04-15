@@ -7,30 +7,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.GroupListFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/grouplist_fragment__topbar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorBlue"
-        app:navigationIcon="@drawable/ic_navigate_before_black_24dp"
-        android:paddingLeft="-8dp">
+        android:layout_height="?actionBarSize">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/grouplist_fragment__topbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorBlue"
+            app:navigationIcon="@drawable/ic_navigate_before_black_24dp"
+            android:paddingLeft="-8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="АПО-41"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
 
         <TextView
+            android:id="@+id/grouplist_fragment__canceltext"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="АПО-41"
-            android:fontFamily="@font/roboto_regular"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
-    </androidx.appcompat.widget.Toolbar>
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="15sp"
+            android:text="@string/profile"
+            android:layout_marginStart="35dp" />
+    </FrameLayout>
+
 
 
 
     <LinearLayout
         android:id="@+id/grouplist_fragment__searchbar"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="52dp"
         android:background="@color/colorBlue"
         android:paddingBottom="10dp"
         android:paddingEnd="10dp"
@@ -61,33 +78,19 @@
                 android:visibility="invisible"/>
         </FrameLayout>
 
-<!--        <EditText-->
-<!--            android:id="@+id/grouplist_fragment__searchfield"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_weight="1"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:inputType="text"-->
-<!--            android:background="@drawable/rounded_edittext"-->
-<!--            android:drawableStart="@drawable/ic_search"-->
-<!--            android:drawableEnd="@drawable/ic_clear"-->
-<!--            android:drawablePadding="@dimen/icon_padding"-->
-<!--            android:padding="10dp"-->
-<!--            app:endIconMode="clear_text"-->
-<!--            />-->
-
         <TextView
             android:id="@+id/grouplist_fragment__cancel"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/cancel"
             android:textAllCaps="false"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:background="@color/colorBlue"
             android:fontFamily="@font/roboto_regular"
             android:textColor="@color/colorWhite"
             android:visibility="gone"
             android:gravity="center"
-            android:paddingStart="10dp"/>
+            android:paddingStart="8dp"/>
 
     </LinearLayout>
 

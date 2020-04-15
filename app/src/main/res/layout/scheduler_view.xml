@@ -16,8 +16,9 @@
             android:layout_height="wrap_content"
             android:text="@string/schedule"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:textSize="17sp"
-            android:fontFamily="@font/helvetica_neue_medium"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto_regular"
             android:textColor="@color/colorWhite"/>
 
     </androidx.appcompat.widget.Toolbar>

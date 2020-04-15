@@ -33,7 +33,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/app_name"
                 android:textColor="#ffffff"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="144dp"
                 tools:layout_editor_absoluteY="18dp" />
@@ -140,6 +140,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/enter"
                 android:textColor="#ffffff"
+                android:textAllCaps="false"
                 android:textColorHighlight="@color/colorButtonPress" />
 
         </LinearLayout>

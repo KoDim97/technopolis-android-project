@@ -7,23 +7,39 @@
     android:orientation="vertical"
     >
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorBlue"
-        app:navigationIcon="@drawable/ic_navigate_before_black_24dp"
-        android:paddingLeft="-8dp">
+        android:layout_height="?actionBarSize">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorBlue"
+            app:navigationIcon="@drawable/ic_navigate_before_black_24dp"
+            android:paddingLeft="-8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/profile"
+                android:fontFamily="@font/roboto_regular"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textStyle="bold"  />
+        </androidx.appcompat.widget.Toolbar>
 
         <TextView
+            android:id="@+id/back_to_group"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/profile"
-            android:fontFamily="@font/roboto_bold"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:textColor="@color/colorWhite"
-            android:textSize="20sp" />
-    </androidx.appcompat.widget.Toolbar>
+            android:fontFamily="@font/roboto_regular"
+            android:textSize="15sp"
+            android:text="АПО-41"
+            android:layout_marginStart="35dp"/>
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

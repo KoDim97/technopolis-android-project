@@ -9,10 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="43dp"
         android:background="@color/colorSchedulerItem"
-        android:fontFamily="@font/helvetica_neue_medium"
+        android:fontFamily="@font/roboto_regular"
         android:gravity="center_vertical|center_horizontal"
         android:textColor="@color/colorSchedulerItemText"
-        android:textSize="17sp"
+        android:textSize="16sp"
         android:textStyle="bold"/>
 
 </LinearLayout>

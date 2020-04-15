@@ -107,6 +107,14 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
             }
         });
 
+        TextView textView = v.findViewById(R.id.back_to_group);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
         return v;
     }
 
@@ -125,5 +133,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     private void hideBackButton(View v) {
         androidx.appcompat.widget.Toolbar toolBar = v.findViewById(R.id.toolbar);
         toolBar.setNavigationIcon(null);
+        TextView textView = v.findViewById(R.id.back_to_group);
+        textView.setVisibility(View.INVISIBLE);
     }
 }
