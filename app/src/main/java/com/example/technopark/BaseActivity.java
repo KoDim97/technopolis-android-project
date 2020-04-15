@@ -15,47 +15,29 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class BaseActivity extends AppCompatActivity {
 
+    private boolean authorized=false;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
-    private BottomNavigationView navigation;
-    private int visibility = View.VISIBLE;
-
     private void loadFragment(Fragment fragment) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.fl_content, fragment);
-        ft.commit();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.fl_content, fragment);
+            ft.commit();
     }
 
-    public void setBarVisible(int state){
-        switch (state){
-            case View.VISIBLE:
-                navigation.setVisibility(View.VISIBLE);
-                visibility = View.VISIBLE;
-                break;
-            case View.GONE:
-                navigation.setVisibility(View.GONE);
-                visibility = View.GONE;
-                break;
-            case View.INVISIBLE:
-                navigation.setVisibility(View.INVISIBLE);
-                visibility = View.INVISIBLE;
-                break;
-        }
+    void setAuthorizationView() {
+        authorized=false;
+        setContentView(R.layout.authorization);
+        AuthorizationFragment fragment=AuthorizationFragment.newInstance(this);
     }
 
-    public int getVisibility(){
-        return visibility;
-    }
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    void setMenuView(){
+        authorized=true;
         setContentView(R.layout.activity_base);
 
+        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         mOnNavigationItemSelectedListener=new BottomNavigationView.OnNavigationItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch ( menuItem.getItemId()) {
+                switch (menuItem.getItemId()) {
                     case R.id.navigation_news:
                         loadFragment(NewsFragment.newInstance());
                         return true;
@@ -69,10 +51,41 @@ public class BaseActivity extends AppCompatActivity {
                 return false;
             }
         };
-        loadFragment(NewsFragment.newInstance());
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        loadFragment(TestFragment1.newInstance());
+
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(authorized) {
+            setContentView(R.layout.activity_base);
+            BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+            mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    switch (menuItem.getItemId()) {
+                        case R.id.navigation_news:
+                            loadFragment(TestFragment1.newInstance());
+                            return true;
+                        case R.id.navigation_schedule:
+                            loadFragment(TestFragment2.newInstance());
+                            return true;
+                        case R.id.navigation_profile:
+                            loadFragment(TestFragment3.newInstance());
+                            return true;
+                    }
+                    return false;
+                }
+            };
+            navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        }else{
+            setContentView(R.layout.authorization);
+            AuthorizationFragment fragment=AuthorizationFragment.newInstance(this);
+        }
     }
 
 

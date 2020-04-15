@@ -1,23 +1,26 @@
-package com.example.technopark.controller;
+package com.example.technopark;
 
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.technopark.MainActivity;
-import com.example.technopark.R;
 import com.example.technopark.adapter.MyPager;
 import com.google.android.material.tabs.TabLayout;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
-public class LoginController {
+public class AuthorizationFragment extends Fragment {
     private ImageButton prevButton;
     private ImageButton nextButton;
     private ViewPager viewPager;
@@ -29,7 +32,7 @@ public class LoginController {
     private boolean[] enableEnter=new boolean[2];
     private String login;
     private String password;
-
+    //private AppCompatActivity activity;
 
     void enEnter(){
         if(enableEnter[0]&&enableEnter[1]){
@@ -53,7 +56,8 @@ public class LoginController {
         });
     }
 
-    public LoginController(MainActivity mainActivity){
+    public AuthorizationFragment(final BaseActivity mainActivity){
+       // activity=mainActivity;
         myPager = new MyPager(mainActivity);
         viewPager = mainActivity.findViewById(R.id.view_pager);
         viewPager.setAdapter(myPager);
@@ -152,10 +156,20 @@ public class LoginController {
             public void onClick(View v) {
                 login=loginEditText.getText().toString();
                 password=passwordEditText.getText().toString();
+                mainActivity.setMenuView();
             }
         });
     }
 
+    public static AuthorizationFragment newInstance(BaseActivity activity) {
+        return new AuthorizationFragment(activity);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.authorization, container, false);
+    }
     public String getLogin() {
         return login;
     }
