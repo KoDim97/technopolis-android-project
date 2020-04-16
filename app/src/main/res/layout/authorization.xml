@@ -64,6 +64,7 @@
                 android:layout_height="160dp"
                 android:layout_weight="100"
                 android:clipToPadding="false"
+                android:overScrollMode="never"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp">
 
