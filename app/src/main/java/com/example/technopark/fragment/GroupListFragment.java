@@ -85,6 +85,14 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
             }
         });
 
+        TextView textView = view.findViewById(R.id.grouplist_fragment__canceltext);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,8 +106,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
         searchField.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                clearButton.setVisibility(View.VISIBLE);
-                cancel.setVisibility(View.VISIBLE);
+
             }
 
             @Override
@@ -115,6 +122,8 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
                     adapter.updateList(members);
                     return;
                 }
+                clearButton.setVisibility(View.VISIBLE);
+                cancel.setVisibility(View.VISIBLE);
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {

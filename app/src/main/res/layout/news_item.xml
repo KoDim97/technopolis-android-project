@@ -29,9 +29,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginStart="5dp"
         android:fontFamily="@font/roboto_regular"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:textColor="@color/colorName"
-        android:textStyle="bold"
         />
 
     <TextView

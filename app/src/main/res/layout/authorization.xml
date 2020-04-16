@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".MainActivity">
+    tools:context=".BaseActivity">
 
     <LinearLayout
         android:id="@+id/App"
@@ -140,8 +140,10 @@
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/enter"
                 android:textColor="#ffffff"
-                android:textColorHighlight="@color/colorButtonPress"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textAllCaps="false"
+                android:textColorHighlight="@color/colorButtonPress" />
+
 
         </LinearLayout>
 
