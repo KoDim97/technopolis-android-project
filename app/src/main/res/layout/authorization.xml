@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
-    tools:context=".MainActivity">
+    tools:context=".BaseActivity">
 
     <LinearLayout
         android:id="@+id/App"
@@ -33,7 +33,7 @@
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/app_name"
                 android:textColor="#ffffff"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 tools:layout_editor_absoluteX="144dp"
                 tools:layout_editor_absoluteY="18dp" />
@@ -64,6 +64,7 @@
                 android:layout_height="160dp"
                 android:layout_weight="100"
                 android:clipToPadding="false"
+                android:overScrollMode="never"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp">
 
@@ -140,8 +141,10 @@
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/enter"
                 android:textColor="#ffffff"
+                android:textSize="20sp"
                 android:textAllCaps="false"
                 android:textColorHighlight="@color/colorButtonPress" />
+
 
         </LinearLayout>
 
