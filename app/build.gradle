@@ -30,6 +30,7 @@ dependencies {
 
 //    CircleView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.ncapdevi:frag-nav:3.2.0'
     implementation 'me.everything:overscroll-decor-android:1.0.4'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -40,5 +41,6 @@ dependencies {
     implementation 'me.everything:overscroll-decor-android:1.0.4'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'
+    implementation 'org.jetbrains:annotations-java5:15.0'
 
 }
