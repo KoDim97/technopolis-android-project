@@ -4,7 +4,11 @@ import com.example.technopark.api.dto.AuthDto;
 import com.example.technopark.api.dto.GroupDto;
 import com.example.technopark.api.dto.NewsDto;
 import com.example.technopark.api.dto.ProfileDto;
-import com.example.technopark.api.dto.ScheduleDto;
+import com.example.technopark.api.dto.SchedulerItemCheckInDto;
+import com.example.technopark.api.dto.SchedulerItemDto;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MailApiImpl implements MailApi {
 
@@ -42,12 +46,41 @@ public class MailApiImpl implements MailApi {
     }
 
     @Override
-    public ScheduleDto requestScheduleDto() {
-        return null;
+    public List<SchedulerItemDto> requestSchedulerItems() {
+        return Arrays.asList(
+                new SchedulerItemDto(
+                        123L,
+                        "Использование баз данных",
+                        "Оптимизация запросов и индексирование",
+                        "Лекция 6",
+                        "Л 6",
+                        "2020-04-08T00:00:00Z",
+                        "2020-04-08T18:30:00Z",
+                        "2020-04-08T21:30:00Z",
+                        "онлайн",
+                        false,
+                        false,
+                        null
+                ),
+                new SchedulerItemDto(
+                        213L,
+                        "Использование баз данных",
+                        "Оптимизация запросов и индексирование",
+                        "Лекция 6",
+                        "Л 6",
+                        "2020-04-08T00:00:00Z",
+                        "2020-04-08T18:30:00Z",
+                        "2020-04-08T21:30:00Z",
+                        "онлайн",
+                        false,
+                        false,
+                        null
+                )
+        );
     }
 
     @Override
-    public void scheduleCheckIn(Integer index) {
-
+    public SchedulerItemCheckInDto checkInSchedulerItem(long id) {
+        return new SchedulerItemCheckInDto(123L, "someURL");
     }
 }
