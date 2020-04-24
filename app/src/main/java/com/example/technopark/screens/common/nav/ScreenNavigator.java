@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import com.example.technopark.R;
 import com.ncapdevi.fragnav.FragNavController;
-import org.jetbrains.annotations.NotNull;
 
 public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
@@ -21,7 +20,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         return 1;
     }
 
-    @NotNull @Override public Fragment getRootFragment(int index) {
+    @Override public Fragment getRootFragment(int index) {
         //return RootFragment.newInstance();
         return null;
     }
