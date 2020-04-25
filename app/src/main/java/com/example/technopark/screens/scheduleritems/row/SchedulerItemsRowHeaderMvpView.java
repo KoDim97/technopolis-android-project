@@ -1,6 +1,8 @@
 package com.example.technopark.screens.scheduleritems.row;
 
-public interface SchedulerItemsRowHeaderMvpView {
+import com.example.technopark.screens.common.mvp.MvpView;
+
+public interface SchedulerItemsRowHeaderMvpView extends MvpView {
 
     void bindData(String date);
 
