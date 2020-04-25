@@ -59,4 +59,8 @@ public class SchedulerItemService {
         SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(id);
         return schedulerItemRepo.update(schedulerItemFromCache);
     }
+
+    public List<SchedulerItem> findAll() {
+        return schedulerItemRepo.findAll();
+    }
 }
