@@ -1,6 +1,7 @@
 package com.example.technopark.profile.service;
 
 import com.example.technopark.api.MailApi;
+import com.example.technopark.api.dto.ProfileDto;
 import com.example.technopark.profile.model.UserProfile;
 import com.example.technopark.profile.repo.UserProfileRepo;
 
@@ -22,20 +23,26 @@ public class ProfileService {
     }
 
     private UserProfile requestFromServer(long id) {
-        UserProfile blogItemDto = api.requestProfileDto(id);
-        BlogItem blogItem = new BlogItem(
+        ProfileDto profileDto = api.requestProfileDto(id);
+        UserProfile userProfile  = new UserProfile(
                 id,
-                blogItemDto.getTitle(),
-                blogItemDto.getText(),
-                blogItemDto.getViewCount(),
-                blogItemDto.getUpVotes(),
-                blogItemDto.getDownVotes(),
-                blogItemDto.getCreated(),
-                System.currentTimeMillis()
+                profileDto.getUserName(),
+                profileDto.getProjectId(),
+                profileDto.getProjectName(),
+                profileDto.getFullName(),
+                profileDto.getGender(),
+                profileDto.getAvatarUrl(),
+                profileDto.getMainGroup(),
+                profileDto.getBirthDate(),
+                profileDto.getAbout(),
+                profileDto.getJoinDate(),
+                profileDto.getLastSeen(),
+                profileDto.getContacts(),
+                profileDto.getGroups(),
+                profileDto.getAccounts()
         );
-        blogItemRepo.add(blogItem);
-        return blogItem;
+        userProfileRepo.add(userProfile);
+        return userProfile;
     }
-
-
+    
 }
