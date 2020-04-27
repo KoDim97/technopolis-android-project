@@ -1,8 +1,8 @@
 package com.example.technopark.profile.repo;
 
-import com.example.technopark.profile.model.UserProfile;
+        import com.example.technopark.profile.model.UserProfile;
 
-import java.util.List;
+        import java.util.List;
 
 public interface UserProfileRepo {
     List<UserProfile> findAll();

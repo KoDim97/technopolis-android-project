@@ -44,5 +44,5 @@ public class ProfileService {
         userProfileRepo.add(userProfile);
         return userProfile;
     }
-    
+
 }
