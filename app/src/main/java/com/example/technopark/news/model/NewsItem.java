@@ -1,6 +1,6 @@
-package com.example.technopark.dto;
+package com.example.technopark.news.model;
 
-public class News {
+public class NewsItem {
     private final String name;
     private final String title;
     private final String section;
@@ -34,7 +34,7 @@ public class News {
 
 
 
-    public News(String name, String title, String section, String date, int userpick, String comments_number) {
+    public NewsItem(String name, String title, String section, String date, int userpick, String comments_number) {
         this.name = name;
         this.title = title;
         this.section = section;
