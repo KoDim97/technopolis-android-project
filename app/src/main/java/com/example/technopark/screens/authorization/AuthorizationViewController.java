@@ -4,9 +4,7 @@ package com.example.technopark.screens.authorization;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -16,15 +14,13 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
 import com.example.technopark.adapter.MyPager;
-import com.example.technopark.screens.common.mvp.MvpViewObservableBase;
+import com.example.technopark.screens.common.nav.ScreenNavigator;
 import com.google.android.material.tabs.TabLayout;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
-public class AuthorizationMvpViewImpl extends MvpViewObservableBase<AuthorizationMvpView.Listener>
-        implements AuthorizationMvpView {
-    private String login;
-    private String password;
+public class AuthorizationViewController  {
+    private ScreenNavigator screenNavigator;
     private ImageButton prevButton;
     private ImageButton nextButton;
     private ViewPager viewPager;
@@ -34,41 +30,28 @@ public class AuthorizationMvpViewImpl extends MvpViewObservableBase<Authorizatio
     private EditText passwordEditText;
     private Button enterButton;
     private boolean[] enableEnter=new boolean[2];
+    private String login;
+    private String password;
 
-    public AuthorizationMvpViewImpl(BaseActivity activity) {
+    public AuthorizationViewController(View rootView, BaseActivity activity){
+        screenNavigator=activity.getScreenNavigator();
         myPager = new MyPager(activity);
-        viewPager = activity.findViewById(R.id.view_pager);
+        viewPager = rootView.findViewById(R.id.view_pager);
         viewPager.setAdapter(myPager);
-        mTabLayout = (TabLayout) activity.findViewById(R.id.tablayout);
+        mTabLayout = (TabLayout) rootView.findViewById(R.id.tablayout);
         mTabLayout.setupWithViewPager(viewPager);
-        prevButton=(ImageButton) activity.findViewById(R.id.prev_button);
-        nextButton=(ImageButton) activity.findViewById(R.id.next_button);
-        enterButton=(Button) activity.findViewById(R.id.enter);
-        loginEditText=(EditText) activity.findViewById(R.id.Login);
-        passwordEditText=(EditText) activity.findViewById(R.id.Password);
+        prevButton=(ImageButton) rootView.findViewById(R.id.prev_button);
+        nextButton=(ImageButton) rootView.findViewById(R.id.next_button);
+        enterButton=(Button) rootView.findViewById(R.id.enter);
+        loginEditText=(EditText) rootView.findViewById(R.id.Login);
+        passwordEditText=(EditText) rootView.findViewById(R.id.Password);
         loginEditTextSettings(loginEditText);
         passwordEditTextSettings(passwordEditText);
         viewPagerSettings(viewPager);
         btnSettings(activity);
     }
 
-    public AuthorizationMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent,BaseActivity activity) {
-        setRootView(layoutInflater.inflate(R.layout.authorization, parent, false));
-        myPager = new MyPager(activity);
-        viewPager = activity.findViewById(R.id.view_pager);
-        viewPager.setAdapter(myPager);
-        mTabLayout = (TabLayout) activity.findViewById(R.id.tablayout);
-        mTabLayout.setupWithViewPager(viewPager);
-        prevButton=(ImageButton) activity.findViewById(R.id.prev_button);
-        nextButton=(ImageButton) activity.findViewById(R.id.next_button);
-        enterButton=(Button) activity.findViewById(R.id.enter);
-        loginEditText=(EditText) activity.findViewById(R.id.Login);
-        passwordEditText=(EditText) activity.findViewById(R.id.Password);
-        loginEditTextSettings(loginEditText);
-        passwordEditTextSettings(passwordEditText);
-        viewPagerSettings(viewPager);
-        btnSettings(activity);
-    }
+
 
     private void changeEnableEnter(){
         if(enableEnter[0]&&enableEnter[1]){
@@ -187,14 +170,10 @@ public class AuthorizationMvpViewImpl extends MvpViewObservableBase<Authorizatio
             public void onClick(View v) {
                 login=loginEditText.getText().toString();
                 password=passwordEditText.getText().toString();
-                for (Listener listener : getListeners()) {
-                    listener.onBtnEnterClicked();
-                }
-                activity.setMenuView();
+                screenNavigator.changeAuthorized(true);
             }
         });
     }
-
 
 
 }

@@ -1,38 +1,27 @@
 package com.example.technopark.screens.authorization;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
-import com.example.technopark.adapter.MyPager;
-import com.google.android.material.tabs.TabLayout;
-
-import static android.view.KeyEvent.KEYCODE_ENTER;
+import com.example.technopark.screens.common.nav.ScreenNavigator;
 
 public class AuthorizationFragment extends Fragment {
 
     private BaseActivity activity;
-    private AuthorizationPresenter presenter;
+    private AuthorizationViewController viewController;
+    private ScreenNavigator screenNavigator;
 
-    AuthorizationFragment(BaseActivity activity){
-        this.activity=activity;
-        presenter = new AuthorizationPresenter(getMainActivity());
-        AuthorizationMvpView view = new AuthorizationMvpViewImpl(activity);
-        presenter.bindView(view);
+    AuthorizationFragment(BaseActivity activity) {
+        this.activity = activity;
+        screenNavigator = activity.getScreenNavigator();
     }
 
     public static Fragment newInstance(BaseActivity baseActivity) {
@@ -40,35 +29,40 @@ public class AuthorizationFragment extends Fragment {
         return fragment;
     }
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        presenter = new AuthorizationPresenter(getMainActivity()); //getMainActivity().getScreenNavigator(), getMainActivity());
     }
 
-    @Nullable @Override public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                                                 @Nullable Bundle savedInstanceState) {
-        AuthorizationMvpView view = new AuthorizationMvpViewImpl(inflater, container, activity);
-        presenter.bindView(view);
-        return view.getRootView();
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.authorization, container, false);
+        viewController = new AuthorizationViewController(rootView, activity);
+        return rootView;
     }
 
-    @Override public void onStart() {
+    @Override
+    public void onStart() {
         super.onStart();
-        presenter.onStart();
     }
 
-    @Override public void onStop() {
-        presenter.onStop();
+    @Override
+    public void onStop() {
         super.onStop();
     }
 
-    @Override public void onDestroy() {
-        presenter.onDestroy();
+    @Override
+    public void onDestroy() {
         super.onDestroy();
     }
 
-    @Nullable private BaseActivity getMainActivity() {
+    @Nullable
+    private BaseActivity getMainActivity() {
         return activity;
     }
+
 
 }
