@@ -1,12 +1,8 @@
-package com.example.technopark.api.dto;
-
-import com.example.technopark.profile.model.UserAccount;
-import com.example.technopark.profile.model.UserContacts;
-import com.example.technopark.profile.model.UserGroup;
+package com.example.technopark.profile.model;
 
 import java.util.List;
 
-public class ProfileDto {
+public class UserProfile {
     private long id;
     private String userName;
 
@@ -30,10 +26,10 @@ public class ProfileDto {
     private List<UserGroup> groups;
     private List<UserAccount> accounts;
 
-    public ProfileDto(long id, String userName, long projectId, String projectName, String fullName,
-                      String gender, String avatarUrl, String mainGroup, String birthDate, String about,
-                      String joinDate, String lastSeen, List<UserContacts> contacts, List<UserGroup> groups,
-                      List<UserAccount> accounts) {
+    public UserProfile(long id, String userName, long projectId, String projectName, String fullName,
+                       String gender, String avatarUrl, String mainGroup, String birthDate, String about,
+                       String joinDate, String lastSeen, List<UserContacts> contacts, List<UserGroup> groups,
+                       List<UserAccount> accounts) {
         this.id = id;
         this.userName = userName;
         this.projectId = projectId;

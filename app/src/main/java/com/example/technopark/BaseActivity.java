@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.example.technopark.fragment.AuthorizationFragment;
 import com.example.technopark.fragment.NewsFragment;
-import com.example.technopark.fragment.ProfileFragment;
+import com.example.technopark.screens.profile.ProfileFragment;
 import com.example.technopark.fragment.SchedulerFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
