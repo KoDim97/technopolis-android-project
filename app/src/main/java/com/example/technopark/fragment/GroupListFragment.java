@@ -52,6 +52,7 @@ public class GroupListFragment extends Fragment implements GroupListAdapter.List
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ((BaseActivity)getActivity()).setBarVisible(View.GONE);
         View view = inflater.inflate(R.layout.grouplist_fragment, container, false);
         members = generatedGroupList();
         recyclerView = view.findViewById(R.id.grouplist_fragment__rv);

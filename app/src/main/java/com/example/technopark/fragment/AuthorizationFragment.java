@@ -1,26 +1,27 @@
-package com.example.technopark.screens.authorization;
+package com.example.technopark.fragment;
 
-
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
 import com.example.technopark.adapter.MyPager;
-import com.example.technopark.screens.common.nav.ScreenNavigator;
 import com.google.android.material.tabs.TabLayout;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
-public class AuthorizationViewController  {
-    private ScreenNavigator screenNavigator;
+public class AuthorizationFragment extends Fragment {
     private ImageButton prevButton;
     private ImageButton nextButton;
     private ViewPager viewPager;
@@ -32,78 +33,16 @@ public class AuthorizationViewController  {
     private boolean[] enableEnter=new boolean[2];
     private String login;
     private String password;
+    //private AppCompatActivity activity;
 
-    public AuthorizationViewController(View rootView, BaseActivity activity){
-        screenNavigator=activity.getScreenNavigator();
-        myPager = new MyPager(activity);
-        viewPager = rootView.findViewById(R.id.view_pager);
-        viewPager.setAdapter(myPager);
-        mTabLayout = (TabLayout) rootView.findViewById(R.id.tablayout);
-        mTabLayout.setupWithViewPager(viewPager);
-        prevButton=(ImageButton) rootView.findViewById(R.id.prev_button);
-        nextButton=(ImageButton) rootView.findViewById(R.id.next_button);
-        enterButton=(Button) rootView.findViewById(R.id.enter);
-        loginEditText=(EditText) rootView.findViewById(R.id.Login);
-        passwordEditText=(EditText) rootView.findViewById(R.id.Password);
-        loginEditTextSettings(loginEditText);
-        passwordEditTextSettings(passwordEditText);
-        viewPagerSettings(viewPager);
-        btnSettings(activity);
-    }
-
-
-
-    private void changeEnableEnter(){
+    void enEnter(){
         if(enableEnter[0]&&enableEnter[1]){
             enterButton.setEnabled(true);
         }else
             enterButton.setEnabled(false);
     }
 
-
-    private void loginEditTextSettings(EditText editText){
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //  вызывается,когда добавляется каждый символ
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //  вызывается перед вводом
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.length()!=0){
-                    enableEnter[0]=true;
-                }else enableEnter[0]=false;
-                changeEnableEnter();
-            }
-        });
-        editText.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                passwordEditText.requestFocus();
-                return true;
-            }
-        });
-    }
-    private void passwordEditTextSettings(EditText editText){
-        editText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //  вызывается,когда добавляется каждый символ
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //  вызывается перед вводом
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.length()!=1){
-                    enableEnter[1]=true;
-                }else enableEnter[1]=false;
-                changeEnableEnter();
-            }
-        });
+    void turnOnEntBtn(EditText editText){
         editText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 boolean consumed = false;
@@ -118,7 +57,58 @@ public class AuthorizationViewController  {
         });
     }
 
-    private void viewPagerSettings(ViewPager viewPager){
+    public AuthorizationFragment(final BaseActivity mainActivity){
+       // activity=mainActivity;
+        myPager = new MyPager(mainActivity);
+        viewPager = mainActivity.findViewById(R.id.view_pager);
+        viewPager.setAdapter(myPager);
+        mTabLayout = (TabLayout) mainActivity.findViewById(R.id.tablayout);
+        mTabLayout.setupWithViewPager(viewPager);
+        prevButton=(ImageButton) mainActivity.findViewById(R.id.prev_button);
+        nextButton=(ImageButton) mainActivity.findViewById(R.id.next_button);
+        enterButton=(Button) mainActivity.findViewById(R.id.enter);
+        loginEditText=(EditText) mainActivity.findViewById(R.id.Login);
+        passwordEditText=(EditText) mainActivity.findViewById(R.id.Password);
+
+        loginEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //  вызывается,когда добавляется каждый символ
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //  вызывается перед вводом
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()!=0){
+                    enableEnter[0]=true;
+                }else enableEnter[0]=false;
+                    enEnter();
+            }
+        });
+
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //  вызывается,когда добавляется каждый символ
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //  вызывается перед вводом
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length()!=0){
+                    enableEnter[1]=true;
+                }else enableEnter[1]=false;
+                enEnter();
+            }
+        });
+
+        turnOnEntBtn(loginEditText);
+        turnOnEntBtn(passwordEditText);
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -143,9 +133,6 @@ public class AuthorizationViewController  {
 
             }
         });
-    }
-
-    private void btnSettings(final BaseActivity activity){
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,10 +157,25 @@ public class AuthorizationViewController  {
             public void onClick(View v) {
                 login=loginEditText.getText().toString();
                 password=passwordEditText.getText().toString();
-                screenNavigator.changeAuthorized(true);
+                mainActivity.setMenuView();
             }
         });
     }
 
+    public static AuthorizationFragment newInstance(BaseActivity activity) {
+        return new AuthorizationFragment(activity);
+    }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.authorization, container, false);
+    }
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }
