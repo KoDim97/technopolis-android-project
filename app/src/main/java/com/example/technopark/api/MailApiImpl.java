@@ -19,6 +19,7 @@ import com.example.technopark.api.dto.SchedulerItemDto;
 import java.util.Arrays;
 import java.util.List;
 
+<<<<<<< HEAD
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +31,9 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+=======
+public class MailApiImpl implements MailApi {
+>>>>>>> parent of 5a101a8... Merge remote-tracking branch 'origin/issue#46' into dev
 
 public class MailApiImpl implements MailApi {
     private RequestQueue queue;
@@ -97,51 +101,13 @@ public class MailApiImpl implements MailApi {
     }
 
     @Override
-    public List<NewsDto> requestMainNewsDto(Integer limit, Integer offset) {
-        return Arrays.asList(
-                new NewsDto(
-                        2,
-                        "Иван Метелёв",
-                        "Упражнения после лекции",
-                        "Frontend-разработка 2019",
-                        "21 октября 2019 г. 12:34",
-                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
-                        "2"
-                ),
-                new NewsDto(
-                        2,
-                        "Филипп Федчин",
-                        "День открытых дверей Технополиса",
-                        "Мероприятия",
-                        "2 декабря 2019 г. 2:56",
-                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
-                        "0"
-                )
-        );
+    public NewsDto requestMainNewsDto(Integer limit, Integer offset) {
+        return null;
     }
 
     @Override
-    public List<NewsDto> requestSubscribedNewsDto(Integer limit, Integer offset) {
-        return Arrays.asList(
-                new NewsDto(
-                        2,
-                        "Иван Метелёв",
-                        "Упражнения после лекции",
-                        "Frontend-разработка 2019",
-                        "21 октября 2019 г. 12:34",
-                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
-                        "2"
-                ),
-                new NewsDto(
-                        2,
-                        "Филипп Федчин",
-                        "День открытых дверей Технополиса",
-                        "Мероприятия",
-                        "2 декабря 2019 г. 2:56",
-                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
-                        "0"
-                )
-        );
+    public NewsDto requestSubscribedNewsDto(Integer limit, Integer offset) {
+        return null;
     }
 
     @Override
