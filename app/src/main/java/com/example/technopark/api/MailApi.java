@@ -5,6 +5,10 @@ import com.example.technopark.api.dto.GroupDto;
 import com.example.technopark.api.dto.NewsDto;
 import com.example.technopark.api.dto.ProfileDto;
 import com.example.technopark.api.dto.ScheduleDto;
+import com.example.technopark.api.dto.SchedulerItemCheckInDto;
+import com.example.technopark.api.dto.SchedulerItemDto;
+
+import java.util.List;
 
 public interface MailApi {
 
@@ -14,7 +18,8 @@ public interface MailApi {
     GroupDto requestGroupDto(Integer id);
     NewsDto requestMainNewsDto(Integer limit, Integer offset);
     NewsDto requestSubscribedNewsDto(Integer limit, Integer offset);
-    ScheduleDto requestScheduleDto();
-    void scheduleCheckIn(Integer index);
+
+    List<SchedulerItemDto> requestSchedulerItems();
+    SchedulerItemCheckInDto checkInSchedulerItem(long id);
 
 }

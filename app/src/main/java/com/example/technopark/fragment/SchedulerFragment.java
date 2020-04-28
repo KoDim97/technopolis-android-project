@@ -11,9 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.R;
-import com.example.technopark.adapter.SchedulerItemAdapter;
+import com.example.technopark.screens.scheduleritems.SchedulerItemAdapter;
 import com.example.technopark.adapter.stickyHeader.SchedulerItemDecoration;
-import com.example.technopark.dto.SchedulerItem;
+import com.example.technopark.scheduler.model.SchedulerItem;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,6 +42,7 @@ public class SchedulerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.scheduler_view, container, false);
         schedulerItemsRecyclerView = view.findViewById(R.id.scheduler_recycler_view);
+        schedulerItemAdapter = new SchedulerItemAdapter(inflater);
         initRecyclerView();
         loadUsers();
         return view;
@@ -55,7 +56,6 @@ public class SchedulerFragment extends Fragment {
     private void initRecyclerView() {
         schedulerItemsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        schedulerItemAdapter = new SchedulerItemAdapter();
         schedulerItemsRecyclerView.setAdapter(schedulerItemAdapter);
         IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(schedulerItemsRecyclerView, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
