@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.NewsItemViewHolder> implements
-        NewsItemsRowMvpView.Listener  {
-
+        NewsItemsRowMvpView.Listener {
 
 
     static class NewsItemViewHolder extends RecyclerView.ViewHolder {
@@ -62,12 +61,16 @@ public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.News
         listener.onNewsItemClicked(id);
     }
 
-//    public void onReplace(List<News> update) {
+    //    public void onReplace(List<News> update) {
 //        news.clear();
 //        news.addAll(update);
 //
 //        notifyDataSetChanged();
 //    }
-
+    public void bindData(List<NewsItem> newsItems) {
+        items.clear();
+        items.addAll(newsItems);
+        notifyDataSetChanged();
+    }
 
 }
