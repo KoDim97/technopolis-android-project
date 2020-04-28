@@ -9,7 +9,7 @@ import com.example.technopark.api.dto.ScheduleDto;
 public interface MailApi {
 
     AuthDto requestAuthDto(String login, String password);
-    ProfileDto requestProfileDto(String username);
+    ProfileDto requestProfileDto(long id);
     ProfileDto requestMyProfileDto();
     GroupDto requestGroupDto(Integer id);
     NewsDto requestMainNewsDto(Integer limit, Integer offset);

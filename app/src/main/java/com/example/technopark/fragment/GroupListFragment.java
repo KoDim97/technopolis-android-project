@@ -27,6 +27,7 @@ import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
 import com.example.technopark.dto.PersonItem;
 import com.example.technopark.adapter.GroupListAdapter;
+import com.example.technopark.screens.profile.ProfileFragment;
 
 import java.util.ArrayList;
 import java.util.List;
