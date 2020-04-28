@@ -12,7 +12,6 @@ import com.example.technopark.R;
 
 public class MyPager extends PagerAdapter {
     private Context context;
-    private int num=7;
     public MyPager(Context context) {
         this.context = context;
     }
@@ -43,7 +42,7 @@ public class MyPager extends PagerAdapter {
     */
     @Override
     public int getCount() {
-        return num;
+        return 7;
     }
     /*
     Used to determine whether the page view is associated with object key returned by instantiateItem.

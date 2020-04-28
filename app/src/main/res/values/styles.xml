@@ -20,8 +20,8 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="ExitDialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/fade_in</item>
-        <item name="android:windowExitAnimation">@anim/fade_out</item>
+        <item name="android:windowEnterAnimation">@anim/move_in</item>
+        <item name="android:windowExitAnimation">@anim/move_out</item>
         <item name="windowNoTitle">true</item>
     </style>
 
