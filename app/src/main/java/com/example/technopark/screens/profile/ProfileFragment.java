@@ -38,7 +38,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.profile_fragment, container, false);
-        ((BaseActivity)getActivity()).setBarVisible(View.VISIBLE);
+        //((BaseActivity)getActivity()).setBarVisible(View.VISIBLE);
         myClipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
 //        Back button
         Bundle bundle = this.getArguments();
@@ -73,7 +73,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
                     public void onClick(View v) {
 //                      TODO: make log out
                         exitDialog.dismiss();
-                        ((BaseActivity)getActivity()).setAuthorizationView();
+                       // ((BaseActivity)getActivity()).setAuthorizationView();
 //                        Toast.makeText(getActivity(), "log out in progress", Toast.LENGTH_SHORT).show();
 
 
