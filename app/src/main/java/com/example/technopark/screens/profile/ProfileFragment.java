@@ -1,4 +1,4 @@
-package com.example.technopark.fragment;
+package com.example.technopark.screens.profile;
 
 import androidx.fragment.app.Fragment;
 
@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
+import com.example.technopark.fragment.GroupListFragment;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
