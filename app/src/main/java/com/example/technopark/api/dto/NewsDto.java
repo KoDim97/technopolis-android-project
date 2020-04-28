@@ -1,7 +1,7 @@
 package com.example.technopark.api.dto;
 
 public class NewsDto {
-    private Integer id;
+    private long id;
     private String fullname;
     private String title;
     private String blog;
@@ -9,7 +9,7 @@ public class NewsDto {
     private String avatar_url;
     private String comments_count;
 
-    public NewsDto(Integer id, String fullname, String title, String blog, String publish_date, String avatar_url, String comments_count) {
+    public NewsDto(long id, String fullname, String title, String blog, String publish_date, String avatar_url, String comments_count) {
         this.id = id;
         this.fullname = fullname;
         this.title = title;
@@ -19,7 +19,7 @@ public class NewsDto {
         this.comments_count = comments_count;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 

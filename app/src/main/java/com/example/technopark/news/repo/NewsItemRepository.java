@@ -12,7 +12,7 @@ public interface NewsItemRepository {
 
     NewsItem add(NewsItem blogItem);
 
-    NewsItem addAll(List<NewsItem> blogItem);
+    void addAll(List<NewsItem> blogItem);
 
     void update(NewsItem blogItem);
 
