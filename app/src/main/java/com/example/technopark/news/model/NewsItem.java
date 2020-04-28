@@ -1,12 +1,17 @@
-package com.example.technopark.dto;
+package com.example.technopark.news.model;
 
-public class News {
+public class NewsItem {
+    private final long id;
     private final String name;
     private final String title;
     private final String section;
     private final String date;
-    private final int userpic;
+    private final String userpic;
     private final String comments_number;
+
+    public long getId() {
+        return id;
+    }
 
     public String getName() {
         return name;
@@ -24,7 +29,7 @@ public class News {
         return date;
     }
 
-    public int getUserpic() {
+    public String getUserpic() {
         return userpic;
     }
 
@@ -32,14 +37,13 @@ public class News {
         return comments_number;
     }
 
-
-
-    public News(String name, String title, String section, String date, int userpick, String comments_number) {
+    public NewsItem(long id, String name, String title, String section, String date, String userpic, String comments_number) {
+        this.id = id;
         this.name = name;
         this.title = title;
         this.section = section;
         this.date = date;
-        this.userpic = userpick;
+        this.userpic = userpic;
         this.comments_number = comments_number;
     }
 }

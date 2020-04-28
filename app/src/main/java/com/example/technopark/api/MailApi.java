@@ -10,16 +10,19 @@ import com.example.technopark.api.dto.SchedulerItemDto;
 
 import java.util.List;
 
+import java.util.List;
+
 public interface MailApi {
 
     AuthDto requestAuthDto(String login, String password);
     ProfileDto requestProfileDto(long id);
     ProfileDto requestMyProfileDto();
     GroupDto requestGroupDto(Integer id);
-    NewsDto requestMainNewsDto(Integer limit, Integer offset);
-    NewsDto requestSubscribedNewsDto(Integer limit, Integer offset);
 
     List<SchedulerItemDto> requestSchedulerItems();
     SchedulerItemCheckInDto checkInSchedulerItem(long id);
+    List<NewsDto> requestMainNewsDto(Integer limit, Integer offset);
+    List<NewsDto> requestSubscribedNewsDto(Integer limit, Integer offset);
+
 
 }

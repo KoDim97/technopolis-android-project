@@ -10,6 +10,9 @@ import com.example.technopark.api.dto.SchedulerItemDto;
 import java.util.Arrays;
 import java.util.List;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MailApiImpl implements MailApi {
 
     public MailApiImpl() {
@@ -36,13 +39,51 @@ public class MailApiImpl implements MailApi {
     }
 
     @Override
-    public NewsDto requestMainNewsDto(Integer limit, Integer offset) {
-        return null;
+    public List<NewsDto> requestMainNewsDto(Integer limit, Integer offset) {
+        return Arrays.asList(
+                new NewsDto(
+                        2,
+                        "Иван Метелёв",
+                        "Упражнения после лекции",
+                        "Frontend-разработка 2019",
+                        "21 октября 2019 г. 12:34",
+                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
+                        "2"
+                ),
+                new NewsDto(
+                        2,
+                        "Филипп Федчин",
+                        "День открытых дверей Технополиса",
+                        "Мероприятия",
+                        "2 декабря 2019 г. 2:56",
+                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
+                        "0"
+                )
+        );
     }
 
     @Override
-    public NewsDto requestSubscribedNewsDto(Integer limit, Integer offset) {
-        return null;
+    public List<NewsDto> requestSubscribedNewsDto(Integer limit, Integer offset) {
+        return Arrays.asList(
+                new NewsDto(
+                        2,
+                        "Иван Метелёв",
+                        "Упражнения после лекции",
+                        "Frontend-разработка 2019",
+                        "21 октября 2019 г. 12:34",
+                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
+                        "2"
+                ),
+                new NewsDto(
+                        2,
+                        "Филипп Федчин",
+                        "День открытых дверей Технополиса",
+                        "Мероприятия",
+                        "2 декабря 2019 г. 2:56",
+                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
+                        "0"
+                )
+        );
     }
 
     @Override
