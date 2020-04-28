@@ -15,7 +15,7 @@ import java.util.List;
 public interface MailApi {
 
     AuthDto requestAuthDto(String login, String password);
-    ProfileDto requestProfileDto(long id);
+    ProfileDto requestProfileDto(String username);
     ProfileDto requestMyProfileDto();
     GroupDto requestGroupDto(Integer id);
 
