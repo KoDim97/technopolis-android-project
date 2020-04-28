@@ -13,6 +13,7 @@ import java.util.List;
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +37,8 @@ import java.util.Arrays;
 import java.util.List;
 >>>>>>> parent of 71fc5a4... Merge branch 'dev' of https://github.com/KoDim97/technopark-android-project into dev
 
+=======
+>>>>>>> parent of 5a101a8... Merge remote-tracking branch 'origin/issue#46' into dev
 public class MailApiImpl implements MailApi {
 
     public MailApiImpl() {
