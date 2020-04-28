@@ -7,6 +7,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.technopark.api.MailApi;
 import com.example.technopark.api.MailApiImpl;
 
+import com.example.technopark.profile.repo.UserProfileRepo;
+import com.example.technopark.profile.repo.UserProfileRepoImpl;
+import com.example.technopark.profile.service.ProfileService;
 import com.example.technopark.user.model.User;
 import com.example.technopark.user.service.AuthService;
 import com.example.technopark.scheduler.repo.SchedulerItemRepo;
@@ -25,6 +28,8 @@ public class App extends Application {
     private AuthService authService;
     private SchedulerItemService schedulerItemService;
     private SchedulerItemRepo schedulerItemRepo;
+    private ProfileService profileService;
+    private UserProfileRepo userProfileRepo;
 
     @Override
     public void onCreate() {
@@ -57,6 +62,21 @@ public class App extends Application {
             user = new User();
         }
         return user;
+    }
+
+
+    public UserProfileRepo provideUserProfileRepo() {
+        if (userProfileRepo == null) {
+            userProfileRepo = new UserProfileRepoImpl();
+        }
+        return userProfileRepo;
+    }
+
+    public ProfileService provideProfileService() {
+        if (profileService == null) {
+            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi());
+        }
+        return profileService;
     }
 
     public SchedulerItemRepo provideSchedulerItemRepo() {

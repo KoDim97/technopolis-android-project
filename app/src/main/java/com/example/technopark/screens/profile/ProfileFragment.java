@@ -1,5 +1,6 @@
 package com.example.technopark.screens.profile;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
@@ -17,9 +18,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.technopark.BaseActivity;
+import com.example.technopark.App;
 import com.example.technopark.R;
 import com.example.technopark.fragment.GroupListFragment;
+import com.example.technopark.profile.service.ProfileService;
+import com.example.technopark.util.ThreadPoster;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
@@ -27,18 +30,32 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 
     private ClipboardManager myClipboard;
     private ClipData myClip;
+    private ProfilePresenter presenter;
 
-    public ProfileFragment() {}
+    public ProfileFragment() {
+    }
 
     public static ProfileFragment newInstance() {
         return new ProfileFragment();
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //noinspection ConstantConditions
+        presenter = new ProfilePresenter(getProfileService(), getMainThreadPoster());
+    }
+
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.profile_fragment, container, false);
         //((BaseActivity)getActivity()).setBarVisible(View.VISIBLE);
+        ProfileMvpView view = new ProfileViewMvpImpl();
+        presenter.bindView(view);
+
         myClipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
 //        Back button
         Bundle bundle = this.getArguments();
@@ -73,7 +90,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
                     public void onClick(View v) {
 //                      TODO: make log out
                         exitDialog.dismiss();
-                       // ((BaseActivity)getActivity()).setAuthorizationView();
+                        // ((BaseActivity)getActivity()).setAuthorizationView();
 //                        Toast.makeText(getActivity(), "log out in progress", Toast.LENGTH_SHORT).show();
 
 
@@ -119,6 +136,21 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         return v;
     }
 
+    @Override public void onStart() {
+        super.onStart();
+        presenter.onStart();
+    }
+
+    @Override public void onStop() {
+        presenter.onStop();
+        super.onStop();
+    }
+
+    @Override public void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
+    }
+
     @Override
     public boolean onLongClick(View v) {
         TextView textView = (TextView) v;
@@ -136,5 +168,17 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         toolBar.setNavigationIcon(null);
         TextView textView = v.findViewById(R.id.back_to_group);
         textView.setVisibility(View.INVISIBLE);
+    }
+
+    private ProfileService getProfileService() {
+        App app = (App) getActivity().getApplication();
+        assert app != null;
+        return app.provideProfileService();
+    }
+
+    private ThreadPoster getMainThreadPoster() {
+        App app = (App) getActivity().getApplication();
+        assert app != null;
+        return app.provideMainThreadPoster();
     }
 }

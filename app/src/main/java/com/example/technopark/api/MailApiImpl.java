@@ -12,6 +12,7 @@ import com.example.technopark.api.dto.GroupDto;
 import com.example.technopark.api.dto.NewsDto;
 import com.example.technopark.api.dto.ProfileDto;
 import com.example.technopark.api.dto.ScheduleDto;
+import com.example.technopark.profile.model.UserProfile;
 import com.example.technopark.user.model.User;
 import com.example.technopark.api.dto.SchedulerItemCheckInDto;
 import com.example.technopark.api.dto.SchedulerItemDto;
@@ -33,6 +34,7 @@ import java.util.concurrent.TimeoutException;
 
 public class MailApiImpl implements MailApi {
     private RequestQueue queue;
+
     public MailApiImpl(RequestQueue queue) {
         this.queue = queue;
     }
@@ -59,7 +61,7 @@ public class MailApiImpl implements MailApi {
             e.printStackTrace();
         }
 
-        RequestFuture<JSONObject> requestFuture=RequestFuture.newFuture();
+        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, requestFuture);
         queue.add(request);
 
@@ -69,7 +71,7 @@ public class MailApiImpl implements MailApi {
             String username = response.getString("username");
             String auth_token = response.getString("auth_token");
             Integer user_id = response.getInt("user_id");
-            authDto = new AuthDto(auth_token,user_id,username);
+            authDto = new AuthDto(auth_token, user_id, username);
             return authDto;
         } catch (InterruptedException | TimeoutException e) {
             System.out.println("Time out");
@@ -92,6 +94,21 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public ProfileDto requestMyProfileDto() {
+        UserProfile userProfile;
+
+        final String url = "https://polis.mail.ru/" + "api/mobile/v1/profile/";
+
+        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, requestFuture, requestFuture);
+        queue.add(request);
+        try {
+            JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);
+            System.out.println("done");
+        } catch (InterruptedException | TimeoutException e) {
+            System.out.println("Time out");
+        } catch (ExecutionException e) {
+            System.out.println("Invalid login or password");
+        }
         return null;
     }
 
