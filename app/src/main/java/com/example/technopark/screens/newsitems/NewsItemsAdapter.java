@@ -21,11 +21,11 @@ public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.News
 
     static class NewsItemViewHolder extends RecyclerView.ViewHolder {
 
-        public static NewsItemsRowMvpView newsItemsRowMvpView;
+        private static NewsItemsRowMvpView newsItemsRowMvpView;
 
         public NewsItemViewHolder(NewsItemsRowMvpView newsItemsRowMvpView) {
             super(newsItemsRowMvpView.getRootView());
-            this.newsItemsRowMvpView = newsItemsRowMvpView;
+            NewsItemViewHolder.newsItemsRowMvpView = newsItemsRowMvpView;
         }
     }
 
