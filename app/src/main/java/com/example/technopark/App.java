@@ -26,7 +26,8 @@ public class App extends Application {
     private SchedulerItemService schedulerItemService;
     private SchedulerItemRepo schedulerItemRepo;
 
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
     }
 
@@ -37,8 +38,8 @@ public class App extends Application {
         return api;
     }
 
-    public AuthService provideAuthService(){
-        if (authService == null){
+    public AuthService provideAuthService() {
+        if (authService == null) {
             authService = new AuthService(provideMailApi(), provideUser());
         }
         return authService;
@@ -51,13 +52,13 @@ public class App extends Application {
         return mainThreadPoster;
     }
 
-    public User provideUser(){
-        if (user == null){
+    public User provideUser() {
+        if (user == null) {
             user = new User();
         }
         return user;
     }
-  
+
     public SchedulerItemRepo provideSchedulerItemRepo() {
         if (schedulerItemRepo == null) {
             schedulerItemRepo = new SchedulerItemRepoImpl();
@@ -71,3 +72,4 @@ public class App extends Application {
         }
         return schedulerItemService;
     }
+}

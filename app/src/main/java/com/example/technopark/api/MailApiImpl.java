@@ -81,6 +81,10 @@ public class MailApiImpl implements MailApi {
         return null;
     }
 
+    public ProfileDto requestProfileDto(long id) {
+        return null;
+    }
+
     @Override
     public ProfileDto requestProfileDto(String username) {
         return null;
