@@ -25,7 +25,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.PersonHold
     @NonNull
     @Override
     public PersonHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.person_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.student_item_row, parent, false);
         return new PersonHolder(view);
     }
 

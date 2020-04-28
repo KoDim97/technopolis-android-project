@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
 import com.example.technopark.screens.authorization.AuthorizationFragment;
+import com.example.technopark.screens.grouplist.GroupListFragment;
 import com.example.technopark.screens.root.MenuRootFragment;
 import com.ncapdevi.fragnav.FragNavController;
 
@@ -49,6 +50,11 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         this.authorized = authorized;
         fragNavController.initialize(FragNavController.TAB1, null);
     }
+
+    public void toGroupList(long id) {
+        fragNavController.pushFragment(GroupListFragment.newInstance(id));
+    }
+
 
     public void onSaveInstanceState(Bundle outState) {
         fragNavController.onSaveInstanceState(outState);

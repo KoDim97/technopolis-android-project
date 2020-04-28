@@ -60,7 +60,8 @@ public class MenuRootViewController {
                         screenNavigator.loadFragment(SchedulerFragment.newInstance());
                         return true;
                     case R.id.navigation_profile:
-                        screenNavigator.loadFragment(ProfileFragment.newInstance());
+                        //screenNavigator.loadFragment(ProfileFragment.newInstance());
+                        screenNavigator.toGroupList(472);
                         return true;
                 }
                 return false;
