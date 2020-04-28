@@ -3,13 +3,11 @@ package com.example.technopark.screens.authorization;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -17,9 +15,7 @@ import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
 import com.example.technopark.adapter.MyPager;
 import com.example.technopark.screens.common.nav.ScreenNavigator;
-import com.example.technopark.user.service.AuthService;
 import com.google.android.material.tabs.TabLayout;
-import com.example.technopark.App;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
@@ -34,8 +30,8 @@ public class AuthorizationViewController  {
     private EditText passwordEditText;
     private Button enterButton;
     private boolean[] enableEnter=new boolean[2];
-    private final AuthService authService;
-    private Thread thread;
+    private String login;
+    private String password;
 
     public AuthorizationViewController(View rootView, BaseActivity activity){
         screenNavigator=activity.getScreenNavigator();
@@ -49,9 +45,6 @@ public class AuthorizationViewController  {
         enterButton=(Button) rootView.findViewById(R.id.enter);
         loginEditText=(EditText) rootView.findViewById(R.id.Login);
         passwordEditText=(EditText) rootView.findViewById(R.id.Password);
-        App app = (App) activity.getApplication();
-        assert app != null;
-        authService = app.provideAuthService();
         loginEditTextSettings(loginEditText);
         passwordEditTextSettings(passwordEditText);
         viewPagerSettings(viewPager);
@@ -105,7 +98,7 @@ public class AuthorizationViewController  {
             }
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length()!=0){
+                if(s.length()!=1){
                     enableEnter[1]=true;
                 }else enableEnter[1]=false;
                 changeEnableEnter();
@@ -175,17 +168,9 @@ public class AuthorizationViewController  {
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (authService.CheckAuth(loginEditText.getText().toString(), passwordEditText.getText().toString())) {
-                            screenNavigator.changeAuthorized(true);
-                        } else {
-                            
-                        }
-                    }
-                });
-                thread.start();
+                login=loginEditText.getText().toString();
+                password=passwordEditText.getText().toString();
+                screenNavigator.changeAuthorized(true);
             }
         });
     }
