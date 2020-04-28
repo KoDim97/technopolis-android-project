@@ -5,6 +5,7 @@ package com.example.technopark.profile.repo;
         import java.util.List;
 
 public interface UserProfileRepo {
+
     List<UserProfile> findAll();
 
     UserProfile findById(long id);

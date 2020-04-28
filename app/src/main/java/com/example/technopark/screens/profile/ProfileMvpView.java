@@ -1,5 +1,6 @@
 package com.example.technopark.screens.profile;
 
+import com.example.technopark.profile.model.UserProfile;
 import com.example.technopark.screens.common.mvp.MvpViewObservable;
 import com.example.technopark.screens.common.nav.BackPressedListener;
 
@@ -9,6 +10,6 @@ public interface ProfileMvpView extends MvpViewObservable<ProfileMvpView.Listene
         void onBtnGoBackClicked();
     }
 
-//    void bindData(BlogItem blogItem);
+    void bindData(UserProfile userProfile);
 
 }
