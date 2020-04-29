@@ -33,7 +33,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final TextView name;
     private final TextView status;
     private final TextView about;
-    private final TextView rating;
+//    private final TextView rating;
     private final LinearLayout groupsLinearLayout;
     private final LinearLayout contactsLinearLayout;
     private final LinearLayout accountsLinearLayout;
