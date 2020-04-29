@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface SchedulerItemsMvpView extends MvpViewObservable<BackPressedListener> {
 
-    void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners);
+    void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, int actualPosition);
 
 }

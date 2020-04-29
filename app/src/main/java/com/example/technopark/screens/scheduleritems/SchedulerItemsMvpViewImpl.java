@@ -28,13 +28,15 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
 
     private final RecyclerView rvSchedulerItems;
     private final SchedulerItemAdapter schedulerItemAdapter;
+    private final LinearLayoutManager linearLayoutManager;
 
     public SchedulerItemsMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent, Context context) {
         setRootView(layoutInflater.inflate(R.layout.scheduler_view, parent, false));
 
-        schedulerItemAdapter = new SchedulerItemAdapter(layoutInflater);
         rvSchedulerItems = findViewById(R.id.scheduler_recycler_view);
-        rvSchedulerItems.setLayoutManager(new LinearLayoutManager(context));
+        schedulerItemAdapter = new SchedulerItemAdapter(layoutInflater);
+        linearLayoutManager = new LinearLayoutManager(context);
+        rvSchedulerItems.setLayoutManager(linearLayoutManager);
         rvSchedulerItems.setAdapter(schedulerItemAdapter);
         rvSchedulerItems.addItemDecoration(new SchedulerItemDecoration(schedulerItemAdapter));
 
@@ -58,7 +60,8 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
     }
 
     @Override
-    public void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners) {
+    public void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, int actualPosition) {
         schedulerItemAdapter.bindData(schedulerItems, listeners);
+        linearLayoutManager.scrollToPosition(actualPosition * 2);
     }
 }
