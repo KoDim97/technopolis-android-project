@@ -16,6 +16,8 @@ import com.example.technopark.util.ThreadPoster;
 
 public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMvpView.Listener {
 
+    private final String userName;
+
     private ProfileMvpView view;
     private final ProfileService profileService;
     private final ScreenNavigator screenNavigator;
@@ -25,7 +27,8 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private ClipboardManager myClipboard;
     private ClipData myClip;
 
-    public ProfilePresenter(ProfileService profileService, ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster, BackPressDispatcher backPressDispatcher) {
+    public ProfilePresenter(String userName, ProfileService profileService, ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster, BackPressDispatcher backPressDispatcher) {
+        this.userName = userName;
         this.profileService = profileService;
         this.screenNavigator = screenNavigator;
         this.mainThreadPoster = mainThreadPoster;
@@ -40,7 +43,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     private void loadItem() {
         thread = new Thread(() -> {
-            UserProfile userProfile = profileService.getCurrentUserProfile();
+            UserProfile userProfile = profileService.getUserProfile(userName);
             if (!thread.isInterrupted()) {
                 mainThreadPoster.post(() -> onItemLoaded(userProfile));
             }

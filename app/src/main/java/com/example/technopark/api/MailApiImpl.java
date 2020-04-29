@@ -17,7 +17,6 @@ import com.example.technopark.user.model.User;
 import com.example.technopark.api.dto.SchedulerItemCheckInDto;
 import com.example.technopark.api.dto.SchedulerItemDto;
 
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -98,59 +97,9 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public ProfileDto requestProfileDto(String username) {
-        return null;
-    }
-
-    @Override
-    public GroupDto requestGroupDto(long id) {
-        final String url = "https://polis.mail.ru/api/mobile/v1/groups/" + String.valueOf(id);
-
-        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, requestFuture) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + user.getAuth_token());
-                return params;
-            }
-        };
-        queue.add(request);
-
-        try {
-            JSONObject response = requestFuture.get(5, TimeUnit.SECONDS);
-            String name = response.getString("name");
-            JSONArray students = response.getJSONArray("students");
-            List<StudentDto> list = new ArrayList<>();
-            for (int i = 0; i < students.length(); ++i) {
-                JSONObject student = students.getJSONObject(i);
-                long student_id = student.getLong("id");
-                String username = student.getString("username");
-                String fullname = student.getString("fullname");
-                String avatar_url = student.getString("avatar_url");
-                boolean online = student.getBoolean("online");
-                double rating = student.getDouble("rating");
-                list.add(new StudentDto(student_id, username, fullname, avatar_url, online, rating));
-            }
-            return new GroupDto(id, name, list);
-        } catch (InterruptedException | TimeoutException e) {
-            System.out.println("Time out");
-        } catch (ExecutionException e) {
-            System.out.println("Update token");
-        } catch (JSONException e) {
-            System.out.println("Json creating failed");
-        }
-        return null;
-    }
-
-    public ProfileDto requestProfileDto(long id) {
-        return null;
-    }
-
-    @Override
-    public ProfileDto requestMyProfileDto() {
         ProfileDto profileDto;
 
-        final String url = "https://polis.mail.ru/" + "api/mobile/v1/profile/";
+        final String url = projectUrl + "/api/mobile/v1/profile/" + username;
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, requestFuture) {
@@ -238,6 +187,48 @@ public class MailApiImpl implements MailApi {
         }
         return null;
     }
+
+    @Override
+    public GroupDto requestGroupDto(long id) {
+        final String url = "https://polis.mail.ru/api/mobile/v1/groups/" + String.valueOf(id);
+
+        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, requestFuture) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Token " + user.getAuth_token());
+                return params;
+            }
+        };
+        queue.add(request);
+
+        try {
+            JSONObject response = requestFuture.get(5, TimeUnit.SECONDS);
+            String name = response.getString("name");
+            JSONArray students = response.getJSONArray("students");
+            List<StudentDto> list = new ArrayList<>();
+            for (int i = 0; i < students.length(); ++i) {
+                JSONObject student = students.getJSONObject(i);
+                long student_id = student.getLong("id");
+                String username = student.getString("username");
+                String fullname = student.getString("fullname");
+                String avatar_url = student.getString("avatar_url");
+                boolean online = student.getBoolean("online");
+                double rating = student.getDouble("rating");
+                list.add(new StudentDto(student_id, username, fullname, avatar_url, online, rating));
+            }
+            return new GroupDto(id, name, list);
+        } catch (InterruptedException | TimeoutException e) {
+            System.out.println("Time out");
+        } catch (ExecutionException e) {
+            System.out.println("Update token");
+        } catch (JSONException e) {
+            System.out.println("Json creating failed");
+        }
+        return null;
+    }
+
 
     @Override
     public List<NewsDto> requestMainNewsDto(Integer limit, Integer offset) {
