@@ -52,9 +52,8 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         view.bindData(userProfile);
     }
 
-    public void onGroupButtonClicked(
-            /* Возможно нужно добавить аргументы, но не использую android View*/) {
-//       TODO: @KoDim97 Переход на GroupList
+    public void onGroupButtonClicked(long id) {
+        screenNavigator.toGroupList(id);
     }
 
     public void copyTextViewText(String text, Activity activity) {
@@ -92,7 +91,8 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     @Override
     public boolean onBackPressed() {
-        return false;
+        screenNavigator.navigateUp();
+        return true;
     }
 
     private void provideClipboardManager(Activity activity) {

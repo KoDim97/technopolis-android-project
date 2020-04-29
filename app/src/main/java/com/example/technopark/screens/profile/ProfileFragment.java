@@ -141,7 +141,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 
     @Override
     public void onClick(View v) {
-        presenter.onGroupButtonClicked();
+        presenter.onGroupButtonClicked(v.getId());
     }
 
     private void hideBackButton(View v) {

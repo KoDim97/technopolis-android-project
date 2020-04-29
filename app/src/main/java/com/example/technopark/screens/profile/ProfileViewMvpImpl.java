@@ -104,7 +104,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
 //            Конвертируем px в dp
             button.setPadding((int) (13 * scale + 0.5f), 0, 0, 0);
             button.setAllCaps(false);
-            button.setId(i);
+            button.setId((int) groups.get(i).getId());
 
             button.setOnClickListener(profileFragment);
             groupsLinearLayout.addView(button);
