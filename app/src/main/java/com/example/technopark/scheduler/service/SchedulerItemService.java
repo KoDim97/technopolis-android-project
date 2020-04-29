@@ -21,7 +21,7 @@ public class SchedulerItemService {
 
     public List<SchedulerItem> items() {
         List<SchedulerItem> schedulerItems = schedulerItemRepo.findAll();
-        if (schedulerItems == null) {
+        if (schedulerItems.isEmpty()) {
             schedulerItems = requestFromApi();
         }
         return schedulerItems;
