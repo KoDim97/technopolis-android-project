@@ -1,13 +1,14 @@
 package com.example.technopark.screens.grouplist.row;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.technopark.R;
 import com.example.technopark.group.model.Student;
 import com.example.technopark.screens.common.mvp.MvpViewBase;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,7 +37,7 @@ public class GroupListRowMvpViewImpl extends MvpViewBase
     public void bindData(Student student) {
         this.student = student;
         tvName.setText(student.getFullname());
-        ivAvatar.setImageBitmap(student.getAvatar());
+        Picasso.get().load(student.getAvatarUrl()).fit().into(ivAvatar);
     }
 
     public void onStudentClicked() {
