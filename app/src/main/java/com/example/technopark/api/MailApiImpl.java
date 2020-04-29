@@ -39,14 +39,22 @@ import java.util.concurrent.TimeoutException;
 public class MailApiImpl implements MailApi {
     private RequestQueue queue;
     private User user;
+    private String projectUrl;
     public MailApiImpl(RequestQueue queue, User user) {
         this.queue = queue;
         this.user = user;
+        //temp
+        projectUrl = "https://polis.mail.ru";
+    }
+
+    void setProjectUrl(String string){
+        projectUrl = string;
     }
 
     @Override
     public AuthDto requestAuthDto(String login, String password) {
         AuthDto authDto;
+        //temp hardcode
         final String url = "https://polis.mail.ru/api/mobile/v1/auth/";
         JSONObject json = new JSONObject();
 

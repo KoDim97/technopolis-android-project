@@ -1,11 +1,16 @@
 package com.example.technopark.screens.grouplist;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,11 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.R;
 import com.example.technopark.group.model.GroupItem;
-import com.example.technopark.group.model.Student;
 import com.example.technopark.screens.common.mvp.MvpViewObservableBase;
 import com.example.technopark.screens.grouplist.row.GroupListRowMvpView;
 
-import java.util.List;
 import java.util.Objects;
 
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
@@ -28,12 +31,21 @@ public class GroupListMvpViewImpl extends MvpViewObservableBase<GroupListMvpView
     private final RecyclerView rvGroupList;
     private final TextView tvGroupName;
     private final GroupListAdapter groupListAdapter;
+    private final EditText searchField;
+    private final Button clearButton;
+    private final TextView backClickText;
+    private final Toolbar toolbar;
 
 
     public GroupListMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent, Context context) {
         setRootView(layoutInflater.inflate(R.layout.grouplist_fragment, parent, false));
 
         tvGroupName = findViewById(R.id.grouplist_fragment__groupname);
+        searchField = findViewById(R.id.grouplist_fragment__searchfield);
+        clearButton = findViewById(R.id.grouplist_fragment__clearbutton);
+        backClickText = findViewById(R.id.grouplist_fragment__canceltext);
+        toolbar = findViewById(R.id.grouplist_fragment__topbar);
+
         groupListAdapter = new GroupListAdapter(layoutInflater, this);
         rvGroupList = findViewById(R.id.grouplist_fragment__rv);
         rvGroupList.setLayoutManager(new LinearLayoutManager(context));
@@ -43,7 +55,53 @@ public class GroupListMvpViewImpl extends MvpViewObservableBase<GroupListMvpView
         rvGroupList.addItemDecoration(itemDecorator);
         OverScrollDecoratorHelper.setUpOverScroll(rvGroupList, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
+        backClickText.setOnClickListener(v -> goBack());
+        toolbar.setNavigationOnClickListener(v -> goBack());
+        clearButton.setOnClickListener(v -> clearText());
 
+        searchField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = s.toString();
+                if (text.length() != 0){
+                    clearButton.setVisibility(View.VISIBLE);
+                }else {
+                    clearButton.setVisibility(View.INVISIBLE);
+                }
+                filterList(text);
+            }
+        });
+
+    }
+
+    private void clearText() {
+        for (Listener listener : getListeners()) {
+            searchField.setText("");
+            listener.onFilterTextUpdated("");
+        }
+    }
+
+
+    private void filterList(String s){
+        for (Listener listener : getListeners()) {
+            listener.onFilterTextUpdated(s);
+        }
+    }
+
+    private void goBack() {
+        for (Listener listener : getListeners()) {
+            listener.onBtnGoBackClicked();
+        }
     }
 
     @Override

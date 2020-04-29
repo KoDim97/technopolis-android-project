@@ -29,7 +29,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Stud
     private final LayoutInflater layoutInflater;
     private final GroupListRowMvpView.Listener listener;
 
-    private final List<Student> items = new ArrayList<>();
+    private  List<Student> items = new ArrayList<>();
 
     public GroupListAdapter(LayoutInflater layoutInflater,
                             GroupListRowMvpView.Listener listener) {
@@ -60,6 +60,11 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Stud
     public void bindData(List<Student> students) {
         items.clear();
         items.addAll(students);
+        notifyDataSetChanged();
+    }
+
+    public void updateList(List<Student> students){
+        items = students;
         notifyDataSetChanged();
     }
 }
