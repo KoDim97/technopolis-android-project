@@ -153,7 +153,7 @@ public class MailApiImpl implements MailApi {
     public List<SchedulerItemDto> requestSchedulerItems() {
 
         ArrayList<SchedulerItemDto> items = new ArrayList<>();
-        String url = "https://polis.mail.ru/api/mobile/v1/schedule/";
+        final String url = "https://polis.mail.ru/api/mobile/v1/schedule/";
 
         Map<String, String> mHeaders = new HashMap<>();
         mHeaders.put("Authorization", "Token " + user.getAuth_token());
@@ -169,30 +169,26 @@ public class MailApiImpl implements MailApi {
 
 
         try {
-            JSONArray response = requestFuture.get(5, TimeUnit.SECONDS);
+            JSONArray response = requestFuture.get(2, TimeUnit.SECONDS);
             int count = 0;
             while (count < response.length()) {
-                try {
-                    JSONObject jsonObject = response.getJSONObject(count);
-                    SchedulerItemDto schedulerItemDto = new SchedulerItemDto(
-                            jsonObject.getInt("id"),
-                            jsonObject.getString("discipline"),
-                            jsonObject.getString("title"),
-                            jsonObject.getString("short_title"),
-                            jsonObject.getString("super_short_title"),
-                            jsonObject.getString("date"),
-                            jsonObject.getString("start_time"),
-                            jsonObject.getString("end_time"),
-                            jsonObject.getString("location"),
-                            jsonObject.getBoolean("checkin_opened"),
-                            jsonObject.getBoolean("attended"),
-                            jsonObject.getString("feedback_url")
-                    );
-                    items.add(schedulerItemDto);
-                    ++count;
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                JSONObject jsonObject = response.getJSONObject(count);
+                SchedulerItemDto schedulerItemDto = new SchedulerItemDto(
+                        jsonObject.getInt("id"),
+                        jsonObject.getString("discipline"),
+                        jsonObject.getString("title"),
+                        jsonObject.getString("short_title"),
+                        jsonObject.getString("super_short_title"),
+                        jsonObject.getString("date"),
+                        jsonObject.getString("start_time"),
+                        jsonObject.getString("end_time"),
+                        jsonObject.getString("location"),
+                        jsonObject.getBoolean("checkin_opened"),
+                        jsonObject.getBoolean("attended"),
+                        jsonObject.getString("feedback_url")
+                );
+                items.add(schedulerItemDto);
+                ++count;
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -200,142 +196,40 @@ public class MailApiImpl implements MailApi {
             e.printStackTrace();
         } catch (TimeoutException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+        e.printStackTrace();
         }
         return items;
-
-       /* return Arrays.asList(
-                new SchedulerItemDto(
-                        0L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-08T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        false,
-                        true,
-                        null
-                ),
-                new SchedulerItemDto(
-                        1L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-09T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        true,
-                        false,
-                        null
-                ),
-                new SchedulerItemDto(
-                        1223L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-10T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        false,
-                        false,
-                        "someURl"
-                ),
-                new SchedulerItemDto(
-                        1243L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-11T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        false,
-                        false,
-                        null
-                ),
-                new SchedulerItemDto(
-                        1235L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-12T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        false,
-                        false,
-                        null
-                ),
-                new SchedulerItemDto(
-                        12323L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-13T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        false,
-                        false,
-                        null
-                ),
-                new SchedulerItemDto(
-                        1265463L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-14T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        false,
-                        false,
-                        null
-                ),
-                new SchedulerItemDto(
-                        18623L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-15T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        false,
-                        false,
-                        null
-                ),
-                new SchedulerItemDto(
-                        21883L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-16T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        false,
-                        false,
-                        null
-                )
-        );*/
     }
 
     @Override
     public SchedulerItemCheckInDto checkInSchedulerItem(long id) {
-        return new SchedulerItemCheckInDto(123L, "someURL");
+        final String url = "https://polis.mail.ru/api/mobile/v1/schedule/" + id + "/check";
+        JSONObject json = new JSONObject();
+
+
+        RequestFuture<JSONObject> requestFuture=RequestFuture.newFuture();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, requestFuture);
+        queue.add(request);
+        SchedulerItemCheckInDto schedulerItemCheckInDto = null;
+        try {
+            JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);
+
+            schedulerItemCheckInDto = new SchedulerItemCheckInDto(
+                    response.getInt("schedule_item"),
+                    response.getString("feedback_url")
+            );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return schedulerItemCheckInDto;
     }
 
     private String bytesToHex(byte[] hash) {
