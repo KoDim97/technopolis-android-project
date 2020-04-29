@@ -39,7 +39,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                final List<SchedulerItem> schedulerItems = schedulerItemService.findAll();
+                final List<SchedulerItem> schedulerItems = schedulerItemService.items();
                 if (!thread.isInterrupted()) {
                     mainThreadPoster.post(new Runnable() {
                         @Override

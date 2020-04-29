@@ -29,8 +29,8 @@ public class SchedulerFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //??? getScreenNavigator ???
-//        presenter = new SchedulerItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
-//                getFindBlogItemService(), getMainThreadPoster());
+        presenter = new SchedulerItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
+                getFindBlogItemService(), getMainThreadPoster());
     }
 
     @Override
