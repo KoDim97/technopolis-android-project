@@ -36,9 +36,25 @@ public class ProfileService {
     }
     private UserProfile requestFromServer() {
         ProfileDto profileDto = api.requestMyProfileDto();
-        UserProfile userProfile;
+        UserProfile userProfile = new UserProfile(
+                profileDto.getId(),
+                profileDto.getUserName(),
+                profileDto.getProjectId(),
+                profileDto.getProjectName(),
+                profileDto.getFullName(),
+                profileDto.getGender(),
+                profileDto.getAvatarUrl(),
+                profileDto.getMainGroup(),
+                profileDto.getBirthDate(),
+                profileDto.getAbout(),
+                profileDto.getJoinDate(),
+                profileDto.getLastSeen(),
+                profileDto.getContacts(),
+                profileDto.getGroups(),
+                profileDto.getAccounts()
+        );
 
-        return null;
+        return userProfile;
     }
 
 }

@@ -10,6 +10,7 @@ public class UserProfile {
     private String projectName;
     private String fullName;
     private String gender;
+//    TODO: load image
     private String avatarUrl;
 
     //   Основная роль пользователя в образовательном проекте в данный момент
