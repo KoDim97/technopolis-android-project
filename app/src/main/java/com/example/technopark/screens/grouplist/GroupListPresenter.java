@@ -37,6 +37,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
 
     @Override public void bindView(GroupListMvpView view) {
         this.view = view;
+        view.showProgress();
         loadItems();
     }
 
@@ -52,6 +53,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
 
     private void onItemsLoaded(GroupItem groupItem) {
         // prepare to show
+        view.hideProgress();
         view.bindData(groupItem);
     }
 

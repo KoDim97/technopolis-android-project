@@ -18,5 +18,9 @@ public interface GroupListMvpView extends MvpViewObservable<GroupListMvpView.Lis
         void onBtnGoBackClicked();
     }
 
+    void showProgress();
+
+    void hideProgress();
+
     void bindData(GroupItem groupItem);
 }
