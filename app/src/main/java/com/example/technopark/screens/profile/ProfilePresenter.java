@@ -40,7 +40,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     public void onGroupButtonClicked(
             /* Возможно нужно добавить аргументы, но не использую android View*/) {
 //       TODO: @KoDim97 Переход на GroupList
-    } 
+    }
 
     @Override
     public void onStart() {

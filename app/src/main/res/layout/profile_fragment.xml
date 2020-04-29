@@ -178,26 +178,6 @@
 <!--                        android:textAllCaps="false"-->
 <!--                        android:textColor="@color/colorBlack" />-->
 
-                    <!--separator-->
-<!--                    <View-->
-<!--                        android:layout_width="13dp"-->
-<!--                        android:layout_height="1dp"-->
-<!--                        android:layout_gravity="start"-->
-<!--                        android:background="@color/colorWhite" />-->
-
-<!--                    <Button-->
-<!--                        android:id="@+id/group_2"-->
-<!--                        style="?android:attr/borderlessButtonStyle"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="43dp"-->
-<!--                        android:background="@color/colorWhite"-->
-<!--                        android:drawableEnd="@drawable/ic_chevron_right_black_24dp"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:paddingStart="13dp"-->
-<!--                        android:text="iOS-13"-->
-<!--                        android:fontFamily="@font/roboto_regular"-->
-<!--                        android:textAllCaps="false"-->
-<!--                        android:textColor="@color/colorBlack" />-->
                 </LinearLayout>
 
                 <LinearLayout
@@ -219,47 +199,47 @@
                         android:textSize="13sp" />
 
                     <!--separator-->
-                    <TextView
-                        android:id="@+id/phone_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="1dp"
-                        android:background="@color/colorWhite"
-                        android:drawableStart="@drawable/icons8_iphone_96"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="9dp"
-                        android:text="+7 (916) 065 3055"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="14sp" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/phone_number"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="43dp"-->
+<!--                        android:layout_marginTop="1dp"-->
+<!--                        android:background="@color/colorWhite"-->
+<!--                        android:drawableStart="@drawable/icons8_iphone_96"-->
+<!--                        android:drawablePadding="6dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:paddingLeft="13dp"-->
+<!--                        android:paddingTop="9dp"-->
+<!--                        android:paddingBottom="9dp"-->
+<!--                        android:text="+7 (916) 065 3055"-->
+<!--                        android:fontFamily="@font/roboto_regular"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textColor="@color/colorBlack"-->
+<!--                        android:textSize="14sp" />-->
 
-                    <View
-                        android:layout_width="13dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="start"
-                        android:background="@color/colorWhite" />
+<!--                    <View-->
+<!--                        android:layout_width="13dp"-->
+<!--                        android:layout_height="1dp"-->
+<!--                        android:layout_gravity="start"-->
+<!--                        android:background="@color/colorWhite" />-->
 
-                    <TextView
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="0dp"
-                        android:background="@color/colorWhite"
-                        android:drawableStart="@drawable/icons8_mail_96"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="9dp"
-                        android:text="o.morozenkov@corp.mail.ru"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="14sp" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/email"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="43dp"-->
+<!--                        android:layout_marginTop="0dp"-->
+<!--                        android:background="@color/colorWhite"-->
+<!--                        android:drawableStart="@drawable/icons8_mail_96"-->
+<!--                        android:drawablePadding="6dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:paddingLeft="13dp"-->
+<!--                        android:paddingTop="9dp"-->
+<!--                        android:paddingBottom="9dp"-->
+<!--                        android:text="o.morozenkov@corp.mail.ru"-->
+<!--                        android:fontFamily="@font/roboto_regular"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textColor="@color/colorBlack"-->
+<!--                        android:textSize="14sp" />-->
                 </LinearLayout>
 
                 <LinearLayout
