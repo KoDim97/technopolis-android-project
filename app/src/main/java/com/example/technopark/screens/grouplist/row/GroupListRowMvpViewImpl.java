@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.example.technopark.R;
 import com.example.technopark.group.model.Student;
 import com.example.technopark.screens.common.mvp.MvpViewBase;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -37,7 +38,21 @@ public class GroupListRowMvpViewImpl extends MvpViewBase
     public void bindData(Student student) {
         this.student = student;
         tvName.setText(student.getFullname());
-        Picasso.get().load(student.getAvatarUrl()).fit().into(ivAvatar);
+        String url = student.getAvatarUrl();
+        if (!url.contains("https")){
+            url = url.replace("http", "https");
+        }
+        Picasso.get().load(url).fit().into(ivAvatar, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                ivAvatar.setImageResource(R.drawable.img_no_avatar);
+            }
+        });
     }
 
     public void onStudentClicked() {
