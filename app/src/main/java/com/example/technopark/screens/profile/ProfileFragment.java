@@ -36,7 +36,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     public ProfileFragment() {
     }
 
-    public static ProfileFragment newInstance() {
+    public static Fragment newInstance() {
         return new ProfileFragment();
     }
 
@@ -46,7 +46,6 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         //noinspection ConstantConditions
         presenter = new ProfilePresenter(getProfileService(), getMainThreadPoster());
     }
-
 
 
     @Override
@@ -139,17 +138,20 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 //        return v;
     }
 
-    @Override public void onStart() {
+    @Override
+    public void onStart() {
         super.onStart();
         presenter.onStart();
     }
 
-    @Override public void onStop() {
+    @Override
+    public void onStop() {
         presenter.onStop();
         super.onStop();
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         presenter.onDestroy();
         super.onDestroy();
     }

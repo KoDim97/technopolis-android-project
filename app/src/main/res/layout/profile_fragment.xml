@@ -77,7 +77,7 @@
 
 
                     <TextView
-                        android:id="@+id/profile_name"
+                        android:id="@+id/profile_fullname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -92,7 +92,7 @@
                         android:id="@+id/profile_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/profile_name"
+                        android:layout_below="@id/profile_fullname"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="5dp"
                         android:layout_toEndOf="@id/profile_image"
