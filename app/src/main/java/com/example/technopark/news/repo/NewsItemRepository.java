@@ -8,13 +8,8 @@ public interface NewsItemRepository {
 
     List<NewsItem> findAll();
 
-    NewsItem findById(long id);
-
-    NewsItem add(NewsItem blogItem);
+    boolean add(NewsItem blogItem);
 
     void addAll(List<NewsItem> blogItem);
 
-    void update(NewsItem blogItem);
-
-    void removeById(long id);
 }

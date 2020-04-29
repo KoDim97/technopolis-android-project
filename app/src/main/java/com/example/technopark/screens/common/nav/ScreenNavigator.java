@@ -1,7 +1,6 @@
 package com.example.technopark.screens.common.nav;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

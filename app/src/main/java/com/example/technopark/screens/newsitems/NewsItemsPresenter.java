@@ -31,14 +31,20 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     @Override
     public void bindView(NewsItemsMvpView view) {
         this.view = view;
-        loadItems();
+        newsItems();
     }
 
-    private void loadItems() {
+
+
+    public void updateDataNews() {
+        newsItems();
+    }
+
+    private void newsItems() {
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                final List<NewsItem> newsItems = newsItemService.findAll();
+                final List<NewsItem> newsItems = newsItemService.getNewsItems();
                 if (!thread.isInterrupted()) {
                     mainThreadPoster.post(new Runnable() {
                         @Override
@@ -51,7 +57,34 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         });
 
         thread.start();
+
     }
+
+    public void updateDataSubs() {
+
+        subsItems();
+    }
+
+    private void subsItems() {
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final List<NewsItem> newsItems = newsItemService.getSubsItems();
+                if (!thread.isInterrupted()) {
+                    mainThreadPoster.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            onItemsLoaded(newsItems);
+                        }
+                    });
+                }
+            }
+        });
+
+        thread.start();
+
+    }
+
 
     private void onItemsLoaded(List<NewsItem> newsItems) {
         // prepare to show

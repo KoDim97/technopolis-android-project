@@ -1,5 +1,8 @@
 package com.example.technopark.news.model;
 
+import android.graphics.Bitmap;
+import android.widget.ImageView;
+
 public class NewsItem {
     private final long id;
     private final String name;

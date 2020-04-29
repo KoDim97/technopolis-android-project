@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.technopark.dto.News;
 import com.example.technopark.news.model.NewsItem;
 import com.example.technopark.screens.newsitems.row.NewsItemsRowMvpView;
 import com.example.technopark.screens.newsitems.row.NewsItemsRowMvpViewImpl;
@@ -18,13 +17,13 @@ public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.News
         NewsItemsRowMvpView.Listener {
 
 
-    static class NewsItemViewHolder extends RecyclerView.ViewHolder {
+    public class NewsItemViewHolder extends RecyclerView.ViewHolder {
 
-        private static NewsItemsRowMvpView newsItemsRowMvpView;
+        private NewsItemsRowMvpView newsItemsRowMvpView;
 
         public NewsItemViewHolder(NewsItemsRowMvpView newsItemsRowMvpView) {
             super(newsItemsRowMvpView.getRootView());
-            NewsItemViewHolder.newsItemsRowMvpView = newsItemsRowMvpView;
+            this.newsItemsRowMvpView = newsItemsRowMvpView;
         }
     }
 
@@ -41,14 +40,14 @@ public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.News
     @NonNull
     @Override
     public NewsItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        NewsItemsRowMvpView newsItemsRowMvpView = new NewsItemsRowMvpViewImpl(layoutInflater, null, this);
+        NewsItemsRowMvpView newsItemsRowMvpView = new NewsItemsRowMvpViewImpl(layoutInflater, parent, this);
         return new NewsItemViewHolder(newsItemsRowMvpView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NewsItemViewHolder holder, int position) {
         NewsItem newsItem = items.get(position);
-        NewsItemViewHolder.newsItemsRowMvpView.bindData(newsItem);
+        holder.newsItemsRowMvpView.bindData(newsItem);
     }
 
     @Override
@@ -61,12 +60,6 @@ public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.News
         listener.onNewsItemClicked(id);
     }
 
-    //    public void onReplace(List<News> update) {
-//        news.clear();
-//        news.addAll(update);
-//
-//        notifyDataSetChanged();
-//    }
     public void bindData(List<NewsItem> newsItems) {
         items.clear();
         items.addAll(newsItems);

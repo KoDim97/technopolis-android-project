@@ -2,7 +2,7 @@ package com.example.technopark.screens.common.mvp;
 
 public interface MvpPresenter<T extends MvpView> {
 
-    void bindView(T view);
+    void bindView(T view) throws InterruptedException;
 
     void onStart();
 

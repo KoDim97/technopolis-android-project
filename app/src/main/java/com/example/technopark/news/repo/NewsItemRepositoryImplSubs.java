@@ -5,22 +5,23 @@ import com.example.technopark.news.model.NewsItem;
 import java.util.LinkedList;
 import java.util.List;
 
-public class NewsItemRepositoryImpl implements NewsItemRepository{
+public class NewsItemRepositoryImplSubs implements NewsItemRepository {
 
-    private final List<NewsItem> itemsNews = new LinkedList<>();
+    private final List<NewsItem> itemsSubs = new LinkedList<>();
 
 
     public List<NewsItem> findAll() {
-        return itemsNews;
+        return itemsSubs;
     }
 
 
     public boolean add(NewsItem newsItem) {
-        return itemsNews.add(newsItem);
+        return itemsSubs.add(newsItem);
     }
 
 
     public void addAll(List<NewsItem> newsList) {
-        itemsNews.addAll(newsList);
+        itemsSubs.addAll(newsList);
     }
+
 }

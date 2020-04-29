@@ -2,6 +2,7 @@ package com.example.technopark.screens.newsitems;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,23 +16,29 @@ import com.example.technopark.screens.newsitems.row.NewsItemsRowMvpView;
 import java.util.List;
 
 public class NewsItemsMvpViewImpl extends MvpViewObservableBase<NewsItemsMvpView.Listener>
-        implements NewsItemsMvpView, NewsItemsMvpView.Listener {
+        implements NewsItemsMvpView, NewsItemsRowMvpView.Listener {
 
     private final RecyclerView rvNewsItems;
     private final NewsItemsAdapter newsItemsAdapter;
 
+    private final View view;
+
     public NewsItemsMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent, Context context) {
         setRootView(layoutInflater.inflate(R.layout.news_fragment, parent, false));
 
-        newsItemsAdapter = new NewsItemsAdapter(layoutInflater, (NewsItemsRowMvpView.Listener) this);
+        newsItemsAdapter = new NewsItemsAdapter(layoutInflater, this);
         rvNewsItems = findViewById(R.id.activity_news__news_list);
         rvNewsItems.setLayoutManager(new LinearLayoutManager(context));
         rvNewsItems.setAdapter(newsItemsAdapter);
+        view = getRootView();
     }
 
-    @Override
-    public boolean onBackPressed() {
-        return false;
+    public View getView() {
+        return view;
+    }
+
+    RecyclerView getRvNewsItems() {
+        return rvNewsItems;
     }
 
     @Override
