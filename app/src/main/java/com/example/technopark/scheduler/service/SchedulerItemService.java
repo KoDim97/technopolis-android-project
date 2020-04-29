@@ -59,6 +59,7 @@ public class SchedulerItemService {
     public List<SchedulerItem> checkInItem(long id) {
         SchedulerItemCheckInDto schedulerItemCheckInDto = api.checkInSchedulerItem(id);
         SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(id);
+        schedulerItemFromCache.setFeedbackUrl(schedulerItemCheckInDto.getFeedbackURL());
         return schedulerItemRepo.update(schedulerItemFromCache);
     }
 
