@@ -163,41 +163,41 @@
                         android:fontFamily="@font/roboto_regular"
                         android:textSize="13sp" />
 
-                    <Button
-                        android:id="@+id/group_1"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="1dp"
-                        android:background="@color/colorWhite"
-                        android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
-                        android:gravity="center_vertical"
-                        android:paddingStart="13dp"
-                        android:text="iOS-11"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack" />
+<!--                    <Button-->
+<!--                        android:id="@+id/group_1"-->
+<!--                        style="?android:attr/borderlessButtonStyle"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="43dp"-->
+<!--                        android:layout_marginTop="1dp"-->
+<!--                        android:background="@color/colorWhite"-->
+<!--                        android:drawableEnd="@drawable/ic_chevron_right_black_24dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:paddingStart="13dp"-->
+<!--                        android:text="iOS-11"-->
+<!--                        android:fontFamily="@font/roboto_regular"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textColor="@color/colorBlack" />-->
 
                     <!--separator-->
-                    <View
-                        android:layout_width="13dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="start"
-                        android:background="@color/colorWhite" />
+<!--                    <View-->
+<!--                        android:layout_width="13dp"-->
+<!--                        android:layout_height="1dp"-->
+<!--                        android:layout_gravity="start"-->
+<!--                        android:background="@color/colorWhite" />-->
 
-                    <Button
-                        android:id="@+id/group_2"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:background="@color/colorWhite"
-                        android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
-                        android:gravity="center_vertical"
-                        android:paddingStart="13dp"
-                        android:text="iOS-13"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack" />
+<!--                    <Button-->
+<!--                        android:id="@+id/group_2"-->
+<!--                        style="?android:attr/borderlessButtonStyle"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="43dp"-->
+<!--                        android:background="@color/colorWhite"-->
+<!--                        android:drawableEnd="@drawable/ic_chevron_right_black_24dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:paddingStart="13dp"-->
+<!--                        android:text="iOS-13"-->
+<!--                        android:fontFamily="@font/roboto_regular"-->
+<!--                        android:textAllCaps="false"-->
+<!--                        android:textColor="@color/colorBlack" />-->
                 </LinearLayout>
 
                 <LinearLayout

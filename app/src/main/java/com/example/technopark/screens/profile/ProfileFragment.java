@@ -17,9 +17,6 @@ import com.example.technopark.App;
 import com.example.technopark.R;
 import com.example.technopark.profile.service.ProfileService;
 import com.example.technopark.util.ThreadPoster;
-import com.squareup.picasso.Picasso;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment implements View.OnLongClickListener {
 

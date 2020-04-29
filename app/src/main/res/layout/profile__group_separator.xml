@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<View
+    android:id="@+id/group_separator"
+    android:layout_width="13dp"
+    android:layout_height="1dp"
+    android:layout_gravity="start"
+    android:background="@color/colorWhite"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+</View>
