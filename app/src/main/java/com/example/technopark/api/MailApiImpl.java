@@ -47,7 +47,7 @@ public class MailApiImpl implements MailApi {
         projectUrl = "https://polis.mail.ru";
     }
 
-    void setProjectUrl(String string){
+    public void setProjectUrl(String string){
         projectUrl = string;
     }
 
