@@ -7,6 +7,7 @@ import com.example.technopark.screens.common.nav.BackPressedListener;
 import java.util.List;
 
 public interface NewsItemsMvpView extends MvpViewObservable<NewsItemsMvpView.Listener> {
+
     interface Listener extends BackPressedListener {
 
         void onNewsItemClicked(long id);

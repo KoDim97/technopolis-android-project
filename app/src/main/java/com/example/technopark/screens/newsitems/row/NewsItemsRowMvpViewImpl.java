@@ -1,5 +1,8 @@
 package com.example.technopark.screens.newsitems.row;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,7 @@ import com.example.technopark.R;
 import com.example.technopark.news.model.NewsItem;
 import com.example.technopark.screens.common.mvp.MvpViewBase;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRowMvpView {
 
@@ -54,10 +58,7 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
         blogNameTextView.setText(newsItem.getSection());
         datePostingTextView.setText(newsItem.getDate());
         commentsCountTextView.setText(newsItem.getComments_number());
-//        avatarImage.setImageDrawable();
-
-        Picasso.with(getContext()).load(newsItem.getUserpic()).into(avatarImage);
-
+        Picasso.get().load(newsItem.getUserpic()).fit().into(avatarImage);
     }
 
     public void onNewsItemClicked() {

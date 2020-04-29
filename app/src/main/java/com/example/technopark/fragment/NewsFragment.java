@@ -42,7 +42,7 @@ public class NewsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.activity_news__news_list);
 
         final RadioGroup radioGroup = view.findViewById(R.id.activity_news__top_bar);
-        final NewsAdapter adapter = new NewsAdapter(generateNewsList());
+        final NewsAdapter adapter = new NewsAdapter(generateNewsList(), getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -84,7 +84,7 @@ public class NewsFragment extends Fragment {
                 "Домашнее задание после второй лекции",
                 "Алгоритмы и структуры данных",
                 "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "1"
         ));
         news.add(new News(
@@ -92,7 +92,7 @@ public class NewsFragment extends Fragment {
                 "Домашнее задание после второй лекции",
                 "Алгоритмы и структуры данных",
                 "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "1"
         ));
         news.add(new News(
@@ -100,7 +100,7 @@ public class NewsFragment extends Fragment {
                 "Домашнее задание после второй лекции",
                 "Алгоритмы и структуры данных",
                 "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "1"
         ));
         news.add(new News(
@@ -108,7 +108,7 @@ public class NewsFragment extends Fragment {
                 "Домашнее задание после второй лекции",
                 "Алгоритмы и структуры данных",
                 "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "1"
         ));
         news.add(new News(
@@ -116,7 +116,7 @@ public class NewsFragment extends Fragment {
                 "Домашнее задание после второй лекции",
                 "Алгоритмы и структуры данных",
                 "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "1"
         ));
         news.add(new News(
@@ -124,7 +124,7 @@ public class NewsFragment extends Fragment {
                 "Домашнее задание после второй лекции",
                 "Алгоритмы и структуры данных",
                 "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "1"
         ));
         news.add(new News(
@@ -132,7 +132,7 @@ public class NewsFragment extends Fragment {
                 "Домашнее задание после второй лекции",
                 "Алгоритмы и структуры данных",
                 "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "1"
         ));
         news.add(new News(
@@ -140,7 +140,7 @@ public class NewsFragment extends Fragment {
                 "Домашнее задание после второй лекции",
                 "Алгоритмы и структуры данных",
                 "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "1"
         ));
         news.add(new News(
@@ -148,7 +148,7 @@ public class NewsFragment extends Fragment {
                 "Домашнее задание после второй лекции",
                 "Алгоритмы и структуры данных",
                 "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "1"
         ));
         news.add(new News(
@@ -156,7 +156,7 @@ public class NewsFragment extends Fragment {
                 "Домашнее задание после второй лекции",
                 "Алгоритмы и структуры данных",
                 "3 октября 2019 г. 12:25",
-                R.drawable.dmitry,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "1"
         ));
 
@@ -170,7 +170,7 @@ public class NewsFragment extends Fragment {
                 "Упражнения после лекции",
                 "Frontend-разработка 2019",
                 "21 октября 2019 г. 12:34",
-                R.drawable.ivan,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "2"
         ));
         news.add(new News(
@@ -178,7 +178,7 @@ public class NewsFragment extends Fragment {
                 "День открытых дверей Технополиса",
                 "Мероприятия",
                 "2 декабря 2019 г. 2:56",
-                R.drawable.filipp,
+                "http://polis.mail.ru/media/avatars/gtp/10/08/36ef259d4d9967f3a81aa326160128c7.jpeg",
                 "0"
         ));
 

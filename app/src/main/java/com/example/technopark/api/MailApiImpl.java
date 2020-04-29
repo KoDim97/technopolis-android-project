@@ -1,23 +1,21 @@
 package com.example.technopark.api;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.Volley;
 import com.example.technopark.api.dto.AuthDto;
 import com.example.technopark.api.dto.GroupDto;
 import com.example.technopark.api.dto.NewsDto;
 import com.example.technopark.api.dto.ProfileDto;
-import com.example.technopark.api.dto.ScheduleDto;
-import com.example.technopark.user.model.User;
 import com.example.technopark.api.dto.SchedulerItemCheckInDto;
 import com.example.technopark.api.dto.SchedulerItemDto;
-
-import java.util.Arrays;
-import java.util.List;
+import com.example.technopark.user.model.User;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +24,11 @@ import org.json.JSONObject;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -33,8 +36,11 @@ import java.util.concurrent.TimeoutException;
 
 public class MailApiImpl implements MailApi {
     private RequestQueue queue;
-    public MailApiImpl(RequestQueue queue) {
+    private User user;
+
+    public MailApiImpl(RequestQueue queue, User user) {
         this.queue = queue;
+        this.user = user;
     }
 
     @Override
@@ -59,7 +65,7 @@ public class MailApiImpl implements MailApi {
             e.printStackTrace();
         }
 
-        RequestFuture<JSONObject> requestFuture=RequestFuture.newFuture();
+        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, requestFuture);
         queue.add(request);
 
@@ -69,7 +75,7 @@ public class MailApiImpl implements MailApi {
             String username = response.getString("username");
             String auth_token = response.getString("auth_token");
             Integer user_id = response.getInt("user_id");
-            authDto = new AuthDto(auth_token,user_id,username);
+            authDto = new AuthDto(auth_token, user_id, username);
             return authDto;
         } catch (InterruptedException | TimeoutException e) {
             System.out.println("Time out");
@@ -102,50 +108,104 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public List<NewsDto> requestMainNewsDto(Integer limit, Integer offset) {
-        return Arrays.asList(
-                new NewsDto(
-                        2,
-                        "Иван Метелёв",
-                        "Упражнения после лекции",
-                        "Frontend-разработка 2019",
-                        "21 октября 2019 г. 12:34",
-                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
-                        "2"
-                ),
-                new NewsDto(
-                        2,
-                        "Филипп Федчин",
-                        "День открытых дверей Технополиса",
-                        "Мероприятия",
-                        "2 декабря 2019 г. 2:56",
-                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
-                        "0"
-                )
-        );
+        final List<NewsDto> newsDtoList = new ArrayList<>();
+        final StringBuilder url = new StringBuilder("https://polis.mail.ru/api/mobile/v1/topics/main/?");
+        url.append("limit=").append(limit).append("&offset=").append(offset);
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url.toString(),
+                null,
+                future,
+                future) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Token " + user.getAuth_token());
+                return headers;
+            }
+        };
+        queue.add(jsonArrayRequest);
+        try {
+            JSONObject response = future.get();
+            JSONArray results = response.getJSONArray("results");
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject one_new = results.getJSONObject(i);
+                long id = one_new.getLong("id");
+                String fullname = one_new.getJSONObject("author").getString("fullname");
+                String title = one_new.getString("title");
+                String blog = one_new.getString("blog");
+                String publish_date = one_new.getString("publish_date");
+                String avatar_url = one_new.getJSONObject("author").getString("avatar_url");
+                String comments_count = one_new.getString("comments_count");
+
+                newsDtoList.add(new NewsDto(
+                        id,
+                        fullname,
+                        title,
+                        blog,
+                        publish_date,
+                        avatar_url,
+                        comments_count
+                ));
+            }
+
+
+        } catch (JSONException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return newsDtoList;
     }
 
     @Override
     public List<NewsDto> requestSubscribedNewsDto(Integer limit, Integer offset) {
-        return Arrays.asList(
-                new NewsDto(
-                        2,
-                        "Иван Метелёв",
-                        "Упражнения после лекции",
-                        "Frontend-разработка 2019",
-                        "21 октября 2019 г. 12:34",
-                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
-                        "2"
-                ),
-                new NewsDto(
-                        2,
-                        "Филипп Федчин",
-                        "День открытых дверей Технополиса",
-                        "Мероприятия",
-                        "2 декабря 2019 г. 2:56",
-                        "http://lpark.localhost/media/avatars/gtp/07/01/2121301dde1bec34b962291dad9093ef.jpg",
-                        "0"
-                )
-        );
+        final List<NewsDto> newsDtoList = new ArrayList<>();
+        final StringBuilder url = new StringBuilder("https://polis.mail.ru/api/mobile/v1/topics/subscribed/?");
+        url.append("limit=").append(limit).append("&offset=").append(offset);
+        RequestFuture<JSONObject> future = RequestFuture.newFuture();
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(
+                Request.Method.GET,
+                url.toString(),
+                null,
+                future,
+                future) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Token "  + user.getAuth_token());
+                return headers;
+            }
+        };
+        queue.add(jsonArrayRequest);
+        try {
+            JSONObject response = future.get();
+            JSONArray results = response.getJSONArray("results");
+            for (int i = 0; i < results.length(); i++) {
+                JSONObject one_new = results.getJSONObject(i);
+                long id = one_new.getLong("id");
+                String fullname = one_new.getJSONObject("author").getString("fullname");
+                String title = one_new.getString("title");
+                String blog = one_new.getString("blog");
+                String publish_date = one_new.getString("publish_date");
+                String avatar_url = one_new.getJSONObject("author").getString("avatar_url");
+                String comments_count = one_new.getString("comments_count");
+
+                newsDtoList.add(new NewsDto(
+                        id,
+                        fullname,
+                        title,
+                        blog,
+                        publish_date,
+                        avatar_url,
+                        comments_count
+                ));
+            }
+
+
+        } catch (JSONException | ExecutionException | InterruptedException e) {
+            e.printStackTrace();
+        }
+        return newsDtoList;
     }
 
     @Override

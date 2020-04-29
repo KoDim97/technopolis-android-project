@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,8 +12,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.technopark.App;
 import com.example.technopark.BaseActivity;
+import com.example.technopark.R;
 import com.example.technopark.news.service.NewsItemService;
 import com.example.technopark.util.ThreadPoster;
+
+import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class NewsItemsFragment extends Fragment{
 
@@ -22,33 +27,58 @@ public class NewsItemsFragment extends Fragment{
         return new NewsItemsFragment();
     }
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        presenter = new NewsItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
+                getFindNewsItemService(), getMainThreadPoster());
     }
 
-    @Nullable @Override public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                                                 @Nullable Bundle savedInstanceState) {
-        NewsItemsMvpView view = new NewsItemsMvpViewImpl(inflater, container, getContext());
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        final NewsItemsMvpView view = new NewsItemsMvpViewImpl(inflater, container, getContext());
+        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(((NewsItemsMvpViewImpl) view).getRvNewsItems(),
+                OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
         presenter.bindView(view);
+
+
+        RadioGroup radioGroup = ((NewsItemsMvpViewImpl) view).getView().findViewById(R.id.activity_news__top_bar);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if (R.id.activity_news__radio_subs == checkedId) {
+                    presenter.updateDataSubs();
+                } else {
+                    presenter.updateDataNews();
+                }
+            }
+        });
+
         return view.getRootView();
     }
 
-    @Override public void onStart() {
+    @Override
+    public void onStart() {
         super.onStart();
         presenter.onStart();
     }
 
-    @Override public void onStop() {
+    @Override
+    public void onStop() {
         presenter.onStop();
         super.onStop();
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         presenter.onDestroy();
         super.onDestroy();
     }
 
-    @Nullable private BaseActivity getMainActivity() {
+    @Nullable
+    private BaseActivity getMainActivity() {
         return (BaseActivity) getActivity();
     }
 
