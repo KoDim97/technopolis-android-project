@@ -12,6 +12,8 @@ public class ProfileService {
     private final MailApi api;
     private UserProfile currentUserProfile;
     private final Context context;
+    private final static String CURRENT_USER = "current_user";
+
 
     public ProfileService(UserProfileRepo userProfileRepo, MailApi api, Context context) {
         this.userProfileRepo = userProfileRepo;
@@ -19,27 +21,29 @@ public class ProfileService {
         this.context = context;
     }
 
-    public UserProfile getCurrentUserProfile() {
-        if (currentUserProfile == null) {
-            currentUserProfile = requestFromServer();
+    public UserProfile getUserProfile(String userName) {
+        if (userName == CURRENT_USER) {
+            if (currentUserProfile == null) {
+                currentUserProfile = requestFromServer("");
+            }
+            return currentUserProfile;
         }
-        return currentUserProfile;
+        else {
+            return findByUserName(userName);
+        }
+
     }
 
-    public UserProfile findById(long id) {
-        UserProfile userProfile = userProfileRepo.findById(id);
+    public UserProfile findByUserName(String userName) {
+        UserProfile userProfile = userProfileRepo.findByUserName(userName);
         if (userProfile == null) {
-            userProfile = requestFromServer(id);
+            userProfile = requestFromServer(userName);
         }
         return userProfile;
     }
 
-    private UserProfile requestFromServer(long id) {
-        return null;
-    }
-
-    private UserProfile requestFromServer() {
-        ProfileDto profileDto = api.requestMyProfileDto();
+    private UserProfile requestFromServer(String userName) {
+        ProfileDto profileDto = api.requestProfileDto(userName);
 
 //        Проверяем, ссылка на картинку использует https
 //        Если не использует, принудительно меняем http на https
@@ -67,5 +71,6 @@ public class ProfileService {
                 profileDto.getAccounts()
         );
     }
+
 
 }

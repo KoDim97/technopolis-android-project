@@ -17,6 +17,7 @@ public class MenuRootViewController {
     private int visibility = View.VISIBLE;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener;
     private BottomNavigationView navigation;
+    private final static String CURRENT_USER = "current_user";
 
 
     public MenuRootViewController(View rootView, ScreenNavigator screenNavigator) {
@@ -60,7 +61,7 @@ public class MenuRootViewController {
                         screenNavigator.loadFragment(SchedulerFragment.newInstance());
                         return true;
                     case R.id.navigation_profile:
-                        screenNavigator.loadFragment(ProfileFragment.newInstance());
+                        screenNavigator.loadFragment(ProfileFragment.newInstance(CURRENT_USER));
                         return true;
                 }
                 return false;

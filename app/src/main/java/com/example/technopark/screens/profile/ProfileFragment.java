@@ -20,19 +20,24 @@ import com.example.technopark.util.ThreadPoster;
 public class ProfileFragment extends Fragment implements View.OnLongClickListener, Button.OnClickListener {
 
     private ProfilePresenter presenter;
-
+    private static final String PROFILE_NAME = "user_name";
     public ProfileFragment() {
     }
 
-    public static Fragment newInstance() {
-        return new ProfileFragment();
+    public static Fragment newInstance(String username) {
+        Fragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putString(PROFILE_NAME, username);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //noinspection ConstantConditions
-        presenter = new ProfilePresenter(getProfileService(), getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity());
+        String userProfile = getArguments().getString(PROFILE_NAME);
+        presenter = new ProfilePresenter(userProfile, getProfileService(), getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity());
     }
 
 

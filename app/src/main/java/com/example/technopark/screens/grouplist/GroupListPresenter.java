@@ -107,7 +107,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     @Override
     public void onStudentClicked(long studentId) {
         //temp
-        screenNavigator.loadFragment(ProfileFragment.newInstance());
+//        screenNavigator.loadFragment(ProfileFragment.newInstance());
     }
 
     @Override
