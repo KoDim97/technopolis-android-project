@@ -81,12 +81,12 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewBase implements Schedul
     }
 
     private void bindActionButton(final SchedulerItem schedulerItem) {
-        if (schedulerItem.getFeedbackUrl() != null) {
+        if (!schedulerItem.getFeedbackUrl().equals("null")) {
             setOnFeedback(schedulerItem);
         } else if (schedulerItem.isAttended()) {
             setOnIsAttended();
         }
-        else  if (schedulerItem.isCheckInOpen()) {
+        else if (schedulerItem.isCheckInOpen()) {
             setOnIsCheckedInOpen(schedulerItem);
         } else {
             onActionButton.setVisibility(View.INVISIBLE);
@@ -109,9 +109,7 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewBase implements Schedul
             public void onClick(View v) {
                 Intent viewIntent = new Intent(
                         "android.intent.action.VIEW",
-                        Uri.parse(schedulerItem.getFeedbackUrl() == null
-                                ? "https://www.google.ru/"
-                                : schedulerItem.getFeedbackUrl())
+                        Uri.parse(schedulerItem.getFeedbackUrl())
                 );
                 startActivity(getContext(), viewIntent, new Bundle());
                 setOnIsAttended();
