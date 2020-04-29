@@ -22,19 +22,14 @@ public class GroupListRowMvpViewImpl extends MvpViewBase
     private Student student;
 
     public GroupListRowMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent,
-                                   final GroupListRowMvpView.Listener listener) {
+                                   GroupListRowMvpView.Listener listener) {
         this.listener = listener;
         setRootView(layoutInflater.inflate(R.layout.student_item_row, parent, false));
 
         tvName = findViewById(R.id.person_item__name);
         ivAvatar = findViewById(R.id.person_item__image);
 
-        getRootView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onStudentClicked(student.getId());
-            }
-        });
+        getRootView().setOnClickListener(view -> onStudentClicked());
     }
 
     @Override
@@ -42,6 +37,10 @@ public class GroupListRowMvpViewImpl extends MvpViewBase
         this.student = student;
         tvName.setText(student.getFullname());
         ivAvatar.setImageBitmap(student.getAvatar());
+    }
+
+    public void onStudentClicked() {
+        listener.onStudentClicked(student.getId());
     }
     
 }
