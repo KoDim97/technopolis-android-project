@@ -9,8 +9,6 @@ import com.example.technopark.api.MailApiImpl;
 import com.example.technopark.profile.repo.UserProfileRepo;
 import com.example.technopark.profile.repo.UserProfileRepoImpl;
 import com.example.technopark.profile.service.ProfileService;
-import com.example.technopark.avatars_repo.AvatarItemRepo;
-import com.example.technopark.avatars_repo.AvatarItemRepoImpl;
 import com.example.technopark.group.repo.GroupItemRepo;
 import com.example.technopark.group.repo.GroupItemRepoImpl;
 import com.example.technopark.group.service.FindGroupItemService;
@@ -36,7 +34,6 @@ public class App extends Application {
     private UserProfileRepo userProfileRepo;
     private FindGroupItemService findGroupItemService;
     private GroupItemRepo groupItemRepo;
-    private AvatarItemRepo avatarItemRepo;
 
     @Override
     public void onCreate() {
@@ -71,6 +68,7 @@ public class App extends Application {
         return user;
     }
 
+
     public UserProfileRepo provideUserProfileRepo() {
         if (userProfileRepo == null) {
             userProfileRepo = new UserProfileRepoImpl();
@@ -80,16 +78,9 @@ public class App extends Application {
 
     public ProfileService provideProfileService() {
         if (profileService == null) {
-            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), provideAvatarItemRepo(), getApplicationContext());
+            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), getApplicationContext());
         }
         return profileService;
-    }
-
-    public AvatarItemRepo provideAvatarItemRepo() {
-        if (avatarItemRepo == null) {
-            avatarItemRepo = new AvatarItemRepoImpl();
-        }
-        return avatarItemRepo;
     }
 
     public SchedulerItemRepo provideSchedulerItemRepo() {
@@ -115,7 +106,7 @@ public class App extends Application {
 
     public FindGroupItemService provideFindGroupItemService() {
         if (findGroupItemService == null) {
-            findGroupItemService = new FindGroupItemService(getApplicationContext(), provideGroupItemRepo(), provideAvatarItemRepo(), provideMailApi());
+            findGroupItemService = new FindGroupItemService(provideGroupItemRepo(), provideMailApi());
         }
         return findGroupItemService;
     }

@@ -18,7 +18,7 @@ public interface MailApi {
     ProfileDto requestProfileDto(String username);
     ProfileDto requestMyProfileDto();
     GroupDto requestGroupDto(long id);
-
+    public void setProjectUrl(String string);
     List<SchedulerItemDto> requestSchedulerItems();
     SchedulerItemCheckInDto checkInSchedulerItem(long id);
     List<NewsDto> requestMainNewsDto(Integer limit, Integer offset);

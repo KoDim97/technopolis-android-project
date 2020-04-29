@@ -1,27 +1,21 @@
 package com.example.technopark.profile.service;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 
 import com.example.technopark.api.MailApi;
 import com.example.technopark.api.dto.ProfileDto;
-import com.example.technopark.avatars_repo.AvatarItemRepo;
 import com.example.technopark.profile.model.UserProfile;
 import com.example.technopark.profile.repo.UserProfileRepo;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 public class ProfileService {
     private final UserProfileRepo userProfileRepo;
     private final MailApi api;
-    private final AvatarItemRepo avatarItemRepo;
     private UserProfile currentUserProfile;
     private final Context context;
 
-    public ProfileService(UserProfileRepo userProfileRepo, MailApi api, AvatarItemRepo avatarItemRepo, Context context) {
+    public ProfileService(UserProfileRepo userProfileRepo, MailApi api, Context context) {
         this.userProfileRepo = userProfileRepo;
         this.api = api;
-        this.avatarItemRepo = avatarItemRepo;
         this.context = context;
     }
 

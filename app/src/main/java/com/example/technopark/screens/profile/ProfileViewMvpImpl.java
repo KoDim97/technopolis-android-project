@@ -49,7 +49,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         name = findViewById(R.id.profile_fullname);
         status = findViewById(R.id.profile_status);
         about = findViewById(R.id.profile_about);
-        rating = findViewById(R.id.profile_rating);
+//        rating = findViewById(R.id.profile_rating);
         groupsLinearLayout = findViewById(R.id.groups);
         contactsLinearLayout = findViewById(R.id.contacts);
         accountsLinearLayout = findViewById(R.id.accounts);
