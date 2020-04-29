@@ -21,8 +21,6 @@ import com.example.technopark.util.ThreadPoster;
 
 public class ProfileFragment extends Fragment implements View.OnLongClickListener, Button.OnClickListener {
 
-    private ClipboardManager myClipboard;
-    private ClipData myClip;
     private ProfilePresenter presenter;
 
     public ProfileFragment() {
@@ -56,12 +54,6 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 //            hideBackButton(v);
 //        }
 //
-////        Copy links
-//        v.findViewById(R.id.phone_number).setOnLongClickListener(this);
-//        v.findViewById(R.id.email).setOnLongClickListener(this);
-//        v.findViewById(R.id.odnoklassniki).setOnLongClickListener(this);
-//        v.findViewById(R.id.github).setOnLongClickListener(this);
-//        v.findViewById(R.id.vkontakte).setOnLongClickListener(this);
 //
 ////        set up good scroll
 //        ScrollView scrollView = (ScrollView) v.findViewById(R.id.profile_scroll_view);
@@ -140,11 +132,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     public boolean onLongClick(View v) {
         TextView textView = (TextView) v;
         String text = textView.getText().toString();
-
-        myClip = ClipData.newPlainText("text", text);
-        myClipboard.setPrimaryClip(myClip);
-
-        Toast.makeText(getActivity(), R.string.copied, Toast.LENGTH_SHORT).show();
+        presenter.copyTextViewText(text, getActivity());
         return true;
     }
 
