@@ -1,19 +1,18 @@
 package com.example.technopark.group.model;
 
-import android.graphics.Bitmap;
 
 public class Student {
     private final long id;
     private final String username;
     private final String fullname;
-    private final Bitmap avatar;
+    private final String avatar_url;
     private final boolean online;
 
-    public Student(long id, String username, String fullname, Bitmap avatar, boolean online) {
+    public Student(long id, String username, String fullname, String avatar_url, boolean online) {
         this.id = id;
         this.username = username;
         this.fullname = fullname;
-        this.avatar = avatar;
+        this.avatar_url = avatar_url;
         this.online = online;
     }
 
@@ -29,8 +28,8 @@ public class Student {
         return fullname;
     }
 
-    public Bitmap getAvatar() {
-        return avatar;
+    public String getAvatarUrl() {
+        return avatar_url;
     }
 
     public boolean isOnline() {
