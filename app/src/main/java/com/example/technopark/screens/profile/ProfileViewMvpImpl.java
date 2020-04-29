@@ -25,9 +25,9 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final TextView vkontakte;
 
 
-    public ProfileViewMvpImpl(LayoutInflater inflater, ViewGroup parent) {
-        setRootView(inflater.inflate(R.layout.profile_fragment, parent, false));
-        name = findViewById(R.id.profile_name);
+    public ProfileViewMvpImpl(LayoutInflater layoutInflater, ViewGroup parent) {
+        setRootView(layoutInflater.inflate(R.layout.profile_fragment, parent, false));
+        name = findViewById(R.id.profile_fullname);
         status = findViewById(R.id.profile_status);
         about = findViewById(R.id.profile_about);
         groupButton = findViewById(R.id.group_1);
@@ -36,12 +36,6 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         odnoklassniki = findViewById(R.id.odnoklassniki);
         gitHub = findViewById(R.id.github);
         vkontakte = findViewById(R.id.vkontakte);
-
-    }
-
-    @Override
-    public View getRootView() {
-        return null;
     }
 
     @Override

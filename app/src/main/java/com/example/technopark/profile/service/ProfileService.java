@@ -34,6 +34,7 @@ public class ProfileService {
     private UserProfile requestFromServer(long id) {
         return null;
     }
+
     private UserProfile requestFromServer() {
         ProfileDto profileDto = api.requestMyProfileDto();
         UserProfile userProfile = new UserProfile(

@@ -157,7 +157,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(5, TimeUnit.SECONDS);
             JSONObject activity = response.getJSONObject("activity");
 
 //            Convert JSONArray contacts to List<UserContact>
