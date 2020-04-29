@@ -69,5 +69,6 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     public void navigateUp() {
         fragNavController.popFragment();
+
     }
 }
