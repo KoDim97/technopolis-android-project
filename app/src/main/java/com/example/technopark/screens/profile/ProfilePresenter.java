@@ -1,5 +1,12 @@
 package com.example.technopark.screens.profile;
 
+import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.widget.Toast;
+
+import com.example.technopark.R;
 import com.example.technopark.profile.model.UserProfile;
 import com.example.technopark.profile.service.ProfileService;
 import com.example.technopark.screens.common.mvp.MvpPresenter;
@@ -11,10 +18,13 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private final ProfileService profileService;
     private final ThreadPoster mainThreadPoster;
     private Thread thread;
+    private ClipboardManager myClipboard;
+    private ClipData myClip;
 
     public ProfilePresenter(ProfileService profileService, ThreadPoster mainThreadPoster) {
         this.profileService = profileService;
         this.mainThreadPoster = mainThreadPoster;
+
     }
 
     @Override
@@ -40,6 +50,13 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     public void onGroupButtonClicked(
             /* Возможно нужно добавить аргументы, но не использую android View*/) {
 //       TODO: @KoDim97 Переход на GroupList
+    }
+
+    public void copyTextViewText(String text, Activity activity) {
+        myClip = ClipData.newPlainText("text", text);
+        provideClipboardManager(activity);
+        myClipboard.setPrimaryClip(myClip);
+        Toast.makeText(activity, R.string.copied, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -68,5 +85,10 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         return false;
     }
 
+    private void provideClipboardManager(Activity activity) {
+        if (myClipboard == null) {
+            myClipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
+        }
+    }
 
 }
