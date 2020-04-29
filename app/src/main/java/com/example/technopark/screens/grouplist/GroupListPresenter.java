@@ -1,6 +1,7 @@
 package com.example.technopark.screens.grouplist;
 
 import com.example.technopark.group.model.GroupItem;
+import com.example.technopark.group.model.Student;
 import com.example.technopark.group.service.FindGroupItemService;
 import com.example.technopark.screens.common.mvp.MvpPresenter;
 import com.example.technopark.screens.common.nav.BackPressDispatcher;
@@ -37,18 +38,10 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     }
 
     private void loadItems() {
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final GroupItem groupItem = findGroupItemService.findById(id);
-                if (!thread.isInterrupted()) {
-                    mainThreadPoster.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            GroupListPresenter.this.onItemsLoaded(groupItem);
-                        }
-                    });
-                }
+        thread = new Thread(() -> {
+            GroupItem groupItem = findGroupItemService.findById(id);
+            if (!thread.isInterrupted()) {
+                mainThreadPoster.post(() -> onItemsLoaded(groupItem));
             }
         });
         thread.start();

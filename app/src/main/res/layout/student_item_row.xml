@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/person_item__name"
-        tools:src="@drawable/img0"
+        android:src="@drawable/img0"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="7dp"

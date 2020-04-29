@@ -13,14 +13,14 @@ import com.example.technopark.screens.grouplist.row.GroupListRowMvpViewImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.GroupListViewHolder> implements
+public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.StudentViewHolder> implements
         GroupListRowMvpView.Listener {
 
-    static class GroupListViewHolder extends RecyclerView.ViewHolder {
+    static class StudentViewHolder extends RecyclerView.ViewHolder {
 
         private GroupListRowMvpView groupListRowMvpView;
 
-        public GroupListViewHolder(GroupListRowMvpView groupListRowMvpView) {
+        public StudentViewHolder(GroupListRowMvpView groupListRowMvpView) {
             super(groupListRowMvpView.getRootView());
             this.groupListRowMvpView = groupListRowMvpView;
         }
@@ -38,14 +38,15 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Grou
     }
 
     @NonNull
-    @Override public GroupListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        GroupListRowMvpView groupListRowMvpView = new GroupListRowMvpViewImpl(layoutInflater, null, this);
-        return new GroupListViewHolder(groupListRowMvpView);
+    @Override
+    public StudentViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        GroupListRowMvpView groupListRowMvpView = new GroupListRowMvpViewImpl(layoutInflater, viewGroup, this);
+        return new StudentViewHolder(groupListRowMvpView);
     }
 
-    @Override public void onBindViewHolder(@NonNull GroupListViewHolder groupListViewHolder, int position) {
+    @Override public void onBindViewHolder(@NonNull StudentViewHolder studentViewHolder, int position) {
         Student student = items.get(position);
-        groupListViewHolder.groupListRowMvpView.bindData(student);
+        studentViewHolder.groupListRowMvpView.bindData(student);
     }
 
     @Override public int getItemCount() {
