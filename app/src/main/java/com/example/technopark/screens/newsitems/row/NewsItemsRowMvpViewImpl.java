@@ -56,7 +56,7 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
         commentsCountTextView.setText(newsItem.getComments_number());
 //        avatarImage.setImageDrawable();
 
-        Picasso.with(getContext()).load(newsItem.getUserpic()).into(avatarImage);
+        //Picasso.with(getContext()).load(newsItem.getUserpic()).into(avatarImage);
 
     }
 
