@@ -80,7 +80,7 @@ public class App extends Application {
 
     public ProfileService provideProfileService() {
         if (profileService == null) {
-            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi());
+            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), provideAvatarItemRepo(), getApplicationContext());
         }
         return profileService;
     }

@@ -47,17 +47,17 @@ public class FindGroupItemService {
         for (final StudentDto studentDto : studentDtoList){
             Bitmap avatar = avatarItemRepo.findById(studentDto.getId());
             if (avatar == null){
-                Picasso.with(context).load(studentDto.getAvatar()).into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        avatarItemRepo.add(bitmap, studentDto.getId());
-                    }
-
-                    @Override
-                    public void onBitmapFailed() {
-
-                    }
-                });
+//                Picasso.with(context).load(studentDto.getAvatar()).into(new Target() {
+//                    @Override
+//                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+//                        avatarItemRepo.add(bitmap, studentDto.getId());
+//                    }
+//
+//                    @Override
+//                    public void onBitmapFailed() {
+//
+//                    }
+//                });
             }
             studentList.add(new Student(studentDto.getId(), studentDto.getUsername(),
                     studentDto.getFullname(), avatar, studentDto.isOnline()));

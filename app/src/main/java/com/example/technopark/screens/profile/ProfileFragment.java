@@ -1,31 +1,25 @@
 package com.example.technopark.screens.profile;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
-import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.technopark.App;
 import com.example.technopark.R;
-import com.example.technopark.fragment.GroupListFragment;
 import com.example.technopark.profile.service.ProfileService;
 import com.example.technopark.util.ThreadPoster;
+import com.squareup.picasso.Picasso;
 
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends Fragment implements View.OnLongClickListener {
 
@@ -54,7 +48,6 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container);
         //((BaseActivity)getActivity()).setBarVisible(View.VISIBLE);
         presenter.bindView(view);
-
         return view.getRootView();
 
 

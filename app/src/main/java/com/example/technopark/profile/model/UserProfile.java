@@ -1,5 +1,7 @@
 package com.example.technopark.profile.model;
 
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 public class UserProfile {
@@ -10,9 +12,7 @@ public class UserProfile {
     private String projectName;
     private String fullName;
     private String gender;
-//    TODO: load image
     private String avatarUrl;
-
     //   Основная роль пользователя в образовательном проекте в данный момент
 //	 (студент, преподаватель, администратор или другое)
     private String mainGroup;
