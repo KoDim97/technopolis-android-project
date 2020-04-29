@@ -25,7 +25,7 @@ import java.util.Locale;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
-public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase<SchedulerItemsRowMvpView.Listener> implements SchedulerItemsRowMvpView {
+public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implements SchedulerItemsRowMvpView {
 
     private static final String RESPONSE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String LESSON_TIME_FORMAT = "HH:mm";
@@ -53,14 +53,8 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase<Schedule
         lessonLocationTextView = findViewById(R.id.scheduler_item_lesson_location);
         onActionButton = findViewById(R.id.scheduler_item_button);
         acceptReportImageView = findViewById(R.id.scheduler_accept_report_icon);
-        onActionButton.setOnClickListener(e -> checkIn());
     }
 
-    private void checkIn() {
-        for (Listener listener : getListeners()) {
-            listener.onCheckIn();
-        }
-    }
 
     @Override
     public void bindData(SchedulerItem schedulerItem, View.OnClickListener listener) {

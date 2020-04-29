@@ -28,7 +28,6 @@ public class SchedulerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //??? getScreenNavigator ???
         presenter = new SchedulerItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
                 getFindBlogItemService(), getMainThreadPoster());
     }
