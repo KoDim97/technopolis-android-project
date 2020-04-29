@@ -38,9 +38,9 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
         rvSchedulerItems.setAdapter(schedulerItemAdapter);
         rvSchedulerItems.addItemDecoration(new SchedulerItemDecoration(schedulerItemAdapter));
 
-//        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(rvSchedulerItems, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
-//
-//
+        OverScrollDecoratorHelper.setUpOverScroll(rvSchedulerItems, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+
+
 //        decor.setOverScrollStateListener(new IOverScrollStateListener() {
 //                                             @Override
 //                                             public void onOverScrollStateChange(IOverScrollDecor decor, int oldState, int newState) {
