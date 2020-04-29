@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ import com.example.technopark.R;
 import com.example.technopark.profile.service.ProfileService;
 import com.example.technopark.util.ThreadPoster;
 
-public class ProfileFragment extends Fragment implements View.OnLongClickListener {
+public class ProfileFragment extends Fragment implements View.OnLongClickListener, Button.OnClickListener {
 
     private ClipboardManager myClipboard;
     private ClipData myClip;
@@ -42,7 +43,7 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container);
+        ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container, this);
         //((BaseActivity)getActivity()).setBarVisible(View.VISIBLE);
         presenter.bindView(view);
         return view.getRootView();
@@ -97,17 +98,6 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 //            }
 //        });
 //
-////        Show group members
-//        v.findViewById(R.id.group_1).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                GroupListFragment groupListFragment = new GroupListFragment();
-//                getActivity().getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.fl_content, groupListFragment, "findThisFragment")
-//                        .addToBackStack(null)
-//                        .commit();
-//            }
-//        });
 //
 //        androidx.appcompat.widget.Toolbar toolbar = v.findViewById(R.id.toolbar);
 //        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -156,6 +146,11 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 
         Toast.makeText(getActivity(), R.string.copied, Toast.LENGTH_SHORT).show();
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        presenter.onGroupButtonClicked();
     }
 
     private void hideBackButton(View v) {
