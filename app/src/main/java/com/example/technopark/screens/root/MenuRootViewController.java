@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.example.technopark.R;
 import com.example.technopark.fragment.NewsFragment;
-import com.example.technopark.fragment.SchedulerFragment;
+import com.example.technopark.screens.scheduleritems.SchedulerFragment;
 import com.example.technopark.screens.common.nav.ScreenNavigator;
 import com.example.technopark.screens.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
