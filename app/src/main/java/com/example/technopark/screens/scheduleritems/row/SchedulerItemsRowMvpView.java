@@ -8,10 +8,6 @@ import com.example.technopark.screens.common.nav.BackPressedListener;
 
 public interface SchedulerItemsRowMvpView extends MvpView {
 
-    interface Listener extends BackPressedListener {
-        void onCheckIn();
-    }
-
     void bindData(SchedulerItem schedulerItem, View.OnClickListener listener);
 
 }
