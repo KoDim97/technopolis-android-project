@@ -46,7 +46,7 @@ public class ProfileService {
 
     private UserProfile requestFromServer() {
         ProfileDto profileDto = api.requestMyProfileDto();
-        
+
 //        Проверяем, ссылка на картинку использует https
 //        Если не использует, принудительно меняем http на https
 //        Иначе на некоторых устройствах изображение не будет загружаться

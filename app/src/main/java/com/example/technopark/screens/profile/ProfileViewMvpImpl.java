@@ -38,15 +38,17 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final TextView odnoklassniki;
     private final TextView gitHub;
     private final TextView vkontakte;
+    private final ProfileFragment profileFragment;
 
-//    private final float scale = getContext().getResources().getDisplayMetrics().density;
+    private final float scale;
 
     private static final String idGroupTemplate = "group_button_";
 //    private static final Typeface typeface = Typeface.createFromAsset(gey, );
 
-    public ProfileViewMvpImpl(LayoutInflater layoutInflater, ViewGroup parent) {
-
+    public ProfileViewMvpImpl(LayoutInflater layoutInflater, ViewGroup parent, ProfileFragment profileFragment) {
+        this.profileFragment = profileFragment;
         setRootView(layoutInflater.inflate(R.layout.profile_fragment, parent, false));
+        scale = getContext().getResources().getDisplayMetrics().density;
         image = findViewById(R.id.profile_image);
         name = findViewById(R.id.profile_fullname);
         status = findViewById(R.id.profile_status);
@@ -101,13 +103,12 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             button.setText(groups.get(i).getName());
             button.setGravity(Gravity.CENTER_VERTICAL);
             button.setLayoutParams(params);
-            button.setPadding(100, 0, 0, 0);
-//            button.setTypeface(typeface);
+//            Конвертируем px в dp
+            button.setPadding((int) (13 * scale + 0.5f), 0, 0, 0);
             button.setAllCaps(false);
-//            button.setTextColor();
             button.setId(i);
 
-//            button.setOnLongClickListener(profileFragment);
+            button.setOnClickListener(profileFragment);
             groupLinearLayout.addView(button);
 //            Не добавляем сепаратор последнему элементу
 //            if (i + 1 != length) {
