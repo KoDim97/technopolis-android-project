@@ -46,6 +46,14 @@ public class ProfileService {
 
     private UserProfile requestFromServer() {
         ProfileDto profileDto = api.requestMyProfileDto();
+        
+//        Проверяем, ссылка на картинку использует https
+//        Если не использует, принудительно меняем http на https
+//        Иначе на некоторых устройствах изображение не будет загружаться
+        String imageUrl = profileDto.getAvatarUrl();
+        if (!imageUrl.contains("https")) {
+            imageUrl = imageUrl.replace("http", "https");
+        }
 
         return new UserProfile(
                 profileDto.getId(),
@@ -54,7 +62,7 @@ public class ProfileService {
                 profileDto.getProjectName(),
                 profileDto.getFullName(),
                 profileDto.getGender(),
-                profileDto.getAvatarUrl(),
+                imageUrl,
                 profileDto.getMainGroup(),
                 profileDto.getBirthDate(),
                 profileDto.getAbout(),

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.ColorSpace;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final TextView odnoklassniki;
     private final TextView gitHub;
     private final TextView vkontakte;
+
+//    private final float scale = getContext().getResources().getDisplayMetrics().density;
 
     private static final String idGroupTemplate = "group_button_";
 //    private static final Typeface typeface = Typeface.createFromAsset(gey, );
@@ -85,21 +88,23 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         int length = groups.size();
 
         for (int i = 0; i < length; i++) {
-            Button button = new Button(getContext());
+            int style = R.attr.borderlessButtonStyle;
+            Button button = new Button(new ContextThemeWrapper(getContext(), style), null, style);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, 43);
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
 
-
-//            int color = Color.parseColor(String.valueOf(R.color.colorWhite));
+            params.setMargins(0, 1, 0,0);
             button.setBackgroundResource(R.color.colorWhite);
             Drawable icon = getContext().getDrawable(R.drawable.ic_chevron_right_black_24dp);
             button.setCompoundDrawables(null, null, icon, null);
             button.setText(groups.get(i).getName());
             button.setGravity(Gravity.CENTER_VERTICAL);
-            button.setPadding(13, 0, 0, 0);
+            button.setLayoutParams(params);
+            button.setPadding(100, 0, 0, 0);
 //            button.setTypeface(typeface);
             button.setAllCaps(false);
-//            button.setTextColor(Color.parseColor(String.valueOf(R.color.colorBlack)));
+//            button.setTextColor();
             button.setId(i);
 
 //            button.setOnLongClickListener(profileFragment);
