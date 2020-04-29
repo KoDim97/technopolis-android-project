@@ -1,7 +1,6 @@
 package com.example.technopark.screens.profile;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -9,11 +8,15 @@ import android.widget.TextView;
 import com.example.technopark.R;
 import com.example.technopark.profile.model.UserProfile;
 import com.example.technopark.screens.common.mvp.MvpViewObservableBase;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 // TODO: fix bind data
 public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Listener> implements ProfileMvpView {
 
+    private final CircleImageView image;
     private final TextView name;
     private final TextView status;
     private final TextView about;
@@ -26,7 +29,9 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
 
 
     public ProfileViewMvpImpl(LayoutInflater layoutInflater, ViewGroup parent) {
+
         setRootView(layoutInflater.inflate(R.layout.profile_fragment, parent, false));
+        image = findViewById(R.id.profile_image);
         name = findViewById(R.id.profile_fullname);
         status = findViewById(R.id.profile_status);
         about = findViewById(R.id.profile_about);
@@ -50,11 +55,13 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
 
     @Override
     public void bindData(UserProfile userProfile) {
+        Picasso.get().load(userProfile.getAvatarUrl()).into(image);
         name.setText(userProfile.getFullName());
         status.setText(userProfile.getMainGroup());
         about.setText(userProfile.getAbout());
         groupButton.setText(userProfile.getGroups().get(0).getName());
         mobilePhone.setText(userProfile.getContacts().get(0).getValue());
         odnoklassniki.setText(userProfile.getAccounts().get(0).getValue());
+
     }
 }

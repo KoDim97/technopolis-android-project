@@ -33,7 +33,7 @@ dependencies {
 //    iOS like scroll
     implementation 'me.everything:overscroll-decor-android:1.0.4'
 //    Picasso
-    implementation 'com.squareup.picasso:picasso:2.0.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 //    CircleView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.ncapdevi:frag-nav:3.2.0'
