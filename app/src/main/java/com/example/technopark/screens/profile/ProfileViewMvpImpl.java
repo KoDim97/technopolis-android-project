@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.example.technopark.R;
+import com.example.technopark.profile.model.UserAccount;
 import com.example.technopark.profile.model.UserContact;
 import com.example.technopark.profile.model.UserGroup;
 import com.example.technopark.profile.model.UserProfile;
@@ -32,14 +33,13 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final TextView name;
     private final TextView status;
     private final TextView about;
+    private final TextView rating;
     private final LinearLayout groupsLinearLayout;
     private final LinearLayout contactsLinearLayout;
+    private final LinearLayout accountsLinearLayout;
     private final ProfileFragment profileFragment;
 
     private final float scale;
-
-    private static final String idGroupTemplate = "group_button_";
-//    private static final Typeface typeface = Typeface.createFromAsset(gey, );
 
     public ProfileViewMvpImpl(LayoutInflater layoutInflater, ViewGroup parent, ProfileFragment profileFragment) {
         this.profileFragment = profileFragment;
@@ -49,8 +49,10 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         name = findViewById(R.id.profile_fullname);
         status = findViewById(R.id.profile_status);
         about = findViewById(R.id.profile_about);
+        rating = findViewById(R.id.profile_rating);
         groupsLinearLayout = findViewById(R.id.groups);
         contactsLinearLayout = findViewById(R.id.contacts);
+        accountsLinearLayout = findViewById(R.id.accounts);
     }
 
     @Override
@@ -72,10 +74,10 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         about.setText(userProfile.getAbout());
 //        Добавляем кнопки для просмотра групп
         addGroupsButtons(userProfile.getGroups());
-
+//        Добавляем textView для контактов
         addContactsTextViews(userProfile.getContacts());
-//        mobilePhone.setText(userProfile.getContacts().get(0).getValue());
-//        odnoklassniki.setText(userProfile.getAccounts().get(0).getValue());
+//        Добавляем textView для аккаунтов
+        addAccountsTextViews(userProfile.getAccounts());
 
     }
 
@@ -130,19 +132,19 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             );
 
             params.setMargins(0, 1, 0, 0);
-            TextView account = new TextView(getContext());
+            TextView contact = new TextView(getContext());
             Drawable icon = getContactsIcon(contacts.get(i));
-            account.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-            account.setText(contacts.get(i).getValue());
-            account.setBackgroundResource(R.color.colorWhite);
-            account.setPadding((int) (12 * scale + 0.5f), 0, 0, 0);
-            account.setCompoundDrawablePadding((int) (10 * scale + 0.5f));
-            account.setAllCaps(false);
-            account.setGravity(Gravity.CENTER_VERTICAL);
-            account.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
-            account.setLayoutParams(params);
-            account.setOnLongClickListener(profileFragment);
-            contactsLinearLayout.addView(account);
+            contact.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+            contact.setText(contacts.get(i).getValue());
+            contact.setBackgroundResource(R.color.colorWhite);
+            contact.setPadding((int) (12 * scale + 0.5f), 0, 0, 0);
+            contact.setCompoundDrawablePadding((int) (10 * scale + 0.5f));
+            contact.setAllCaps(false);
+            contact.setGravity(Gravity.CENTER_VERTICAL);
+            contact.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
+            contact.setLayoutParams(params);
+            contact.setOnLongClickListener(profileFragment);
+            contactsLinearLayout.addView(contact);
         }
     }
 
@@ -155,5 +157,43 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
                 return context.getDrawable(R.drawable.icons8_iphone_96);
         }
     }
+
+    private void addAccountsTextViews(List<UserAccount> accounts) {
+        int length = accounts.size();
+
+        for (int i = 0; i < length; i++) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    (int) (43 * scale + 0.5f)
+            );
+            params.setMargins(0, 1, 0, 0);
+            TextView account = new TextView(getContext());
+            Drawable icon = getAccountsIcon(accounts.get(i));
+            account.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+            account.setText(accounts.get(i).getValue());
+            account.setBackgroundResource(R.color.colorWhite);
+            account.setPadding((int) (12 * scale + 0.5f), 0, 0, 0);
+            account.setCompoundDrawablePadding((int) (10 * scale + 0.5f));
+            account.setAllCaps(false);
+            account.setGravity(Gravity.CENTER_VERTICAL);
+            account.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
+            account.setLayoutParams(params);
+            account.setOnLongClickListener(profileFragment);
+            accountsLinearLayout.addView(account);
+        }
+    }
+
+    private Drawable getAccountsIcon(UserAccount account) {
+        Context context = getContext();
+        switch (account.getName()) {
+            case "github":
+                return context.getDrawable(R.drawable.ic_github_mark_24);
+            case "vkontakte":
+                return context.getDrawable(R.drawable.ic_vk_logo_24);
+            default:
+                return context.getDrawable(R.drawable.ic_ok_48);
+        }
+    }
+
 }
 
