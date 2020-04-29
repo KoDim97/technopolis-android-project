@@ -1,5 +1,7 @@
 package com.example.technopark.screens.scheduleritems;
 
+import android.view.View;
+
 import com.example.technopark.scheduler.model.SchedulerItem;
 import com.example.technopark.scheduler.service.SchedulerItemService;
 import com.example.technopark.screens.common.mvp.MvpPresenter;
@@ -8,6 +10,7 @@ import com.example.technopark.screens.common.nav.BackPressedListener;
 import com.example.technopark.screens.common.nav.ScreenNavigator;
 import com.example.technopark.util.ThreadPoster;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpView>,
@@ -35,26 +38,23 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         loadItems();
     }
 
+
     private void loadItems() {
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 final List<SchedulerItem> schedulerItems = schedulerItemService.items();
+                final List<View.OnClickListener> listeners = createListeners(schedulerItems);
                 if (!thread.isInterrupted()) {
-                    mainThreadPoster.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            onItemsLoaded(schedulerItems);
-                        }
-                    });
+                    mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners));
                 }
             }
         });
         thread.start();
     }
 
-    private void onItemsLoaded(List<SchedulerItem> schedulerItems) {
-        view.bindData(schedulerItems);
+    private void onItemsLoaded(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners) {
+        view.bindData(schedulerItems, listeners);
     }
 
     @Override
@@ -74,6 +74,23 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         thread.interrupt();
         thread = null;
         view = null;
+    }
+
+    public void onCheckInClicked(long id) {
+        thread = new Thread(() -> {
+            final List<SchedulerItem> schedulerItems = schedulerItemService.checkInItem(id);
+            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+            mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners));
+        });
+        thread.start();
+    }
+
+    private List<View.OnClickListener> createListeners(List<SchedulerItem> items) {
+        List<View.OnClickListener> listeners = new ArrayList<>();
+        for (SchedulerItem schedulerItem : items) {
+            listeners.add(v -> onCheckInClicked(schedulerItem.getId()));
+        }
+        return listeners;
     }
 
     @Override

@@ -53,7 +53,7 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     private final List<SchedulerItem> schedulerItemsList = new ArrayList<>();
     private final LayoutInflater layoutInflater;
-    private View currParent;
+    private List<View.OnClickListener> listeners;
 
     public SchedulerItemAdapter(LayoutInflater layoutInflater) {
         this.layoutInflater = layoutInflater;
@@ -70,7 +70,8 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.View
         notifyDataSetChanged();
     }
 
-    public void bindData(Collection<SchedulerItem> schedulerItems) {
+    public void bindData(Collection<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners) {
+        this.listeners = listeners;
         schedulerItemsList.clear();
         schedulerItemsList.addAll(schedulerItems);
         notifyDataSetChanged();
@@ -103,7 +104,8 @@ public class SchedulerItemAdapter extends RecyclerView.Adapter<RecyclerView.View
             case 1:
                 SchedulerItemViewHolder schedulerItemViewHolder = (SchedulerItemViewHolder) holder;
                 SchedulerItem schedulerItem = schedulerItemsList.get(position / 2);
-                schedulerItemViewHolder.schedulerItemsRowMvpView.bindData(schedulerItem);
+                View.OnClickListener listener = listeners.get(position / 2);
+                schedulerItemViewHolder.schedulerItemsRowMvpView.bindData(schedulerItem, listener);
                 break;
             case 0:
                 SchedulerItemHeaderViewHolder schedulerItemHeaderViewHolder = (SchedulerItemHeaderViewHolder) holder;

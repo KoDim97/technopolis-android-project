@@ -164,7 +164,7 @@ public class MailApiImpl implements MailApi {
             public Map<String, String> getHeaders() {
                 return mHeaders;
             }
-        } ;
+        };
         queue.add(jsonArrayRequest);
 
 
@@ -207,10 +207,18 @@ public class MailApiImpl implements MailApi {
         final String url = "https://polis.mail.ru/api/mobile/v1/schedule/" + id + "/check";
         JSONObject json = new JSONObject();
 
+        Map<String, String> mHeaders = new HashMap<>();
+        mHeaders.put("Authorization", "Token " + user.getAuth_token());
 
         RequestFuture<JSONObject> requestFuture=RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, requestFuture);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, requestFuture)  {
+            @Override
+            public Map<String, String> getHeaders() {
+                return mHeaders;
+            }
+        };
         queue.add(request);
+
         SchedulerItemCheckInDto schedulerItemCheckInDto = null;
         try {
             JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);

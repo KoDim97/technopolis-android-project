@@ -2,6 +2,7 @@ package com.example.technopark.screens.scheduleritems;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -57,7 +58,7 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
     }
 
     @Override
-    public void bindData(List<SchedulerItem> schedulerItems) {
-        schedulerItemAdapter.bindData(schedulerItems);
+    public void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners) {
+        schedulerItemAdapter.bindData(schedulerItems, listeners);
     }
 }
