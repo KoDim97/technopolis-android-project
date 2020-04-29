@@ -33,7 +33,7 @@ public class App extends Application {
 
     private MailApi provideMailApi() {
         if (api == null) {
-            api = new MailApiImpl(Volley.newRequestQueue(this));
+            api = new MailApiImpl(Volley.newRequestQueue(this), provideUser());
         }
         return api;
     }

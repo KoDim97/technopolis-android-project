@@ -2,22 +2,16 @@ package com.example.technopark.api;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.Volley;
 import com.example.technopark.api.dto.AuthDto;
 import com.example.technopark.api.dto.GroupDto;
 import com.example.technopark.api.dto.NewsDto;
 import com.example.technopark.api.dto.ProfileDto;
-import com.example.technopark.api.dto.ScheduleDto;
-import com.example.technopark.user.model.User;
 import com.example.technopark.api.dto.SchedulerItemCheckInDto;
 import com.example.technopark.api.dto.SchedulerItemDto;
-
-import java.util.Arrays;
-import java.util.List;
+import com.example.technopark.user.model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,6 +20,11 @@ import org.json.JSONObject;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -33,8 +32,10 @@ import java.util.concurrent.TimeoutException;
 
 public class MailApiImpl implements MailApi {
     private RequestQueue queue;
-    public MailApiImpl(RequestQueue queue) {
+    private User user;
+    public MailApiImpl(RequestQueue queue, User user) {
         this.queue = queue;
+        this.user = user;
     }
 
     @Override
@@ -150,9 +151,61 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
-        return Arrays.asList(
+
+        ArrayList<SchedulerItemDto> items = new ArrayList<>();
+        String url = "https://polis.mail.ru/api/mobile/v1/schedule/";
+
+        Map<String, String> mHeaders = new HashMap<>();
+        mHeaders.put("Authorization", "Token " + user.getAuth_token());
+
+        RequestFuture<JSONArray> requestFuture = RequestFuture.newFuture();
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url,  new JSONArray(), requestFuture, requestFuture ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return mHeaders;
+            }
+        } ;
+        queue.add(jsonArrayRequest);
+
+
+        try {
+            JSONArray response = requestFuture.get(5, TimeUnit.SECONDS);
+            int count = 0;
+            while (count < response.length()) {
+                try {
+                    JSONObject jsonObject = response.getJSONObject(count);
+                    SchedulerItemDto schedulerItemDto = new SchedulerItemDto(
+                            jsonObject.getInt("id"),
+                            jsonObject.getString("discipline"),
+                            jsonObject.getString("title"),
+                            jsonObject.getString("short_title"),
+                            jsonObject.getString("super_short_title"),
+                            jsonObject.getString("date"),
+                            jsonObject.getString("start_time"),
+                            jsonObject.getString("end_time"),
+                            jsonObject.getString("location"),
+                            jsonObject.getBoolean("checkin_opened"),
+                            jsonObject.getBoolean("attended"),
+                            jsonObject.getString("feedback_url")
+                    );
+                    items.add(schedulerItemDto);
+                    ++count;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return items;
+
+       /* return Arrays.asList(
                 new SchedulerItemDto(
-                        123L,
+                        0L,
                         "Использование баз данных",
                         "Оптимизация запросов и индексирование",
                         "Лекция 6",
@@ -166,12 +219,12 @@ public class MailApiImpl implements MailApi {
                         null
                 ),
                 new SchedulerItemDto(
-                        123L,
+                        1L,
                         "Использование баз данных",
                         "Оптимизация запросов и индексирование",
                         "Лекция 6",
                         "Л 6",
-                        "2020-04-08T00:00:00Z",
+                        "2020-04-09T00:00:00Z",
                         "2020-04-08T18:30:00Z",
                         "2020-04-08T21:30:00Z",
                         "онлайн",
@@ -180,12 +233,12 @@ public class MailApiImpl implements MailApi {
                         null
                 ),
                 new SchedulerItemDto(
-                        123L,
+                        1223L,
                         "Использование баз данных",
                         "Оптимизация запросов и индексирование",
                         "Лекция 6",
                         "Л 6",
-                        "2020-04-08T00:00:00Z",
+                        "2020-04-10T00:00:00Z",
                         "2020-04-08T18:30:00Z",
                         "2020-04-08T21:30:00Z",
                         "онлайн",
@@ -194,12 +247,12 @@ public class MailApiImpl implements MailApi {
                         "someURl"
                 ),
                 new SchedulerItemDto(
-                        123L,
+                        1243L,
                         "Использование баз данных",
                         "Оптимизация запросов и индексирование",
                         "Лекция 6",
                         "Л 6",
-                        "2020-04-08T00:00:00Z",
+                        "2020-04-11T00:00:00Z",
                         "2020-04-08T18:30:00Z",
                         "2020-04-08T21:30:00Z",
                         "онлайн",
@@ -208,12 +261,12 @@ public class MailApiImpl implements MailApi {
                         null
                 ),
                 new SchedulerItemDto(
-                        123L,
+                        1235L,
                         "Использование баз данных",
                         "Оптимизация запросов и индексирование",
                         "Лекция 6",
                         "Л 6",
-                        "2020-04-08T00:00:00Z",
+                        "2020-04-12T00:00:00Z",
                         "2020-04-08T18:30:00Z",
                         "2020-04-08T21:30:00Z",
                         "онлайн",
@@ -222,12 +275,12 @@ public class MailApiImpl implements MailApi {
                         null
                 ),
                 new SchedulerItemDto(
-                        123L,
+                        12323L,
                         "Использование баз данных",
                         "Оптимизация запросов и индексирование",
                         "Лекция 6",
                         "Л 6",
-                        "2020-04-08T00:00:00Z",
+                        "2020-04-13T00:00:00Z",
                         "2020-04-08T18:30:00Z",
                         "2020-04-08T21:30:00Z",
                         "онлайн",
@@ -236,12 +289,12 @@ public class MailApiImpl implements MailApi {
                         null
                 ),
                 new SchedulerItemDto(
-                        123L,
+                        1265463L,
                         "Использование баз данных",
                         "Оптимизация запросов и индексирование",
                         "Лекция 6",
                         "Л 6",
-                        "2020-04-08T00:00:00Z",
+                        "2020-04-14T00:00:00Z",
                         "2020-04-08T18:30:00Z",
                         "2020-04-08T21:30:00Z",
                         "онлайн",
@@ -250,12 +303,12 @@ public class MailApiImpl implements MailApi {
                         null
                 ),
                 new SchedulerItemDto(
-                        123L,
+                        18623L,
                         "Использование баз данных",
                         "Оптимизация запросов и индексирование",
                         "Лекция 6",
                         "Л 6",
-                        "2020-04-08T00:00:00Z",
+                        "2020-04-15T00:00:00Z",
                         "2020-04-08T18:30:00Z",
                         "2020-04-08T21:30:00Z",
                         "онлайн",
@@ -264,12 +317,12 @@ public class MailApiImpl implements MailApi {
                         null
                 ),
                 new SchedulerItemDto(
-                        213L,
+                        21883L,
                         "Использование баз данных",
                         "Оптимизация запросов и индексирование",
                         "Лекция 6",
                         "Л 6",
-                        "2020-04-08T00:00:00Z",
+                        "2020-04-16T00:00:00Z",
                         "2020-04-08T18:30:00Z",
                         "2020-04-08T21:30:00Z",
                         "онлайн",
@@ -277,7 +330,7 @@ public class MailApiImpl implements MailApi {
                         false,
                         null
                 )
-        );
+        );*/
     }
 
     @Override

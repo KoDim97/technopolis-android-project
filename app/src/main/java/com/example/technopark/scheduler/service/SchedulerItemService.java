@@ -7,6 +7,7 @@ import com.example.technopark.scheduler.model.SchedulerItem;
 import com.example.technopark.scheduler.repo.SchedulerItemRepo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SchedulerItemService {
@@ -24,6 +25,7 @@ public class SchedulerItemService {
         if (schedulerItems.isEmpty()) {
             schedulerItems = requestFromApi();
         }
+        Collections.sort(schedulerItems, (SchedulerItem i1, SchedulerItem i2) -> i1.getDate().compareTo(i2.getDate()));
         return schedulerItems;
     }
 
