@@ -3,22 +3,21 @@ package com.example.technopark.api;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
-import com.android.volley.toolbox.Volley;
 import com.example.technopark.api.dto.AuthDto;
 import com.example.technopark.api.dto.GroupDto;
 import com.example.technopark.api.dto.NewsDto;
 import com.example.technopark.api.dto.ProfileDto;
-import com.example.technopark.api.dto.ScheduleDto;
-import com.example.technopark.profile.model.UserProfile;
+import com.example.technopark.profile.model.UserAccount;
+import com.example.technopark.profile.model.UserContact;
 import com.example.technopark.api.dto.StudentDto;
+import com.example.technopark.profile.model.UserGroup;
 import com.example.technopark.user.model.User;
 import com.example.technopark.api.dto.SchedulerItemCheckInDto;
 import com.example.technopark.api.dto.SchedulerItemDto;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -99,11 +98,11 @@ public class MailApiImpl implements MailApi {
     public GroupDto requestGroupDto(long id) {
         final String url = "https://polis.mail.ru/api/mobile/v1/groups/" + String.valueOf(id);
 
-        RequestFuture<JSONObject> requestFuture=RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, requestFuture){
+        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, requestFuture) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String>  params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<String, String>();
                 params.put("Authorization", "Token " + user.getAuth_token());
                 return params;
             }
@@ -115,7 +114,7 @@ public class MailApiImpl implements MailApi {
             String name = response.getString("name");
             JSONArray students = response.getJSONArray("students");
             List<StudentDto> list = new ArrayList<>();
-            for (int i = 0; i < students.length(); ++i){
+            for (int i = 0; i < students.length(); ++i) {
                 JSONObject student = students.getJSONObject(i);
                 long student_id = student.getLong("id");
                 String username = student.getString("username");
@@ -142,20 +141,93 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public ProfileDto requestMyProfileDto() {
-        UserProfile userProfile;
+        ProfileDto profileDto;
 
         final String url = "https://polis.mail.ru/" + "api/mobile/v1/profile/";
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, requestFuture, requestFuture);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, requestFuture) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Token " + user.getAuth_token());
+                return params;
+            }
+        };
         queue.add(request);
+
         try {
             JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);
-            System.out.println("done");
+            JSONObject activity = response.getJSONObject("activity");
+
+//            Convert JSONArray contacts to List<UserContact>
+//            from response
+            JSONArray jsonContacts = response.getJSONArray("contacts");
+            List<UserContact> contacts = new ArrayList<>();
+            int lenContacts = jsonContacts.length();
+            for (int i = 0; i < lenContacts; i++) {
+                JSONObject contact = new JSONObject(jsonContacts.get(i).toString());
+                UserContact userContact = new UserContact(
+                        contact.getString("name"),
+                        contact.getString("value")
+                );
+
+                contacts.add(userContact);
+            }
+
+//            Convert JSONArray groups to List<Group> from response
+            List<UserGroup> groups = new ArrayList<>();
+            JSONArray jsonGroups = response.getJSONArray("subgroups");
+            int lenGroups = jsonGroups.length();
+            for (int i = 0; i < lenGroups; i++) {
+                JSONObject contact = new JSONObject(jsonGroups.get(i).toString());
+                UserGroup userGroup = new UserGroup(
+                        contact.getLong("id"),
+                        contact.getString("name")
+                );
+
+                groups.add(userGroup);
+            }
+
+//            Convert JSONArray accounts to List<UserAccount> from response
+            List<UserAccount> accounts = new ArrayList<>();
+            JSONArray jsonAccounts = response.getJSONArray("accounts");
+            int lenAccounts = jsonAccounts.length();
+            for (int i = 0; i < lenAccounts; i++) {
+                JSONObject contact = new JSONObject(jsonAccounts.get(i).toString());
+                UserAccount userAccount = new UserAccount(
+                        contact.getString("name"),
+                        contact.getString("value")
+                );
+
+                accounts.add(userAccount);
+            }
+
+            profileDto = new ProfileDto(
+                    response.getLong("id"),
+                    response.getString("username"),
+                    response.getInt("project_id"),
+                    response.getString("project"),
+                    response.getString("fullname"),
+                    response.getString("gender"),
+                    response.getString("avatar_url"),
+                    response.getString("main_group"),
+                    response.getString("birthdate"),
+                    response.getString("about"),
+                    activity.getString("date_joined"),
+                    activity.getString("last_seen"),
+                    contacts,
+                    groups,
+                    accounts
+            );
+            return profileDto;
+
         } catch (InterruptedException | TimeoutException e) {
             System.out.println("Time out");
         } catch (ExecutionException e) {
             System.out.println("Invalid login or password");
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         return null;
     }
