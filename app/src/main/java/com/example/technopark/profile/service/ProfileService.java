@@ -1,6 +1,7 @@
 package com.example.technopark.profile.service;
 
 import com.example.technopark.api.MailApi;
+import com.example.technopark.api.dto.ProfileDto;
 import com.example.technopark.profile.model.UserProfile;
 import com.example.technopark.profile.repo.UserProfileRepo;
 import com.example.technopark.user.model.User;
