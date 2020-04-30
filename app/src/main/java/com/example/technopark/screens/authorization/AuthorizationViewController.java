@@ -67,9 +67,14 @@ public class AuthorizationViewController  {
         passwordEditTextSettings(passwordEditText);
         viewPagerSettings(viewPager,app);
         btnSettings(activity);
+        test();
     }
 
 
+    private void test(){
+        loginEditText.setText("");
+        passwordEditText.setText("");
+    }
 
     private void changeEnableEnter(){
         if(enableEnter[0]&&enableEnter[1]){
