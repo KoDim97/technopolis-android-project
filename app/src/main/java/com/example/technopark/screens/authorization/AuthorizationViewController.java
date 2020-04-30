@@ -71,8 +71,8 @@ public class AuthorizationViewController {
 
 
     private void test(){
-        loginEditText.setText("");
-        passwordEditText.setText("");
+        loginEditText.setText("***REMOVED***");
+        passwordEditText.setText("***REMOVED***");
     }
 
     private void changeEnableEnter(){
