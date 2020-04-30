@@ -1,8 +1,5 @@
 package com.example.technopark.screens.newsitems.row;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +10,12 @@ import com.example.technopark.R;
 import com.example.technopark.news.model.NewsItem;
 import com.example.technopark.screens.common.mvp.MvpViewBase;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRowMvpView {
 
@@ -56,7 +58,22 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
         fullNameTextView.setText(newsItem.getName());
         titleTextView.setText(newsItem.getTitle());
         blogNameTextView.setText(newsItem.getSection());
-        datePostingTextView.setText(newsItem.getDate());
+        try {
+
+
+            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",
+                            new Locale("ru","RU"))
+                    .parse(newsItem.getDate());
+            datePostingTextView.setText(
+                    new SimpleDateFormat("d MMM yyyy 'г'. 'в' HH:mm",
+                    new Locale("ru","RU"))
+                    .format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
         commentsCountTextView.setText(newsItem.getComments_number());
         Picasso.get().load(newsItem.getUserpic()).fit().into(avatarImage);
     }
