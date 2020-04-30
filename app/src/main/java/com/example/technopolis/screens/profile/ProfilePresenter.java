@@ -89,7 +89,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     @Override
     public void onBtnGoBackClicked() {
-
         screenNavigator.navigateUp();
     }
 
