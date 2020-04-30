@@ -7,6 +7,7 @@ import com.example.technopark.scheduler.model.SchedulerItem;
 import com.example.technopark.scheduler.repo.SchedulerItemRepo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SchedulerItemService {
@@ -21,9 +22,10 @@ public class SchedulerItemService {
 
     public List<SchedulerItem> items() {
         List<SchedulerItem> schedulerItems = schedulerItemRepo.findAll();
-        if (schedulerItems == null) {
+        if (schedulerItems.isEmpty()) {
             schedulerItems = requestFromApi();
         }
+        Collections.sort(schedulerItems, (SchedulerItem i1, SchedulerItem i2) -> i1.getDate().compareTo(i2.getDate()));
         return schedulerItems;
     }
 
@@ -57,6 +59,7 @@ public class SchedulerItemService {
     public List<SchedulerItem> checkInItem(long id) {
         SchedulerItemCheckInDto schedulerItemCheckInDto = api.checkInSchedulerItem(id);
         SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(id);
+        schedulerItemFromCache.setFeedbackUrl(schedulerItemCheckInDto.getFeedbackURL());
         return schedulerItemRepo.update(schedulerItemFromCache);
     }
 

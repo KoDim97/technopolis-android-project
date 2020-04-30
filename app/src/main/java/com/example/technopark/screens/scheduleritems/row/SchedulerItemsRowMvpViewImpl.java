@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import com.example.technopark.R;
 import com.example.technopark.scheduler.model.SchedulerItem;
 import com.example.technopark.screens.common.mvp.MvpViewBase;
+import com.example.technopark.screens.common.mvp.MvpViewObservableBase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,7 +25,7 @@ import java.util.Locale;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
-public class SchedulerItemsRowMvpViewImpl extends MvpViewBase implements SchedulerItemsRowMvpView {
+public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implements SchedulerItemsRowMvpView {
 
     private static final String RESPONSE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String LESSON_TIME_FORMAT = "HH:mm";
@@ -54,8 +55,9 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewBase implements Schedul
         acceptReportImageView = findViewById(R.id.scheduler_accept_report_icon);
     }
 
+
     @Override
-    public void bindData(SchedulerItem schedulerItem) {
+    public void bindData(SchedulerItem schedulerItem, View.OnClickListener listener) {
         this.schedulerItem = schedulerItem;
         subjectNameTextView.setText(schedulerItem.getSubjectName());
         lessonNameTextView.setText(schedulerItem.getLessonName());
@@ -63,7 +65,7 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewBase implements Schedul
 
         String lessonType = schedulerItem.getLessonType();
         lessonTypeTextView.setText(lessonType.length() > 8 ? lessonType.substring(0, 8) + "..." : lessonType);
-        bindActionButton(schedulerItem);
+        bindActionButton(schedulerItem, listener);
         bindLessonTime(startTimeTextView, schedulerItem.getStartTime());
         bindLessonTime(endTimeTextView, schedulerItem.getEndTime());
     }
@@ -80,14 +82,14 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewBase implements Schedul
         }
     }
 
-    private void bindActionButton(final SchedulerItem schedulerItem) {
-        if (schedulerItem.getFeedbackUrl() != null) {
+    private void bindActionButton(final SchedulerItem schedulerItem, final View.OnClickListener listener) {
+        if (!schedulerItem.getFeedbackUrl().equals("null")) {
             setOnFeedback(schedulerItem);
         } else if (schedulerItem.isAttended()) {
             setOnIsAttended();
         }
-        else  if (schedulerItem.isCheckInOpen()) {
-            setOnIsCheckedInOpen(schedulerItem);
+        else if (schedulerItem.isCheckInOpen()) {
+            setOnIsCheckedInOpen(schedulerItem, listener);
         } else {
             onActionButton.setVisibility(View.INVISIBLE);
             acceptReportImageView.setVisibility(View.INVISIBLE);
@@ -109,9 +111,7 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewBase implements Schedul
             public void onClick(View v) {
                 Intent viewIntent = new Intent(
                         "android.intent.action.VIEW",
-                        Uri.parse(schedulerItem.getFeedbackUrl() == null
-                                ? "https://www.google.ru/"
-                                : schedulerItem.getFeedbackUrl())
+                        Uri.parse(schedulerItem.getFeedbackUrl())
                 );
                 startActivity(getContext(), viewIntent, new Bundle());
                 setOnIsAttended();
@@ -124,7 +124,7 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewBase implements Schedul
         acceptReportImageView.setVisibility(View.VISIBLE);
     }
 
-    private void setOnIsCheckedInOpen(final SchedulerItem schedulerItem) {
+    private void setOnIsCheckedInOpen(final SchedulerItem schedulerItem, final View.OnClickListener listener) {
         setButtonCharacteristics(
                 "Отметиться",
                 ContextCompat.getDrawable(getContext(), R.drawable.scheduler_on_present_element),
@@ -132,13 +132,7 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewBase implements Schedul
         );
         onActionButton.setVisibility(View.VISIBLE);
         acceptReportImageView.setVisibility(View.INVISIBLE);
-        onActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                schedulerItem.setAttended(true);
-                setOnFeedback(schedulerItem);
-            }
-        });
+        onActionButton.setOnClickListener(listener);
     }
 
     private void setButtonCharacteristics(String buttonText, Drawable background, int textColor) {

@@ -28,15 +28,16 @@ public class SchedulerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //??? getScreenNavigator ???
-//        presenter = new SchedulerItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
-//                getFindBlogItemService(), getMainThreadPoster());
+        presenter = new SchedulerItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
+                getFindBlogItemService(), getMainThreadPoster());
     }
 
     @Override
     @Nullable public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
         SchedulerItemsMvpView view = new SchedulerItemsMvpViewImpl(inflater, container, getContext());
         presenter.bindView(view);
+
+//        ((BaseActivity) getActivity()).getRootViewController().setVisible(View.VISIBLE);
         return view.getRootView();
     }
 
@@ -57,6 +58,7 @@ public class SchedulerFragment extends Fragment {
         presenter.onDestroy();
         super.onDestroy();
     }
+
 
     @Nullable private BaseActivity getMainActivity() {
         return (BaseActivity) getActivity();
