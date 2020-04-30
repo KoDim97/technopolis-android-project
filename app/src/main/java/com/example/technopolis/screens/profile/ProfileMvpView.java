@@ -28,4 +28,6 @@ public interface ProfileMvpView extends MvpViewObservable<ProfileMvpView.Listene
 
     void hideNavBar();
 
+    void showNameOnToolbar(String userName);
+
 }
