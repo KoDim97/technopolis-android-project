@@ -5,41 +5,21 @@ import com.example.technopark.news.model.NewsItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.TreeMap;
 
-public class NewsItemRepositoryImpl implements NewsItemRepository {
+public class NewsItemRepositoryImpl implements NewsItemRepository{
 
-    private final Map<Long, NewsItem> items = new ConcurrentHashMap<>();
+    private final Map<String, NewsItem> itemsNews = new TreeMap<>((String o1, String o2) -> o2.compareTo(o1));
 
     @Override
     public List<NewsItem> findAll() {
-        return new ArrayList<>(items.values());
+        return new ArrayList<>(itemsNews.values());
     }
 
     @Override
-    public NewsItem findById(long id) {
-        return items.get(id);
+    public void add(NewsItem newsItem) {
+        itemsNews.put(newsItem.getDate(), newsItem);
+
     }
 
-    @Override
-    public NewsItem add(NewsItem newsItem) {
-        return items.put(newsItem.getId(), newsItem);
-    }
-
-    @Override
-    public void addAll(List<NewsItem> newsList) {
-        for (NewsItem newsItem : newsList) {
-            items.put(newsItem.getId(), newsItem);
-        }
-    }
-
-    @Override
-    public void update(NewsItem newsItem) {
-        items.put(newsItem.getId(), newsItem);
-    }
-
-    @Override
-    public void removeById(long id) {
-        items.remove(id);
-    }
 }

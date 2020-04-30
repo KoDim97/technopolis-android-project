@@ -40,6 +40,7 @@ public class AuthorizationFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.authorization, container, false);
+        activity.getRootViewController().setBarVisible(View.GONE);
         viewController = new AuthorizationViewController(rootView, activity);
         return rootView;
     }
