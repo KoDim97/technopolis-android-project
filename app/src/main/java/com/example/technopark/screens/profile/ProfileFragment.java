@@ -17,11 +17,12 @@ import com.example.technopark.R;
 import com.example.technopark.profile.service.ProfileService;
 import com.example.technopark.util.ThreadPoster;
 
-public class ProfileFragment extends Fragment implements Button.OnClickListener {
+public class ProfileFragment extends Fragment {
 
     private ProfilePresenter presenter;
     private static final String PROFILE_NAME = "user_name";
     private static final String BACK_BUTTON_TEXT = "back_button_text";
+
     public ProfileFragment() {
     }
 
@@ -148,12 +149,7 @@ public class ProfileFragment extends Fragment implements Button.OnClickListener 
         super.onDestroy();
     }
 
-
-    @Override
-    public void onClick(View v) {
-        presenter.onGroupButtonClicked(v.getId());
-    }
-
+    
     private void hideBackButton(View v) {
         androidx.appcompat.widget.Toolbar toolBar = v.findViewById(R.id.toolbar);
         toolBar.setNavigationIcon(null);
