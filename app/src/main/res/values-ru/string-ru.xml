@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Технопарк</string>
+    <string name="app_name">Технополис</string>
     <string name="login">Почта или логин</string>
     <string name="password">Пароль</string>
     <string name="enter">Войти</string>
@@ -20,4 +20,6 @@
     <string name="contacts">Контакты</string>
     <string name="accounts">Аккаунты</string>
     <string name="top_bar_name">Новости</string>
+
+    <string name="authFailed">Неправильный логин или пароль</string>
 </resources>
