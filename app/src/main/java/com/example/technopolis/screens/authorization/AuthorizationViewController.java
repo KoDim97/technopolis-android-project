@@ -62,7 +62,7 @@ public class AuthorizationViewController {
         passwordEditTextSettings(passwordEditText);
         viewPagerSettings(viewPager, app);
         btnSettings(activity);
-        test();
+        //test();
     }
 
 
