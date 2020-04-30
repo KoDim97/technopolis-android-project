@@ -65,19 +65,12 @@ public class AuthorizationViewController {
         //test();
     }
 
-
-    private void test() {
-        loginEditText.setText("");
-        passwordEditText.setText("");
-    }
-
     private void changeEnableEnter() {
         if (enableEnter[0] && enableEnter[1]) {
             enterButton.setEnabled(true);
         } else
             enterButton.setEnabled(false);
     }
-
 
     private void loginEditTextSettings(EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
@@ -93,9 +86,7 @@ public class AuthorizationViewController {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() != 0) {
-                    enableEnter[0] = true;
-                } else enableEnter[0] = false;
+                enableEnter[0] = s.length() != 0;
                 changeEnableEnter();
             }
         });
