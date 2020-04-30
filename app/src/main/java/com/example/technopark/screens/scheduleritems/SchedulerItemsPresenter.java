@@ -67,6 +67,8 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                 actualPosition++;
             }
         }
+        actualPosition--;
+        actualPosition = Math.max(actualPosition, 0);
         return actualPosition;
     }
 
