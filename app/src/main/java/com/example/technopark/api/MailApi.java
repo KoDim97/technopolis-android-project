@@ -14,11 +14,11 @@ import java.util.List;
 
 public interface MailApi {
 
+
     AuthDto requestAuthDto(String login, String password);
     ProfileDto requestProfileDto(String username);
-    ProfileDto requestMyProfileDto();
-    GroupDto requestGroupDto(Integer id);
-
+    GroupDto requestGroupDto(long id);
+    void setProjectUrl(String string);
     List<SchedulerItemDto> requestSchedulerItems();
     SchedulerItemCheckInDto checkInSchedulerItem(long id);
     List<NewsDto> requestMainNewsDto(Integer limit, Integer offset);
