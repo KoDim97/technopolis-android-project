@@ -67,8 +67,6 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragNavController.onSaveInstanceState(outState);
     }
 
-
-
     private void deleteLoop(int index) {
         boolean find = false;
         int n = log.size();
@@ -99,7 +97,6 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
     }
 
-
     private boolean navBarElem(Fragment fragment) {
         List temp = activity.getRootFragmentList();
         if (temp.get(1) == fragment) {
@@ -111,7 +108,6 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
         return false;
     }
-
 
     public boolean navigateUp() {
         if (!fragNavController.isRootFragment()) {

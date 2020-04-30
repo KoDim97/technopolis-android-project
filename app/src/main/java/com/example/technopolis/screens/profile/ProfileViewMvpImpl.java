@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
@@ -24,6 +23,7 @@ import com.example.technopolis.profile.model.UserContact;
 import com.example.technopolis.profile.model.UserGroup;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.screens.common.mvp.MvpViewObservableBase;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -82,7 +82,17 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
 
     @Override
     public void bindData(UserProfile userProfile) {
-        Picasso.get().load(userProfile.getAvatarUrl()).fit().into(image);
+        Picasso.get().load(userProfile.getAvatarUrl()).fit().into(image, new Callback() {
+            @Override
+            public void onSuccess() {
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                image.setImageResource(R.drawable.img_no_avatar);
+            }
+        });
         name.setText(userProfile.getFullName());
         status.setText(userProfile.getMainGroup());
         about.setText(userProfile.getAbout());
