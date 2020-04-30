@@ -13,7 +13,7 @@ public interface GroupListMvpView extends MvpViewObservable<GroupListMvpView.Lis
     interface Listener extends BackPressedListener {
 
         void onFilterTextUpdated(String text);
-        void onStudentClicked(long studentId);
+        void onStudentClicked(String username);
 
         void onBtnGoBackClicked();
     }
