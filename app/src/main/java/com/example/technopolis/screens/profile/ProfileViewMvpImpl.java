@@ -70,12 +70,14 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         TextView view = findViewById(R.id.back_to_group);
         view.setText(backButtonText);
         view.setVisibility(View.VISIBLE);
-        toolbar.setNavigationOnClickListener(v -> {
-            for (Listener listener : getListeners()) {
-                listener.onBtnGoBackClicked();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> goBack());
+        view.setOnClickListener(v -> goBack());
+    }
 
+    private void goBack() {
+        for (Listener listener : getListeners()) {
+            listener.onBtnGoBackClicked();
+        }
     }
 
     @Override
