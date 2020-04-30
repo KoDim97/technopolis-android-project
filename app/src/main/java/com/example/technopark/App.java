@@ -1,13 +1,14 @@
 package com.example.technopark;
 
 import android.app.Application;
-import android.content.Context;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.technopark.api.MailApi;
 import com.example.technopark.api.MailApiImpl;
 
+import com.example.technopark.profile.repo.UserProfileRepo;
+import com.example.technopark.profile.repo.UserProfileRepoImpl;
+import com.example.technopark.profile.service.ProfileService;
 import com.example.technopark.group.repo.GroupItemRepo;
 import com.example.technopark.group.repo.GroupItemRepoImpl;
 import com.example.technopark.group.service.FindGroupItemService;
@@ -29,6 +30,8 @@ public class App extends Application {
     private AuthService authService;
     private SchedulerItemService schedulerItemService;
     private SchedulerItemRepo schedulerItemRepo;
+    private ProfileService profileService;
+    private UserProfileRepo userProfileRepo;
     private FindGroupItemService findGroupItemService;
     private GroupItemRepo groupItemRepo;
 
@@ -63,6 +66,21 @@ public class App extends Application {
             user = new User();
         }
         return user;
+    }
+
+
+    public UserProfileRepo provideUserProfileRepo() {
+        if (userProfileRepo == null) {
+            userProfileRepo = new UserProfileRepoImpl();
+        }
+        return userProfileRepo;
+    }
+
+    public ProfileService provideProfileService() {
+        if (profileService == null) {
+            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), getApplicationContext());
+        }
+        return profileService;
     }
 
     public SchedulerItemRepo provideSchedulerItemRepo() {

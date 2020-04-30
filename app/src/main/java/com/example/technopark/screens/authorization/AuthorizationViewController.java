@@ -23,7 +23,7 @@ import com.example.technopark.App;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
-public class AuthorizationViewController  {
+public class AuthorizationViewController {
     private ScreenNavigator screenNavigator;
     private ImageButton prevButton;
     private ImageButton nextButton;
@@ -33,7 +33,7 @@ public class AuthorizationViewController  {
     private EditText loginEditText;
     private EditText passwordEditText;
     private Button enterButton;
-    private boolean[] enableEnter=new boolean[2];
+    private boolean[] enableEnter = new boolean[2];
     private final AuthService authService;
     private Thread thread;
     private String park = "https://park.mail.ru";
@@ -46,29 +46,28 @@ public class AuthorizationViewController  {
     private String data = "https://data.mail.ru";
 
 
-
-
-    public AuthorizationViewController(View rootView, BaseActivity activity){
-        screenNavigator=activity.getScreenNavigator();
-        myPager = new MyPager(activity,activity);
+    public AuthorizationViewController(View rootView, BaseActivity activity) {
+        screenNavigator = activity.getScreenNavigator();
+        myPager = new MyPager(activity, activity);
         viewPager = rootView.findViewById(R.id.view_pager);
         viewPager.setAdapter(myPager);
         mTabLayout = (TabLayout) rootView.findViewById(R.id.tablayout);
         mTabLayout.setupWithViewPager(viewPager);
-        prevButton=(ImageButton) rootView.findViewById(R.id.prev_button);
-        nextButton=(ImageButton) rootView.findViewById(R.id.next_button);
-        enterButton=(Button) rootView.findViewById(R.id.enter);
-        loginEditText=(EditText) rootView.findViewById(R.id.Login);
-        passwordEditText=(EditText) rootView.findViewById(R.id.Password);
+        prevButton = (ImageButton) rootView.findViewById(R.id.prev_button);
+        nextButton = (ImageButton) rootView.findViewById(R.id.next_button);
+        enterButton = (Button) rootView.findViewById(R.id.enter);
+        loginEditText = (EditText) rootView.findViewById(R.id.Login);
+        passwordEditText = (EditText) rootView.findViewById(R.id.Password);
         App app = (App) activity.getApplication();
         assert app != null;
         authService = app.provideAuthService();
         loginEditTextSettings(loginEditText);
         passwordEditTextSettings(passwordEditText);
-        viewPagerSettings(viewPager,app);
+        viewPagerSettings(viewPager, app);
         btnSettings(activity);
         test();
     }
+
 
 
     private void test(){
@@ -79,26 +78,28 @@ public class AuthorizationViewController  {
     private void changeEnableEnter(){
         if(enableEnter[0]&&enableEnter[1]){
             enterButton.setEnabled(true);
-        }else
+        } else
             enterButton.setEnabled(false);
     }
 
 
-    private void loginEditTextSettings(EditText editText){
+    private void loginEditTextSettings(EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //  вызывается,когда добавляется каждый символ
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //  вызывается перед вводом
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length()!=0){
-                    enableEnter[0]=true;
-                }else enableEnter[0]=false;
+                if (s.length() != 0) {
+                    enableEnter[0] = true;
+                } else enableEnter[0] = false;
                 changeEnableEnter();
             }
         });
@@ -109,21 +110,24 @@ public class AuthorizationViewController  {
             }
         });
     }
-    private void passwordEditTextSettings(EditText editText){
+
+    private void passwordEditTextSettings(EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 //  вызывается,когда добавляется каждый символ
             }
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //  вызывается перед вводом
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length()!=0){
-                    enableEnter[1]=true;
-                }else enableEnter[1]=false;
+                if (s.length() != 0) {
+                    enableEnter[1] = true;
+                } else enableEnter[1] = false;
                 changeEnableEnter();
             }
         });
@@ -131,7 +135,7 @@ public class AuthorizationViewController  {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 boolean consumed = false;
                 if (keyCode == KEYCODE_ENTER) {
-                    if(enterButton.isEnabled()){
+                    if (enterButton.isEnabled()) {
                         enterButton.performClick();
                     }
                     consumed = true;
@@ -141,7 +145,8 @@ public class AuthorizationViewController  {
         });
     }
 
-    private void setProject(int position,App app){
+
+    private void setProject(int position, App app) {
         switch (position) {
             case 0:
                 app.provideMailApi().setProjectUrl(park);
@@ -170,7 +175,7 @@ public class AuthorizationViewController  {
     }
 
 
-    private void viewPagerSettings(ViewPager viewPager, final App app){
+    private void viewPagerSettings(ViewPager viewPager, final App app) {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -180,12 +185,13 @@ public class AuthorizationViewController  {
             @Override
             public void onPageSelected(int position) {
                 int totalItems = myPager.getCount();
-                setProject(position,app);
-                if(position==0){
+
+                setProject(position, app);
+                if (position == 0) {
                     prevButton.setVisibility(View.INVISIBLE);
-                }else if(position==totalItems-1){
+                } else if (position == totalItems - 1) {
                     nextButton.setVisibility(View.INVISIBLE);
-                }else {
+                } else {
                     prevButton.setVisibility(View.VISIBLE);
                     nextButton.setVisibility(View.VISIBLE);
                 }
@@ -198,41 +204,32 @@ public class AuthorizationViewController  {
         });
     }
 
-    private void btnSettings(final BaseActivity activity){
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int current = viewPager.getCurrentItem();
-                int totalItems = myPager.getCount();
-                if(current < totalItems - 1) {
-                    viewPager.setCurrentItem(current + 1, true);
-                }
+    private void btnSettings(final BaseActivity activity) {
+        nextButton.setOnClickListener(v -> {
+            int current = viewPager.getCurrentItem();
+            int totalItems = myPager.getCount();
+            if (current < totalItems - 1) {
+                viewPager.setCurrentItem(current + 1, true);
             }
         });
-        prevButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int current = viewPager.getCurrentItem();
-                if(current != 0) {
-                    viewPager.setCurrentItem(current - 1, true);
-                }
+        prevButton.setOnClickListener(v -> {
+            int current = viewPager.getCurrentItem();
+            if (current != 0) {
+                viewPager.setCurrentItem(current - 1, true);
             }
         });
-        enterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (authService.CheckAuth(loginEditText.getText().toString(), passwordEditText.getText().toString())) {
-                            screenNavigator.changeAuthorized(true);
-                        } else {
-                            
-                        }
+        enterButton.setOnClickListener(v -> {
+            thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (authService.CheckAuth(loginEditText.getText().toString(), passwordEditText.getText().toString())) {
+                        screenNavigator.changeAuthorized(true);
+                    } else {
+
                     }
-                });
-                thread.start();
-            }
+                }
+            });
+            thread.start();
         });
     }
 

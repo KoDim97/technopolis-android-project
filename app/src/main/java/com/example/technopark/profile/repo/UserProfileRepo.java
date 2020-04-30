@@ -5,13 +5,14 @@ import com.example.technopark.profile.model.UserProfile;
         import java.util.List;
 
 public interface UserProfileRepo {
+
     List<UserProfile> findAll();
 
-    UserProfile findById(long id);
+    UserProfile findByUserName(String userName);
 
     UserProfile add(UserProfile userProfile);
 
     void update(UserProfile userProfile);
 
-    void removeById(long id);
+    void removeByUserName(String userName);
 }

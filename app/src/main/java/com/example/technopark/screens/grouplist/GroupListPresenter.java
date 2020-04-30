@@ -35,8 +35,10 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
         this.mainThreadPoster = mainThreadPoster;
     }
 
-    @Override public void bindView(GroupListMvpView view) {
+    @Override
+    public void bindView(GroupListMvpView view) {
         this.view = view;
+        view.showProgress();
         loadItems();
     }
 
@@ -52,27 +54,32 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
 
     private void onItemsLoaded(GroupItem groupItem) {
         // prepare to show
+        view.hideProgress();
         view.bindData(groupItem);
     }
 
-    @Override public void onStart() {
+    @Override
+    public void onStart() {
         view.registerListener(this);
         backPressDispatcher.registerListener(this);
     }
 
-    @Override public void onStop() {
+    @Override
+    public void onStop() {
         view.unregisterListener(this);
         backPressDispatcher.unregisterListener(this);
     }
 
-    @Override public void onDestroy() {
+    @Override
+    public void onDestroy() {
         // dispose all requests
         thread.interrupt();
         thread = null;
         view = null;
     }
 
-    @Override public boolean onBackPressed() {
+    @Override
+    public boolean onBackPressed() {
         screenNavigator.navigateUp();
         return true;
     }
@@ -85,16 +92,16 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
             List<Student> filteredStudent = new ArrayList<>();
 
             if (text.length() != 0) {
-                for(Student student: students){
-                    if(student.getFullname().toLowerCase().contains(text.toLowerCase())){
+                for (Student student : students) {
+                    if (student.getFullname().toLowerCase().contains(text.toLowerCase())) {
                         filteredStudent.add(student);
                     }
                 }
-            }else{
+            } else {
                 filteredStudent = students;
             }
 
-            GroupItem filteredGroup = new GroupItem(groupItem.getId(), groupItem.getName(),filteredStudent);
+            GroupItem filteredGroup = new GroupItem(groupItem.getId(), groupItem.getName(), filteredStudent);
             if (!thread.isInterrupted()) {
                 mainThreadPoster.post(() -> onItemsLoaded(filteredGroup));
             }
@@ -103,9 +110,9 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     }
 
     @Override
-    public void onStudentClicked(long studentId) {
-        //temp
-        screenNavigator.loadFragment(ProfileFragment.newInstance());
+    public void onStudentClicked(String username) {
+        GroupItem groupItem = findGroupItemService.findById(id);
+        screenNavigator.toProfile(username, groupItem.getName());
     }
 
     @Override

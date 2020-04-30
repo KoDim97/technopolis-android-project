@@ -7,8 +7,10 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
-import com.example.technopark.screens.authorization.AuthorizationFragment;
 import com.example.technopark.screens.grouplist.GroupListFragment;
+
+import com.example.technopark.screens.profile.ProfileFragment;
+
 import com.ncapdevi.fragnav.FragNavController;
 
 public class ScreenNavigator implements FragNavController.RootFragmentListener {
@@ -16,7 +18,6 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     private final FragNavController fragNavController;
     private boolean authorized = false;
     private BaseActivity activity;
-
 
 
     public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, BaseActivity activity) {
@@ -35,7 +36,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     @Override
     public Fragment getRootFragment(int index) {
         if (!authorized) {
-            return AuthorizationFragment.newInstance(activity);
+            return activity.getRootFragment();
         } else {
             return activity.getRootFragment();
         }
@@ -50,6 +51,10 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragNavController.pushFragment(GroupListFragment.newInstance(id));
     }
 
+    public void toProfile(String username, String groupname) {
+        fragNavController.pushFragment(ProfileFragment.newInstance(username, groupname));
+    }
+
 
     public void onSaveInstanceState(Bundle outState) {
         fragNavController.onSaveInstanceState(outState);
@@ -59,8 +64,8 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
        fragNavController.replaceFragment(fragment);
     }
 
-
     public void navigateUp() {
         fragNavController.popFragment();
+
     }
 }

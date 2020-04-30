@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
@@ -28,6 +30,8 @@ import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 public class GroupListMvpViewImpl extends MvpViewObservableBase<GroupListMvpView.Listener>
         implements GroupListMvpView, GroupListRowMvpView.Listener {
 
+    private final ProgressBar progress;
+    private final LinearLayout llContent;
     private final RecyclerView rvGroupList;
     private final TextView tvGroupName;
     private final GroupListAdapter groupListAdapter;
@@ -40,6 +44,8 @@ public class GroupListMvpViewImpl extends MvpViewObservableBase<GroupListMvpView
     public GroupListMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent, Context context) {
         setRootView(layoutInflater.inflate(R.layout.grouplist_fragment, parent, false));
 
+        progress = findViewById(R.id.grouplist_fragment__progress);
+        llContent = findViewById(R.id.grouplist_fragment__llContainer);
         tvGroupName = findViewById(R.id.grouplist_fragment__groupname);
         searchField = findViewById(R.id.grouplist_fragment__searchfield);
         clearButton = findViewById(R.id.grouplist_fragment__clearbutton);
@@ -105,15 +111,27 @@ public class GroupListMvpViewImpl extends MvpViewObservableBase<GroupListMvpView
     }
 
     @Override
+    public void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+        llContent.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progress.setVisibility(View.GONE);
+        llContent.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void bindData(GroupItem groupItem) {
         tvGroupName.setText(groupItem.getName());
         groupListAdapter.bindData(groupItem.getStudents());
     }
 
     @Override
-    public void onStudentClicked(long studentId) {
+    public void onStudentClicked(String username) {
         for (Listener listener : getListeners()){
-            listener.onStudentClicked(studentId);
+            listener.onStudentClicked(username);
         }
     }
 }
