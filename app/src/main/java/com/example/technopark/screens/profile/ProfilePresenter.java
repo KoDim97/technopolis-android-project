@@ -89,6 +89,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     @Override
     public void onBtnGoBackClicked() {
+
         screenNavigator.navigateUp();
     }
 
@@ -103,8 +104,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     @Override
     public boolean onBackPressed() {
-        screenNavigator.navigateUp();
-        return true;
+        return screenNavigator.navigateUp();
     }
 
     private void provideClipboardManager(Activity activity) {

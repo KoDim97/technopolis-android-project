@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
+import com.example.technopark.screens.authorization.AuthorizationFragment;
 import com.example.technopark.screens.grouplist.GroupListFragment;
 
 import com.example.technopark.screens.profile.ProfileFragment;
@@ -36,7 +37,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     @Override
     public Fragment getRootFragment(int index) {
         if (!authorized) {
-            return activity.getRootFragment();
+            return AuthorizationFragment.newInstance(activity);
         } else {
             return activity.getRootFragment();
         }
@@ -64,8 +65,10 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
        fragNavController.replaceFragment(fragment);
     }
 
-    public void navigateUp() {
-        fragNavController.popFragment();
-
+    public boolean navigateUp() {
+        if(!fragNavController.isRootFragment()) {
+            fragNavController.popFragment();
+            return true;
+        }else return false;
     }
 }

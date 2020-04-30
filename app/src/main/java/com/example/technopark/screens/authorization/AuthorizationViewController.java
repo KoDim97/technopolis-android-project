@@ -71,8 +71,8 @@ public class AuthorizationViewController {
 
 
     private void test(){
-        loginEditText.setText("");
-        passwordEditText.setText("");
+        loginEditText.setText("nexus_s9@mail.ru");
+        passwordEditText.setText("kXGuwTtFtv");
     }
 
     private void changeEnableEnter(){
