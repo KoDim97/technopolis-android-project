@@ -17,7 +17,7 @@ import com.example.technopark.R;
 import com.example.technopark.profile.service.ProfileService;
 import com.example.technopark.util.ThreadPoster;
 
-public class ProfileFragment extends Fragment implements View.OnLongClickListener, Button.OnClickListener {
+public class ProfileFragment extends Fragment implements Button.OnClickListener {
 
     private ProfilePresenter presenter;
     private static final String PROFILE_NAME = "user_name";
@@ -148,13 +148,6 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         super.onDestroy();
     }
 
-    @Override
-    public boolean onLongClick(View v) {
-        TextView textView = (TextView) v;
-        String text = textView.getText().toString();
-        presenter.copyTextViewText(text, getActivity());
-        return true;
-    }
 
     @Override
     public void onClick(View v) {
