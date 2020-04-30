@@ -52,14 +52,15 @@ public class ProfileFragment extends Fragment {
         Bundle arguments = getArguments();
         String userProfile = arguments.getString(PROFILE_NAME);
         String backButtonText = arguments.getString(BACK_BUTTON_TEXT);
-        presenter = new ProfilePresenter(userProfile, backButtonText, getProfileService(), getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity());
+        presenter = new ProfilePresenter(userProfile, backButtonText, getProfileService(),
+                getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity());
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container, this);
+        ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container);
         ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
 
 //        set up good scroll
@@ -68,42 +69,6 @@ public class ProfileFragment extends Fragment {
 
         presenter.bindView(view);
         return view.getRootView();
-
-
-//
-
-//
-////        Exit
-//        v.findViewById(R.id.exitButton).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                final Dialog exitDialog = new Dialog(getActivity(), R.style.ExitDialogAnimation);
-//                exitDialog.getWindow().getAttributes().windowAnimations = R.style.ExitDialogAnimation;
-//                exitDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(50, 0, 0, 0)));
-//                exitDialog.setContentView(R.layout.exit_popup_view);
-//                exitDialog.setCancelable(true);
-//                exitDialog.show();
-//
-//                exitDialog.findViewById(R.id.exitButtonApprove).setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-////                      TODO: make log out
-//                        exitDialog.dismiss();
-//                        // ((BaseActivity)getActivity()).setAuthorizationView();
-////                        Toast.makeText(getActivity(), "log out in progress", Toast.LENGTH_SHORT).show();
-//
-//
-//                    }
-//                });
-//                exitDialog.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        exitDialog.dismiss();
-//                    }
-//                });
-//            }
-//        });
-//
     }
 
     @Nullable

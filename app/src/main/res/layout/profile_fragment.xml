@@ -16,235 +16,200 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorBlue"
             android:paddingLeft="-8dp">
-        <!--            app:navigationIcon="@drawable/ic_navigate_before_black_24dp"-->
+            <!--            app:navigationIcon="@drawable/ic_navigate_before_black_24dp"-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/roboto_regular"
+                android:text="@string/profile"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
 
         <TextView
+            android:id="@+id/back_to_group"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
+            android:layout_marginStart="35dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="@string/profile"
+            android:gravity="center"
+            android:text="АПО-41"
             android:textColor="@color/colorWhite"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </androidx.appcompat.widget.Toolbar>
+            android:textSize="15sp"
+            android:visibility="invisible" />
+    </FrameLayout>
 
-    <TextView
-        android:id="@+id/back_to_group"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginStart="35dp"
-        android:fontFamily="@font/roboto_regular"
-        android:gravity="center"
-        android:text="АПО-41"
-        android:textColor="@color/colorWhite"
-        android:textSize="15sp"
-        android:visibility="invisible" />
-</FrameLayout>
-
-<FrameLayout
-android:background="@color/colorBackground"
-android:layout_height="match_parent"
-android:layout_width="match_parent">
-
-
-<ScrollView
-    android:id="@+id/profile_scroll_view"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:overScrollMode="never">
-
-
-    <LinearLayout
-        android:layout_height="match_parent"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        tools:context=".screens.profile.ProfileFragment">
+        android:layout_height="match_parent"
+        android:background="@color/colorBackground">
 
 
-        <RelativeLayout
-            android:background="@color/colorWhite"
-            android:id="@+id/bio"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent">
-
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                android:src="@drawable/img_no_avatar"
-                android:layout_height="74dp"
-                android:layout_margin="6dp"
-                android:layout_width="74dp" />
-
-
-            <TextView
-                android:fontFamily="@font/roboto_bold"
-                android:id="@+id/profile_fullname"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="12dp"
-                android:layout_toEndOf="@id/profile_image"
-                android:layout_width="wrap_content"
-                android:text="А где имя?"
-                android:textColor="@color/colorBlack"
-                android:textSize="14sp" />
-
-            <TextView
-                android:fontFamily="@font/roboto_regular"
-                android:id="@+id/profile_status"
-                android:layout_below="@id/profile_fullname"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_toEndOf="@id/profile_image"
-                android:layout_width="wrap_content"
-                android:text="@string/graduated"
-                android:textSize="13sp" />
-
-            <TextView
-                android:fontFamily="@font/roboto_regular"
-                android:id="@+id/profile_rating"
-                android:layout_below="@id/profile_status"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="9.5dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="15dp"
-                android:layout_toEndOf="@id/profile_image"
-                android:layout_width="wrap_content"
-                android:text="Рейтинг 6.4"
-                android:textSize="12sp" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:background="@color/colorWhite"
-            android:id="@+id/about"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="1dp"
+        <ScrollView
+            android:id="@+id/profile_scroll_view"
             android:layout_width="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
 
-            <TextView
-                android:fontFamily="@font/roboto_regular"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="13dp"
-                android:layout_marginTop="7dp"
+
+            <LinearLayout
+                android:id="@+id/profile_wrapper"
                 android:layout_width="match_parent"
-                android:padding="3dp"
-                android:text="@string/about"
-                android:textSize="13sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:context=".screens.profile.ProfileFragment">
 
-            <TextView
-                android:fontFamily="@font/roboto_regular"
-                android:id="@+id/profile_about"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="9dp"
-                android:layout_marginLeft="13dp"
-                android:layout_marginTop="2dp"
-                android:layout_width="match_parent"
-                android:padding="3dp"
-                android:text="Студент ИУ-7"
-                android:textColor="@color/colorBlack"
-                android:textSize="14sp" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/groups"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorWhite">
 
-            <TextView
-                android:background="@color/colorWhite"
-                android:fontFamily="@font/roboto_regular"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
-                android:paddingBottom="6dp"
-                android:paddingLeft="13dp"
-                android:paddingTop="9dp"
-                android:text="@string/groups"
-                android:textSize="13sp" />
 
-        </LinearLayout>
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/profile_image"
+                        android:layout_width="74dp"
+                        android:layout_height="74dp"
+                        android:layout_margin="6dp"
+                        android:src="@drawable/img_no_avatar" />
 
-        <LinearLayout
-            android:id="@+id/contacts"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="vertical">
 
-            <TextView
-                android:background="@color/colorWhite"
-                android:fontFamily="@font/roboto_regular"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
-                android:paddingBottom="9dp"
-                android:paddingLeft="13dp"
-                android:paddingTop="9dp"
-                android:text="@string/contacts"
-                android:textSize="13sp" />
+                    <TextView
+                        android:id="@+id/profile_fullname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_toEndOf="@id/profile_image"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="А где имя?"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="14sp" />
 
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/profile_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/profile_fullname"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_toEndOf="@id/profile_image"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="@string/graduated"
+                        android:textSize="13sp" />
 
-        <LinearLayout
-            android:id="@+id/accounts"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/profile_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/profile_status"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="9.5dp"
+                        android:layout_toEndOf="@id/profile_image"
+                        android:fontFamily="@font/roboto_regular"
+                        android:text="Рейтинг 6.4"
+                        android:textSize="12sp" />
+                </RelativeLayout>
 
-            <TextView
-                android:background="@color/colorWhite"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
-                android:paddingBottom="9dp"
-                android:paddingLeft="13dp"
-                android:paddingTop="9dp"
-                android:text="Аккаунты"
-                android:textSize="13sp" />
+                <LinearLayout
+                    android:id="@+id/about"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@color/colorWhite"
+                    android:orientation="vertical">
 
-            <!--separator-->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="7dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="3dp"
+                        android:text="@string/about"
+                        android:textSize="13sp" />
 
-            <!--                    <TextView-->
-            <!--                        android:id="@+id/odnoklassniki"-->
-            <!--                        android:layout_width="match_parent"-->
-            <!--                        android:layout_height="43dp"-->
-            <!--                        android:layout_marginTop="1dp"-->
-            <!--                        android:background="@color/colorWhite"-->
-            <!--                        android:drawableStart="@drawable/ic_ok_48"-->
-            <!--                        android:drawablePadding="6dp"-->
-            <!--                        android:fontFamily="@font/roboto_regular"-->
-            <!--                        android:gravity="center_vertical"-->
-            <!--                        android:paddingLeft="13dp"-->
-            <!--                        android:paddingTop="9dp"-->
-            <!--                        android:paddingBottom="9dp"-->
-            <!--                        android:text="https://ok.ru/profile/574569200229"-->
-            <!--                        android:textAllCaps="false"-->
-            <!--                        android:textColor="@color/colorBlack"-->
-            <!--                        android:textSize="14sp" />-->
+                    <TextView
+                        android:id="@+id/profile_about"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="9dp"
+                        android:fontFamily="@font/roboto_regular"
+                        android:padding="3dp"
+                        android:text="Студент ИУ-7"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
-            <!--                    <View-->
-            <!--                        android:layout_width="13dp"-->
-            <!--                        android:layout_height="1dp"-->
-            <!--                        android:layout_gravity="start"-->
-            <!--                        android:background="@color/colorWhite" />-->
-        </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/groups"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-        <Button
-            style="?android:attr/borderlessButtonStyle"
-            android:background="@color/colorWhite"
-            android:fontFamily="@font/roboto_regular"
-            android:id="@+id/exitButton"
-            android:layout_height="43dp"
-            android:layout_marginBottom="70dp"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:text="@string/exit"
-            android:textAllCaps="false"
-            android:textColor="@color/colorRed" />
-    </LinearLayout>
-</ScrollView>
-</FrameLayout></LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/colorWhite"
+                        android:fontFamily="@font/roboto_regular"
+                        android:paddingLeft="13dp"
+                        android:paddingTop="9dp"
+                        android:paddingBottom="6dp"
+                        android:text="@string/groups"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/contacts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/colorWhite"
+                        android:fontFamily="@font/roboto_regular"
+                        android:paddingLeft="13dp"
+                        android:paddingTop="9dp"
+                        android:paddingBottom="9dp"
+                        android:text="@string/contacts"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/accounts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/colorWhite"
+                        android:paddingLeft="13dp"
+                        android:paddingTop="9dp"
+                        android:paddingBottom="9dp"
+                        android:text="Аккаунты"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+</LinearLayout>
 
 
