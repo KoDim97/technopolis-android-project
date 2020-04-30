@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
-import com.example.technopark.fragment.NewsFragment;
+import com.example.technopark.screens.newsitems.NewsItemsFragment;
 import com.example.technopark.fragment.SchedulerFragment;
 import com.example.technopark.screens.common.nav.ScreenNavigator;
 import com.example.technopark.screens.profile.ProfileFragment;

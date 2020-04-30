@@ -5,6 +5,10 @@ import android.app.Application;
 import com.android.volley.toolbox.Volley;
 import com.example.technopark.api.MailApi;
 import com.example.technopark.api.MailApiImpl;
+import com.example.technopark.news.repo.NewsItemRepository;
+import com.example.technopark.news.repo.NewsItemRepositoryImpl;
+import com.example.technopark.news.repo.NewsItemRepositoryImplSubs;
+import com.example.technopark.news.service.NewsItemService;
 
 import com.example.technopark.profile.repo.UserProfileRepo;
 import com.example.technopark.profile.repo.UserProfileRepoImpl;
@@ -14,9 +18,12 @@ import com.example.technopark.group.repo.GroupItemRepoImpl;
 import com.example.technopark.group.service.FindGroupItemService;
 import com.example.technopark.user.model.User;
 import com.example.technopark.user.service.AuthService;
+
 import com.example.technopark.scheduler.repo.SchedulerItemRepo;
 import com.example.technopark.scheduler.repo.SchedulerItemRepoImpl;
 import com.example.technopark.scheduler.service.SchedulerItemService;
+import com.example.technopark.user.model.User;
+import com.example.technopark.user.service.AuthService;
 import com.example.technopark.util.MainThreadPoster;
 import com.example.technopark.util.ThreadPoster;
 
@@ -30,6 +37,11 @@ public class App extends Application {
     private AuthService authService;
     private SchedulerItemService schedulerItemService;
     private SchedulerItemRepo schedulerItemRepo;
+
+    private NewsItemRepositoryImpl newsItemRepo;
+    private NewsItemRepositoryImplSubs subsItemRepo;
+    private NewsItemService newsItemService;
+
     private ProfileService profileService;
     private UserProfileRepo userProfileRepo;
     private FindGroupItemService findGroupItemService;
@@ -97,6 +109,27 @@ public class App extends Application {
         return schedulerItemService;
     }
 
+
+    public NewsItemRepository provideNewsItemRepo() {
+        if (newsItemRepo == null) {
+            newsItemRepo = new NewsItemRepositoryImpl();
+        }
+        return newsItemRepo;
+    }
+
+    public NewsItemRepository provideSubsItemRepo() {
+        if (subsItemRepo == null) {
+            subsItemRepo = new NewsItemRepositoryImplSubs();
+        }
+        return subsItemRepo;
+    }
+
+    public NewsItemService provideNewsItemService() {
+        if (newsItemService == null) {
+            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi());
+        }
+        return newsItemService;
+    }
     public GroupItemRepo provideGroupItemRepo() {
         if (groupItemRepo == null) {
             groupItemRepo = new GroupItemRepoImpl();
