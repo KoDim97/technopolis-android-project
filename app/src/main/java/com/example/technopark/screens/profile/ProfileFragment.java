@@ -21,13 +21,15 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
 
     private ProfilePresenter presenter;
     private static final String PROFILE_NAME = "user_name";
+    private static final String BACK_BUTTON_TEXT = "back_button_text";
     public ProfileFragment() {
     }
 
-    public static Fragment newInstance(String username) {
+    public static Fragment newInstance(String username, String backButtonText) {
         Fragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
         args.putString(PROFILE_NAME, username);
+        args.putString(BACK_BUTTON_TEXT, backButtonText);
         fragment.setArguments(args);
         return fragment;
     }
@@ -36,8 +38,10 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //noinspection ConstantConditions
-        String userProfile = getArguments().getString(PROFILE_NAME);
-        presenter = new ProfilePresenter(userProfile, getProfileService(), getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity());
+        Bundle arguments = getArguments();
+        String userProfile = arguments.getString(PROFILE_NAME);
+        String backButtonText = arguments.getString(BACK_BUTTON_TEXT);
+        presenter = new ProfilePresenter(userProfile, backButtonText, getProfileService(), getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity());
     }
 
 
@@ -50,7 +54,6 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
         return view.getRootView();
 
 
-//        myClipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
 ////        Back button
 //        Bundle bundle = this.getArguments();
 //        if (bundle == null) {

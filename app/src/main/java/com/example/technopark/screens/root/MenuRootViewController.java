@@ -61,7 +61,7 @@ public class MenuRootViewController {
                         screenNavigator.loadFragment(SchedulerFragment.newInstance());
                         return true;
                     case R.id.navigation_profile:
-                        screenNavigator.loadFragment(ProfileFragment.newInstance(CURRENT_USER));
+                        screenNavigator.loadFragment(ProfileFragment.newInstance(CURRENT_USER, ""));
                         return true;
                 }
                 return false;
