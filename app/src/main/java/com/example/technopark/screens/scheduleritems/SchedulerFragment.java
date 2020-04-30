@@ -36,6 +36,8 @@ public class SchedulerFragment extends Fragment {
     @Nullable public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
         SchedulerItemsMvpView view = new SchedulerItemsMvpViewImpl(inflater, container, getContext());
         presenter.bindView(view);
+
+//        ((BaseActivity) getActivity()).getRootViewController().setVisible(View.VISIBLE);
         return view.getRootView();
     }
 
@@ -56,6 +58,7 @@ public class SchedulerFragment extends Fragment {
         presenter.onDestroy();
         super.onDestroy();
     }
+
 
     @Nullable private BaseActivity getMainActivity() {
         return (BaseActivity) getActivity();
