@@ -116,7 +116,7 @@ public class MailApiImpl implements MailApi {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Token df2lii1erzz25egd13ffprfvcprb24f4");
+                headers.put("Authorization", "Token " + user.getAuth_token());
                 return headers;
             }
         };
@@ -169,7 +169,7 @@ public class MailApiImpl implements MailApi {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Token df2lii1erzz25egd13ffprfvcprb24f4");
+                headers.put("Authorization", "Token " + user.getAuth_token());
                 return headers;
             }
         };
