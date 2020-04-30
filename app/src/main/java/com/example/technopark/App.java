@@ -40,7 +40,7 @@ public class App extends Application {
         super.onCreate();
     }
 
-    private MailApi provideMailApi() {
+    public MailApi provideMailApi() {
         if (api == null) {
             api = new MailApiImpl(Volley.newRequestQueue(this), provideUser());
         }
