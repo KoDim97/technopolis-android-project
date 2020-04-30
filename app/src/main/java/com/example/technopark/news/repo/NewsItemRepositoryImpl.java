@@ -5,11 +5,11 @@ import com.example.technopark.news.model.NewsItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.TreeMap;
 
 public class NewsItemRepositoryImpl implements NewsItemRepository{
 
-    private final Map<Long, NewsItem> itemsNews = new ConcurrentHashMap<>();
+    private final Map<String, NewsItem> itemsNews = new TreeMap<>((String o1, String o2) -> o2.compareTo(o1));
 
     @Override
     public List<NewsItem> findAll() {
@@ -18,11 +18,8 @@ public class NewsItemRepositoryImpl implements NewsItemRepository{
 
     @Override
     public void add(NewsItem newsItem) {
-        itemsNews.put(newsItem.getId(), newsItem);
+        itemsNews.put(newsItem.getDate(), newsItem);
+
     }
 
-    @Override
-    public String findById(long id) {
-        return itemsNews.get(id).getUrl();
-    }
 }

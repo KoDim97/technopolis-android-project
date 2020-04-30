@@ -1,6 +1,5 @@
 package com.example.technopark.screens.newsitems;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +13,11 @@ import androidx.fragment.app.Fragment;
 import com.example.technopark.App;
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
-import com.example.technopark.fragment.NewsFragment;
 import com.example.technopark.news.service.NewsItemService;
 import com.example.technopark.util.ThreadPoster;
 
-import java.util.function.Consumer;
-
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
-
-import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
-import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
 
 public class NewsItemsFragment extends Fragment{
 
@@ -46,6 +39,9 @@ public class NewsItemsFragment extends Fragment{
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+//        ((BaseActivity)getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
+
         final NewsItemsMvpView view = new NewsItemsMvpViewImpl(inflater, container, getContext());
         final IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(((NewsItemsMvpViewImpl) view).getRvNewsItems(),
                 OverScrollDecoratorHelper.ORIENTATION_VERTICAL);

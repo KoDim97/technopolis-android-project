@@ -26,7 +26,6 @@ public class NewsItemService {
 
     public List<NewsItem> getNewsItems() {
         List<NewsItem> newsItemList = newsItemRepo.findAll();
-        Collections.sort(newsItemList, ((NewsItem o1, NewsItem o2) -> o2.getDate().compareTo(o1.getDate())));
         if (newsItemList.isEmpty()) {
             newsItemList = requestNewsFromServer();
         }
@@ -35,7 +34,6 @@ public class NewsItemService {
 
     public List<NewsItem> getSubsItems() {
         List<NewsItem> newsItemList = subsItemRepo.findAll();
-        Collections.sort(newsItemList, ((NewsItem o1, NewsItem o2) -> o2.getDate().compareTo(o1.getDate())));
         if (newsItemList.isEmpty()) {
             newsItemList = requestSubsFromServer();
         }
@@ -60,10 +58,7 @@ public class NewsItemService {
             );
         }
 
-        List<NewsItem> repoData = newsItemRepo.findAll();
-        Collections.sort(repoData, ((NewsItem o1, NewsItem o2) -> o2.getDate().compareTo(o1.getDate())));
-
-        return repoData;
+        return newsItemRepo.findAll();
     }
 
     private List<NewsItem> requestSubsFromServer() {
@@ -82,10 +77,8 @@ public class NewsItemService {
                     )
             );
         }
-        List<NewsItem> repoData = subsItemRepo.findAll();
-        Collections.sort(repoData, ((NewsItem o1, NewsItem o2) -> o2.getDate().compareTo(o1.getDate())));
 
-        return repoData;
+        return subsItemRepo.findAll();
     }
 
 //    private ImageView castLinkToBitmap(String link) {

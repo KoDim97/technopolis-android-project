@@ -8,7 +8,5 @@ public interface NewsItemRepository {
 
     List<NewsItem> findAll();
 
-    String findById(long id);
-
     void add(NewsItem newsItem);
 }
