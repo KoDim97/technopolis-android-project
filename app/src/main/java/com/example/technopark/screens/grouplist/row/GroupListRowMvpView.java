@@ -6,7 +6,7 @@ import com.example.technopark.screens.common.mvp.MvpView;
 public interface GroupListRowMvpView extends MvpView {
     interface Listener {
 
-        void onStudentClicked(long studentId);
+        void onStudentClicked(String username);
 
     }
 
