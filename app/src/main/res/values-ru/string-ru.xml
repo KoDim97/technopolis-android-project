@@ -21,5 +21,5 @@
     <string name="accounts">Аккаунты</string>
     <string name="top_bar_name">Новости</string>
 
-    <string name="authFailed">Неправильный логин или пароль/</string>
+    <string name="authFailed">Неправильный логин или пароль</string>
 </resources>

@@ -3,7 +3,6 @@ package com.example.technopark.screens.authorization;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +19,8 @@ import com.example.technopark.screens.common.nav.ScreenNavigator;
 import com.example.technopark.user.service.AuthService;
 import com.google.android.material.tabs.TabLayout;
 import com.example.technopark.App;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
 
@@ -219,17 +220,23 @@ public class AuthorizationViewController {
             }
         });
         enterButton.setOnClickListener(v -> {
-            thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    if (authService.CheckAuth(loginEditText.getText().toString(), passwordEditText.getText().toString())) {
-                        screenNavigator.changeAuthorized(true);
-                    } else {
-
-                    }
+            //AtomicBoolean invalid = new AtomicBoolean(false);
+            thread = new Thread(() -> {
+                if (authService.CheckAuth(loginEditText.getText().toString(), passwordEditText.getText().toString())) {
+                    screenNavigator.changeAuthorized(true);
+                } else {
+                    //invalid.set(true);
                 }
             });
             thread.start();
+//            try {
+//                thread.join();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            if (invalid.compareAndSet(true, false)){
+//                Toast.makeText(activity, R.string.authFailed, Toast.LENGTH_SHORT).show();
+//            }
         });
     }
 

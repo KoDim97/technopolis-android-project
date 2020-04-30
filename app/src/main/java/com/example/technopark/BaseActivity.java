@@ -27,6 +27,8 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     }
 
 
+    public MenuRootViewController getRootViewController(){return rootViewController;}
+
     public Fragment getRootFragment(){
         return rootViewController.getRootFragment();
     }
