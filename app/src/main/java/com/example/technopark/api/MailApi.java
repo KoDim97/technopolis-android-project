@@ -14,6 +14,7 @@ import java.util.List;
 
 public interface MailApi {
 
+    void setProjectUrl(String string);
     AuthDto requestAuthDto(String login, String password);
     ProfileDto requestProfileDto(String username);
     ProfileDto requestMyProfileDto();

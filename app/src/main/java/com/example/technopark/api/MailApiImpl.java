@@ -44,10 +44,11 @@ public class MailApiImpl implements MailApi {
         this.queue = queue;
         this.user = user;
         //temp
-        projectUrl = "https://polis.mail.ru";
+        projectUrl = "https://park.mail.ru";
     }
 
-    void setProjectUrl(String string){
+    @Override
+    public void setProjectUrl(String string){
         projectUrl = string;
     }
 
@@ -55,7 +56,7 @@ public class MailApiImpl implements MailApi {
     public AuthDto requestAuthDto(String login, String password) {
         AuthDto authDto;
         //temp hardcode
-        final String url = "https://polis.mail.ru/api/mobile/v1/auth/";
+        final String url = projectUrl+"/api/mobile/v1/auth/";
         JSONObject json = new JSONObject();
 
         MessageDigest digest = null;
@@ -75,7 +76,14 @@ public class MailApiImpl implements MailApi {
         }
 
         RequestFuture<JSONObject> requestFuture=RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, requestFuture);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // TODO: Handle error
+int a=5;
+            }
+        });
         queue.add(request);
 
         try {
