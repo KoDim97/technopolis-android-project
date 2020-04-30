@@ -31,7 +31,6 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-// TODO: fix bind data
 public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Listener>
         implements ProfileMvpView, View.OnLongClickListener, View.OnClickListener {
 
@@ -40,7 +39,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final TextView status;
     private final TextView about;
     private final androidx.appcompat.widget.Toolbar toolbar;
-    //    private final TextView rating;
+    private final TextView toolbarTextView;
     private final LinearLayout groupsLinearLayout;
     private final LinearLayout contactsLinearLayout;
     private final LinearLayout accountsLinearLayout;
@@ -57,7 +56,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         status = findViewById(R.id.profile_status);
         about = findViewById(R.id.profile_about);
         toolbar = findViewById(R.id.toolbar);
-//        rating = findViewById(R.id.profile_rating);
+        toolbarTextView = findViewById(R.id.toolbar__text_view);
         groupsLinearLayout = findViewById(R.id.groups);
         contactsLinearLayout = findViewById(R.id.contacts);
         accountsLinearLayout = findViewById(R.id.accounts);
@@ -266,6 +265,11 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     @Override
     public void hideNavBar() {
         ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.GONE);
+    }
+
+    @Override
+    public void showNameOnToolbar(String userName) {
+        toolbarTextView.setText(userName);
     }
 
 }
