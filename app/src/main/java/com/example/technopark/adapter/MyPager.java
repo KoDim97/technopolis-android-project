@@ -8,14 +8,20 @@ import android.widget.ImageView;
 
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.technopark.App;
+import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
 
 public class MyPager extends PagerAdapter {
     private Context context;
-    private int num=7;
-    public MyPager(Context context) {
+    private int num = 7;
+
+
+    public MyPager(Context context, BaseActivity activity) {
         this.context = context;
+
     }
+
     /*
     This callback is responsible for creating a page. We inflate the layout and set the drawable
     to the ImageView based on the position. In the end we add the inflated layout to the parent
@@ -30,6 +36,7 @@ public class MyPager extends PagerAdapter {
         container.addView(view);
         return view;
     }
+
     /*
     This callback is responsible for destroying a page. Since we are using view only as the
     object key we just directly remove the view from parent container
@@ -38,6 +45,7 @@ public class MyPager extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object view) {
         container.removeView((View) view);
     }
+
     /*
     Returns the count of the total pages
     */
@@ -45,6 +53,7 @@ public class MyPager extends PagerAdapter {
     public int getCount() {
         return num;
     }
+
     /*
     Used to determine whether the page view is associated with object key returned by instantiateItem.
     Since here view only is the key we return view==object
@@ -53,6 +62,7 @@ public class MyPager extends PagerAdapter {
     public boolean isViewFromObject(View view, Object object) {
         return object == view;
     }
+
     private int getImageAt(int position) {
         switch (position) {
             case 0:

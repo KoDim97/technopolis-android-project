@@ -1,5 +1,7 @@
 package com.example.technopark.adapter;
 
+import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,19 +9,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.R;
 import com.example.technopark.dto.News;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
 
     private final List<News> news;
-
-    public NewsAdapter(List<News> news) {
+    static private Context context;
+    public NewsAdapter(List<News> news, Context context) {
         this.news = news;
+        NewsAdapter.context = context;
     }
 
 
@@ -54,7 +61,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         private TextView tvSection;
         private TextView tvCommentNum;
         private TextView tvDate;
-        private ImageView ivUserpic;
+        private CircleImageView ivUserpic;
 
         private NewsHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,7 +74,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsHolder> {
         }
 
         private void bind(News news) {
-            ivUserpic.setImageResource(news.getUserpic());
+            Picasso.get().load(news.getUserpic()).into(ivUserpic);
+
             tvName.setText(news.getName());
             tvTitle.setText(news.getTitle());
             tvSection.setText(news.getSection());

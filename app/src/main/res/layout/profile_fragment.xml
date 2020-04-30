@@ -4,362 +4,246 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize">
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorBlue"
-            app:navigationIcon="@drawable/ic_navigate_before_black_24dp"
             android:paddingLeft="-8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/profile"
-                android:fontFamily="@font/roboto_regular"
-                android:textColor="@color/colorWhite"
-                android:textSize="16sp"
-                android:textStyle="bold"  />
-        </androidx.appcompat.widget.Toolbar>
+        <!--            app:navigationIcon="@drawable/ic_navigate_before_black_24dp"-->
 
         <TextView
-            android:id="@+id/back_to_group"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="@color/colorWhite"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:fontFamily="@font/roboto_regular"
-            android:textSize="15sp"
-            android:text="АПО-41"
-            android:layout_marginStart="35dp"/>
-    </FrameLayout>
+            android:text="@string/profile"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </androidx.appcompat.widget.Toolbar>
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/back_to_group"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/colorBackground">
+        android:layout_marginStart="35dp"
+        android:fontFamily="@font/roboto_regular"
+        android:gravity="center"
+        android:text="АПО-41"
+        android:textColor="@color/colorWhite"
+        android:textSize="15sp"
+        android:visibility="invisible" />
+</FrameLayout>
+
+<FrameLayout
+android:background="@color/colorBackground"
+android:layout_height="match_parent"
+android:layout_width="match_parent">
 
 
-        <ScrollView
-            android:id="@+id/profile_scroll_view"
+<ScrollView
+    android:id="@+id/profile_scroll_view"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:overScrollMode="never">
+
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        tools:context=".screens.profile.ProfileFragment">
+
+
+        <RelativeLayout
+            android:background="@color/colorWhite"
+            android:id="@+id/bio"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_height="74dp"
+                android:layout_margin="6dp"
+                android:layout_width="74dp" />
+
+
+            <TextView
+                android:fontFamily="@font/roboto_bold"
+                android:id="@+id/profile_fullname"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_toEndOf="@id/profile_image"
+                android:layout_width="wrap_content"
+                android:text="А где имя?"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp" />
+
+            <TextView
+                android:fontFamily="@font/roboto_regular"
+                android:id="@+id/profile_status"
+                android:layout_below="@id/profile_fullname"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/profile_image"
+                android:layout_width="wrap_content"
+                android:text="@string/graduated"
+                android:textSize="13sp" />
+
+            <TextView
+                android:fontFamily="@font/roboto_regular"
+                android:id="@+id/profile_rating"
+                android:layout_below="@id/profile_status"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="9.5dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="15dp"
+                android:layout_toEndOf="@id/profile_image"
+                android:layout_width="wrap_content"
+                android:text="Рейтинг 6.4"
+                android:textSize="12sp" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:background="@color/colorWhite"
+            android:id="@+id/about"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="1dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never">
+            android:orientation="vertical">
 
-
-            <LinearLayout
+            <TextView
+                android:fontFamily="@font/roboto_regular"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="7dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                tools:context=".screens.profile.ProfileFragment">
+                android:padding="3dp"
+                android:text="@string/about"
+                android:textSize="13sp" />
 
+            <TextView
+                android:fontFamily="@font/roboto_regular"
+                android:id="@+id/profile_about"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="9dp"
+                android:layout_marginLeft="13dp"
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:padding="3dp"
+                android:text="Студент ИУ-7"
+                android:textColor="@color/colorBlack"
+                android:textSize="14sp" />
+        </LinearLayout>
 
-                <RelativeLayout
-                    android:id="@+id/bio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorWhite">
+        <LinearLayout
+            android:id="@+id/groups"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
 
+            <TextView
+                android:background="@color/colorWhite"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:paddingBottom="6dp"
+                android:paddingLeft="13dp"
+                android:paddingTop="9dp"
+                android:text="@string/groups"
+                android:textSize="13sp" />
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/profile_image"
-                        android:layout_width="74dp"
-                        android:layout_height="74dp"
-                        android:src="@drawable/image7_3x"
-                        android:layout_margin="6dp"/>
+        </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/contacts"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/profile_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_toEndOf="@id/profile_image"
-                        android:text="Олег Морозенков"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="14sp"
-                        android:fontFamily="@font/roboto_bold" />
+            <TextView
+                android:background="@color/colorWhite"
+                android:fontFamily="@font/roboto_regular"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:paddingBottom="9dp"
+                android:paddingLeft="13dp"
+                android:paddingTop="9dp"
+                android:text="@string/contacts"
+                android:textSize="13sp" />
 
-                    <TextView
-                        android:id="@+id/profile_status"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/profile_name"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_toEndOf="@id/profile_image"
-                        android:text="@string/graduated"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textSize="13sp" />
+        </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/profile_status"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="9.5dp"
-                        android:layout_toEndOf="@id/profile_image"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="Рейтинг 6.4"
-                        android:textSize="12sp" />
-                </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/accounts"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/about"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@color/colorWhite"
-                    android:orientation="vertical">
+            <TextView
+                android:background="@color/colorWhite"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:paddingBottom="9dp"
+                android:paddingLeft="13dp"
+                android:paddingTop="9dp"
+                android:text="Аккаунты"
+                android:textSize="13sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="13dp"
-                        android:layout_marginTop="7dp"
-                        android:padding="3dp"
-                        android:text="@string/about"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textSize="13sp" />
+            <!--separator-->
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="13dp"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginBottom="9dp"
-                        android:padding="3dp"
-                        android:text="Студент ИУ-7"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="14sp" />
-                </LinearLayout>
+            <!--                    <TextView-->
+            <!--                        android:id="@+id/odnoklassniki"-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="43dp"-->
+            <!--                        android:layout_marginTop="1dp"-->
+            <!--                        android:background="@color/colorWhite"-->
+            <!--                        android:drawableStart="@drawable/ic_ok_48"-->
+            <!--                        android:drawablePadding="6dp"-->
+            <!--                        android:fontFamily="@font/roboto_regular"-->
+            <!--                        android:gravity="center_vertical"-->
+            <!--                        android:paddingLeft="13dp"-->
+            <!--                        android:paddingTop="9dp"-->
+            <!--                        android:paddingBottom="9dp"-->
+            <!--                        android:text="https://ok.ru/profile/574569200229"-->
+            <!--                        android:textAllCaps="false"-->
+            <!--                        android:textColor="@color/colorBlack"-->
+            <!--                        android:textSize="14sp" />-->
 
-                <LinearLayout
-                    android:id="@+id/groups"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+            <!--                    <View-->
+            <!--                        android:layout_width="13dp"-->
+            <!--                        android:layout_height="1dp"-->
+            <!--                        android:layout_gravity="start"-->
+            <!--                        android:background="@color/colorWhite" />-->
+        </LinearLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:background="@color/colorWhite"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="6dp"
-                        android:text="@string/groups"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textSize="13sp" />
-
-                    <Button
-                        android:id="@+id/group_1"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="1dp"
-                        android:background="@color/colorWhite"
-                        android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
-                        android:gravity="center_vertical"
-                        android:paddingStart="13dp"
-                        android:text="iOS-11"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack" />
-
-                    <!--separator-->
-                    <View
-                        android:layout_width="13dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="start"
-                        android:background="@color/colorWhite" />
-
-                    <Button
-                        android:id="@+id/group_2"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:background="@color/colorWhite"
-                        android:drawableEnd="@drawable/ic_chevron_right_black_24dp"
-                        android:gravity="center_vertical"
-                        android:paddingStart="13dp"
-                        android:text="iOS-13"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/contacts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:background="@color/colorWhite"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="9dp"
-                        android:text="@string/contacts"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textSize="13sp" />
-
-                    <!--separator-->
-                    <TextView
-                        android:id="@+id/phone_number"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="1dp"
-                        android:background="@color/colorWhite"
-                        android:drawableStart="@drawable/icons8_iphone_96"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="9dp"
-                        android:text="+7 (916) 065 3055"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="14sp" />
-
-                    <View
-                        android:layout_width="13dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="start"
-                        android:background="@color/colorWhite" />
-
-                    <TextView
-                        android:id="@+id/email"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="0dp"
-                        android:background="@color/colorWhite"
-                        android:drawableStart="@drawable/icons8_mail_96"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="9dp"
-                        android:text="o.morozenkov@corp.mail.ru"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/accounts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:background="@color/colorWhite"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="9dp"
-                        android:text="Аккаунты"
-                        android:textSize="13sp" />
-
-                    <!--separator-->
-                    <TextView
-                        android:id="@+id/odnoklassniki"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="1dp"
-                        android:background="@color/colorWhite"
-                        android:drawableStart="@drawable/ic_ok_48"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="9dp"
-                        android:text="https://ok.ru/profile/574569200229"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="14sp" />
-
-                    <View
-                        android:layout_width="13dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="start"
-                        android:background="@color/colorWhite" />
-
-                    <TextView
-                        android:id="@+id/github"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="0dp"
-                        android:background="@color/colorWhite"
-                        android:drawableStart="@drawable/ic_github_mark_24"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="9dp"
-                        android:text="https://github.com/Jhoysbou"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="#000000"
-                        android:textSize="14sp" />
-                    <View
-                        android:layout_width="13dp"
-                        android:layout_height="1dp"
-                        android:layout_gravity="start"
-                        android:background="#FFFFFF" />
-
-                    <TextView
-                        android:id="@+id/vkontakte"
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
-                        android:layout_marginTop="0dp"
-                        android:background="@color/colorWhite"
-                        android:drawableStart="@drawable/ic_vk_logo_24"
-                        android:drawablePadding="6dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="13dp"
-                        android:paddingTop="9dp"
-                        android:paddingBottom="9dp"
-                        android:text="https://vk.com/haxephado"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textAllCaps="false"
-                        android:textColor="#000000"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/exitButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="43dp"
-                    android:background="@color/colorWhite"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="70dp"
-                    android:text="@string/exit"
-                    android:textAllCaps="false"
-                    android:fontFamily="@font/roboto_regular"
-                    android:textColor="@color/colorRed"
-                    style="?android:attr/borderlessButtonStyle"/>
-            </LinearLayout>
-        </ScrollView>
-    </FrameLayout>
-</LinearLayout>
+        <Button
+            style="?android:attr/borderlessButtonStyle"
+            android:background="@color/colorWhite"
+            android:fontFamily="@font/roboto_regular"
+            android:id="@+id/exitButton"
+            android:layout_height="43dp"
+            android:layout_marginBottom="70dp"
+            android:layout_marginTop="15dp"
+            android:layout_width="match_parent"
+            android:text="@string/exit"
+            android:textAllCaps="false"
+            android:textColor="@color/colorRed" />
+    </LinearLayout>
+</ScrollView>
+</FrameLayout></LinearLayout>
 
 

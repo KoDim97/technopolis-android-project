@@ -5,7 +5,7 @@ public class News {
     private final String title;
     private final String section;
     private final String date;
-    private final int userpic;
+    private final String userpic;
     private final String comments_number;
 
     public String getName() {
@@ -24,7 +24,7 @@ public class News {
         return date;
     }
 
-    public int getUserpic() {
+    public String getUserpic() {
         return userpic;
     }
 
@@ -34,7 +34,7 @@ public class News {
 
 
 
-    public News(String name, String title, String section, String date, int userpick, String comments_number) {
+    public News(String name, String title, String section, String date, String userpick, String comments_number) {
         this.name = name;
         this.title = title;
         this.section = section;

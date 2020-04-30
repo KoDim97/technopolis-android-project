@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopark.R;
-import com.example.technopark.dto.Person;
 import com.example.technopark.dto.PersonItem;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Pers
     @NonNull
     @Override
     public PersonHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.person_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.student_item_row, parent, false);
         return new PersonHolder(view);
     }
 
