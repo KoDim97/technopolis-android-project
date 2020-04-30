@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Technopolis</string>
+    <string name="app_name">Technopark</string>
 
     <string name="login">Login or e-mail</string>
     <string name="password">Password</string>
@@ -18,8 +18,6 @@
     <string name="groups">Groups</string>
     <string name="contacts">Contacts</string>
     <string name="accounts">Accounts</string>
-
-    <string name="authFailed">Invalid login or password</string>
 
     <string name="schedule_icon" translatable="false">\uf041</string>
 
