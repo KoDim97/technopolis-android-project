@@ -398,7 +398,7 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public SchedulerItemCheckInDto checkInSchedulerItem(long id) {
-        final String url = "https://polis.mail.ru/api/mobile/v1/schedule/" + id + "/check";
+        final String url = "https://polis.mail.ru/api/mobile/v1/schedule/" + id + "/check/";
         JSONObject json = new JSONObject();
 
         Map<String, String> mHeaders = new HashMap<>();
