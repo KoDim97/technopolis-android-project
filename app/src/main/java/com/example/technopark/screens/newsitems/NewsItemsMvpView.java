@@ -10,7 +10,7 @@ public interface NewsItemsMvpView extends MvpViewObservable<NewsItemsMvpView.Lis
 
     interface Listener extends BackPressedListener {
 
-        void onNewsItemClicked(long id);
+        void onNewsItemClicked(String url);
 
     }
 

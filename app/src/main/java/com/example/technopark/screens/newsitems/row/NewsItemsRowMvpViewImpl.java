@@ -61,12 +61,9 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
         try {
 
 
-            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss",
-                            new Locale("ru","RU"))
+            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", new Locale("ru", "RU"))
                     .parse(newsItem.getDate());
-            datePostingTextView.setText(
-                    new SimpleDateFormat("d MMM yyyy 'г'. 'в' HH:mm",
-                    new Locale("ru","RU"))
+            datePostingTextView.setText(new SimpleDateFormat("d MMM yyyy 'г'. 'в' HH:mm", new Locale("ru", "RU"))
                     .format(date));
         } catch (ParseException e) {
             e.printStackTrace();
@@ -79,6 +76,6 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
     }
 
     public void onNewsItemClicked() {
-        listener.onNewsItemClicked(newsItem.getId());
+        listener.onNewsItemClicked(newsItem.getUrl());
     }
 }

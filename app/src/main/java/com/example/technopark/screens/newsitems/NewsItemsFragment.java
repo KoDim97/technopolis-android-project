@@ -1,5 +1,6 @@
 package com.example.technopark.screens.newsitems;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,11 +14,17 @@ import androidx.fragment.app.Fragment;
 import com.example.technopark.App;
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
+import com.example.technopark.fragment.NewsFragment;
 import com.example.technopark.news.service.NewsItemService;
 import com.example.technopark.util.ThreadPoster;
 
+import java.util.function.Consumer;
+
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
 
 public class NewsItemsFragment extends Fragment{
 
@@ -31,7 +38,8 @@ public class NewsItemsFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new NewsItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
-                getFindNewsItemService(), getMainThreadPoster());
+                getFindNewsItemService(), getMainThreadPoster(), getContext());
+
     }
 
     @Nullable
@@ -39,22 +47,39 @@ public class NewsItemsFragment extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         final NewsItemsMvpView view = new NewsItemsMvpViewImpl(inflater, container, getContext());
-        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(((NewsItemsMvpViewImpl) view).getRvNewsItems(),
+        final IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(((NewsItemsMvpViewImpl) view).getRvNewsItems(),
                 OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+
         presenter.bindView(view);
 
-
         RadioGroup radioGroup = ((NewsItemsMvpViewImpl) view).getView().findViewById(R.id.activity_news__top_bar);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if (R.id.activity_news__radio_subs == checkedId) {
-                    presenter.updateDataSubs();
-                } else {
-                    presenter.updateDataNews();
-                }
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            if (R.id.activity_news__radio_subs == checkedId) {
+                presenter.updateDataSubs();
+//                    decor.setOverScrollStateListener((decor1, oldState, newState) -> {
+//                        switch (newState) {
+//                            case STATE_BOUNCE_BACK:
+//                                if (oldState == STATE_DRAG_START_SIDE) {
+//                                    presenter.updateDataSubs();
+//                                }
+//                                break;
+//                        }
+//                    });
+            } else {
+                presenter.updateDataNews();
+//                    decor.setOverScrollStateListener((decor12, oldState, newState) -> {
+//                        switch (newState) {
+//                            case STATE_BOUNCE_BACK:
+//                                if (oldState == STATE_DRAG_START_SIDE) {
+//                                    presenter.updateDataNews();
+//                                }
+//                                break;
+//                        }
+//                    });
             }
         });
+
+
 
         return view.getRootView();
     }
@@ -64,6 +89,8 @@ public class NewsItemsFragment extends Fragment{
         super.onStart();
         presenter.onStart();
     }
+
+
 
     @Override
     public void onStop() {

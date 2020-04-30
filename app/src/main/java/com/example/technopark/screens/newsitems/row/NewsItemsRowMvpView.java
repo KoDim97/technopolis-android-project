@@ -7,7 +7,7 @@ public interface NewsItemsRowMvpView extends MvpView {
 
     interface Listener {
 
-        void onNewsItemClicked(long id);
+        void onNewsItemClicked(String url);
 
     }
 

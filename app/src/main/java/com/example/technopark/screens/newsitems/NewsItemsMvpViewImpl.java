@@ -42,9 +42,9 @@ public class NewsItemsMvpViewImpl extends MvpViewObservableBase<NewsItemsMvpView
     }
 
     @Override
-    public void onNewsItemClicked(long id) {
+    public void onNewsItemClicked(String url) {
         for (Listener listener : getListeners()) {
-            listener.onNewsItemClicked(id);
+            listener.onNewsItemClicked(url);
         }
     }
 
