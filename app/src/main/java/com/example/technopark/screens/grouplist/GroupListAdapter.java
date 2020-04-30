@@ -53,8 +53,8 @@ public class GroupListAdapter extends RecyclerView.Adapter<GroupListAdapter.Stud
         return items.size();
     }
 
-    @Override public void onStudentClicked(long studentId) {
-        listener.onStudentClicked(studentId);
+    @Override public void onStudentClicked(String username) {
+        listener.onStudentClicked(username);
     }
 
     public void bindData(List<Student> students) {

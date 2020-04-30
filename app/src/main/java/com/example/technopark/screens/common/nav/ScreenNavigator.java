@@ -55,6 +55,11 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragNavController.pushFragment(GroupListFragment.newInstance(id));
     }
 
+    public void toProfile(String username, String groupname) {
+        fragNavController.pushFragment(ProfileFragment.newInstance(username, groupname));
+    }
+
+
     public void onSaveInstanceState(Bundle outState) {
         fragNavController.onSaveInstanceState(outState);
     }
