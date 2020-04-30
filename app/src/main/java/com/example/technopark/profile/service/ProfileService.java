@@ -12,7 +12,6 @@ public class ProfileService {
     private final MailApi api;
     private UserProfile currentUserProfile;
     private final Context context;
-    private final static String CURRENT_USER = "current_user";
 
 
     public ProfileService(UserProfileRepo userProfileRepo, MailApi api, Context context) {
@@ -22,7 +21,8 @@ public class ProfileService {
     }
 
     public UserProfile getUserProfile(String userName) {
-        if (userName == CURRENT_USER) {
+//        Если передали пустую строку, запрашиваем профиль активного пользователя
+        if (userName.equals("")) {
             if (currentUserProfile == null) {
                 currentUserProfile = requestFromServer("");
             }

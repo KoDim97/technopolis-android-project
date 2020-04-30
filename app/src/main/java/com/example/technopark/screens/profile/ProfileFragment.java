@@ -25,6 +25,15 @@ public class ProfileFragment extends Fragment implements View.OnLongClickListene
     public ProfileFragment() {
     }
 
+    public static Fragment newInstance() {
+        Fragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putString(PROFILE_NAME, "");
+        args.putString(BACK_BUTTON_TEXT, "");
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public static Fragment newInstance(String username, String backButtonText) {
         Fragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
