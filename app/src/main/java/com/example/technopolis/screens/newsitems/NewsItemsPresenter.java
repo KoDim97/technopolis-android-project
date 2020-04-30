@@ -101,8 +101,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
     @Override
     public boolean onBackPressed() {
-        screenNavigator.navigateUp();
-        return true;
+        return screenNavigator.navigateUp();
     }
 
     @Override

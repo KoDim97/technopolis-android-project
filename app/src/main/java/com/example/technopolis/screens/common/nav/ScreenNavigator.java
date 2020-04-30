@@ -12,11 +12,18 @@ import com.example.technopolis.screens.grouplist.GroupListFragment;
 import com.example.technopolis.screens.profile.ProfileFragment;
 import com.ncapdevi.fragnav.FragNavController;
 
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     private final FragNavController fragNavController;
     private boolean authorized = false;
     private BaseActivity activity;
+    private Map<Integer, Integer> log = new TreeMap<>();
+    private int currentNum;
+    private boolean pop = false;
 
 
     public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, BaseActivity activity) {
@@ -24,6 +31,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragNavController = new FragNavController(fragmentManager, R.id.fl_content);
         fragNavController.setRootFragmentListener(this);
         fragNavController.initialize(FragNavController.TAB1, savedInstanceState);
+        log.put(0, 0);
 
     }
 
@@ -37,7 +45,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         if (!authorized) {
             return AuthorizationFragment.newInstance(activity);
         } else {
-            return activity.getRootFragment();
+            return activity.getRootFragmentList().get(0);
         }
     }
 
@@ -59,16 +67,64 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragNavController.onSaveInstanceState(outState);
     }
 
-    public void loadFragment(Fragment fragment) {
-        if (fragNavController.getCurrentFrag() != fragment){
-            fragNavController.replaceFragment(fragment);
+
+
+    private void deleteLoop(int index) {
+        boolean find = false;
+        int n = log.size();
+        for (int i = 0; i < n; i++) {
+            if (find) {
+                log.remove(i);
+                fragNavController.popFragment();
+            } else if (log.get(i) == index) {
+                find = true;
+            }
         }
     }
 
+    public void loadFragment(Fragment fragment, int index) {
+        if (pop) {
+            pop = false;
+            return;
+        }
+        if (!log.containsValue(index)) {
+            log.put(log.size(), index);
+            fragNavController.pushFragment(fragment);
+        } else if (index != 0) {
+            deleteLoop(index);
+        } else {
+            fragNavController.clearStack();
+            log.clear();
+            log.put(0, 0);
+        }
+    }
+
+
+    private boolean navBarElem(Fragment fragment) {
+        List temp = activity.getRootFragmentList();
+        if (temp.get(1) == fragment) {
+            currentNum = 1;
+            return true;
+        } else if (temp.get(2) == fragment) {
+            currentNum = 2;
+            return true;
+        }
+        return false;
+    }
+
+
     public boolean navigateUp() {
         if (!fragNavController.isRootFragment()) {
+            if (navBarElem(fragNavController.getCurrentFrag())) {
+                pop = true;
+                log.remove(log.size() - 1);
+                if (log.size() > 0)
+                    activity.setNavElem(log.get(log.size() - 1));
+                else activity.setNavElem(0);
+            }
             fragNavController.popFragment();
             return true;
-        } else return false;
+        }
+        return false;
     }
 }
