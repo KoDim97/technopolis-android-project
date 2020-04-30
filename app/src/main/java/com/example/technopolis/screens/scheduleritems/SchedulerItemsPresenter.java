@@ -115,7 +115,6 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
 
     @Override
     public boolean onBackPressed() {
-        screenNavigator.navigateUp();
-        return true;
+        return screenNavigator.navigateUp();
     }
 }
