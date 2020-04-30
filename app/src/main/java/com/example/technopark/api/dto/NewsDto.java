@@ -9,7 +9,13 @@ public class NewsDto {
     private String avatar_url;
     private String comments_count;
 
-    public NewsDto(long id, String fullname, String title, String blog, String publish_date, String avatar_url, String comments_count) {
+    private String post_url;
+
+    public String getPost_url() {
+        return post_url;
+    }
+
+    public NewsDto(long id, String fullname, String title, String blog, String publish_date, String avatar_url, String comments_count, String post_url) {
         this.id = id;
         this.fullname = fullname;
         this.title = title;
@@ -17,6 +23,7 @@ public class NewsDto {
         this.publish_date = publish_date;
         this.avatar_url = avatar_url;
         this.comments_count = comments_count;
+        this.post_url = post_url;
     }
 
     public long getId() {
