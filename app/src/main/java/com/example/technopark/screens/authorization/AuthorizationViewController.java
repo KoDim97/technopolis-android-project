@@ -36,10 +36,21 @@ public class AuthorizationViewController  {
     private boolean[] enableEnter=new boolean[2];
     private final AuthService authService;
     private Thread thread;
+    private String park = "https://park.mail.ru";
+    private String sphere = "https://sphere.mail.ru";
+    private String track = "https://track.mail.ru";
+    private String polis = "https://polis.mail.ru";
+    private String technoatom = "https://technoatom.mail.ru";
+    private String vgu = "https://vgu.sphere.mail.ru";
+    private String pgu = "https://pgu.sphere.mail.ru";
+    private String data = "https://data.mail.ru";
+
+
+
 
     public AuthorizationViewController(View rootView, BaseActivity activity){
         screenNavigator=activity.getScreenNavigator();
-        myPager = new MyPager(activity);
+        myPager = new MyPager(activity,activity);
         viewPager = rootView.findViewById(R.id.view_pager);
         viewPager.setAdapter(myPager);
         mTabLayout = (TabLayout) rootView.findViewById(R.id.tablayout);
@@ -54,7 +65,7 @@ public class AuthorizationViewController  {
         authService = app.provideAuthService();
         loginEditTextSettings(loginEditText);
         passwordEditTextSettings(passwordEditText);
-        viewPagerSettings(viewPager);
+        viewPagerSettings(viewPager,app);
         btnSettings(activity);
     }
 
@@ -125,7 +136,36 @@ public class AuthorizationViewController  {
         });
     }
 
-    private void viewPagerSettings(ViewPager viewPager){
+    private void setProject(int position,App app){
+        switch (position) {
+            case 0:
+                app.provideMailApi().setProjectUrl(park);
+                return;
+            case 1:
+                app.provideMailApi().setProjectUrl(polis);
+                return;
+            case 2:
+                app.provideMailApi().setProjectUrl(technoatom);
+                return;
+            case 3:
+                app.provideMailApi().setProjectUrl(sphere);
+                return;
+            case 4:
+                app.provideMailApi().setProjectUrl(track);
+                return;
+            case 5:
+                app.provideMailApi().setProjectUrl(pgu);
+                return;
+            case 6:
+                app.provideMailApi().setProjectUrl(vgu);
+                return;
+            default:
+                app.provideMailApi().setProjectUrl(park);
+        }
+    }
+
+
+    private void viewPagerSettings(ViewPager viewPager, final App app){
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -135,6 +175,7 @@ public class AuthorizationViewController  {
             @Override
             public void onPageSelected(int position) {
                 int totalItems = myPager.getCount();
+                setProject(position,app);
                 if(position==0){
                     prevButton.setVisibility(View.INVISIBLE);
                 }else if(position==totalItems-1){

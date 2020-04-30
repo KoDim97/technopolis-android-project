@@ -1,17 +1,14 @@
 package com.example.technopark.screens.common.nav;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.technopark.BaseActivity;
 import com.example.technopark.R;
 import com.example.technopark.screens.authorization.AuthorizationFragment;
 import com.example.technopark.screens.grouplist.GroupListFragment;
-import com.example.technopark.screens.root.MenuRootFragment;
 import com.ncapdevi.fragnav.FragNavController;
 
 public class ScreenNavigator implements FragNavController.RootFragmentListener {
@@ -19,13 +16,12 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     private final FragNavController fragNavController;
     private boolean authorized = false;
     private BaseActivity activity;
-    private MenuRootFragment menuRootFragment;
 
 
 
     public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, BaseActivity activity) {
         this.activity = activity;
-        fragNavController = new FragNavController(fragmentManager, R.id.container);
+        fragNavController = new FragNavController(fragmentManager, R.id.fl_content);
         fragNavController.setRootFragmentListener(this);
         fragNavController.initialize(FragNavController.TAB1, savedInstanceState);
 
@@ -41,8 +37,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         if (!authorized) {
             return AuthorizationFragment.newInstance(activity);
         } else {
-            menuRootFragment = MenuRootFragment.newInstance();
-            return menuRootFragment;
+            return activity.getRootFragment();
         }
     }
 
@@ -61,9 +56,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     public void loadFragment(Fragment fragment) {
-        FragmentTransaction ft = fragNavController.getFragmentManagerForDialog().beginTransaction();
-        ft.replace(R.id.fl_content, fragment);
-        ft.commit();
+       fragNavController.replaceFragment(fragment);
     }
 
 
