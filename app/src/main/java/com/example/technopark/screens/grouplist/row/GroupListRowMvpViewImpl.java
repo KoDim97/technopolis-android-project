@@ -56,7 +56,7 @@ public class GroupListRowMvpViewImpl extends MvpViewBase
     }
 
     public void onStudentClicked() {
-        listener.onStudentClicked(student.getId());
+        listener.onStudentClicked(student.getUsername());
     }
     
 }

@@ -105,9 +105,9 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     }
 
     @Override
-    public void onStudentClicked(long studentId) {
-        //temp
-//        screenNavigator.loadFragment(ProfileFragment.newInstance("sdf"));
+    public void onStudentClicked(String username) {
+        GroupItem groupItem = findGroupItemService.findById(id);
+        screenNavigator.toProfile(username, groupItem.getName());
     }
 
     @Override

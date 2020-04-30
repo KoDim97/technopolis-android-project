@@ -129,9 +129,9 @@ public class GroupListMvpViewImpl extends MvpViewObservableBase<GroupListMvpView
     }
 
     @Override
-    public void onStudentClicked(long studentId) {
+    public void onStudentClicked(String username) {
         for (Listener listener : getListeners()){
-            listener.onStudentClicked(studentId);
+            listener.onStudentClicked(username);
         }
     }
 }
