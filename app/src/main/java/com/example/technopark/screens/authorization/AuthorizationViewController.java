@@ -174,7 +174,7 @@ public class AuthorizationViewController {
             thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    if (authService.CheckAuth("neeroll21@gmail.com", passwordEditText.getText().toString())) {
+                    if (authService.CheckAuth(loginEditText.getText().toString(), passwordEditText.getText().toString())) {
                         screenNavigator.changeAuthorized(true);
                     } else {
 
