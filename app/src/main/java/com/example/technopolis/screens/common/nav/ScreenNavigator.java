@@ -60,7 +60,9 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     public void loadFragment(Fragment fragment) {
-        fragNavController.replaceFragment(fragment);
+        if (fragNavController.getCurrentFrag() != fragment){
+            fragNavController.replaceFragment(fragment);
+        }
     }
 
     public boolean navigateUp() {
