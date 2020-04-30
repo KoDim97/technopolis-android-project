@@ -2,11 +2,16 @@ package com.example.technopark;
 
 import android.app.Application;
 
-import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.technopark.api.MailApi;
 import com.example.technopark.api.MailApiImpl;
 
+import com.example.technopark.profile.repo.UserProfileRepo;
+import com.example.technopark.profile.repo.UserProfileRepoImpl;
+import com.example.technopark.profile.service.ProfileService;
+import com.example.technopark.group.repo.GroupItemRepo;
+import com.example.technopark.group.repo.GroupItemRepoImpl;
+import com.example.technopark.group.service.FindGroupItemService;
 import com.example.technopark.user.model.User;
 import com.example.technopark.user.service.AuthService;
 import com.example.technopark.scheduler.repo.SchedulerItemRepo;
@@ -25,15 +30,19 @@ public class App extends Application {
     private AuthService authService;
     private SchedulerItemService schedulerItemService;
     private SchedulerItemRepo schedulerItemRepo;
+    private ProfileService profileService;
+    private UserProfileRepo userProfileRepo;
+    private FindGroupItemService findGroupItemService;
+    private GroupItemRepo groupItemRepo;
 
     @Override
     public void onCreate() {
         super.onCreate();
     }
 
-    private MailApi provideMailApi() {
+    public MailApi provideMailApi() {
         if (api == null) {
-            api = new MailApiImpl(Volley.newRequestQueue(this));
+            api = new MailApiImpl(Volley.newRequestQueue(this), provideUser());
         }
         return api;
     }
@@ -59,6 +68,21 @@ public class App extends Application {
         return user;
     }
 
+
+    public UserProfileRepo provideUserProfileRepo() {
+        if (userProfileRepo == null) {
+            userProfileRepo = new UserProfileRepoImpl();
+        }
+        return userProfileRepo;
+    }
+
+    public ProfileService provideProfileService() {
+        if (profileService == null) {
+            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), getApplicationContext());
+        }
+        return profileService;
+    }
+
     public SchedulerItemRepo provideSchedulerItemRepo() {
         if (schedulerItemRepo == null) {
             schedulerItemRepo = new SchedulerItemRepoImpl();
@@ -71,5 +95,19 @@ public class App extends Application {
             schedulerItemService = new SchedulerItemService(provideSchedulerItemRepo(), provideMailApi());
         }
         return schedulerItemService;
+    }
+
+    public GroupItemRepo provideGroupItemRepo() {
+        if (groupItemRepo == null) {
+            groupItemRepo = new GroupItemRepoImpl();
+        }
+        return groupItemRepo;
+    }
+
+    public FindGroupItemService provideFindGroupItemService() {
+        if (findGroupItemService == null) {
+            findGroupItemService = new FindGroupItemService(provideGroupItemRepo(), provideMailApi());
+        }
+        return findGroupItemService;
     }
 }

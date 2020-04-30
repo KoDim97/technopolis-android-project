@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UserProfileRepoImpl implements UserProfileRepo {
-    private final Map<Long, UserProfile> items = new ConcurrentHashMap<>();
+    private final Map<String, UserProfile> items = new ConcurrentHashMap<>();
 
     @Override
     public List<UserProfile> findAll() {
@@ -16,23 +16,23 @@ public class UserProfileRepoImpl implements UserProfileRepo {
     }
 
     @Override
-    public UserProfile findById(long id) {
-        return items.get(id);
+    public UserProfile findByUserName(String userName) {
+        return items.get(userName);
     }
 
     @Override
     public UserProfile add(UserProfile userProfile) {
-        items.put(userProfile.getId(), userProfile);
+        items.put(userProfile.getUserName(), userProfile);
         return userProfile;
     }
 
     @Override
     public void update(UserProfile userProfile) {
-        items.put(userProfile.getId(), userProfile);
+        items.put(userProfile.getUserName(), userProfile);
     }
 
     @Override
-    public void removeById(long id) {
-        items.remove(id);
+    public void removeByUserName(String userName) {
+        items.remove(userName);
     }
 }

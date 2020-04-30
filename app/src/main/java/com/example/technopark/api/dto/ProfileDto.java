@@ -1,7 +1,7 @@
 package com.example.technopark.api.dto;
 
 import com.example.technopark.profile.model.UserAccount;
-import com.example.technopark.profile.model.UserContacts;
+import com.example.technopark.profile.model.UserContact;
 import com.example.technopark.profile.model.UserGroup;
 
 import java.util.List;
@@ -26,13 +26,13 @@ public class ProfileDto {
     //    Дата последнего посещения
     private String lastSeen;
 
-    private List<UserContacts> contacts;
+    private List<UserContact> contacts;
     private List<UserGroup> groups;
     private List<UserAccount> accounts;
 
     public ProfileDto(long id, String userName, long projectId, String projectName, String fullName,
                       String gender, String avatarUrl, String mainGroup, String birthDate, String about,
-                      String joinDate, String lastSeen, List<UserContacts> contacts, List<UserGroup> groups,
+                      String joinDate, String lastSeen, List<UserContact> contacts, List<UserGroup> groups,
                       List<UserAccount> accounts) {
         this.id = id;
         this.userName = userName;
@@ -99,7 +99,7 @@ public class ProfileDto {
         return lastSeen;
     }
 
-    public List<UserContacts> getContacts() {
+    public List<UserContact> getContacts() {
         return contacts;
     }
 
@@ -159,7 +159,7 @@ public class ProfileDto {
         this.lastSeen = lastSeen;
     }
 
-    public void setContacts(List<UserContacts> contacts) {
+    public void setContacts(List<UserContact> contacts) {
         this.contacts = contacts;
     }
 
