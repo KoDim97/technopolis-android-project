@@ -64,7 +64,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         ft.replace(R.id.fl_content, fragment);
         ft.commit();
     }
-    
+
     public void navigateUp() {
         fragNavController.popFragment();
 
