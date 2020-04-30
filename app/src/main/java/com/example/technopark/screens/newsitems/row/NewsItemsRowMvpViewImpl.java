@@ -59,8 +59,6 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
         titleTextView.setText(newsItem.getTitle());
         blogNameTextView.setText(newsItem.getSection());
         try {
-
-
             Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", new Locale("ru", "RU"))
                     .parse(newsItem.getDate());
             datePostingTextView.setText(new SimpleDateFormat("d MMM yyyy 'г'. 'в' HH:mm", new Locale("ru", "RU"))
