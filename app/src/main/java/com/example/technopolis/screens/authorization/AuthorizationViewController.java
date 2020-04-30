@@ -41,6 +41,7 @@ public class AuthorizationViewController {
     private String vgu = "https://vgu.sphere.mail.ru";
     private String pgu = "https://pgu.sphere.mail.ru";
     private String data = "https://data.mail.ru";
+    private boolean authorized = false;
 
 
     public AuthorizationViewController(View rootView, BaseActivity activity) {
@@ -117,17 +118,16 @@ public class AuthorizationViewController {
                 changeEnableEnter();
             }
         });
-        editText.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                boolean consumed = false;
-                if (keyCode == KEYCODE_ENTER) {
-                    if (enterButton.isEnabled()) {
-                        enterButton.performClick();
-                    }
-                    consumed = true;
+        editText.setOnKeyListener((v, keyCode, event) -> {
+            boolean consumed = false;
+            if (keyCode == KEYCODE_ENTER && !authorized) {
+                if (enterButton.isEnabled()) {
+                    authorized = true;
+                    enterButton.callOnClick();
                 }
-                return consumed;
+                consumed = true;
             }
+            return consumed;
         });
     }
 
