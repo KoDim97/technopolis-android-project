@@ -19,7 +19,7 @@
     <string name="contacts">Contacts</string>
     <string name="accounts">Accounts</string>
 
-    <string name="authFailed">Invalid login or password/</string>
+    <string name="authFailed">Invalid login or password</string>
 
     <string name="schedule_icon" translatable="false">\uf041</string>
 

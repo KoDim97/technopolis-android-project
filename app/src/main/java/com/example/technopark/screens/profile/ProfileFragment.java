@@ -59,7 +59,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container, this);
-        //((BaseActivity)getActivity()).setBarVisible(View.VISIBLE);
+        ((BaseActivity)getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
         presenter.bindView(view);
         return view.getRootView();
 

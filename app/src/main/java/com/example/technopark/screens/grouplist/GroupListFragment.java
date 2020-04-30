@@ -39,6 +39,7 @@ public class GroupListFragment extends Fragment {
     @Nullable @Override public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                                                  @Nullable Bundle savedInstanceState) {
         GroupListMvpView view = new GroupListMvpViewImpl(inflater, container, getContext());
+        ((BaseActivity)getActivity()).getRootViewController().setBarVisible(View.GONE);
         presenter.bindView(view);
         return view.getRootView();
     }

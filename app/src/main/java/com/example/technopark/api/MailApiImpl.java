@@ -45,7 +45,7 @@ public class MailApiImpl implements MailApi {
     public MailApiImpl(RequestQueue queue, User user) {
         this.queue = queue;
         this.user = user;
-        //temp
+        //default
         projectUrl = "https://park.mail.ru";
     }
 
@@ -57,7 +57,6 @@ public class MailApiImpl implements MailApi {
     @Override
     public AuthDto requestAuthDto(String login, String password) {
         AuthDto authDto;
-        //temp hardcode
         final String url = projectUrl + "/api/mobile/v1/auth/";
         JSONObject json = new JSONObject();
 
@@ -79,31 +78,30 @@ public class MailApiImpl implements MailApi {
 
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                // TODO: Handle error
-                int a = 5;
-            }
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, error -> {
+            // TODO: Handle error
+            int a = 5;
         });
 
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(5, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);
 
             String username = response.getString("username");
             String auth_token = response.getString("auth_token");
             Integer user_id = response.getInt("user_id");
             authDto = new AuthDto(auth_token, user_id, username);
             return authDto;
-        } catch (InterruptedException | TimeoutException e) {
-            System.out.println("Time out");
-        } catch (ExecutionException e) {
-            System.out.println("Invalid login or password");
-        } catch (JSONException e) {
-            System.out.println("Json creating failed");
+        } catch (TimeoutException e) {
+            int a = 5;
+            //Time out
+        }catch (JSONException e) {
+            int a = 5;
+            //Json creating failed
+        }catch (ExecutionException | InterruptedException e) {
+            int a = 5;
+            //unknown error
         }
         return null;
     }
