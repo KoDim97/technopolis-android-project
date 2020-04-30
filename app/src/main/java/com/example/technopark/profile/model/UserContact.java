@@ -1,10 +1,10 @@
 package com.example.technopark.profile.model;
 
-public class UserContacts {
+public class UserContact {
     private String name;
     private String value;
 
-    public UserContacts(String name, String value) {
+    public UserContact(String name, String value) {
         this.name = name;
         this.value = value;
     }

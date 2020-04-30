@@ -1,13 +1,13 @@
-package com.example.technopark.api.dto;
+package com.example.technopark.group.model;
 
 import java.util.List;
 
-public class GroupDto {
+public class GroupItem {
     private final long id;
     private final String name;
-    private final List<StudentDto> students;
+    private final List<Student> students;
 
-    public GroupDto(long id, String name, List<StudentDto> students) {
+    public GroupItem(long id, String name, List<Student> students) {
         this.id = id;
         this.name = name;
         this.students = students;
@@ -21,7 +21,7 @@ public class GroupDto {
         return name;
     }
 
-    public List<StudentDto> getStudents() {
+    public List<Student> getStudents() {
         return students;
     }
 }
