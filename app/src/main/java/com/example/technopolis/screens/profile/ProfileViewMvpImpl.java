@@ -1,7 +1,11 @@
 package com.example.technopolis.screens.profile;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -11,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.profile.model.UserAccount;
 import com.example.technopolis.profile.model.UserContact;
@@ -34,18 +40,16 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final TextView status;
     private final TextView about;
     private final androidx.appcompat.widget.Toolbar toolbar;
-    private final Button backButton;
     //    private final TextView rating;
     private final LinearLayout groupsLinearLayout;
     private final LinearLayout contactsLinearLayout;
     private final LinearLayout accountsLinearLayout;
-    private final ProfileFragment profileFragment;
+    private final LinearLayout profileWrapper;
 
 
     private final float scale;
 
-    public ProfileViewMvpImpl(LayoutInflater layoutInflater, ViewGroup parent, ProfileFragment profileFragment) {
-        this.profileFragment = profileFragment;
+    public ProfileViewMvpImpl(LayoutInflater layoutInflater, ViewGroup parent) {
         setRootView(layoutInflater.inflate(R.layout.profile_fragment, parent, false));
         scale = getContext().getResources().getDisplayMetrics().density;
         image = findViewById(R.id.profile_image);
@@ -53,11 +57,12 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         status = findViewById(R.id.profile_status);
         about = findViewById(R.id.profile_about);
         toolbar = findViewById(R.id.toolbar);
-        backButton = findViewById(R.id.exitButton);
 //        rating = findViewById(R.id.profile_rating);
         groupsLinearLayout = findViewById(R.id.groups);
         contactsLinearLayout = findViewById(R.id.contacts);
         accountsLinearLayout = findViewById(R.id.accounts);
+        profileWrapper = findViewById(R.id.profile_wrapper);
+
     }
 
     @Override
@@ -86,7 +91,6 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         addContactsTextViews(userProfile.getContacts());
 //        Добавляем textView для аккаунтов
         addAccountsTextViews(userProfile.getAccounts());
-
     }
 
     @Override
@@ -112,13 +116,16 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         for (int i = 0; i < length; i++) {
 //            Подгатавливаем и вставляем новую кнопку перехода на список группы
             int style = R.attr.borderlessButtonStyle;
+
+            @SuppressLint("ResourceType")
             Button button = new Button(new ContextThemeWrapper(getContext(), style), null, style);
+
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     (int) (43 * scale + 0.5f)
             );
 
-            params.setMargins(0, 1, 0, 0);
+            params.setMargins(0, (int) (1 * scale + 0.5f), 0, 0);
             button.setBackgroundResource(R.color.colorWhite);
             Drawable icon = getContext().getDrawable(R.drawable.ic_chevron_right_black_24dp);
             button.setCompoundDrawablesWithIntrinsicBounds(null, null, icon, null);
@@ -133,15 +140,6 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             button.setOnClickListener(this);
             groupsLinearLayout.addView(button);
 
-////           Добавляем сепаратор, если необходимо
-//            LinearLayout.LayoutParams separatorParams = new LinearLayout.LayoutParams(
-//                    (int) (100 * scale + 0.5f),
-//                    (int) (100 * scale + 0.5f)
-//            );
-//            View separator = new View(getContext());
-//            separator.setBackgroundResource(R.color.colorBlack);
-//            separatorParams.gravity = Gravity.LEFT;
-//            groupLinearLayout.addView(separator);
 
         }
     }
@@ -155,7 +153,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
                     (int) (43 * scale + 0.5f)
             );
 
-            params.setMargins(0, 1, 0, 0);
+            params.setMargins(0, (int) (1 * scale + 0.5f), 0, 0);
             TextView contact = new TextView(getContext());
             Drawable icon = getContactsIcon(contacts.get(i));
             contact.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
@@ -190,7 +188,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     (int) (43 * scale + 0.5f)
             );
-            params.setMargins(0, 1, 0, 0);
+            params.setMargins(0, (int) (1 * scale + 0.5f), 0, 0);
             TextView account = new TextView(getContext());
             Drawable icon = getAccountsIcon(accounts.get(i));
             account.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
@@ -219,6 +217,56 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         }
     }
 
+    public void showExitButton() {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                (int) (43 * scale + 0.5f)
+        );
+        params.setMargins(0, (int) (15 * scale + 0.5f), 0, (int) (70 * scale + 0.5f));
+        int style = R.attr.borderlessButtonStyle;
+
+        @SuppressLint("ResourceType")
+        Button exitButton = new Button(new ContextThemeWrapper(getContext(), style), null, style);
+
+        exitButton.setText(R.string.exit);
+        exitButton.setBackgroundResource(R.color.colorWhite);
+        exitButton.setTextColor(getContext().getResources().getColor(R.color.colorRed));
+        exitButton.setAllCaps(false);
+        exitButton.setLayoutParams(params);
+
+        profileWrapper.addView(exitButton);
+
+        exitButton.setOnClickListener(v -> {
+            final Dialog exitDialog = new Dialog(getContext(), R.style.ExitDialogAnimation);
+            exitDialog.getWindow().getAttributes().windowAnimations = R.style.ExitDialogAnimation;
+            exitDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(50, 0, 0, 0)));
+            exitDialog.setContentView(R.layout.exit_popup_view);
+            exitDialog.setCancelable(true);
+            exitDialog.show();
+
+            exitDialog.findViewById(R.id.exitButtonApprove).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    exitDialog.dismiss();
+                    for (Listener listener : getListeners()) {
+                        listener.onSignOutClicked();
+                    }
+
+                }
+            });
+            exitDialog.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    exitDialog.dismiss();
+                }
+            });
+        });
+    }
+
+    @Override
+    public void hideNavBar() {
+        ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.GONE);
+    }
 
 }
 

@@ -60,10 +60,22 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         if (!backButtonText.equals("")) {
             view.showBackButton(backButtonText);
         }
+
+//        Показываем кнопку "Выйти", если имеем дело с профилем пользователя
+//        и скрываем navBar
+        if (userName.equals("")) {
+            view.showExitButton();
+            view.hideNavBar();
+        }
     }
 
     public void onGroupButtonClicked(long id) {
         screenNavigator.toGroupList(id);
+    }
+
+    @Override
+    public void onSignOutClicked() {
+        screenNavigator.changeAuthorized(false);
     }
 
     @Override
