@@ -16,10 +16,18 @@ public interface ProfileMvpView extends MvpViewObservable<ProfileMvpView.Listene
 
         void onGroupButtonClicked(long id);
 
+        void onSignOutClicked();
+
     }
 
     void showBackButton(String backButtonText);
 
     void bindData(UserProfile userProfile);
+
+    void showExitButton();
+
+    void hideNavBar();
+
+    void showNameOnToolbar(String userName);
 
 }

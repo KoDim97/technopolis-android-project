@@ -68,6 +68,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
 
+
     private void deleteLoop(int index) {
         boolean find = false;
         int n = log.size();
