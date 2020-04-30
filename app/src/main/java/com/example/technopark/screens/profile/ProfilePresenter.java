@@ -17,6 +17,7 @@ import com.example.technopark.util.ThreadPoster;
 public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMvpView.Listener {
 
     private final String userName;
+    private final String backButtonText;
 
     private ProfileMvpView view;
     private final ProfileService profileService;
@@ -27,8 +28,9 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private ClipboardManager myClipboard;
     private ClipData myClip;
 
-    public ProfilePresenter(String userName, ProfileService profileService, ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster, BackPressDispatcher backPressDispatcher) {
+    public ProfilePresenter(String userName, String backButtonText, ProfileService profileService, ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster, BackPressDispatcher backPressDispatcher) {
         this.userName = userName;
+        this.backButtonText = backButtonText;
         this.profileService = profileService;
         this.screenNavigator = screenNavigator;
         this.mainThreadPoster = mainThreadPoster;
@@ -53,6 +55,9 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     private void onItemLoaded(UserProfile userProfile) {
         view.bindData(userProfile);
+        if (!backButtonText.equals("")) {
+            view.showBackButton(backButtonText);
+        }
     }
 
     public void onGroupButtonClicked(long id) {

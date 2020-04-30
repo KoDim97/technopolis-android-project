@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -33,7 +34,8 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final TextView name;
     private final TextView status;
     private final TextView about;
-//    private final TextView rating;
+    private final  androidx.appcompat.widget.Toolbar toolbar;
+    //    private final TextView rating;
     private final LinearLayout groupsLinearLayout;
     private final LinearLayout contactsLinearLayout;
     private final LinearLayout accountsLinearLayout;
@@ -49,6 +51,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         name = findViewById(R.id.profile_fullname);
         status = findViewById(R.id.profile_status);
         about = findViewById(R.id.profile_about);
+        toolbar = findViewById(R.id.toolbar);
 //        rating = findViewById(R.id.profile_rating);
         groupsLinearLayout = findViewById(R.id.groups);
         contactsLinearLayout = findViewById(R.id.contacts);
@@ -56,15 +59,12 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     }
 
     @Override
-    public void showProgress() {
-
+    public void showBackButton(String backButtonText) {
+        toolbar.setNavigationIcon(R.drawable.ic_navigate_before_black_24dp);
+        TextView view = findViewById(R.id.back_to_group);
+        view.setText(backButtonText);
+        view.setVisibility(View.VISIBLE);
     }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
 
     @Override
     public void bindData(UserProfile userProfile) {

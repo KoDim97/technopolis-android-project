@@ -11,9 +11,7 @@ public interface ProfileMvpView extends MvpViewObservable<ProfileMvpView.Listene
         void onBtnGoBackClicked();
     }
 
-    void showProgress();
-
-    void hideProgress();
+    void showBackButton(String backButtonText);
 
     void bindData(UserProfile userProfile);
 
