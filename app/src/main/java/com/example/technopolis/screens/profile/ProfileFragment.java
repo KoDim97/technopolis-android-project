@@ -61,11 +61,13 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container);
-        ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
+        ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.GONE);
 
-//        set up good scroll
+//      set up good scroll
         ScrollView scrollView = (ScrollView) view.getRootView().findViewById(R.id.profile_scroll_view);
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+//      Показываем navBar, если был скрыт
+        ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.VISIBLE);
 
         presenter.bindView(view);
         return view.getRootView();

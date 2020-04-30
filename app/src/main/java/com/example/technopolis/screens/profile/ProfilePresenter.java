@@ -65,9 +65,9 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
         if (userName.equals("")) {
             view.showExitButton();
+        } else {
 //          скрываем navBar
             view.hideNavBar();
-        } else {
 //          Показываем имя пользователя в toolbar'e
             view.showNameOnToolbar(userProfile.getFullName());
         }
