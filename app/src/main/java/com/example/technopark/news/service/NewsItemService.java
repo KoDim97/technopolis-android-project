@@ -1,19 +1,15 @@
 package com.example.technopark.news.service;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.widget.ImageView;
-
 import com.example.technopark.api.MailApi;
 import com.example.technopark.api.dto.NewsDto;
+import com.example.technopark.dto.News;
 import com.example.technopark.news.model.NewsItem;
 import com.example.technopark.news.repo.NewsItemRepository;
-import com.example.technopark.news.repo.NewsItemRepositoryImpl;
-import com.example.technopark.news.repo.NewsItemRepositoryImplSubs;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class NewsItemService {
@@ -30,6 +26,7 @@ public class NewsItemService {
 
     public List<NewsItem> getNewsItems() {
         List<NewsItem> newsItemList = newsItemRepo.findAll();
+        Collections.sort(newsItemList, ((NewsItem o1, NewsItem o2) -> o2.getDate().compareTo(o1.getDate())));
         if (newsItemList.isEmpty()) {
             newsItemList = requestNewsFromServer();
         }
@@ -38,6 +35,7 @@ public class NewsItemService {
 
     public List<NewsItem> getSubsItems() {
         List<NewsItem> newsItemList = subsItemRepo.findAll();
+        Collections.sort(newsItemList, ((NewsItem o1, NewsItem o2) -> o2.getDate().compareTo(o1.getDate())));
         if (newsItemList.isEmpty()) {
             newsItemList = requestSubsFromServer();
         }
@@ -46,9 +44,9 @@ public class NewsItemService {
 
     private List<NewsItem> requestNewsFromServer() {
         List<NewsDto> newsDtoList = api.requestMainNewsDto(Integer.MAX_VALUE, 0);
-        final List<NewsItem> newsList = new ArrayList<>();
+
         for (final NewsDto newsDto : newsDtoList) {
-            newsList.add(
+            newsItemRepo.add(
                     new NewsItem(
                             newsDto.getId(),
                             newsDto.getFullname(),
@@ -56,20 +54,22 @@ public class NewsItemService {
                             newsDto.getBlog(),
                             newsDto.getPublish_date(),
                             newsDto.getAvatar_url(),
-                            newsDto.getComments_count()
+                            newsDto.getComments_count(),
+                            newsDto.getPost_url()
                     )
             );
         }
-        newsItemRepo.addAll(newsList);
 
-        return newsList;
+        List<NewsItem> repoData = newsItemRepo.findAll();
+        Collections.sort(repoData, ((NewsItem o1, NewsItem o2) -> o2.getDate().compareTo(o1.getDate())));
+
+        return repoData;
     }
 
     private List<NewsItem> requestSubsFromServer() {
         List<NewsDto> newsDtoList = api.requestSubscribedNewsDto(Integer.MAX_VALUE, 0);
-        final List<NewsItem> newsList = new ArrayList<>();
         for (final NewsDto newsDto : newsDtoList) {
-            newsList.add(
+            subsItemRepo.add(
                     new NewsItem(
                             newsDto.getId(),
                             newsDto.getFullname(),
@@ -77,13 +77,15 @@ public class NewsItemService {
                             newsDto.getBlog(),
                             newsDto.getPublish_date(),
                             newsDto.getAvatar_url(),
-                            newsDto.getComments_count()
+                            newsDto.getComments_count(),
+                            newsDto.getPost_url()
                     )
             );
         }
-        subsItemRepo.addAll(newsList);
+        List<NewsItem> repoData = subsItemRepo.findAll();
+        Collections.sort(repoData, ((NewsItem o1, NewsItem o2) -> o2.getDate().compareTo(o1.getDate())));
 
-        return newsList;
+        return repoData;
     }
 
 //    private ImageView castLinkToBitmap(String link) {

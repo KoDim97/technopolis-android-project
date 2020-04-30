@@ -56,8 +56,8 @@ public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.News
     }
 
     @Override
-    public void onNewsItemClicked(long id) {
-        listener.onNewsItemClicked(id);
+    public void onNewsItemClicked(String url) {
+        listener.onNewsItemClicked(url);
     }
 
     public void bindData(List<NewsItem> newsItems) {

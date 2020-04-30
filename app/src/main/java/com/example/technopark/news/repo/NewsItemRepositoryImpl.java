@@ -2,25 +2,27 @@ package com.example.technopark.news.repo;
 
 import com.example.technopark.news.model.NewsItem;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class NewsItemRepositoryImpl implements NewsItemRepository{
 
-    private final List<NewsItem> itemsNews = new LinkedList<>();
+    private final Map<Long, NewsItem> itemsNews = new ConcurrentHashMap<>();
 
-
+    @Override
     public List<NewsItem> findAll() {
-        return itemsNews;
+        return new ArrayList<>(itemsNews.values());
     }
 
-
-    public boolean add(NewsItem newsItem) {
-        return itemsNews.add(newsItem);
+    @Override
+    public void add(NewsItem newsItem) {
+        itemsNews.put(newsItem.getId(), newsItem);
     }
 
-
-    public void addAll(List<NewsItem> newsList) {
-        itemsNews.addAll(newsList);
+    @Override
+    public String findById(long id) {
+        return itemsNews.get(id).getUrl();
     }
 }

@@ -1,11 +1,7 @@
 package com.example.technopark.api;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.example.technopark.api.dto.AuthDto;
@@ -15,7 +11,6 @@ import com.example.technopark.api.dto.ProfileDto;
 import com.example.technopark.api.dto.SchedulerItemCheckInDto;
 import com.example.technopark.api.dto.SchedulerItemDto;
 import com.example.technopark.user.model.User;
-import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -121,7 +116,7 @@ public class MailApiImpl implements MailApi {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Token " + user.getAuth_token());
+                headers.put("Authorization", "Token df2lii1erzz25egd13ffprfvcprb24f4");
                 return headers;
             }
         };
@@ -138,6 +133,7 @@ public class MailApiImpl implements MailApi {
                 String publish_date = one_new.getString("publish_date");
                 String avatar_url = one_new.getJSONObject("author").getString("avatar_url");
                 String comments_count = one_new.getString("comments_count");
+                String post_url = one_new.getString("url");
 
                 newsDtoList.add(new NewsDto(
                         id,
@@ -146,7 +142,8 @@ public class MailApiImpl implements MailApi {
                         blog,
                         publish_date,
                         avatar_url,
-                        comments_count
+                        comments_count,
+                        post_url
                 ));
             }
 
@@ -172,7 +169,7 @@ public class MailApiImpl implements MailApi {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Token "  + user.getAuth_token());
+                headers.put("Authorization", "Token df2lii1erzz25egd13ffprfvcprb24f4");
                 return headers;
             }
         };
@@ -189,6 +186,7 @@ public class MailApiImpl implements MailApi {
                 String publish_date = one_new.getString("publish_date");
                 String avatar_url = one_new.getJSONObject("author").getString("avatar_url");
                 String comments_count = one_new.getString("comments_count");
+                String post_url = one_new.getString("url");
 
                 newsDtoList.add(new NewsDto(
                         id,
@@ -197,7 +195,8 @@ public class MailApiImpl implements MailApi {
                         blog,
                         publish_date,
                         avatar_url,
-                        comments_count
+                        comments_count,
+                        post_url
                 ));
             }
 
