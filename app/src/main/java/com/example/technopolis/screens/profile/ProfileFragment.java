@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -14,6 +15,8 @@ import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.profile.service.ProfileService;
 import com.example.technopolis.util.ThreadPoster;
+
+import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class ProfileFragment extends Fragment {
 
@@ -58,20 +61,17 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container, this);
         ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
+
+//        set up good scroll
+        ScrollView scrollView = (ScrollView) view.getRootView().findViewById(R.id.profile_scroll_view);
+        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+
         presenter.bindView(view);
         return view.getRootView();
 
 
-////        Back button
-//        Bundle bundle = this.getArguments();
-//        if (bundle == null) {
-//            hideBackButton(v);
-//        }
 //
-//
-////        set up good scroll
-//        ScrollView scrollView = (ScrollView) v.findViewById(R.id.profile_scroll_view);
-//        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
+
 //
 ////        Exit
 //        v.findViewById(R.id.exitButton).setOnClickListener(new View.OnClickListener() {
@@ -104,24 +104,6 @@ public class ProfileFragment extends Fragment {
 //            }
 //        });
 //
-//
-//        androidx.appcompat.widget.Toolbar toolbar = v.findViewById(R.id.toolbar);
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().onBackPressed();
-//            }
-//        });
-//
-//        TextView textView = v.findViewById(R.id.back_to_group);
-//        textView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().onBackPressed();
-//            }
-//        });
-//
-//        return v;
     }
 
     @Nullable
@@ -145,14 +127,6 @@ public class ProfileFragment extends Fragment {
     public void onDestroy() {
         presenter.onDestroy();
         super.onDestroy();
-    }
-
-
-    private void hideBackButton(View v) {
-        androidx.appcompat.widget.Toolbar toolBar = v.findViewById(R.id.toolbar);
-        toolBar.setNavigationIcon(null);
-        TextView textView = v.findViewById(R.id.back_to_group);
-        textView.setVisibility(View.INVISIBLE);
     }
 
     private ProfileService getProfileService() {

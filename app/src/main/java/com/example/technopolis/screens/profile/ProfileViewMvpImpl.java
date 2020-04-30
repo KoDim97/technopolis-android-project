@@ -34,11 +34,13 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final TextView status;
     private final TextView about;
     private final androidx.appcompat.widget.Toolbar toolbar;
+    private final Button backButton;
     //    private final TextView rating;
     private final LinearLayout groupsLinearLayout;
     private final LinearLayout contactsLinearLayout;
     private final LinearLayout accountsLinearLayout;
     private final ProfileFragment profileFragment;
+
 
     private final float scale;
 
@@ -51,6 +53,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         status = findViewById(R.id.profile_status);
         about = findViewById(R.id.profile_about);
         toolbar = findViewById(R.id.toolbar);
+        backButton = findViewById(R.id.exitButton);
 //        rating = findViewById(R.id.profile_rating);
         groupsLinearLayout = findViewById(R.id.groups);
         contactsLinearLayout = findViewById(R.id.contacts);
@@ -63,6 +66,12 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         TextView view = findViewById(R.id.back_to_group);
         view.setText(backButtonText);
         view.setVisibility(View.VISIBLE);
+        toolbar.setNavigationOnClickListener(v -> {
+            for (Listener listener : getListeners()) {
+                listener.onBtnGoBackClicked();
+            }
+        });
+
     }
 
     @Override
