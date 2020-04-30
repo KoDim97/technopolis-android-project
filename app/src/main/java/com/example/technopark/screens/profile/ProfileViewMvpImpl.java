@@ -1,7 +1,7 @@
 package com.example.technopark.screens.profile;
 
+import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.core.content.ContextCompat;
 
 import com.example.technopark.R;
 import com.example.technopark.profile.model.UserAccount;
@@ -28,7 +26,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 // TODO: fix bind data
-public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Listener> implements ProfileMvpView {
+public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Listener>
+        implements ProfileMvpView, View.OnLongClickListener, View.OnClickListener {
 
     private final CircleImageView image;
     private final TextView name;
@@ -80,7 +79,22 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         addAccountsTextViews(userProfile.getAccounts());
 
     }
+    @Override
+    public boolean onLongClick(View v) {
+        TextView textView = (TextView) v;
+        String text = textView.getText().toString();
+        for (Listener listener : getListeners()) {
+            listener.onLongClick((Activity) getContext(), text);
+        }
+        return true;
+    }
 
+    @Override
+    public void onClick(View v) {
+        for (Listener listener : getListeners()) {
+            listener.onGroupButtonClicked(v.getId());
+        }
+    }
 
     private void addGroupsButtons(List<UserGroup> groups) {
         int length = groups.size();
@@ -106,7 +120,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             button.setAllCaps(false);
             button.setId((int) groups.get(i).getId());
 
-            button.setOnClickListener(profileFragment);
+            button.setOnClickListener(this);
             groupsLinearLayout.addView(button);
 
 ////           Добавляем сепаратор, если необходимо
@@ -143,7 +157,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             contact.setGravity(Gravity.CENTER_VERTICAL);
             contact.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
             contact.setLayoutParams(params);
-            contact.setOnLongClickListener(profileFragment);
+            contact.setOnLongClickListener(this);
             contactsLinearLayout.addView(contact);
         }
     }
@@ -178,7 +192,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             account.setGravity(Gravity.CENTER_VERTICAL);
             account.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
             account.setLayoutParams(params);
-            account.setOnLongClickListener(profileFragment);
+            account.setOnLongClickListener(this);
             accountsLinearLayout.addView(account);
         }
     }
@@ -194,6 +208,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
                 return context.getDrawable(R.drawable.ic_ok_48);
         }
     }
+
 
 }
 

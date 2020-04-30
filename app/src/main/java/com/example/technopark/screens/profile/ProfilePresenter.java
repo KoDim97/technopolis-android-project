@@ -28,7 +28,9 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private ClipboardManager myClipboard;
     private ClipData myClip;
 
-    public ProfilePresenter(String userName, String backButtonText, ProfileService profileService, ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster, BackPressDispatcher backPressDispatcher) {
+    public ProfilePresenter(String userName, String backButtonText, ProfileService profileService,
+                            ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster,
+                            BackPressDispatcher backPressDispatcher) {
         this.userName = userName;
         this.backButtonText = backButtonText;
         this.profileService = profileService;
@@ -64,13 +66,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         screenNavigator.toGroupList(id);
     }
 
-    public void copyTextViewText(String text, Activity activity) {
-        myClip = ClipData.newPlainText("text", text);
-        provideClipboardManager(activity);
-        myClipboard.setPrimaryClip(myClip);
-        Toast.makeText(activity, R.string.copied, Toast.LENGTH_SHORT).show();
-    }
-
     @Override
     public void onStart() {
         view.registerListener(this);
@@ -96,6 +91,15 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     public void onBtnGoBackClicked() {
         screenNavigator.navigateUp();
     }
+
+    @Override
+    public void onLongClick(Activity activity, String text) {
+        myClip = ClipData.newPlainText("text", text);
+        provideClipboardManager(activity);
+        myClipboard.setPrimaryClip(myClip);
+        Toast.makeText(activity, R.string.copied, Toast.LENGTH_SHORT).show();
+    }
+
 
     @Override
     public boolean onBackPressed() {
