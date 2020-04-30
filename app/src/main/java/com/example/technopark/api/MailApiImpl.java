@@ -3,6 +3,7 @@ package com.example.technopark.api;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
 import com.example.technopark.api.dto.AuthDto;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +37,7 @@ import org.json.JSONObject;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 
 
 import java.util.Map;
@@ -354,41 +357,93 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
-        return Arrays.asList(
-                new SchedulerItemDto(
-                        123L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-08T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        false,
-                        false,
-                        null
-                ),
-                new SchedulerItemDto(
-                        213L,
-                        "Использование баз данных",
-                        "Оптимизация запросов и индексирование",
-                        "Лекция 6",
-                        "Л 6",
-                        "2020-04-08T00:00:00Z",
-                        "2020-04-08T18:30:00Z",
-                        "2020-04-08T21:30:00Z",
-                        "онлайн",
-                        false,
-                        false,
-                        null
-                )
-        );
+
+        ArrayList<SchedulerItemDto> items = new ArrayList<>();
+        final String url = "https://polis.mail.ru/api/mobile/v1/schedule/";
+
+        Map<String, String> mHeaders = new HashMap<>();
+        mHeaders.put("Authorization", "Token " + user.getAuth_token());
+
+        RequestFuture<JSONArray> requestFuture = RequestFuture.newFuture();
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url,  new JSONArray(), requestFuture, requestFuture ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                return mHeaders;
+            }
+        };
+        queue.add(jsonArrayRequest);
+
+
+        try {
+            JSONArray response = requestFuture.get(2, TimeUnit.SECONDS);
+            int count = 0;
+            while (count < response.length()) {
+                JSONObject jsonObject = response.getJSONObject(count);
+                SchedulerItemDto schedulerItemDto = new SchedulerItemDto(
+                        jsonObject.getInt("id"),
+                        jsonObject.getString("discipline"),
+                        jsonObject.getString("title"),
+                        jsonObject.getString("short_title"),
+                        jsonObject.getString("super_short_title"),
+                        jsonObject.getString("date"),
+                        jsonObject.getString("start_time"),
+                        jsonObject.getString("end_time"),
+                        jsonObject.getString("location"),
+                        jsonObject.getBoolean("checkin_opened"),
+                        jsonObject.getBoolean("attended"),
+                        jsonObject.getString("feedback_url")
+                );
+                items.add(schedulerItemDto);
+                ++count;
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+        e.printStackTrace();
+        }
+        return items;
     }
 
     @Override
     public SchedulerItemCheckInDto checkInSchedulerItem(long id) {
-        return new SchedulerItemCheckInDto(123L, "someURL");
+        final String url = "https://polis.mail.ru/api/mobile/v1/schedule/" + id + "/check";
+        JSONObject json = new JSONObject();
+
+        Map<String, String> mHeaders = new HashMap<>();
+        mHeaders.put("Authorization", "Token " + user.getAuth_token());
+
+        RequestFuture<JSONObject> requestFuture=RequestFuture.newFuture();
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, requestFuture)  {
+            @Override
+            public Map<String, String> getHeaders() {
+                return mHeaders;
+            }
+        };
+        queue.add(request);
+
+        SchedulerItemCheckInDto schedulerItemCheckInDto = null;
+        try {
+            JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);
+
+            schedulerItemCheckInDto = new SchedulerItemCheckInDto(
+                    response.getInt("schedule_item"),
+                    response.getString("feedback_url")
+            );
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return schedulerItemCheckInDto;
     }
 
     private String bytesToHex(byte[] hash) {

@@ -1,6 +1,5 @@
 package com.example.technopark.scheduler.repo;
 
-import com.example.technopark.api.dto.SchedulerItemCheckInDto;
 import com.example.technopark.scheduler.model.SchedulerItem;
 
 import java.util.ArrayList;
