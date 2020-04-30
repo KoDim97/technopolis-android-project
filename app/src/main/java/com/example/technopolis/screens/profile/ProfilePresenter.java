@@ -60,10 +60,26 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         if (!backButtonText.equals("")) {
             view.showBackButton(backButtonText);
         }
+
+//        Показываем кнопку "Выйти", если имеем дело с профилем пользователя
+
+        if (userName.equals("")) {
+            view.showExitButton();
+        } else {
+//          скрываем navBar
+            view.hideNavBar();
+//          Показываем имя пользователя в toolbar'e
+            view.showNameOnToolbar(userProfile.getFullName());
+        }
     }
 
     public void onGroupButtonClicked(long id) {
         screenNavigator.toGroupList(id);
+    }
+
+    @Override
+    public void onSignOutClicked() {
+        screenNavigator.changeAuthorized(false);
     }
 
     @Override
@@ -89,7 +105,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     @Override
     public void onBtnGoBackClicked() {
-
         screenNavigator.navigateUp();
     }
 
