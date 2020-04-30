@@ -35,7 +35,7 @@
         android:fontFamily="@font/roboto_regular"
         android:textAllCaps="false"
         style="?android:attr/borderlessButtonStyle"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/confirm_text"
         />
@@ -51,7 +51,7 @@
         android:text="@string/cancel"
         android:textAllCaps="false"
         android:textColor="@color/colorBlueBright"
-        android:textSize="20sp"
+        android:textSize="16sp"
         app:layout_constraintRight_toLeftOf="@id/exitButtonApprove"
         app:layout_constraintTop_toBottomOf="@id/confirm_text"/>
 
