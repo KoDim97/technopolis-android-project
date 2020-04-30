@@ -15,6 +15,7 @@ import com.example.technopolis.screens.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MenuRootViewController {
     private ScreenNavigator screenNavigator;
@@ -30,9 +31,22 @@ public class MenuRootViewController {
         initListFragments();
         setup();
     }
+    public void setNavElem(int index){
+        switch (index){
+            case 0:
+                navigation.setSelectedItemId(R.id.navigation_news);
+                return;
+            case 1:
+                navigation.setSelectedItemId(R.id.navigation_schedule);
+                return;
+            case 2:
+                navigation.setSelectedItemId(R.id.navigation_profile);
+                return;
+        }
+    }
 
-    public Fragment getRootFragment() {
-        return fragments.get(0);
+    public List<Fragment> getRootFragmentList() {
+        return fragments;
     }
 
     private void initListFragments() {
@@ -69,13 +83,13 @@ public class MenuRootViewController {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_news:
-                        screenNavigator.loadFragment(fragments.get(0));
+                        screenNavigator.loadFragment(fragments.get(0),0);
                         return true;
                     case R.id.navigation_schedule:
-                        screenNavigator.loadFragment(fragments.get(1));
+                        screenNavigator.loadFragment(fragments.get(1),1);
                         return true;
                     case R.id.navigation_profile:
-                        screenNavigator.loadFragment(fragments.get(2));
+                        screenNavigator.loadFragment(fragments.get(2),2);
                         return true;
                 }
                 return false;

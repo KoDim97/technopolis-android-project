@@ -11,6 +11,7 @@ import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.screens.root.MenuRootViewController;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class BaseActivity extends AppCompatActivity implements BackPressDispatcher {
@@ -30,9 +31,8 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     public MenuRootViewController getRootViewController() {
         return rootViewController;
     }
-
-    public Fragment getRootFragment() {
-        return rootViewController.getRootFragment();
+    public void setNavElem(int index){
+        rootViewController.setNavElem(index);
     }
 
 
@@ -67,5 +67,9 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     @Override
     public void unregisterListener(BackPressedListener listener) {
         backPressedListeners.remove(listener);
+    }
+
+    public List<Fragment> getRootFragmentList(){
+        return rootViewController.getRootFragmentList();
     }
 }
