@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Technopark</string>
+    <string name="app_name">Technopolis</string>
 
     <string name="login">Login or e-mail</string>
     <string name="password">Password</string>
