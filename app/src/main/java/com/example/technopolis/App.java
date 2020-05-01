@@ -26,6 +26,7 @@ import com.example.technopolis.util.ThreadPoster;
 
 public class App extends Application {
 
+    private boolean authorized = false;
     private MailApi api;
     private MainThreadPoster mainThreadPoster;
 
@@ -139,5 +140,13 @@ public class App extends Application {
             findGroupItemService = new FindGroupItemService(provideGroupItemRepo(), provideMailApi());
         }
         return findGroupItemService;
+    }
+
+    public boolean isAuthorized() {
+        return authorized;
+    }
+
+    public void setAuthorized(boolean authorized) {
+        this.authorized = authorized;
     }
 }

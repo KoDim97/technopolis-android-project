@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.screens.authorization.AuthorizationFragment;
@@ -19,7 +20,6 @@ import java.util.TreeMap;
 public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     private final FragNavController fragNavController;
-    private boolean authorized = false;
     private BaseActivity activity;
     private Map<Integer, Integer> log = new TreeMap<>();
     private int currentNum;
@@ -42,7 +42,9 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     @Override
     public Fragment getRootFragment(int index) {
-        if (!authorized) {
+        App app = (App)activity.getApplication();
+        assert app != null;
+        if (!app.isAuthorized()) {
             return AuthorizationFragment.newInstance(activity);
         } else {
             return activity.getRootFragmentList().get(0);
@@ -50,7 +52,9 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     public void changeAuthorized(boolean authorized) {
-        this.authorized = authorized;
+        App app = (App)activity.getApplication();
+        assert app != null;
+        app.setAuthorized(authorized);
         fragNavController.initialize(FragNavController.TAB1, null);
     }
 
