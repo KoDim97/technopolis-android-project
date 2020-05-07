@@ -23,8 +23,9 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
         screenNavigator = activity.getScreenNavigator();
     }
 
-    private void setProject(int position) {
-        switch (position) {
+    @Override
+    public void logoSelected(int pos) {
+        switch (pos) {
             case 0:
                 app.provideMailApi().setProjectUrl(EducationProject.polis);
                 return;
@@ -49,11 +50,6 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
             default:
                 app.provideMailApi().setProjectUrl(EducationProject.polis);
         }
-    }
-
-    @Override
-    public void logoSelected(int pos) {
-        setProject(pos);
     }
 
 
