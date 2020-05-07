@@ -1,7 +1,9 @@
 package com.example.technopolis.screens.common.nav;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -10,24 +12,28 @@ import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.screens.authorization.AuthorizationFragment;
 import com.example.technopolis.screens.grouplist.GroupListFragment;
+import com.example.technopolis.screens.newsitems.NewsItemsFragment;
 import com.example.technopolis.screens.profile.ProfileFragment;
+import com.example.technopolis.screens.scheduleritems.SchedulerFragment;
 import com.ncapdevi.fragnav.FragNavController;
 
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     private final FragNavController fragNavController;
-    private BaseActivity activity;
+    private final BaseActivity activity;
     private Map<Integer, Integer> log = new TreeMap<>();
-    private int currentNum;
+    private final App app;
     private boolean pop = false;
-
+    private ArrayList<Fragment> fragments;
 
     public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, BaseActivity activity) {
         this.activity = activity;
+        initListFragments();
+        app = (App) activity.getApplication();
         fragNavController = new FragNavController(fragmentManager, R.id.fl_content);
         fragNavController.setRootFragmentListener(this);
         fragNavController.initialize(FragNavController.TAB1, savedInstanceState);
@@ -35,25 +41,29 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     }
 
+    private void initListFragments() {
+        fragments = new ArrayList<>();
+        fragments.add(NewsItemsFragment.newInstance());
+        fragments.add(SchedulerFragment.newInstance());
+        fragments.add(ProfileFragment.newInstance());
+    }
+
     @Override
     public int getNumberOfRootFragments() {
         return 1;
     }
 
+    @NonNull
     @Override
     public Fragment getRootFragment(int index) {
-        App app = (App)activity.getApplication();
-        assert app != null;
         if (!app.isAuthorized()) {
             return AuthorizationFragment.newInstance(activity);
         } else {
-            return activity.getRootFragmentList().get(0);
+            return fragments.get(0);
         }
     }
 
     public void changeAuthorized(boolean authorized) {
-        App app = (App)activity.getApplication();
-        assert app != null;
         app.setAuthorized(authorized);
         fragNavController.initialize(FragNavController.TAB1, null);
     }
@@ -65,7 +75,6 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     public void toProfile(String username, String groupname) {
         fragNavController.pushFragment(ProfileFragment.newInstance(username, groupname));
     }
-
 
     public void onSaveInstanceState(Bundle outState) {
         fragNavController.onSaveInstanceState(outState);
@@ -84,14 +93,30 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
     }
 
-    public void loadFragment(Fragment fragment, int index) {
+    private Integer getIndexByMenuItem(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.navigation_news:
+                return 0;
+            case R.id.navigation_schedule:
+                return 1;
+            case R.id.navigation_profile:
+                return 2;
+            default:
+                return null;
+        }
+    }
+
+    public boolean loadFragment(@NonNull MenuItem menuItem) {
+        Integer index = getIndexByMenuItem(menuItem);
+        if (index == null)
+            return false;
         if (pop) {
             pop = false;
-            return;
+            return true;
         }
         if (!log.containsValue(index)) {
             log.put(log.size(), index);
-            fragNavController.pushFragment(fragment);
+            fragNavController.pushFragment(fragments.get(index));
         } else if (index != 0) {
             deleteLoop(index);
         } else {
@@ -99,18 +124,13 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
             log.clear();
             log.put(0, 0);
         }
+        return true;
     }
 
     private boolean navBarElem(Fragment fragment) {
-        List temp = activity.getRootFragmentList();
-        if (temp.get(1) == fragment) {
-            currentNum = 1;
+        if (fragments.get(1) == fragment) {
             return true;
-        } else if (temp.get(2) == fragment) {
-            currentNum = 2;
-            return true;
-        }
-        return false;
+        } else return fragments.get(2) == fragment;
     }
 
     public boolean navigateUp() {

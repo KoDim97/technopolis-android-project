@@ -6,17 +6,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.technopolis.BaseActivity;
+import androidx.annotation.NonNull;
+
 import com.example.technopolis.R;
+
+import java.util.ArrayList;
 
 public class LogoPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
     private Context context;
-    private int num = 7;
+    private ArrayList<Integer> logo;
 
-
-    public LogoPagerAdapter(Context context, BaseActivity activity) {
+    LogoPagerAdapter(Context context) {
         this.context = context;
-
+        logo = new ArrayList<>();
+        logo.add(R.drawable.logo0);
+        logo.add(R.drawable.logo1);
+        logo.add(R.drawable.logo2);
+        logo.add(R.drawable.logo3);
+        logo.add(R.drawable.logo4);
+        logo.add(R.drawable.logo5);
+        logo.add(R.drawable.logo6);
     }
 
     /*
@@ -25,6 +34,7 @@ public class LogoPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
     container .This method returns an object key to identify the page view, but in this example page view
     itself acts as the object key
     */
+    @NonNull
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.pager_item, null);
@@ -39,7 +49,7 @@ public class LogoPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
     object key we just directly remove the view from parent container
     */
     @Override
-    public void destroyItem(ViewGroup container, int position, Object view) {
+    public void destroyItem(ViewGroup container, int position, @NonNull Object view) {
         container.removeView((View) view);
     }
 
@@ -48,7 +58,7 @@ public class LogoPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
     */
     @Override
     public int getCount() {
-        return num;
+        return logo.size();
     }
 
     /*
@@ -56,29 +66,12 @@ public class LogoPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
     Since here view only is the key we return view==object
     */
     @Override
-    public boolean isViewFromObject(View view, Object object) {
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return object == view;
     }
 
     private int getImageAt(int position) {
-        switch (position) {
-            case 0:
-                return R.drawable.logo0;
-            case 1:
-                return R.drawable.logo1;
-            case 2:
-                return R.drawable.logo2;
-            case 3:
-                return R.drawable.logo3;
-            case 4:
-                return R.drawable.logo4;
-            case 5:
-                return R.drawable.logo5;
-            case 6:
-                return R.drawable.logo6;
-            default:
-                return R.drawable.logo0;
-        }
+        return position < logo.size() ? logo.get(position) : logo.get(0);
     }
 
 }

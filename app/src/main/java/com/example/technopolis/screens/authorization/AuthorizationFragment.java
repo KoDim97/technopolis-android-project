@@ -16,17 +16,14 @@ import com.example.technopolis.screens.common.nav.ScreenNavigator;
 public class AuthorizationFragment extends Fragment {
 
     private BaseActivity activity;
-    private AuthorizationViewController viewController;
-    private ScreenNavigator screenNavigator;
 
     AuthorizationFragment(BaseActivity activity) {
         this.activity = activity;
-        screenNavigator = activity.getScreenNavigator();
+        ScreenNavigator screenNavigator = activity.getScreenNavigator();
     }
 
     public static Fragment newInstance(BaseActivity baseActivity) {
-        Fragment fragment = new AuthorizationFragment(baseActivity);
-        return fragment;
+        return new AuthorizationFragment(baseActivity);
     }
 
     @Override
@@ -41,7 +38,7 @@ public class AuthorizationFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.authorization, container, false);
         activity.getRootViewController().setBarVisible(View.GONE);
-        viewController = new AuthorizationViewController(rootView, activity);
+        AuthorizationViewInitializer viewController = new AuthorizationViewInitializer(rootView, activity);
         return rootView;
     }
 
