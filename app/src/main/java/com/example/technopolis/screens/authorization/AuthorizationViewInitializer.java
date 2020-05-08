@@ -50,8 +50,8 @@ class AuthorizationViewInitializer {
     }
 
     private void test() {
-        loginEditText.setText("***REMOVED***");
-        passwordEditText.setText("***REMOVED***");
+        loginEditText.setText("");
+        passwordEditText.setText("");
     }
 
     private void changeEnableEnter() {
