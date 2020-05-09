@@ -63,7 +63,7 @@ public class MailApiImpl implements MailApi {
             String req_id = UUID.randomUUID().toString().replace("-", "");
             digest = MessageDigest.getInstance("SHA-256");
             byte[] encodedHash = digest.digest(
-                    (req_id + "***REMOVED***")
+                    (req_id + Salt.salt)
                             .getBytes(StandardCharsets.UTF_8));
             String token = bytesToHex(encodedHash);
             json.put("req_id", req_id);
