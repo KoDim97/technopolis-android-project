@@ -1,5 +1,7 @@
 package com.example.technopolis.save;
 
+import androidx.annotation.NonNull;
+
 import com.example.technopolis.App;
 import com.example.technopolis.group.model.GroupItem;
 import com.example.technopolis.news.repo.NewsItemRepository;
@@ -11,10 +13,10 @@ import com.example.technopolis.user.model.User;
 import java.io.IOException;
 
 public class PauseControllerImpl implements PauseController {
-    private SaveAuthorizationController saveAuthController;
-    private App app;
+    private final SaveAuthorizationController saveAuthController;
+    private final App app;
 
-    public PauseControllerImpl(App app) {
+    public PauseControllerImpl(@NonNull App app) {
         saveAuthController = new SaveAuthorizationController(app);
         this.app = app;
     }
@@ -28,7 +30,7 @@ public class PauseControllerImpl implements PauseController {
             SaveNewsController.serialize(app.provideNewsItemRepo(), app.provideSubsItemRepo(), app);
             SaveSchedulerController.serialize(app.provideSchedulerItemRepo(), app);
             SaveProfileController.serialize(app.provideUserProfileRepo().findByUserName(app.provideUser().getUsername()), app);
-            for (UserGroup item : app.provideUserProfileRepo().findByUserName(app.provideUser().getUsername()).getGroups()) {
+            for (final UserGroup item : app.provideUserProfileRepo().findByUserName(app.provideUser().getUsername()).getGroups()) {
                 SaveGroupController.serialize(app.provideGroupItemRepo().findById(item.getId()), app);
             }
         } catch (IOException e) {
@@ -45,11 +47,11 @@ public class PauseControllerImpl implements PauseController {
 
     @Override
     public void authorized() {
-        User[] user = new User[1];
-        int[] numGroup = new int[1];
-        SchedulerItemRepo[] repoScheduler = new SchedulerItemRepo[1];
-        NewsItemRepository[] repoNews = new NewsItemRepository[2];
-        UserProfile[] repoProfile = new UserProfile[1];
+        final User[] user = new User[1];
+        final int[] numGroup = new int[1];
+        final SchedulerItemRepo[] repoScheduler = new SchedulerItemRepo[1];
+        final NewsItemRepository[] repoNews = new NewsItemRepository[2];
+        final UserProfile[] repoProfile = new UserProfile[1];
 
         if (!saveAuthController.getAuthorized()) {
             app.setAuthorized(false);
@@ -60,7 +62,7 @@ public class PauseControllerImpl implements PauseController {
             return;
         }
         numGroup[0] = numGroup[0] > 0 ? numGroup[0] : 1;
-        GroupItem[][] groupItems = new GroupItem[numGroup[0]][];
+        final GroupItem[][] groupItems = new GroupItem[numGroup[0]][];
         boolean status;
         try {
             status = SaveNewsController.read(repoNews, app);
@@ -74,7 +76,7 @@ public class PauseControllerImpl implements PauseController {
             app.setAuthorized(false);
             return;
         }
-        if(!status){
+        if (!status) {
             app.setAuthorized(false);
             return;
         }

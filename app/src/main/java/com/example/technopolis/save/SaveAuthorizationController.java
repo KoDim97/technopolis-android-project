@@ -3,6 +3,8 @@ package com.example.technopolis.save;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+
 import com.example.technopolis.App;
 import com.example.technopolis.user.model.User;
 
@@ -17,12 +19,12 @@ class SaveAuthorizationController {
     private static final String APP_PREFERENCES_NUM_GROUPS = "num_groups";
     private final SharedPreferences mSettings;
 
-    SaveAuthorizationController(App app) {
+    SaveAuthorizationController(@NonNull App app) {
         mSettings = app.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
     }
 
 
-    void saveAuthorizationInfo(User user, int numGroups) {
+    void saveAuthorizationInfo(@NonNull User user, @NonNull int numGroups) {
         final SharedPreferences.Editor editor = mSettings.edit();
         editor.putBoolean(APP_PREFERENCES_AUTHORIZED, true);
         editor.putString(APP_PREFERENCES_LOGIN, user.getLogin());
@@ -40,7 +42,7 @@ class SaveAuthorizationController {
         editor.apply();
     }
 
-    boolean getUser(User[] user, int[] numGroup) {
+    boolean getUser(@NonNull User[] user, @NonNull int[] numGroup) {
         if (!mSettings.getBoolean(APP_PREFERENCES_AUTHORIZED, false)) {
             return false;
         }
