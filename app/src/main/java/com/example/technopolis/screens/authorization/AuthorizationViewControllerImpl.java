@@ -15,7 +15,7 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
     private final ScreenNavigator screenNavigator;
     private final BaseActivity activity;
 
-    AuthorizationViewControllerImpl(BaseActivity activity) {
+    public AuthorizationViewControllerImpl(BaseActivity activity) {
         this.activity = activity;
         app = (App) activity.getApplication();
         assert app != null;
@@ -58,9 +58,10 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
         //AtomicBoolean invalid = new AtomicBoolean(false);
         Thread thread = new Thread(() -> {
             if (authService.CheckAuth(login, password)) {
-                screenNavigator.changeAuthorized(true);
+                activity.runOnUiThread(()->screenNavigator.changeAuthorized(true));
             } else {
                 activity.runOnUiThread(() -> Toast.makeText(activity, R.string.authFailed, Toast.LENGTH_SHORT).show());
+                screenNavigator.changeAuthorized(false);
                 //invalid.set(true);
             }
         });
@@ -74,4 +75,7 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
 //                Toast.makeText(activity, R.string.authFailed, Toast.LENGTH_SHORT).show();
 //            }
     }
+
+
+
 }

@@ -21,6 +21,25 @@ public class SchedulerItem {
     private boolean isAttended;
     private String feedbackUrl;
 
+    public SchedulerItem() {
+    }
+
+    public static SchedulerItem newInstance(long id, String subjectName, String lessonName, String lessonType, String startTime, String endTime, String location, String date, boolean isCheckInOpen, boolean isAttended, String feedbackUrl) {
+        SchedulerItem item = new SchedulerItem();
+        item.id = id;
+        item.subjectName = subjectName;
+        item.lessonName = lessonName;
+        item.lessonType = lessonType;
+        item.startTime = startTime;
+        item.endTime = endTime;
+        item.location = location;
+        item.date = date;
+        item.isAttended = isAttended;
+        item.isCheckInOpen = isCheckInOpen;
+        item.feedbackUrl = feedbackUrl;
+        return item;
+    }
+
     public SchedulerItem(long id, String subjectName, String lessonName, String lessonType, String startTime, String endTime, String location, String date, boolean isCheckInOpen, boolean isAttended, String feedbackUrl) {
         this.id = id;
         this.subjectName = subjectName;
