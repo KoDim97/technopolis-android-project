@@ -5,12 +5,11 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.technopolis.save.PauseController;
+import com.example.technopolis.save.PauseControllerImpl;
 import com.example.technopolis.screens.common.nav.BackPressDispatcher;
 import com.example.technopolis.screens.common.nav.BackPressedListener;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.screens.root.MenuRootViewInitializer;
-import com.squareup.picasso.OkHttp3Downloader;
-import com.squareup.picasso.Picasso;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,13 +24,7 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_menu);
-        Picasso.Builder builder = new Picasso.Builder(this);
-        builder.downloader(new OkHttp3Downloader(this,Integer.MAX_VALUE));
-        Picasso built = builder.build();
-        built.setIndicatorsEnabled(true);
-        built.setLoggingEnabled(true);
-        Picasso.setSingletonInstance(built);
-        pauseController = new PauseController((App) getApplication());
+        pauseController = new PauseControllerImpl((App) getApplication());
         pauseController.authorized();
         screenNavigator = new ScreenNavigator(getSupportFragmentManager(), savedInstanceState, this);
         rootViewController = new MenuRootViewInitializer(this, screenNavigator);

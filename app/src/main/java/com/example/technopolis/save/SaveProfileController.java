@@ -2,6 +2,8 @@ package com.example.technopolis.save;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.example.technopolis.App;
 import com.example.technopolis.profile.model.UserAccount;
 import com.example.technopolis.profile.model.UserContact;
@@ -15,13 +17,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SaveProfileController {
-    private static String fileName = "ProfileRepoDisk";
+class SaveProfileController {
+    private final static String fileName = "ProfileRepoDisk";
 
-    static void serialize(UserProfile profile, App app) throws IOException {
-        if (profile == null)
-            throw new IOException("profile==null");
-        FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+    static void serialize(@NonNull UserProfile profile, @NonNull App app) throws IOException {
+        final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         writer.write(String.valueOf(profile.getId()).getBytes().length);
         writer.write(String.valueOf(profile.getId()).getBytes());
 
@@ -59,7 +59,7 @@ public class SaveProfileController {
         writer.write(profile.getLastSeen().getBytes());
 
         writer.write(profile.getContacts().size());
-        for (UserContact contact : profile.getContacts()) {
+        for (final UserContact contact : profile.getContacts()) {
             writer.write(contact.getName().getBytes().length);
             writer.write(contact.getName().getBytes());
             writer.write(contact.getValue().getBytes().length);
@@ -67,7 +67,7 @@ public class SaveProfileController {
         }
 
         writer.write(profile.getGroups().size());
-        for (UserGroup group : profile.getGroups()) {
+        for (final UserGroup group : profile.getGroups()) {
             writer.write(String.valueOf(group.getId()).getBytes().length);
             writer.write(String.valueOf(group.getId()).getBytes());
             writer.write(group.getName().getBytes().length);
@@ -75,7 +75,7 @@ public class SaveProfileController {
         }
 
         writer.write(profile.getAccounts().size());
-        for (UserAccount account : profile.getAccounts()) {
+        for (final UserAccount account : profile.getAccounts()) {
             writer.write(account.getName().getBytes().length);
             writer.write(account.getName().getBytes());
             writer.write(account.getValue().getBytes().length);
@@ -85,7 +85,7 @@ public class SaveProfileController {
         writer.close();
     }
 
-    static boolean read(UserProfile[] userProfile, App app) throws IOException {
+    static boolean read(@NonNull UserProfile[] userProfile, @NonNull App app) throws IOException {
         FileInputStream reader;
         try {
             reader = app.getApplicationContext().openFileInput(fileName);
@@ -97,122 +97,122 @@ public class SaveProfileController {
         byte[] buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        long id = Long.parseLong(new String(buf));
+        final long id = Long.parseLong(new String(buf));
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        String userName = new String(buf);
+        final String userName = new String(buf);
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        long project_id = Long.parseLong(new String(buf));
+        final long project_id = Long.parseLong(new String(buf));
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        String projectName = new String(buf);
+        final String projectName = new String(buf);
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        String fullName = new String(buf);
+        final String fullName = new String(buf);
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        String gender = new String(buf);
+        final String gender = new String(buf);
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        String avatarUrl = new String(buf);
+        final String avatarUrl = new String(buf);
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        String mainGroup = new String(buf);
+        final String mainGroup = new String(buf);
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        String birthDate = new String(buf);
+        final String birthDate = new String(buf);
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        String about = new String(buf);
+        final String about = new String(buf);
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        String joinDate = new String(buf);
+        final String joinDate = new String(buf);
 
         sizeRead = reader.read();
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
-        String lastSeen = new String(buf);
+        final String lastSeen = new String(buf);
 
         int size = reader.read();
-        List<UserContact> contacts = new ArrayList<>();
+        final List<UserContact> contacts = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            String nameContact = new String(buf);
+            final String nameContact = new String(buf);
 
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            String valueContact = new String(buf);
+            final String valueContact = new String(buf);
             contacts.add(new UserContact(nameContact, valueContact));
         }
 
         size = reader.read();
-        List<UserGroup> groups = new ArrayList<>();
+        final List<UserGroup> groups = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            long idGroup = Long.parseLong(new String(buf));
+            final long idGroup = Long.parseLong(new String(buf));
 
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            String nameGroup = new String(buf);
+            final String nameGroup = new String(buf);
             groups.add(new UserGroup(idGroup, nameGroup));
         }
 
         size = reader.read();
-        List<UserAccount> accounts = new ArrayList<>();
+        final List<UserAccount> accounts = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            String nameAccount = new String(buf);
+            final String nameAccount = new String(buf);
 
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            String valueAccount = new String(buf);
+            final String valueAccount = new String(buf);
             accounts.add(new UserAccount(nameAccount, valueAccount));
         }
 

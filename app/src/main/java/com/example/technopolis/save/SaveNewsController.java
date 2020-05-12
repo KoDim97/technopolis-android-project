@@ -2,6 +2,8 @@ package com.example.technopolis.save;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.example.technopolis.App;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.repo.NewsItemRepository;
@@ -13,18 +15,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class SaveNewsController {
-    private static String fileName = "NewsRepoDisk";
-    private static String fileNameSub = "NewsSubRepoDisk";
+class SaveNewsController {
+    private final static String fileName = "NewsRepoDisk";
+    private final static String fileNameSub = "NewsSubRepoDisk";
 
-    static void serialize(NewsItemRepository newsItemRepository, NewsItemRepository newsSubItemRepository, App app) throws IOException {
+    static void serialize(@NonNull NewsItemRepository newsItemRepository, @NonNull NewsItemRepository newsSubItemRepository, @NonNull App app) throws IOException {
         serializeNews(newsItemRepository, app, fileName);
         serializeNews(newsSubItemRepository, app, fileNameSub);
     }
 
     //чтение репозитория и основных новостей и подписок, поэтому размер 2
-    static boolean read(NewsItemRepository[] newsItemRepositories, App app) throws IOException {
-        NewsItemRepository[] newsItemRepositoriesBuf = new NewsItemRepository[1];
+    static boolean read(@NonNull NewsItemRepository[] newsItemRepositories, @NonNull App app) throws IOException {
+        final NewsItemRepository[] newsItemRepositoriesBuf = new NewsItemRepository[1];
         if (newsItemRepositories.length != 2)
             return false;
         newsItemRepositoriesBuf[0] = new NewsItemRepositoryImpl();
@@ -40,31 +42,38 @@ public class SaveNewsController {
         return true;
     }
 
-    private static void serializeNews(NewsItemRepository newsItemRepository, App app, String fileName) throws IOException {
-        FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
+    private static void serializeNews(@NonNull NewsItemRepository newsItemRepository, @NonNull App app, @NonNull String fileName) throws IOException {
+        final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         writer.write(newsItemRepository.findAll().size());
         for (NewsItem item : newsItemRepository.findAll()) {
             writer.write(String.valueOf(item.getId()).getBytes().length);
             writer.write(String.valueOf(item.getId()).getBytes());
+
             writer.write(item.getName().getBytes().length);
             writer.write(item.getName().getBytes());
+
             writer.write(item.getTitle().getBytes().length);
             writer.write(item.getTitle().getBytes());
+
             writer.write(item.getSection().getBytes().length);
             writer.write(item.getSection().getBytes());
+
             writer.write(item.getDate().getBytes().length);
             writer.write(item.getDate().getBytes());
+
             writer.write(item.getUserpic().getBytes().length);
             writer.write(item.getUserpic().getBytes());
+
             writer.write(item.getComments_number().getBytes().length);
             writer.write(item.getComments_number().getBytes());
+
             writer.write(item.getUrl().getBytes().length);
             writer.write(item.getUrl().getBytes());
         }
         writer.close();
     }
 
-    private static boolean readNews(NewsItemRepository[] newsItemRepository, App app, String fileName) throws IOException {
+    private static boolean readNews(@NonNull NewsItemRepository[] newsItemRepository, @NonNull App app, @NonNull String fileName) throws IOException {
         FileInputStream reader;
         try {
             reader = app.getApplicationContext().openFileInput(fileName);
@@ -77,51 +86,50 @@ public class SaveNewsController {
             byte[] buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            String temp = new String(buf);
-            long id = Long.parseLong(temp);
+            final long id = Long.parseLong(new String(buf));
 
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            String name = new String(buf);
+            final String name = new String(buf);
 
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            String title = new String(buf);
+            final String title = new String(buf);
 
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            String section = new String(buf);
+            final String section = new String(buf);
 
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
-            String date = new String(buf);
+            final String date = new String(buf);
 
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
+            final String userpic = new String(buf);
 
-            String userpic = new String(buf);
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
+            final String comments_number = new String(buf);
 
-            String comments_number = new String(buf);
             sizeRead = reader.read();
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
+            final String url = new String(buf);
 
-            String url = new String(buf);
             newsItemRepository[0].add(new NewsItem(id, name, title, section, date, userpic, comments_number, url));
         }
         reader.close();
