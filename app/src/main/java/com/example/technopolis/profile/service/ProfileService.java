@@ -10,7 +10,6 @@ import com.example.technopolis.profile.repo.UserProfileRepo;
 public class ProfileService {
     private final UserProfileRepo userProfileRepo;
     private final MailApi api;
-    private UserProfile currentUserProfile;
     private final Context context;
 
 
@@ -21,29 +20,20 @@ public class ProfileService {
     }
 
     public UserProfile getUserProfile(String userName) {
-//        Если передали пустую строку, запрашиваем профиль активного пользователя
-        if (userName.equals("")) {
-            if (currentUserProfile == null) {
-                currentUserProfile = requestFromServer("");
-            }
-            return currentUserProfile;
-        } else {
-            return findByUserName(userName);
-        }
-
-    }
-
-    public UserProfile findByUserName(String userName) {
         UserProfile userProfile = userProfileRepo.findByUserName(userName);
         if (userProfile == null) {
             userProfile = requestFromServer(userName);
         }
         return userProfile;
+
     }
 
     private UserProfile requestFromServer(String userName) {
         ProfileDto profileDto = api.requestProfileDto(userName);
-
+        if (userName == "") {
+//            Чтобы идентифицировать пользователя приложения
+            profileDto.setUserName("");
+        }
 //        Проверяем, ссылка на картинку использует https
 //        Если не использует, принудительно меняем http на https
 //        Иначе на некоторых устройствах изображение не будет загружаться
