@@ -78,6 +78,4 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
         super.onPause();
         pauseController.onPause();
     }
-
-
 }

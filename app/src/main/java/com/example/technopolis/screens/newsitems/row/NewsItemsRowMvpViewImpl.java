@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.technopolis.R;
 import com.example.technopolis.news.model.NewsItem;
+import com.example.technopolis.screens.common.download.ImageStorage;
 import com.example.technopolis.screens.common.mvp.MvpViewBase;
 import com.squareup.picasso.Picasso;
 
@@ -68,7 +69,8 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
 
 
         commentsCountTextView.setText(newsItem.getComments_number());
-        Picasso.get().load(newsItem.getUserpic()).fit().into(avatarImage);
+        newsItem.getStorage().setView(avatarImage);
+        Picasso.get().load(newsItem.getUserpic()).into(newsItem.getStorage());
     }
 
     public void onNewsItemClicked() {
