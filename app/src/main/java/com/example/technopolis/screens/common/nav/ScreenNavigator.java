@@ -31,7 +31,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     private ArrayList<Fragment> fragments;
     private Fragment authorizationFragment;
 
-    public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState,@NonNull final BaseActivity activity) {
+    public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, @NonNull final BaseActivity activity) {
         this.activity = activity;
         initListFragments();
         app = (App) activity.getApplication();
@@ -42,7 +42,6 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         log.put(0, 0);
 
     }
-
 
     private void initListFragments() {
         authorizationFragment = AuthorizationFragment.newInstance(activity);
@@ -70,7 +69,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     public void changeAuthorized(final boolean authorized) {
         if (fragNavController.getCurrentFrag() == fragments.get(0) && authorized)
             return;
-        if(!authorized&&!app.isAuthorized()){
+        if (!authorized && !app.isAuthorized()) {
             return;
         }
         app.setAuthorized(authorized);

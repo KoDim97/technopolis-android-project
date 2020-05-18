@@ -13,7 +13,6 @@ public class MenuRootViewInitializer {
     private final ScreenNavigator screenNavigator;
     private final BottomNavigationView navigation;
 
-
     public MenuRootViewInitializer(@NonNull final BaseActivity rootView, @NonNull final ScreenNavigator screenNavigator) {
         this.screenNavigator = screenNavigator;
         navigation = rootView.findViewById(R.id.navigation);
@@ -33,7 +32,6 @@ public class MenuRootViewInitializer {
         }
     }
 
-
     public void setBarVisible(final int state) {
         switch (state) {
             case View.VISIBLE:
@@ -47,7 +45,6 @@ public class MenuRootViewInitializer {
                 break;
         }
     }
-
 
     private void setup() {
         final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = screenNavigator::loadFragment;

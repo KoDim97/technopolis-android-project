@@ -44,7 +44,6 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
         rootViewController.setNavElem(index);
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);

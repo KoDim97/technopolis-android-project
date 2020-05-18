@@ -54,7 +54,6 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
         }
     }
 
-
     @Override
     public void enterBtnClick(@NonNull final String login, @NonNull final String password) {
         final Thread thread = new Thread(() -> {

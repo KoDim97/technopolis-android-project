@@ -29,7 +29,6 @@ class AuthorizationViewInitializer {
     private final AuthorizationViewController controller;
     private boolean authorized = false;
 
-
     AuthorizationViewInitializer(@NonNull final View rootView, @NonNull final BaseActivity activity) {
         controller = new AuthorizationViewControllerImpl(activity);
         logoPagerAdapter = new LogoPagerAdapter(activity);
@@ -109,7 +108,6 @@ class AuthorizationViewInitializer {
             return consumed;
         });
     }
-
 
     private void viewPagerSettings(@NonNull final ViewPager viewPager) {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
