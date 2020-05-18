@@ -23,7 +23,6 @@ import com.example.technopolis.user.model.User;
 import com.example.technopolis.user.service.AuthService;
 import com.example.technopolis.util.MainThreadPoster;
 import com.example.technopolis.util.ThreadPoster;
-import com.squareup.picasso.Picasso;
 
 
 public class App extends Application {
