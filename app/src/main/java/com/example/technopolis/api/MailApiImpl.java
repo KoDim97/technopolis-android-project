@@ -363,7 +363,7 @@ public class MailApiImpl implements MailApi {
 
 
         try {
-            JSONArray response = requestFuture.get(2, TimeUnit.SECONDS);
+            JSONArray response = requestFuture.get(5, TimeUnit.SECONDS);
             int count = 0;
             while (count < response.length()) {
                 JSONObject jsonObject = response.getJSONObject(count);
