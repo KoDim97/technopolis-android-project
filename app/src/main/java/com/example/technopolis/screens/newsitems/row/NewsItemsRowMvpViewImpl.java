@@ -8,9 +8,7 @@ import android.widget.TextView;
 
 import com.example.technopolis.R;
 import com.example.technopolis.news.model.NewsItem;
-import com.example.technopolis.screens.common.download.ImageStorage;
 import com.example.technopolis.screens.common.mvp.MvpViewBase;
-import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -69,7 +67,7 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
 
 
         commentsCountTextView.setText(newsItem.getComments_number());
-        newsItem.getStorage().downloadImage(newsItem.getUserpic(),avatarImage);
+        newsItem.getStorage().downloadImage(newsItem.getUserpic(), avatarImage);
     }
 
     public void onNewsItemClicked() {
