@@ -2,6 +2,7 @@ package com.example.technopolis;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.technopolis.save.PauseController;
@@ -15,10 +16,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BaseActivity extends AppCompatActivity implements BackPressDispatcher {
-    private final Set<BackPressedListener> backPressedListeners = new HashSet<>();
+    private final Set<BackPressedListener> backPressedListeners;
     private ScreenNavigator screenNavigator;
     private MenuRootViewInitializer rootViewController;
     private PauseController pauseController;
+
+    public BaseActivity() {
+        backPressedListeners = new HashSet<>();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,12 +35,12 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
         rootViewController = new MenuRootViewInitializer(this, screenNavigator);
     }
 
-
+    @NonNull
     public MenuRootViewInitializer getRootViewController() {
         return rootViewController;
     }
 
-    public void setNavElem(int index) {
+    public void setNavElem(final int index) {
         rootViewController.setNavElem(index);
     }
 
@@ -46,6 +51,7 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
         screenNavigator.onSaveInstanceState(outState);
     }
 
+    @NonNull
     public ScreenNavigator getScreenNavigator() {
         return screenNavigator;
     }
