@@ -27,6 +27,8 @@ public class ImageStorage {
     }
 
     public Bitmap getImage(String imageUrl) {
+        if (!images.containsKey(imageUrl))
+            return null;
         return images.get(imageUrl).getImage();
     }
 }
