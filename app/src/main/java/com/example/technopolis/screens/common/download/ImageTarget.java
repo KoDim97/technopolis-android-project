@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.technopolis.R;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -38,17 +39,30 @@ public class ImageTarget implements Target {
     public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
         if (view != null)
             view.setImageBitmap(bitmap);
-        if (!queue.isEmpty())
-            for (ImageView imageView : queue) {
-                imageView.setImageBitmap(bitmap);
-            }
+        while (!queue.isEmpty()) {
+            ImageView imageView = queue.pop();
+            imageView.setImageBitmap(bitmap);
+        }
         image = bitmap;
     }
 
     @Override
     public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-        if (view != null && image != null)
-            view.setImageBitmap(image);
+        if (image != null) {
+            if (view != null)
+                view.setImageBitmap(image);
+            while (!queue.isEmpty()) {
+                ImageView imageView = queue.pop();
+                imageView.setImageBitmap(image);
+            }
+        } else {
+            if (view != null)
+                view.setImageResource(R.drawable.img_no_avatar);
+            while (!queue.isEmpty()) {
+                ImageView imageView = queue.pop();
+                imageView.setImageResource(R.drawable.img_no_avatar);
+            }
+        }
     }
 
     @Override
