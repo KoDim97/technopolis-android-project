@@ -40,7 +40,7 @@ public class ImageTarget implements Target {
         if (view != null)
             view.setImageBitmap(bitmap);
         while (!queue.isEmpty()) {
-            ImageView imageView = queue.pop();
+            final ImageView imageView = queue.pop();
             imageView.setImageBitmap(bitmap);
         }
         image = bitmap;
@@ -52,14 +52,14 @@ public class ImageTarget implements Target {
             if (view != null)
                 view.setImageBitmap(image);
             while (!queue.isEmpty()) {
-                ImageView imageView = queue.pop();
+                final ImageView imageView = queue.pop();
                 imageView.setImageBitmap(image);
             }
         } else {
             if (view != null)
                 view.setImageResource(R.drawable.img_no_avatar);
             while (!queue.isEmpty()) {
-                ImageView imageView = queue.pop();
+                final ImageView imageView = queue.pop();
                 imageView.setImageResource(R.drawable.img_no_avatar);
             }
         }
