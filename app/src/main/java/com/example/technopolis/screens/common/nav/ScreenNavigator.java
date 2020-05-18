@@ -33,8 +33,10 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, @NonNull final BaseActivity activity) {
         this.activity = activity;
-        initListFragments();
+        authorizationFragment = AuthorizationFragment.newInstance(activity);
         app = (App) activity.getApplication();
+        if (app.isAuthorized())
+            initListFragments();
         fragNavController = new FragNavController(fragmentManager, R.id.fl_content);
         fragNavController.setRootFragmentListener(this);
         fragNavController.initialize(FragNavController.TAB1, savedInstanceState);
@@ -44,7 +46,6 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     private void initListFragments() {
-        authorizationFragment = AuthorizationFragment.newInstance(activity);
         fragments = new ArrayList<>();
         fragments.add(NewsItemsFragment.newInstance());
         fragments.add(SchedulerFragment.newInstance());
@@ -60,8 +61,11 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     @Override
     public Fragment getRootFragment(final int index) {
         if (!app.isAuthorized()) {
+            fragments = null;
             return authorizationFragment;
         } else {
+            if (fragments == null)
+                initListFragments();
             return fragments.get(0);
         }
     }

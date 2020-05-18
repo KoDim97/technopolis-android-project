@@ -32,7 +32,8 @@ public class ImageTarget implements Target {
 
     @Override
     public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-        view.setImageBitmap(image);
+        if (view != null && image != null)
+            view.setImageBitmap(image);
     }
 
     @Override
