@@ -8,7 +8,11 @@ import com.squareup.picasso.Picasso;
 import java.util.HashMap;
 
 public class ImageStorage {
-    private HashMap<String, ImageTarget> images = new HashMap<>();
+    private HashMap<String, ImageTarget> images;
+
+    public ImageStorage() {
+        images = new HashMap<>();
+    }
 
     public void setImage(Bitmap image, String imageUrl) {
         ImageTarget buf = new ImageTarget();
