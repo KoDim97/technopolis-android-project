@@ -71,7 +71,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     public void changeAuthorized(final boolean authorized) {
-        if (fragNavController.getCurrentFrag() == fragments.get(0) && authorized)
+        if (app.isAuthorized() && fragNavController.getCurrentFrag() == fragments.get(0) && authorized)
             return;
         if (!authorized && !app.isAuthorized()) {
             return;
