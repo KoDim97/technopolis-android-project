@@ -16,7 +16,7 @@ public class ImageTarget implements Target {
         this.view = view;
     }
 
-    public void setImage(Bitmap image) {
+    void setImage(Bitmap image) {
         this.image = image;
     }
 
@@ -36,7 +36,7 @@ public class ImageTarget implements Target {
     public void onPrepareLoad(Drawable placeHolderDrawable) {
     }
 
-    public Bitmap getImage() {
+    Bitmap getImage() {
         return image;
     }
 }

@@ -50,7 +50,7 @@ public class NewsItem {
     }
 
 
-    public NewsItem(long id, String name, String title, String section, String date, String userpic, String comments_number, String url,ImageStorage storage) {
+    public NewsItem(long id, String name, String title, String section, String date, String userpic, String comments_number, String url, ImageStorage storage) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -59,6 +59,6 @@ public class NewsItem {
         this.userpic = userpic;
         this.comments_number = comments_number;
         this.url = url;
-        this.storage=storage;
+        this.storage = storage;
     }
 }

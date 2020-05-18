@@ -1,7 +1,6 @@
 package com.example.technopolis;
 
 import android.app.Application;
-import android.widget.ImageButton;
 
 import com.android.volley.toolbox.Volley;
 import com.example.technopolis.api.MailApi;
@@ -31,6 +30,7 @@ public class App extends Application {
     private boolean authorized = false;
     private MailApi api;
     private MainThreadPoster mainThreadPoster;
+    private ImageStorage storage;
 
     private User user;
     private AuthService authService;
@@ -45,11 +45,10 @@ public class App extends Application {
     private UserProfileRepo userProfileRepo;
     private FindGroupItemService findGroupItemService;
     private GroupItemRepo groupItemRepo;
-    private ImageStorage storage;
 
     public ImageStorage getStorage() {
-        if(storage==null)
-            storage=new ImageStorage();
+        if (storage == null)
+            storage = new ImageStorage();
         return storage;
     }
 
@@ -61,9 +60,13 @@ public class App extends Application {
         this.schedulerItemRepo = repo;
     }
 
-    public void setNewsItemRepo(NewsItemRepository newsItemRepo) { this.newsItemRepo = newsItemRepo; }
+    public void setNewsItemRepo(NewsItemRepository newsItemRepo) {
+        this.newsItemRepo = newsItemRepo;
+    }
 
-    public void setSubsItemRepo(NewsItemRepository subsItemRepo) { this.subsItemRepo = subsItemRepo; }
+    public void setSubsItemRepo(NewsItemRepository subsItemRepo) {
+        this.subsItemRepo = subsItemRepo;
+    }
 
     @Override
     public void onCreate() {
@@ -97,7 +100,6 @@ public class App extends Application {
         }
         return user;
     }
-
 
     public UserProfileRepo provideUserProfileRepo() {
         if (userProfileRepo == null) {
@@ -144,7 +146,7 @@ public class App extends Application {
 
     public NewsItemService provideNewsItemService() {
         if (newsItemService == null) {
-            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi(),getStorage());
+            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi(), getStorage());
         }
         return newsItemService;
     }

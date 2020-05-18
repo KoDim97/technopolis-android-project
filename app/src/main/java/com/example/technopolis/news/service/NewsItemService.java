@@ -15,11 +15,11 @@ public class NewsItemService {
     private final MailApi api;
     private final ImageStorage storage;
 
-    public NewsItemService(NewsItemRepository newsItemRepo, NewsItemRepository subsItemRepo, MailApi api,ImageStorage storage) {
+    public NewsItemService(NewsItemRepository newsItemRepo, NewsItemRepository subsItemRepo, MailApi api, ImageStorage storage) {
         this.newsItemRepo = newsItemRepo;
         this.subsItemRepo = subsItemRepo;
         this.api = api;
-        this.storage=storage;
+        this.storage = storage;
     }
 
     public List<NewsItem> getNewsItems() {
