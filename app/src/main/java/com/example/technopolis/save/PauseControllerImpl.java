@@ -20,15 +20,12 @@ public class PauseControllerImpl implements PauseController {
     }
 
     private void saveAuthorized() {
-        saveAuthController.saveAuthorizationInfo(app.provideUser(), app.provideUserProfileRepo()
-                .findByUserName(app.provideUser().getUsername())
-                .getGroups()
-                .size());
+        saveAuthController.saveAuthorizationInfo(app.provideUser());
         try {
             SaveNewsController.serialize(app.provideNewsItemRepo(), app.provideSubsItemRepo(), app);
             SaveSchedulerController.serialize(app.provideSchedulerItemRepo(), app);
             SaveProfileController.serialize(app.provideUserProfileRepo().findByUserName(app.provideUser().getUsername()), app);
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e ) {
             exit();
         }
     }
@@ -43,7 +40,6 @@ public class PauseControllerImpl implements PauseController {
     @Override
     public void authorized() {
         final User[] user = new User[1];
-        final int[] numGroup = new int[1];
         final SchedulerItemRepo[] repoScheduler = new SchedulerItemRepo[1];
         final NewsItemRepository[] repoNews = new NewsItemRepository[2];
         final UserProfile[] repoProfile = new UserProfile[1];
@@ -52,11 +48,10 @@ public class PauseControllerImpl implements PauseController {
             app.setAuthorized(false);
             return;
         }
-        if (!saveAuthController.getUser(user, numGroup)) {
+        if (!saveAuthController.getUser(user)) {
             app.setAuthorized(false);
             return;
         }
-        numGroup[0] = numGroup[0] > 0 ? numGroup[0] : 1;
         boolean status;
         try {
             status = SaveNewsController.read(repoNews, app);

@@ -16,15 +16,13 @@ class SaveAuthorizationController {
     private static final String APP_PREFERENCES_AUTHORIZATION_TOKEN = "token";
     private static final String APP_PREFERENCES_USER_NAME = "name";
     private static final String APP_PREFERENCES_USER_ID = "id";
-    private static final String APP_PREFERENCES_NUM_GROUPS = "num_groups";
     private final SharedPreferences mSettings;
 
     SaveAuthorizationController(@NonNull App app) {
         mSettings = app.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
     }
 
-
-    void saveAuthorizationInfo(@NonNull User user, @NonNull int numGroups) {
+    void saveAuthorizationInfo(@NonNull User user) {
         final SharedPreferences.Editor editor = mSettings.edit();
         editor.putBoolean(APP_PREFERENCES_AUTHORIZED, true);
         editor.putString(APP_PREFERENCES_LOGIN, user.getLogin());
@@ -32,7 +30,6 @@ class SaveAuthorizationController {
         editor.putString(APP_PREFERENCES_AUTHORIZATION_TOKEN, user.getAuth_token());
         editor.putString(APP_PREFERENCES_USER_NAME, user.getUsername());
         editor.putInt(APP_PREFERENCES_USER_ID, user.getUser_id());
-        editor.putInt(APP_PREFERENCES_NUM_GROUPS, numGroups);
         editor.apply();
     }
 
@@ -42,7 +39,7 @@ class SaveAuthorizationController {
         editor.apply();
     }
 
-    boolean getUser(@NonNull User[] user, @NonNull int[] numGroup) {
+    boolean getUser(@NonNull User[] user) {
         if (!mSettings.getBoolean(APP_PREFERENCES_AUTHORIZED, false)) {
             return false;
         }
@@ -61,16 +58,12 @@ class SaveAuthorizationController {
         if (!mSettings.contains(APP_PREFERENCES_USER_NAME)) {
             return false;
         }
-        if (!mSettings.contains(APP_PREFERENCES_NUM_GROUPS)) {
-            return false;
-        }
         user[0] = new User();
         user[0].setLogin(mSettings.getString(APP_PREFERENCES_LOGIN, ""));
         user[0].setPassword(mSettings.getString(APP_PREFERENCES_PASSWORD, ""));
         user[0].setAuth_token(mSettings.getString(APP_PREFERENCES_AUTHORIZATION_TOKEN, ""));
         user[0].setUsername(mSettings.getString(APP_PREFERENCES_USER_NAME, ""));
         user[0].setUser_id(mSettings.getInt(APP_PREFERENCES_USER_ID, 0));
-        numGroup[0] = mSettings.getInt(APP_PREFERENCES_NUM_GROUPS, 0);
         return true;
 
     }
