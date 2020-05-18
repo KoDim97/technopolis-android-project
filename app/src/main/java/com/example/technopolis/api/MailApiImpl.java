@@ -346,7 +346,6 @@ public class MailApiImpl implements MailApi {
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
 
-        System.err.println("load scheduler items");
         ArrayList<SchedulerItemDto> items = new ArrayList<>();
         final String url = "https://polis.mail.ru/api/mobile/v1/schedule/";
 
