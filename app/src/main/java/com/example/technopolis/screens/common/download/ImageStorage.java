@@ -8,10 +8,12 @@ import androidx.annotation.Nullable;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ImageStorage {
     private final ConcurrentHashMap<String, ImageTarget> images;
+
 
     public ImageStorage() {
         images = new ConcurrentHashMap<>();
@@ -30,7 +32,10 @@ public class ImageStorage {
             Picasso.get().load(imageUrl).into(buf);
             images.put(imageUrl, buf);
         } else {
-            view.setImageBitmap(getImage(imageUrl));
+            if (getImage(imageUrl) != null)
+                view.setImageBitmap(getImage(imageUrl));
+            else
+                images.get(imageUrl).addInQueve(view);
         }
     }
 

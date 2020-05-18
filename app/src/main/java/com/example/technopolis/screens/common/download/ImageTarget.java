@@ -10,10 +10,21 @@ import androidx.annotation.Nullable;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.util.LinkedList;
+
 
 public class ImageTarget implements Target {
     private Bitmap image;
     private ImageView view;
+    private final LinkedList<ImageView> queve;
+
+    ImageTarget() {
+        queve = new LinkedList<>();
+    }
+
+    public void addInQueve(@NonNull final ImageView view) {
+        queve.add(view);
+    }
 
     public void setView(@NonNull ImageView view) {
         this.view = view;
@@ -27,6 +38,10 @@ public class ImageTarget implements Target {
     public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
         if (view != null)
             view.setImageBitmap(bitmap);
+        if(!queve.isEmpty())
+            for (ImageView imageView: queve) {
+                imageView.setImageBitmap(bitmap);
+            }
         image = bitmap;
     }
 
