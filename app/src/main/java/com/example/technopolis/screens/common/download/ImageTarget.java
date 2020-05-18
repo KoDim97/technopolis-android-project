@@ -16,14 +16,14 @@ import java.util.LinkedList;
 public class ImageTarget implements Target {
     private Bitmap image;
     private ImageView view;
-    private final LinkedList<ImageView> queve;
+    private final LinkedList<ImageView> queue;
 
     ImageTarget() {
-        queve = new LinkedList<>();
+        queue = new LinkedList<>();
     }
 
-    public void addInQueve(@NonNull final ImageView view) {
-        queve.add(view);
+    public void addInQueue(@NonNull final ImageView view) {
+        queue.add(view);
     }
 
     public void setView(@NonNull ImageView view) {
@@ -38,8 +38,8 @@ public class ImageTarget implements Target {
     public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
         if (view != null)
             view.setImageBitmap(bitmap);
-        if(!queve.isEmpty())
-            for (ImageView imageView: queve) {
+        if (!queue.isEmpty())
+            for (ImageView imageView : queue) {
                 imageView.setImageBitmap(bitmap);
             }
         image = bitmap;

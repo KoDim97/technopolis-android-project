@@ -35,7 +35,7 @@ public class ImageStorage {
             if (getImage(imageUrl) != null)
                 view.setImageBitmap(getImage(imageUrl));
             else
-                images.get(imageUrl).addInQueve(view);
+                images.get(imageUrl).addInQueue(view);
         }
     }
 
