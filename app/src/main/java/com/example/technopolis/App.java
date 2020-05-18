@@ -1,6 +1,7 @@
 package com.example.technopolis;
 
 import android.app.Application;
+import android.widget.ImageButton;
 
 import com.android.volley.toolbox.Volley;
 import com.example.technopolis.api.MailApi;
@@ -18,6 +19,7 @@ import com.example.technopolis.profile.service.ProfileService;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepoImpl;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
+import com.example.technopolis.screens.common.download.ImageStorage;
 import com.example.technopolis.user.model.User;
 import com.example.technopolis.user.service.AuthService;
 import com.example.technopolis.util.MainThreadPoster;
@@ -43,6 +45,13 @@ public class App extends Application {
     private UserProfileRepo userProfileRepo;
     private FindGroupItemService findGroupItemService;
     private GroupItemRepo groupItemRepo;
+    private ImageStorage storage;
+
+    public ImageStorage getStorage() {
+        if(storage==null)
+            storage=new ImageStorage();
+        return storage;
+    }
 
     public void setUser(User user) {
         this.user = user;
@@ -135,7 +144,7 @@ public class App extends Application {
 
     public NewsItemService provideNewsItemService() {
         if (newsItemService == null) {
-            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi());
+            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi(),getStorage());
         }
         return newsItemService;
     }

@@ -7,35 +7,28 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
-public class ImageStorage implements Target {
-    private Bitmap image;
-    private ImageView view;
+import java.util.HashMap;
 
-    public void setView(ImageView view) {
-        this.view = view;
+public class ImageStorage  {
+    private HashMap<String,ImageTarget> images = new HashMap<>();
+
+    public void setImage(Bitmap image,String imageUrl) {
+        ImageTarget buf = new ImageTarget();
+        buf.setImage(image);
+        images.put(imageUrl,buf);
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public void downloadImage(String imageUrl,ImageView view){
+        if(!images.containsKey(imageUrl)) {
+            ImageTarget buf = new ImageTarget();
+            buf.setView(view);
+            Picasso.get().load(imageUrl).into(buf);
+        }else{
+            view.setImageBitmap(getImage(imageUrl));
+        }
     }
 
-    @Override
-    public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-        if (view != null)
-            view.setImageBitmap(bitmap);
-        image = bitmap;
-    }
-
-    @Override
-    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-        view.setImageBitmap(image);
-    }
-
-    @Override
-    public void onPrepareLoad(Drawable placeHolderDrawable) {
-    }
-
-    public Bitmap getImage() {
-        return image;
+    public Bitmap getImage(String imageUrl) {
+        return images.get(imageUrl).getImage();
     }
 }
