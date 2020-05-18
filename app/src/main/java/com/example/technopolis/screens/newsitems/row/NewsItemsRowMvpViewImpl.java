@@ -41,13 +41,7 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
         commentsCountTextView = findViewById(R.id.news_item__comment_num);
         avatarImage = findViewById(R.id.news_item__image);
 
-        getRootView().setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onNewsItemClicked();
-                    }
-                });
+        getRootView().setOnClickListener(v -> onNewsItemClicked());
     }
 
 

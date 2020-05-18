@@ -3,6 +3,9 @@ package com.example.technopolis.screens.newsitems;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.service.NewsItemService;
@@ -12,6 +15,7 @@ import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.util.ThreadPoster;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         NewsItemsMvpView.Listener {
@@ -40,12 +44,18 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         newsItems();
     }
 
-
     public void updateDataNews() {
-        newsItems();
+        thread = new Thread(() -> {
+            final List<NewsItem> newsItems = newsItemService.updateNewsItems();
+            if (!thread.isInterrupted()) {
+                mainThreadPoster.post(() -> onItemsLoaded(newsItems));
+            }
+        });
+
+        thread.start();
     }
 
-    private void newsItems() {
+    public void newsItems() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getNewsItems();
             if (!thread.isInterrupted()) {
@@ -54,15 +64,20 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         });
 
         thread.start();
-
     }
 
     public void updateDataSubs() {
+        thread = new Thread(() -> {
+            final List<NewsItem> newsItems = newsItemService.updateSubsItems();
+            if (!thread.isInterrupted()) {
+                mainThreadPoster.post(() -> onItemsLoaded(newsItems));
+            }
+        });
 
-        subsItems();
+        thread.start();
     }
 
-    private void subsItems() {
+    public void subsItems() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getSubsItems();
             if (!thread.isInterrupted()) {
@@ -71,7 +86,6 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         });
 
         thread.start();
-
     }
 
 

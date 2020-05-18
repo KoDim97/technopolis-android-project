@@ -19,7 +19,11 @@ public class NewsItemRepositoryImpl implements NewsItemRepository {
     @Override
     public void add(NewsItem newsItem) {
         itemsNews.put(newsItem.getDate(), newsItem);
+    }
 
+    @Override
+    public void clear() {
+        itemsNews.clear();
     }
 
 }

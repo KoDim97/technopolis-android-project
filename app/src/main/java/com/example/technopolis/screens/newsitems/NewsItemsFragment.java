@@ -19,6 +19,9 @@ import com.example.technopolis.util.ThreadPoster;
 import me.everything.android.ui.overscroll.IOverScrollDecor;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
+
 public class NewsItemsFragment extends Fragment {
 
     private NewsItemsPresenter presenter;
@@ -42,36 +45,32 @@ public class NewsItemsFragment extends Fragment {
 
         ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
 
-        final NewsItemsMvpView view = new NewsItemsMvpViewImpl(inflater, container, getContext());
-        final IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(((NewsItemsMvpViewImpl) view).getRvNewsItems(),
+        final NewsItemsMvpViewImpl view = new NewsItemsMvpViewImpl(inflater, container, getContext());
+        final IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(view.getRvNewsItems(),
                 OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
         presenter.bindView(view);
 
-        RadioGroup radioGroup = ((NewsItemsMvpViewImpl) view).getView().findViewById(R.id.activity_news__top_bar);
+        RadioGroup radioGroup = view.getView().findViewById(R.id.activity_news__top_bar);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (R.id.activity_news__radio_subs == checkedId) {
-                presenter.updateDataSubs();
-//                    decor.setOverScrollStateListener((decor1, oldState, newState) -> {
-//                        switch (newState) {
-//                            case STATE_BOUNCE_BACK:
-//                                if (oldState == STATE_DRAG_START_SIDE) {
-//                                    presenter.updateDataSubs();
-//                                }
-//                                break;
-//                        }
-//                    });
+                presenter.subsItems();
+                    decor.setOverScrollStateListener((decor1, oldState, newState) -> {
+                        if (newState == STATE_BOUNCE_BACK) {
+                            if (oldState == STATE_DRAG_START_SIDE) {
+                                presenter.updateDataSubs();
+                            }
+                        }
+                    });
             } else {
-                presenter.updateDataNews();
-//                    decor.setOverScrollStateListener((decor12, oldState, newState) -> {
-//                        switch (newState) {
-//                            case STATE_BOUNCE_BACK:
-//                                if (oldState == STATE_DRAG_START_SIDE) {
-//                                    presenter.updateDataNews();
-//                                }
-//                                break;
-//                        }
-//                    });
+                presenter.newsItems();
+                    decor.setOverScrollStateListener((decor12, oldState, newState) -> {
+                        if (newState == STATE_BOUNCE_BACK) {
+                            if (oldState == STATE_DRAG_START_SIDE) {
+                                presenter.updateDataNews();
+                            }
+                        }
+                    });
             }
         });
 
