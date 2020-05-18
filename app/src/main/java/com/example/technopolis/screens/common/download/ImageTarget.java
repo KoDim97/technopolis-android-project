@@ -23,7 +23,7 @@ public class ImageTarget implements Target {
         queue = new LinkedList<>();
     }
 
-    public void addInQueue(@NonNull final ImageView view) {
+    void addInQueue(@NonNull final ImageView view) {
         queue.add(view);
     }
 
