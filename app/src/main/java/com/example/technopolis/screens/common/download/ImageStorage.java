@@ -17,13 +17,13 @@ public class ImageStorage {
         images = new HashMap<>();
     }
 
-    public void setImage(@NonNull Bitmap image,@NonNull String imageUrl) {
+    public void setImage(@NonNull Bitmap image, @NonNull String imageUrl) {
         ImageTarget buf = new ImageTarget();
         buf.setImage(image);
         images.put(imageUrl, buf);
     }
 
-    public void downloadImage(@NonNull String imageUrl,@NonNull ImageView view) {
+    public void downloadImage(@NonNull String imageUrl, @NonNull ImageView view) {
         if (!images.containsKey(imageUrl)) {
             ImageTarget buf = new ImageTarget();
             buf.setView(view);
