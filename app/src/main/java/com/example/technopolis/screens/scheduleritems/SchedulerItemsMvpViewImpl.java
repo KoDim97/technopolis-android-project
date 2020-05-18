@@ -16,7 +16,15 @@ import com.example.technopolis.screens.scheduleritems.stickyHeader.SchedulerItem
 
 import java.util.List;
 
+import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.IOverScrollStateListener;
+import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
+import me.everything.android.ui.overscroll.VerticalOverScrollBounceEffectDecorator;
+import me.everything.android.ui.overscroll.adapters.RecyclerViewOverScrollDecorAdapter;
+
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
 
 public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressedListener>
         implements SchedulerItemsMvpView {
@@ -24,6 +32,7 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
     private final RecyclerView rvSchedulerItems;
     private final SchedulerItemAdapter schedulerItemAdapter;
     private final LinearLayoutManager linearLayoutManager;
+    private IOverScrollStateListener overScrollStateListener;
 
     public SchedulerItemsMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent, Context context) {
         setRootView(layoutInflater.inflate(R.layout.scheduler_view, parent, false));
@@ -34,17 +43,28 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
         rvSchedulerItems.setLayoutManager(linearLayoutManager);
         rvSchedulerItems.setAdapter(schedulerItemAdapter);
         rvSchedulerItems.addItemDecoration(new SchedulerItemDecoration(schedulerItemAdapter));
+    }
 
-        OverScrollDecoratorHelper.setUpOverScroll(rvSchedulerItems, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+    @Override
+    public void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, int actualPosition) {
+        schedulerItemAdapter.bindData(schedulerItems, listeners);
+        linearLayoutManager.scrollToPosition(actualPosition * 2);
+    }
+
+    @Override
+    public void setOnReloadListener(IOverScrollStateListener overScrollStateListener) {
+
+        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(rvSchedulerItems, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
 
-//        decor.setOverScrollStateListener(new IOverScrollStateListener() {
+        decor.setOverScrollStateListener(overScrollStateListener);
+//                new IOverScrollStateListener() {
 //                                             @Override
 //                                             public void onOverScrollStateChange(IOverScrollDecor decor, int oldState, int newState) {
 //                                                 switch (newState) {
 //                                                     case STATE_BOUNCE_BACK:
 //                                                         if (oldState == STATE_DRAG_START_SIDE) {
-//                                                             schedulerItemAdapter.updateItems(getSchedulerItems());
+////                                                             schedulerItemAdapter.updateItems(getSchedulerItems());
 //                                                         }
 //                                                         break;
 //                                                 }
@@ -52,11 +72,8 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
 //                                         }
 //        );
 
-    }
-
-    @Override
-    public void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, int actualPosition) {
-        schedulerItemAdapter.bindData(schedulerItems, listeners);
-        linearLayoutManager.scrollToPosition(actualPosition * 2);
+//        VerticalOverScrollBounceEffectDecorator decor = new VerticalOverScrollBounceEffectDecorator(new RecyclerViewOverScrollDecorAdapter(rvSchedulerItems));
+//
+//        decor.setOverScrollUpdateListener(overScrollUpdateListener);
     }
 }

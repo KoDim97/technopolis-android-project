@@ -2,6 +2,7 @@ package com.example.technopolis.screens.scheduleritems;
 
 import android.view.View;
 
+import com.example.technopolis.api.dto.SchedulerItemDto;
 import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
 import com.example.technopolis.screens.common.mvp.MvpPresenter;
@@ -12,9 +13,17 @@ import com.example.technopolis.util.ThreadPoster;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import me.everything.android.ui.overscroll.IOverScrollDecor;
+import me.everything.android.ui.overscroll.IOverScrollStateListener;
+import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
+
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
 
 public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpView>,
         BackPressedListener {
@@ -39,20 +48,106 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     @Override
     public void bindView(SchedulerItemsMvpView view) {
         this.view = view;
+        view.setOnReloadListener((decor, oldState, newState) -> {
+            switch (newState) {
+                case STATE_BOUNCE_BACK:
+                    if (oldState == STATE_DRAG_START_SIDE) {
+                        new Thread(() -> {
+//                            final List<SchedulerItem> schedulerItems = Arrays.asList(
+//                                    new SchedulerItem(
+//                                            123L,
+//                                            "Использование баз данных",
+//                                            "Оптимизация запросов и индексирование",
+//                                            "Л 6",
+//                                            "2020-04-08T18:30:00Z",
+//                                            "2020-04-08T21:30:00Z",
+//                                            "онлайн",
+//                                            "2020-04-08T00:00:00Z",
+//                                            false,
+//                                            true,
+//                                            null
+//                                    ),
+//                                    new SchedulerItem(
+//                                            123L,
+//                                            "Использование баз данных",
+//                                            "Оптимизация запросов и индексирование",
+//                                            "Л 6",
+//                                            "2020-04-08T18:30:00Z",
+//                                            "2020-04-08T21:30:00Z",
+//                                            "онлайн",
+//                                            "2020-04-08T00:00:00Z",
+//                                            false,
+//                                            true,
+//                                            null
+//                                    )
+//                            );
+                            final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
+                            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                            if (!thread.isInterrupted()) {
+                                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, 0));
+                            }
+                        }).start();
+                    }
+                    break;
+            }
+        }
+        );
+
+//        view.setOnReloadListener(new IOverScrollUpdateListener() {
+//            @Override
+//            public void onOverScrollUpdate(IOverScrollDecor decor, int state, float offset) {
+//                final View view = decor.getView();
+//                if (offset > 100) {
+//                    thread = new Thread(() -> {
+//                            final List<SchedulerItem> schedulerItems = Arrays.asList(
+//                                    new SchedulerItem(
+//                                            123L,
+//                                            "Использование баз данных",
+//                                            "Оптимизация запросов и индексирование",
+//                                            "Л 6",
+//                                            "2020-04-08T18:30:00Z",
+//                                            "2020-04-08T21:30:00Z",
+//                                            "онлайн",
+//                                            "2020-04-08T00:00:00Z",
+//                                            false,
+//                                            true,
+//                                            null
+//                                    ),
+//                                    new SchedulerItem(
+//                                            123L,
+//                                            "Использование баз данных",
+//                                            "Оптимизация запросов и индексирование",
+//                                            "Л 6",
+//                                            "2020-04-08T18:30:00Z",
+//                                            "2020-04-08T21:30:00Z",
+//                                            "онлайн",
+//                                            "2020-04-08T00:00:00Z",
+//                                            false,
+//                                            true,
+//                                            null
+//                                    )
+//                            );
+////                        final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
+//                        final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+//                        if (!thread.isInterrupted()) {
+//                            mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, 0));
+//                        }
+//                    });
+//                    thread.start();
+//                }
+//            }
+//        });
         loadItems();
     }
 
 
     private void loadItems() {
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final List<SchedulerItem> schedulerItems = schedulerItemService.items();
-                final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-                final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-                if (!thread.isInterrupted()) {
-                    mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
-                }
+        thread = new Thread(() -> {
+            final List<SchedulerItem> schedulerItems = schedulerItemService.items();
+            final int actualDayPosition = calculateActualDayPosition(schedulerItems);
+            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+            if (!thread.isInterrupted()) {
+                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
             }
         });
         thread.start();

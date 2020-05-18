@@ -8,8 +8,12 @@ import com.example.technopolis.screens.common.nav.BackPressedListener;
 
 import java.util.List;
 
+import me.everything.android.ui.overscroll.IOverScrollStateListener;
+
 public interface SchedulerItemsMvpView extends MvpViewObservable<BackPressedListener> {
 
     void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, int actualPosition);
+
+    void setOnReloadListener(IOverScrollStateListener overScrollStateListener);
 
 }
