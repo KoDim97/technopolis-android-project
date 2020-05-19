@@ -14,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ImageStorage {
     private final ConcurrentHashMap<String, ImageTarget> images;
 
-
     public ImageStorage() {
         images = new ConcurrentHashMap<>();
     }
