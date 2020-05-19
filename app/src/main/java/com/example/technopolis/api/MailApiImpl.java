@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class MailApiImpl implements MailApi {
-    private static final String NETWORK_ERROR_MESSAGE = "Нет подключения";
+    private static final String NETWORK_ERROR_MESSAGE = "Нет соединения";
     private static final String INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE = "Неверный логин или пароль";
 
     private RequestQueue queue;
@@ -274,7 +274,7 @@ public class MailApiImpl implements MailApi {
         };
         queue.add(jsonArrayRequest);
         try {
-            JSONObject response = future.get();
+            JSONObject response = future.get(1, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject one_new = results.getJSONObject(i);
@@ -300,8 +300,12 @@ public class MailApiImpl implements MailApi {
             }
 
 
-        } catch (JSONException | ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | TimeoutException e) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+        } catch (ExecutionException e) {
+            System.out.println("Update token");
+        } catch (JSONException e) {
+            System.out.println("Json creating failed");
         }
         return newsDtoList;
     }
@@ -362,7 +366,6 @@ public class MailApiImpl implements MailApi {
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
 
-        System.err.println("load scheduler items");
         ArrayList<SchedulerItemDto> items = new ArrayList<>();
         final String url = "https://polis.mail.ru/api/mobile/v1/schedule/";
 
@@ -409,9 +412,7 @@ public class MailApiImpl implements MailApi {
                 ++count;
             }
         } catch (InterruptedException | TimeoutException e) {
-            System.out.println("Time out");
             apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-            System.out.println(NETWORK_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             System.out.println("Update token");
         } catch (JSONException e) {
