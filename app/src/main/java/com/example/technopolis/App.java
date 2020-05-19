@@ -19,6 +19,7 @@ import com.example.technopolis.profile.service.ProfileService;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepoImpl;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
+import com.example.technopolis.screens.common.download.ImageStorage;
 import com.example.technopolis.user.model.User;
 import com.example.technopolis.user.service.AuthService;
 import com.example.technopolis.util.MainThreadPoster;
@@ -31,6 +32,7 @@ public class App extends Application {
     private MailApi api;
     private ApiHelper apiHelper;
     private MainThreadPoster mainThreadPoster;
+    private ImageStorage storage;
 
     private User user;
     private AuthService authService;
@@ -45,6 +47,12 @@ public class App extends Application {
     private UserProfileRepo userProfileRepo;
     private FindGroupItemService findGroupItemService;
     private GroupItemRepo groupItemRepo;
+
+    public ImageStorage getStorage() {
+        if (storage == null)
+            storage = new ImageStorage();
+        return storage;
+    }
 
     public void setUser(User user) {
         this.user = user;
@@ -147,7 +155,7 @@ public class App extends Application {
 
     public NewsItemService provideNewsItemService() {
         if (newsItemService == null) {
-            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi());
+            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi(), getStorage());
         }
         return newsItemService;
     }
