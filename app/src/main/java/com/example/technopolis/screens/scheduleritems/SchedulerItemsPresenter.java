@@ -80,6 +80,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         view.setOnReloadListener(overScrollStateListener, overScrollUpdateListener);
     }
 
+
     private void showMessageIfExist() {
         String message = apiHelper.getMessage();
         if (message != null) {

@@ -6,6 +6,8 @@ import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.repo.NewsItemRepository;
 import com.example.technopolis.screens.common.download.ImageStorage;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class NewsItemService {
@@ -27,15 +29,29 @@ public class NewsItemService {
         if (newsItemList.isEmpty()) {
             newsItemList = requestNewsFromServer();
         }
+
         return newsItemList;
     }
 
+    public List<NewsItem> updateNewsItems() {
+        newsItemRepo.clear();
+
+        return requestNewsFromServer();
+    }
+
     public List<NewsItem> getSubsItems() {
-        List<NewsItem> newsItemList = subsItemRepo.findAll();
-        if (newsItemList.isEmpty()) {
-            newsItemList = requestSubsFromServer();
+        List<NewsItem> subsItemList = subsItemRepo.findAll();
+        if (subsItemList.isEmpty()) {
+            subsItemList = requestSubsFromServer();
         }
-        return newsItemList;
+
+        return subsItemList;
+    }
+
+    public List<NewsItem> updateSubsItems() {
+        subsItemRepo.clear();
+
+        return requestSubsFromServer();
     }
 
     private List<NewsItem> requestNewsFromServer() {
