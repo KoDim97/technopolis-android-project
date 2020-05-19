@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.user.service.AuthService;
 
@@ -16,12 +17,14 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
     private final AuthService authService;
     private final ScreenNavigator screenNavigator;
     private final BaseActivity activity;
+    private final ApiHelper apiHelper;
 
     AuthorizationViewControllerImpl(@NonNull final BaseActivity activity) {
         this.activity = activity;
         app = (App) activity.getApplication();
         assert app != null;
         authService = app.provideAuthService();
+        apiHelper = app.provideApiHelper();
         screenNavigator = activity.getScreenNavigator();
     }
 
@@ -60,7 +63,7 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
             if (authService.CheckAuth(login, password)) {
                 activity.runOnUiThread(() -> screenNavigator.changeAuthorized(true));
             } else {
-                activity.runOnUiThread(() -> Toast.makeText(activity, R.string.authFailed, Toast.LENGTH_SHORT).show());
+                activity.runOnUiThread(() -> Toast.makeText(activity, apiHelper.getMessage(), Toast.LENGTH_SHORT).show());
                 screenNavigator.changeAuthorized(false);
             }
         });

@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.news.service.NewsItemService;
 import com.example.technopolis.util.ThreadPoster;
 
@@ -31,7 +32,7 @@ public class NewsItemsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         presenter = new NewsItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
-                getFindNewsItemService(), getMainThreadPoster(), getContext());
+                getFindNewsItemService(), getMainThreadPoster(), getContext(), getApiHelper());
 
     }
 
@@ -113,5 +114,11 @@ public class NewsItemsFragment extends Fragment {
         App app = (App) getActivity().getApplication();
         assert app != null;
         return app.provideMainThreadPoster();
+    }
+
+    private ApiHelper getApiHelper() {
+        App app = (App) getActivity().getApplication();
+        assert app != null;
+        return app.provideApiHelper();
     }
 }

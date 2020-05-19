@@ -3,7 +3,10 @@ package com.example.technopolis.screens.newsitems;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Toast;
 
+import com.example.technopolis.BaseActivity;
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.service.NewsItemService;
 import com.example.technopolis.screens.common.mvp.MvpPresenter;
@@ -21,17 +24,21 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     private final NewsItemService newsItemService;
     private final ThreadPoster mainThreadPoster;
     private final Context context;
+    private final BaseActivity activity;
+    private final ApiHelper apiHelper;
 
     private NewsItemsMvpView view;
     private Thread thread;
 
-    public NewsItemsPresenter(ScreenNavigator screenNavigator, BackPressDispatcher backPressDispatcher,
-                              NewsItemService newsItemService, ThreadPoster mainThreadPoster, Context context) {
+    public NewsItemsPresenter(ScreenNavigator screenNavigator, BaseActivity activity,
+                              NewsItemService newsItemService, ThreadPoster mainThreadPoster, Context context, ApiHelper apiHelper) {
         this.screenNavigator = screenNavigator;
-        this.backPressDispatcher = backPressDispatcher;
+        this.backPressDispatcher = activity;
         this.newsItemService = newsItemService;
         this.mainThreadPoster = mainThreadPoster;
         this.context = context;
+        this.activity = activity;
+        this.apiHelper = apiHelper;
     }
 
     @Override
@@ -48,6 +55,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     private void newsItems() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getNewsItems();
+            showMessageIfExist();
             if (!thread.isInterrupted()) {
                 mainThreadPoster.post(() -> onItemsLoaded(newsItems));
             }
@@ -65,6 +73,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     private void subsItems() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getSubsItems();
+            showMessageIfExist();
             if (!thread.isInterrupted()) {
                 mainThreadPoster.post(() -> onItemsLoaded(newsItems));
             }
@@ -72,6 +81,13 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
         thread.start();
 
+    }
+
+    private void showMessageIfExist() {
+        String message = apiHelper.getMessage();
+        if (message != null) {
+            activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
+        }
     }
 
 

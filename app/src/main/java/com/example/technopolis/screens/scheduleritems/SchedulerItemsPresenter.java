@@ -1,7 +1,10 @@
 package com.example.technopolis.screens.scheduleritems;
 
 import android.view.View;
+import android.widget.Toast;
 
+import com.example.technopolis.BaseActivity;
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
 import com.example.technopolis.screens.common.mvp.MvpPresenter;
@@ -30,17 +33,21 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     private final BackPressDispatcher backPressDispatcher;
     private final SchedulerItemService schedulerItemService;
     private final ThreadPoster mainThreadPoster;
+    private final ApiHelper apiHelper;
+    private final BaseActivity activity;
 
     private SchedulerItemsMvpView view;
     private Thread thread;
     private float currentOverScrollOffset;
 
-    public SchedulerItemsPresenter(ScreenNavigator screenNavigator, BackPressDispatcher backPressDispatcher,
-                                   SchedulerItemService schedulerItemService, ThreadPoster mainThreadPoster) {
+    public SchedulerItemsPresenter(ScreenNavigator screenNavigator, BaseActivity activity,
+                                   SchedulerItemService schedulerItemService, ThreadPoster mainThreadPoster, ApiHelper apiHelper) {
         this.screenNavigator = screenNavigator;
-        this.backPressDispatcher = backPressDispatcher;
+        this.backPressDispatcher = activity;
+        this.activity = activity;
         this.schedulerItemService = schedulerItemService;
         this.mainThreadPoster = mainThreadPoster;
+        this.apiHelper = apiHelper;
     }
 
     @Override
@@ -56,9 +63,12 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                 if (oldState == STATE_DRAG_START_SIDE && currentOverScrollOffset > 100) {
                     new Thread(() -> {
                         final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
+                        showMessageIfExist();
                         final List<View.OnClickListener> listeners = createListeners(schedulerItems);
                         if (!thread.isInterrupted()) {
-                            mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, 0));
+                            mainThreadPoster.post(() -> {
+                                onItemsLoaded(schedulerItems, listeners, 0);
+                            });
                         }
                     }).start();
                 }
@@ -70,13 +80,20 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         view.setOnReloadListener(overScrollStateListener, overScrollUpdateListener);
     }
 
+    private void showMessageIfExist() {
+        String message = apiHelper.getMessage();
+        if (message != null) {
+            activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
+        }
+    }
 
     private void loadItems() {
         thread = new Thread(() -> {
             final List<SchedulerItem> schedulerItems = schedulerItemService.items();
+            showMessageIfExist();
             final int actualDayPosition = calculateActualDayPosition(schedulerItems);
             final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-            if (!thread.isInterrupted()) {
+            if (thread != null && !thread.isInterrupted()) {
                 mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
             }
         });
