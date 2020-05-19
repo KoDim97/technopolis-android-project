@@ -16,6 +16,7 @@ import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.news.service.NewsItemService;
+import com.example.technopolis.screens.common.nav.BackPressDispatcher;
 import com.example.technopolis.util.ThreadPoster;
 
 import me.everything.android.ui.overscroll.IOverScrollDecor;
@@ -30,15 +31,6 @@ public class NewsItemsFragment extends Fragment {
 
     private NewsItemsPresenter presenter;
 
-
-    NewsItemsFragment() {
-        BaseActivity activity = (BaseActivity) getActivity();
-        presenter = new NewsItemsPresenter(activity.getScreenNavigator(), activity,
-                getFindNewsItemService(), getMainThreadPoster(), getContext());
-        presenter.newsItems();
-        presenter.subsItems();
-    }
-
     public static Fragment newInstance() {
         return new NewsItemsFragment();
     }
@@ -46,7 +38,8 @@ public class NewsItemsFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        presenter = new NewsItemsPresenter(((BaseActivity) getActivity()).getScreenNavigator(), (BackPressDispatcher) getActivity(),
+                getFindNewsItemService(), getMainThreadPoster(), getContext());
 
     }
 
