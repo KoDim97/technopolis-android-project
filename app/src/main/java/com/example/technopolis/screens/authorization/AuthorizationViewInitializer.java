@@ -3,12 +3,12 @@ package com.example.technopolis.screens.authorization;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import androidx.annotation.NonNull;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.technopolis.BaseActivity;
@@ -29,22 +29,29 @@ class AuthorizationViewInitializer {
     private final AuthorizationViewController controller;
     private boolean authorized = false;
 
-    AuthorizationViewInitializer(@NonNull final View rootView, @NonNull final BaseActivity activity) {
+
+    AuthorizationViewInitializer(View rootView, BaseActivity activity) {
         controller = new AuthorizationViewControllerImpl(activity);
         logoPagerAdapter = new LogoPagerAdapter(activity);
         viewPager = rootView.findViewById(R.id.view_pager);
         viewPager.setAdapter(logoPagerAdapter);
-        final TabLayout mTabLayout = rootView.findViewById(R.id.tablayout);
+        TabLayout mTabLayout = (TabLayout) rootView.findViewById(R.id.tablayout);
         mTabLayout.setupWithViewPager(viewPager);
-        prevButton = rootView.findViewById(R.id.prev_button);
-        nextButton = rootView.findViewById(R.id.next_button);
-        enterButton = rootView.findViewById(R.id.enter);
-        loginEditText = rootView.findViewById(R.id.Login);
-        passwordEditText = rootView.findViewById(R.id.Password);
+        prevButton = (ImageButton) rootView.findViewById(R.id.prev_button);
+        nextButton = (ImageButton) rootView.findViewById(R.id.next_button);
+        enterButton = (Button) rootView.findViewById(R.id.enter);
+        loginEditText = (EditText) rootView.findViewById(R.id.Login);
+        passwordEditText = (EditText) rootView.findViewById(R.id.Password);
         loginEditTextSettings(loginEditText);
         passwordEditTextSettings(passwordEditText);
         viewPagerSettings(viewPager);
         btnSettings();
+        test();
+    }
+
+    private void test() {
+        loginEditText.setText("");
+        passwordEditText.setText("");
     }
 
     private void changeEnableEnter() {
@@ -54,7 +61,7 @@ class AuthorizationViewInitializer {
             enterButton.setEnabled(false);
     }
 
-    private void loginEditTextSettings(@NonNull final EditText editText) {
+    private void loginEditTextSettings(EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -72,13 +79,15 @@ class AuthorizationViewInitializer {
                 changeEnableEnter();
             }
         });
-        editText.setOnKeyListener((v, keyCode, event) -> {
-            passwordEditText.requestFocus();
-            return true;
+        editText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                passwordEditText.requestFocus();
+                return true;
+            }
         });
     }
 
-    private void passwordEditTextSettings(@NonNull final EditText editText) {
+    private void passwordEditTextSettings(EditText editText) {
         editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -92,7 +101,9 @@ class AuthorizationViewInitializer {
 
             @Override
             public void afterTextChanged(Editable s) {
-                enableEnter[1] = s.length() != 0;
+                if (s.length() != 0) {
+                    enableEnter[1] = true;
+                } else enableEnter[1] = false;
                 changeEnableEnter();
             }
         });
@@ -109,7 +120,8 @@ class AuthorizationViewInitializer {
         });
     }
 
-    private void viewPagerSettings(@NonNull final ViewPager viewPager) {
+
+    private void viewPagerSettings(ViewPager viewPager) {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -118,7 +130,7 @@ class AuthorizationViewInitializer {
 
             @Override
             public void onPageSelected(int position) {
-                final int totalItems = logoPagerAdapter.getCount();
+                int totalItems = logoPagerAdapter.getCount();
                 controller.logoSelected(position);
                 if (position == 0) {
                     prevButton.setVisibility(View.INVISIBLE);
@@ -139,19 +151,21 @@ class AuthorizationViewInitializer {
 
     private void btnSettings() {
         nextButton.setOnClickListener(v -> {
-            final int current = viewPager.getCurrentItem();
-            final int totalItems = logoPagerAdapter.getCount();
+            int current = viewPager.getCurrentItem();
+            int totalItems = logoPagerAdapter.getCount();
             if (current < totalItems - 1) {
                 viewPager.setCurrentItem(current + 1, true);
             }
         });
         prevButton.setOnClickListener(v -> {
-            final int current = viewPager.getCurrentItem();
+            int current = viewPager.getCurrentItem();
             if (current != 0) {
                 viewPager.setCurrentItem(current - 1, true);
             }
         });
-        enterButton.setOnClickListener(v -> controller.enterBtnClick(loginEditText.getText().toString(), passwordEditText.getText().toString()));
+        enterButton.setOnClickListener(v -> {
+            controller.enterBtnClick(loginEditText.getText().toString(), passwordEditText.getText().toString());
+        });
     }
 
 

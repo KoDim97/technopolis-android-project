@@ -52,7 +52,7 @@ public class ProfileService {
             imageUrl = imageUrl.replace("http", "https");
         }
 
-        UserProfile userProfile = new UserProfile(
+        return new UserProfile(
                 profileDto.getId(),
                 profileDto.getUserName(),
                 profileDto.getProjectId(),
@@ -69,8 +69,6 @@ public class ProfileService {
                 profileDto.getGroups(),
                 profileDto.getAccounts()
         );
-        userProfileRepo.add(userProfile);
-        return userProfile;
     }
 
 

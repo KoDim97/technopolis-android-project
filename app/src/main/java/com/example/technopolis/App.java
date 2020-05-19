@@ -35,30 +35,14 @@ public class App extends Application {
     private SchedulerItemService schedulerItemService;
     private SchedulerItemRepo schedulerItemRepo;
 
-    private NewsItemRepository newsItemRepo;
-    private NewsItemRepository subsItemRepo;
+    private NewsItemRepositoryImpl newsItemRepo;
+    private NewsItemRepositoryImplSubs subsItemRepo;
     private NewsItemService newsItemService;
 
     private ProfileService profileService;
     private UserProfileRepo userProfileRepo;
     private FindGroupItemService findGroupItemService;
     private GroupItemRepo groupItemRepo;
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setSchedulerItemRepo(SchedulerItemRepo repo) {
-        this.schedulerItemRepo = repo;
-    }
-
-    public void setNewsItemRepo(NewsItemRepository newsItemRepo) {
-        this.newsItemRepo = newsItemRepo;
-    }
-
-    public void setSubsItemRepo(NewsItemRepository subsItemRepo) {
-        this.subsItemRepo = subsItemRepo;
-    }
 
     @Override
     public void onCreate() {
@@ -92,6 +76,7 @@ public class App extends Application {
         }
         return user;
     }
+
 
     public UserProfileRepo provideUserProfileRepo() {
         if (userProfileRepo == null) {

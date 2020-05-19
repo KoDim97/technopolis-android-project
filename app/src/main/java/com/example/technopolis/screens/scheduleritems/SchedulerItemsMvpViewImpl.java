@@ -16,9 +16,6 @@ import com.example.technopolis.screens.scheduleritems.stickyHeader.SchedulerItem
 
 import java.util.List;
 
-import me.everything.android.ui.overscroll.IOverScrollDecor;
-import me.everything.android.ui.overscroll.IOverScrollStateListener;
-import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressedListener>
@@ -37,19 +34,29 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
         rvSchedulerItems.setLayoutManager(linearLayoutManager);
         rvSchedulerItems.setAdapter(schedulerItemAdapter);
         rvSchedulerItems.addItemDecoration(new SchedulerItemDecoration(schedulerItemAdapter));
+
+        OverScrollDecoratorHelper.setUpOverScroll(rvSchedulerItems, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+
+
+//        decor.setOverScrollStateListener(new IOverScrollStateListener() {
+//                                             @Override
+//                                             public void onOverScrollStateChange(IOverScrollDecor decor, int oldState, int newState) {
+//                                                 switch (newState) {
+//                                                     case STATE_BOUNCE_BACK:
+//                                                         if (oldState == STATE_DRAG_START_SIDE) {
+//                                                             schedulerItemAdapter.updateItems(getSchedulerItems());
+//                                                         }
+//                                                         break;
+//                                                 }
+//                                             }
+//                                         }
+//        );
+
     }
 
     @Override
     public void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, int actualPosition) {
         schedulerItemAdapter.bindData(schedulerItems, listeners);
         linearLayoutManager.scrollToPosition(actualPosition * 2);
-    }
-
-    @Override
-    public void setOnReloadListener(IOverScrollStateListener overScrollStateListener, IOverScrollUpdateListener overScrollUpdateListener) {
-        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(rvSchedulerItems, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
-
-        decor.setOverScrollStateListener(overScrollStateListener);
-        decor.setOverScrollUpdateListener(overScrollUpdateListener);
     }
 }

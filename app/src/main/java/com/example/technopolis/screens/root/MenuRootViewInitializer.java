@@ -1,5 +1,6 @@
 package com.example.technopolis.screens.root;
 
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -10,16 +11,17 @@ import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MenuRootViewInitializer {
-    private final ScreenNavigator screenNavigator;
-    private final BottomNavigationView navigation;
+    private ScreenNavigator screenNavigator;
+    private BottomNavigationView navigation;
 
-    public MenuRootViewInitializer(@NonNull final BaseActivity rootView, @NonNull final ScreenNavigator screenNavigator) {
+
+    public MenuRootViewInitializer(BaseActivity rootView, ScreenNavigator screenNavigator) {
         this.screenNavigator = screenNavigator;
-        navigation = rootView.findViewById(R.id.navigation);
+        navigation = (BottomNavigationView) rootView.findViewById(R.id.navigation);
         setup();
     }
 
-    public void setNavElem(final int index) {
+    public void setNavElem(int index) {
         switch (index) {
             case 0:
                 navigation.setSelectedItemId(R.id.navigation_news);
@@ -29,10 +31,12 @@ public class MenuRootViewInitializer {
                 return;
             case 2:
                 navigation.setSelectedItemId(R.id.navigation_profile);
+                return;
         }
     }
 
-    public void setBarVisible(final int state) {
+
+    public void setBarVisible(int state) {
         switch (state) {
             case View.VISIBLE:
                 navigation.setVisibility(View.VISIBLE);
@@ -46,8 +50,14 @@ public class MenuRootViewInitializer {
         }
     }
 
+
     private void setup() {
-        final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = screenNavigator::loadFragment;
+        BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                return screenNavigator.loadFragment(menuItem);
+            }
+        };
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 

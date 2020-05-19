@@ -9,6 +9,4 @@ public interface NewsItemRepository {
     List<NewsItem> findAll();
 
     void add(NewsItem newsItem);
-
-    void clear();
 }

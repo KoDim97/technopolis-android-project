@@ -13,10 +13,10 @@ import com.example.technopolis.R;
 import java.util.ArrayList;
 
 public class LogoPagerAdapter extends androidx.viewpager.widget.PagerAdapter {
-    private final Context context;
-    private final ArrayList<Integer> logo;
+    private Context context;
+    private ArrayList<Integer> logo;
 
-    LogoPagerAdapter(@NonNull Context context) {
+    LogoPagerAdapter(Context context) {
         this.context = context;
         logo = new ArrayList<>();
         logo.add(R.drawable.logo0);

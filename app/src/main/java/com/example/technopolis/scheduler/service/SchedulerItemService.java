@@ -29,7 +29,7 @@ public class SchedulerItemService {
         return schedulerItems;
     }
 
-    public List<SchedulerItem> requestFromApi() {
+    private List<SchedulerItem> requestFromApi() {
         List<SchedulerItemDto> schedulerItemsDto = api.requestSchedulerItems();
         List<SchedulerItem> schedulerItems = transformToModelList(schedulerItemsDto);
         schedulerItemRepo.updateAll(schedulerItems);
