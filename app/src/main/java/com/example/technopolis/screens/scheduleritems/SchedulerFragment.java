@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
 import com.example.technopolis.util.ThreadPoster;
 
@@ -28,8 +29,8 @@ public class SchedulerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        presenter = new SchedulerItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
-                getFindBlogItemService(), getMainThreadPoster());
+        presenter = new SchedulerItemsPresenter(getBaseActivity().getScreenNavigator(), getBaseActivity(),
+                getFindBlogItemService(), getMainThreadPoster(), getApiHelper());
     }
 
     @Override
@@ -62,7 +63,7 @@ public class SchedulerFragment extends Fragment {
 
 
     @Nullable
-    private BaseActivity getMainActivity() {
+    private BaseActivity getBaseActivity() {
         return (BaseActivity) getActivity();
     }
 
@@ -76,5 +77,11 @@ public class SchedulerFragment extends Fragment {
         App app = (App) getActivity().getApplication();
         assert app != null;
         return app.provideMainThreadPoster();
+    }
+
+    private ApiHelper getApiHelper() {
+        App app = (App) getActivity().getApplication();
+        assert app != null;
+        return app.provideApiHelper();
     }
 }

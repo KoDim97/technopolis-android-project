@@ -1,14 +1,17 @@
 package com.example.technopolis.api;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class ApiHelper {
 
-    private String message;
+    private Queue<String> messages = new LinkedList<>();
 
     public String getMessage() {
-        return message;
+        return messages.poll();
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        messages.offer(message);
     }
 }

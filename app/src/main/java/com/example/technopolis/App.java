@@ -53,7 +53,7 @@ public class App extends Application {
 
     public MailApi provideMailApi() {
         if (api == null) {
-            api = new MailApiImpl(Volley.newRequestQueue(this), provideUser());
+            api = new MailApiImpl(Volley.newRequestQueue(this), provideUser(), provideApiHelper());
         }
         return api;
     }
