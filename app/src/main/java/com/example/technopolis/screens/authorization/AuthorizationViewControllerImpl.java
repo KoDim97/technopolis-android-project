@@ -3,6 +3,8 @@ package com.example.technopolis.screens.authorization;
 
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
@@ -17,7 +19,7 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
     private final BaseActivity activity;
     private final ApiHelper apiHelper;
 
-    AuthorizationViewControllerImpl(BaseActivity activity) {
+    AuthorizationViewControllerImpl(@NonNull final BaseActivity activity) {
         this.activity = activity;
         app = (App) activity.getApplication();
         assert app != null;
@@ -27,7 +29,7 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
     }
 
     @Override
-    public void logoSelected(int pos) {
+    public void logoSelected(final int pos) {
         switch (pos) {
             case 0:
                 app.provideMailApi().setProjectUrl(EducationProject.polis);
@@ -55,27 +57,16 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
         }
     }
 
-
     @Override
-    public void enterBtnClick(String login, String password) {
-        //AtomicBoolean invalid = new AtomicBoolean(false);
-        Thread thread = new Thread(() -> {
+    public void enterBtnClick(@NonNull final String login, @NonNull final String password) {
+        final Thread thread = new Thread(() -> {
             if (authService.CheckAuth(login, password)) {
-                screenNavigator.changeAuthorized(true);
+                activity.runOnUiThread(() -> screenNavigator.changeAuthorized(true));
             } else {
-                //R.string.authFailed
                 activity.runOnUiThread(() -> Toast.makeText(activity, apiHelper.getMessage(), Toast.LENGTH_SHORT).show());
-                //invalid.set(true);
+                screenNavigator.changeAuthorized(false);
             }
         });
         thread.start();
-//            try {
-//                thread.join();
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            if (invalid.compareAndSet(true, false)){
-//                Toast.makeText(activity, R.string.authFailed, Toast.LENGTH_SHORT).show();
-//            }
     }
 }
