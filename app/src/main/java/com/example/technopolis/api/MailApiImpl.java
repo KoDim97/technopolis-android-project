@@ -35,14 +35,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class MailApiImpl implements MailApi {
+    private static final String NETWORK_ERROR_MESSAGE = "Нет соединения";
+    private static final String INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE = "Неверный логин или пароль";
+
     private RequestQueue queue;
     private User user;
+    private ApiHelper apiHelper;
 
     private String projectUrl;
 
-    public MailApiImpl(RequestQueue queue, User user) {
+    public MailApiImpl(RequestQueue queue, User user, ApiHelper apiHelper) {
         this.queue = queue;
         this.user = user;
+        this.apiHelper = apiHelper;
         //default
         projectUrl = "https://polis.mail.ru";
     }
@@ -77,6 +82,14 @@ public class MailApiImpl implements MailApi {
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, error -> {
             // TODO: Handle error
+            if (error.networkResponse == null) {
+                System.out.println("Нет подключения");
+                apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            } else {
+                System.err.println("Неверный логин или пароль");
+                System.err.println(error.networkResponse.statusCode);
+                apiHelper.setMessage(INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE);
+            }
         });
 
         queue.add(request);
@@ -92,11 +105,14 @@ public class MailApiImpl implements MailApi {
         } catch (TimeoutException e) {
             int a = 5;
             //Time out
+            System.err.println("timeout");
         } catch (JSONException e) {
             int a = 5;
+            System.err.println("jsonException");
             //Json creating failed
         } catch (ExecutionException | InterruptedException e) {
             int a = 5;
+            System.err.println("another");
             //unknown error
         }
         return null;
@@ -258,7 +274,7 @@ public class MailApiImpl implements MailApi {
         };
         queue.add(jsonArrayRequest);
         try {
-            JSONObject response = future.get();
+            JSONObject response = future.get(1, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject one_new = results.getJSONObject(i);
@@ -284,8 +300,12 @@ public class MailApiImpl implements MailApi {
             }
 
 
-        } catch (JSONException | ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | TimeoutException e) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+        } catch (ExecutionException e) {
+            System.out.println("Update token");
+        } catch (JSONException e) {
+            System.out.println("Json creating failed");
         }
         return newsDtoList;
     }
@@ -353,7 +373,14 @@ public class MailApiImpl implements MailApi {
         mHeaders.put("Authorization", "Token " + user.getAuth_token());
 
         RequestFuture<JSONArray> requestFuture = RequestFuture.newFuture();
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, new JSONArray(), requestFuture, requestFuture) {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, new JSONArray(), requestFuture, error -> {
+            if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
+                //Надо обновить токен!!!
+                //updateToken
+                //reload request
+//                requestSchedulerItems();
+            }
+        }) {
             @Override
             public Map<String, String> getHeaders() {
                 return mHeaders;
@@ -363,7 +390,9 @@ public class MailApiImpl implements MailApi {
 
 
         try {
-            JSONArray response = requestFuture.get(5, TimeUnit.SECONDS);
+
+            JSONArray response = requestFuture.get(1, TimeUnit.SECONDS);
+
             int count = 0;
             while (count < response.length()) {
                 JSONObject jsonObject = response.getJSONObject(count);
@@ -384,14 +413,12 @@ public class MailApiImpl implements MailApi {
                 items.add(schedulerItemDto);
                 ++count;
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | TimeoutException e) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
         } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
+            System.out.println("Update token");
         } catch (JSONException e) {
-            e.printStackTrace();
+            System.out.println("Json creating failed");
         }
         return items;
     }
@@ -405,7 +432,17 @@ public class MailApiImpl implements MailApi {
         mHeaders.put("Authorization", "Token " + user.getAuth_token());
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, requestFuture) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, error -> {
+            if (error.networkResponse == null) {
+                apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+                System.out.println(NETWORK_ERROR_MESSAGE);
+            } else if (error.networkResponse.statusCode == 401) {
+                //Надо обновить токен!!!
+                //updateToken
+                //reload request
+                //checkInSchedulerItem(id);
+            }
+        }) {
             @Override
             public Map<String, String> getHeaders() {
                 return mHeaders;
@@ -415,7 +452,7 @@ public class MailApiImpl implements MailApi {
 
         SchedulerItemCheckInDto schedulerItemCheckInDto = null;
         try {
-            JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
 
             schedulerItemCheckInDto = new SchedulerItemCheckInDto(
                     response.getInt("schedule_item"),
@@ -424,7 +461,7 @@ public class MailApiImpl implements MailApi {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
-            e.printStackTrace();
+
         } catch (TimeoutException e) {
             e.printStackTrace();
         } catch (JSONException e) {

@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi;
 import com.example.technopolis.R;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.screens.common.mvp.MvpViewBase;
-import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -72,7 +71,7 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
 
 
         commentsCountTextView.setText(newsItem.getComments_number());
-        Picasso.get().load(newsItem.getUserpic()).fit().into(avatarImage);
+        newsItem.getStorage().downloadImage(newsItem.getUserpic(), avatarImage);
     }
 
     public void onNewsItemClicked() {

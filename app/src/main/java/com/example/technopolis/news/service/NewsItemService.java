@@ -4,6 +4,7 @@ import com.example.technopolis.api.MailApi;
 import com.example.technopolis.api.dto.NewsDto;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.repo.NewsItemRepository;
+import com.example.technopolis.screens.common.download.ImageStorage;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,11 +15,13 @@ public class NewsItemService {
     private final NewsItemRepository newsItemRepo;
     private final NewsItemRepository subsItemRepo;
     private final MailApi api;
+    private final ImageStorage storage;
 
-    public NewsItemService(NewsItemRepository newsItemRepo, NewsItemRepository subsItemRepo, MailApi api) {
+    public NewsItemService(NewsItemRepository newsItemRepo, NewsItemRepository subsItemRepo, MailApi api, ImageStorage storage) {
         this.newsItemRepo = newsItemRepo;
         this.subsItemRepo = subsItemRepo;
         this.api = api;
+        this.storage = storage;
     }
 
     public List<NewsItem> getNewsItems() {
@@ -64,7 +67,8 @@ public class NewsItemService {
                             newsDto.getPublish_date(),
                             newsDto.getAvatar_url(),
                             newsDto.getComments_count(),
-                            newsDto.getPost_url()
+                            newsDto.getPost_url(),
+                            storage
                     )
             );
         }
@@ -84,7 +88,8 @@ public class NewsItemService {
                             newsDto.getPublish_date(),
                             newsDto.getAvatar_url(),
                             newsDto.getComments_count(),
-                            newsDto.getPost_url()
+                            newsDto.getPost_url(),
+                            storage
                     )
             );
         }

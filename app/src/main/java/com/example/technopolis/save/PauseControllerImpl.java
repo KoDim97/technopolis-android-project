@@ -25,7 +25,7 @@ public class PauseControllerImpl implements PauseController {
             SaveNewsController.serialize(app.provideNewsItemRepo(), app.provideSubsItemRepo(), app);
             SaveSchedulerController.serialize(app.provideSchedulerItemRepo(), app);
             SaveProfileController.serialize(app.provideUserProfileRepo().findByUserName(app.provideUser().getUsername()), app);
-        } catch (IOException | NullPointerException e ) {
+        } catch (IOException | NullPointerException e) {
             exit();
         }
     }
