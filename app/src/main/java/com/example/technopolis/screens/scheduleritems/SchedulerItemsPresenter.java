@@ -16,6 +16,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import me.everything.android.ui.overscroll.IOverScrollStateListener;
+import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
+
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
+import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
+
 public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpView>,
         BackPressedListener {
     private static final String RESPONSE_FORMAT = "yyyy-MM-dd HH:mm:ss";
@@ -27,6 +33,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
 
     private SchedulerItemsMvpView view;
     private Thread thread;
+    private float currentOverScrollOffset;
 
     public SchedulerItemsPresenter(ScreenNavigator screenNavigator, BackPressDispatcher backPressDispatcher,
                                    SchedulerItemService schedulerItemService, ThreadPoster mainThreadPoster) {
@@ -39,20 +46,38 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     @Override
     public void bindView(SchedulerItemsMvpView view) {
         this.view = view;
+        setOnReloadListener();
         loadItems();
+    }
+
+    private void setOnReloadListener() {
+        IOverScrollStateListener overScrollStateListener = (decor, oldState, newState) -> {
+            if (newState == STATE_BOUNCE_BACK) {
+                if (oldState == STATE_DRAG_START_SIDE && currentOverScrollOffset > 100) {
+                    new Thread(() -> {
+                        final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
+                        final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                        if (!thread.isInterrupted()) {
+                            mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, 0));
+                        }
+                    }).start();
+                }
+            }
+        };
+        IOverScrollUpdateListener overScrollUpdateListener = (decor, state, offset) -> {
+            currentOverScrollOffset = offset;
+        };
+        view.setOnReloadListener(overScrollStateListener, overScrollUpdateListener);
     }
 
 
     private void loadItems() {
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final List<SchedulerItem> schedulerItems = schedulerItemService.items();
-                final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-                final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-                if (!thread.isInterrupted()) {
-                    mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
-                }
+        thread = new Thread(() -> {
+            final List<SchedulerItem> schedulerItems = schedulerItemService.items();
+            final int actualDayPosition = calculateActualDayPosition(schedulerItems);
+            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+            if (!thread.isInterrupted()) {
+                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
             }
         });
         thread.start();

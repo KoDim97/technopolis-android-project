@@ -23,4 +23,8 @@ public class NewsItemRepositoryImplSubs implements NewsItemRepository {
         itemsSubs.put(newsItem.getDate(), newsItem);
     }
 
+    @Override
+    public void clear() {
+        itemsSubs.clear();
+    }
 }

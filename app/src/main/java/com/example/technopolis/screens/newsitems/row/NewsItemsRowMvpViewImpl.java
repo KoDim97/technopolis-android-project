@@ -1,10 +1,13 @@
 package com.example.technopolis.screens.newsitems.row;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.technopolis.R;
 import com.example.technopolis.news.model.NewsItem;
@@ -13,6 +16,9 @@ import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -41,15 +47,8 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
         commentsCountTextView = findViewById(R.id.news_item__comment_num);
         avatarImage = findViewById(R.id.news_item__image);
 
-        getRootView().setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onNewsItemClicked();
-                    }
-                });
+        getRootView().setOnClickListener(v -> onNewsItemClicked());
     }
-
 
     @Override
     public void bindData(NewsItem newsItem) {
@@ -60,6 +59,11 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
         try {
             Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", new Locale("ru", "RU"))
                     .parse(newsItem.getDate());
+//            date = Date.from(date.toInstant().plus(Duration.ofHours(3)));
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.add(Calendar.HOUR_OF_DAY, 3);
+            date = cal.getTime();
             datePostingTextView.setText(new SimpleDateFormat("d MMM yyyy 'г'. 'в' HH:mm", new Locale("ru", "RU"))
                     .format(date));
         } catch (ParseException e) {

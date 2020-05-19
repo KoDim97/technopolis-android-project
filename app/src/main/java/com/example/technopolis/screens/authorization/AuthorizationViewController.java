@@ -1,7 +1,10 @@
 package com.example.technopolis.screens.authorization;
 
-public interface AuthorizationViewController {
-    void logoSelected(int pos);
+import androidx.annotation.NonNull;
 
-    void enterBtnClick(String login, String password);
+public interface AuthorizationViewController {
+    void logoSelected(final int pos);
+
+    void enterBtnClick(@NonNull final String login, @NonNull final String password);
+
 }
