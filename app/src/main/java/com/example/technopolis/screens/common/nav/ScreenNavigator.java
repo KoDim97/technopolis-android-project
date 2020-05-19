@@ -25,18 +25,22 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     private final FragNavController fragNavController;
     private final BaseActivity activity;
-    private Map<Integer, Integer> log = new TreeMap<>();
+    private final Map<Integer, Integer> log;
     private final App app;
     private boolean pop = false;
     private ArrayList<Fragment> fragments;
+    private Fragment authorizationFragment;
 
-    public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, BaseActivity activity) {
+    public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, @NonNull final BaseActivity activity) {
         this.activity = activity;
-        initListFragments();
+        authorizationFragment = AuthorizationFragment.newInstance(activity);
         app = (App) activity.getApplication();
+        if (app.isAuthorized())
+            initListFragments();
         fragNavController = new FragNavController(fragmentManager, R.id.fl_content);
         fragNavController.setRootFragmentListener(this);
         fragNavController.initialize(FragNavController.TAB1, savedInstanceState);
+        log = new TreeMap<>();
         log.put(0, 0);
 
     }
@@ -55,15 +59,23 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     @NonNull
     @Override
-    public Fragment getRootFragment(int index) {
+    public Fragment getRootFragment(final int index) {
         if (!app.isAuthorized()) {
-            return AuthorizationFragment.newInstance(activity);
+            fragments = null;
+            return authorizationFragment;
         } else {
+            if (fragments == null)
+                initListFragments();
             return fragments.get(0);
         }
     }
 
-    public void changeAuthorized(boolean authorized) {
+    public void changeAuthorized(final boolean authorized) {
+        if (app.isAuthorized() && fragNavController.getCurrentFrag() == fragments.get(0) && authorized)
+            return;
+        if (!authorized && !app.isAuthorized()) {
+            return;
+        }
         app.setAuthorized(authorized);
         fragNavController.initialize(FragNavController.TAB1, null);
     }
@@ -80,7 +92,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragNavController.onSaveInstanceState(outState);
     }
 
-    private void deleteLoop(int index) {
+    private void deleteLoop(final int index) {
         boolean find = false;
         int n = log.size();
         for (int i = 0; i < n; i++) {
@@ -93,7 +105,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
     }
 
-    private Integer getIndexByMenuItem(@NonNull MenuItem menuItem) {
+    private Integer getIndexByMenuItem(@NonNull final MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.navigation_news:
                 return 0;
@@ -106,8 +118,8 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
     }
 
-    public boolean loadFragment(@NonNull MenuItem menuItem) {
-        Integer index = getIndexByMenuItem(menuItem);
+    public boolean loadFragment(@NonNull final MenuItem menuItem) {
+        final Integer index = getIndexByMenuItem(menuItem);
         if (index == null)
             return false;
         if (pop) {
@@ -127,7 +139,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         return true;
     }
 
-    private boolean navBarElem(Fragment fragment) {
+    private boolean navBarElem(final Fragment fragment) {
         if (fragments.get(1) == fragment) {
             return true;
         } else return fragments.get(2) == fragment;
