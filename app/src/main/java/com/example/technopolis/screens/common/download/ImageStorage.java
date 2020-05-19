@@ -6,9 +6,9 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.util.LinkedList;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ImageStorage {
@@ -20,17 +20,17 @@ public class ImageStorage {
     }
 
     public void setImage(@NonNull Bitmap image, @NonNull String imageUrl) {
-        final ImageTarget buf = new ImageTarget();
-        buf.setImage(image);
-        images.put(imageUrl, buf);
+        final ImageTarget target = new ImageTarget();
+        target.setImage(image);
+        images.put(imageUrl, target);
     }
 
     public void downloadImage(@NonNull String imageUrl, @NonNull ImageView view) {
         if (!images.containsKey(imageUrl)) {
-            final ImageTarget buf = new ImageTarget();
-            buf.setView(view);
-            Picasso.get().load(imageUrl).into(buf);
-            images.put(imageUrl, buf);
+            final ImageTarget target = new ImageTarget();
+            target.setView(view);
+            Picasso.get().load(imageUrl).networkPolicy(NetworkPolicy.NO_CACHE).into(target);
+            images.put(imageUrl, target);
         } else {
             if (getImage(imageUrl) != null)
                 view.setImageBitmap(getImage(imageUrl));
