@@ -90,6 +90,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     private void loadItems() {
         thread = new Thread(() -> {
             final List<SchedulerItem> schedulerItems = schedulerItemService.items();
+            showMessageIfExist();
             final int actualDayPosition = calculateActualDayPosition(schedulerItems);
             final List<View.OnClickListener> listeners = createListeners(schedulerItems);
             if (thread != null && !thread.isInterrupted()) {

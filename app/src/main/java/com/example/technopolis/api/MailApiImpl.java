@@ -36,6 +36,7 @@ import java.util.concurrent.TimeoutException;
 
 public class MailApiImpl implements MailApi {
     private static final String NETWORK_ERROR_MESSAGE = "Нет подключения";
+    private static final String INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE = "Неверный логин или пароль";
 
     private RequestQueue queue;
     private User user;
@@ -87,7 +88,7 @@ public class MailApiImpl implements MailApi {
             } else {
                 System.err.println("Неверный логин или пароль");
                 System.err.println(error.networkResponse.statusCode);
-                apiHelper.setMessage("Неверный логин или пароль");
+                apiHelper.setMessage(INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE);
             }
         });
 
@@ -386,7 +387,7 @@ public class MailApiImpl implements MailApi {
 
 
         try {
-            JSONArray response = requestFuture.get(2, TimeUnit.SECONDS);
+            JSONArray response = requestFuture.get(1, TimeUnit.SECONDS);
             int count = 0;
             while (count < response.length()) {
                 JSONObject jsonObject = response.getJSONObject(count);
