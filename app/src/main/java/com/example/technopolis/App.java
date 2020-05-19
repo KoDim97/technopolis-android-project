@@ -3,6 +3,7 @@ package com.example.technopolis;
 import android.app.Application;
 
 import com.android.volley.toolbox.Volley;
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.api.MailApi;
 import com.example.technopolis.api.MailApiImpl;
 import com.example.technopolis.group.repo.GroupItemRepo;
@@ -28,6 +29,7 @@ public class App extends Application {
 
     private boolean authorized = false;
     private MailApi api;
+    private ApiHelper apiHelper;
     private MainThreadPoster mainThreadPoster;
 
     private User user;
@@ -54,6 +56,13 @@ public class App extends Application {
             api = new MailApiImpl(Volley.newRequestQueue(this), provideUser());
         }
         return api;
+    }
+
+    public ApiHelper provideApiHelper() {
+        if (apiHelper == null) {
+            apiHelper = new ApiHelper();
+        }
+        return apiHelper;
     }
 
     public AuthService provideAuthService() {
