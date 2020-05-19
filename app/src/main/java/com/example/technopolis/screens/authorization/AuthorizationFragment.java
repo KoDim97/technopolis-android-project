@@ -11,18 +11,16 @@ import androidx.fragment.app.Fragment;
 
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
-import com.example.technopolis.screens.common.nav.ScreenNavigator;
 
 public class AuthorizationFragment extends Fragment {
 
-    private BaseActivity activity;
+    private final BaseActivity activity;
 
-    AuthorizationFragment(BaseActivity activity) {
+    private AuthorizationFragment(@NonNull final BaseActivity activity) {
         this.activity = activity;
-        ScreenNavigator screenNavigator = activity.getScreenNavigator();
     }
 
-    public static Fragment newInstance(BaseActivity baseActivity) {
+    public static Fragment newInstance(@NonNull final BaseActivity baseActivity) {
         return new AuthorizationFragment(baseActivity);
     }
 
@@ -36,9 +34,9 @@ public class AuthorizationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.authorization, container, false);
+        final View rootView = inflater.inflate(R.layout.authorization, container, false);
         activity.getRootViewController().setBarVisible(View.GONE);
-        AuthorizationViewInitializer viewController = new AuthorizationViewInitializer(rootView, activity);
+        new AuthorizationViewInitializer(rootView, activity);
         return rootView;
     }
 
@@ -57,10 +55,6 @@ public class AuthorizationFragment extends Fragment {
         super.onDestroy();
     }
 
-    @Nullable
-    private BaseActivity getMainActivity() {
-        return activity;
-    }
 
 
 }

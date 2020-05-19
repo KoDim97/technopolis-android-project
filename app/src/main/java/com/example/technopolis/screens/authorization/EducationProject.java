@@ -8,5 +8,4 @@ class EducationProject {
     static String technoatom = "https://technoatom.mail.ru";
     static String vgu = "https://vgu.sphere.mail.ru";
     static String pgu = "https://pgu.sphere.mail.ru";
-    static String data = "https://data.mail.ru";
 }

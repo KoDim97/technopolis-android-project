@@ -2,8 +2,11 @@ package com.example.technopolis;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.technopolis.save.PauseController;
+import com.example.technopolis.save.PauseControllerImpl;
 import com.example.technopolis.screens.common.nav.BackPressDispatcher;
 import com.example.technopolis.screens.common.nav.BackPressedListener;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
@@ -13,27 +16,33 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BaseActivity extends AppCompatActivity implements BackPressDispatcher {
-    private final Set<BackPressedListener> backPressedListeners = new HashSet<>();
+    private final Set<BackPressedListener> backPressedListeners;
     private ScreenNavigator screenNavigator;
     private MenuRootViewInitializer rootViewController;
+    private PauseController pauseController;
+
+    public BaseActivity() {
+        backPressedListeners = new HashSet<>();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_menu);
+        pauseController = new PauseControllerImpl((App) getApplication());
+        pauseController.authorized();
         screenNavigator = new ScreenNavigator(getSupportFragmentManager(), savedInstanceState, this);
         rootViewController = new MenuRootViewInitializer(this, screenNavigator);
     }
 
-
+    @NonNull
     public MenuRootViewInitializer getRootViewController() {
         return rootViewController;
     }
 
-    public void setNavElem(int index) {
+    public void setNavElem(final int index) {
         rootViewController.setNavElem(index);
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -41,6 +50,7 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
         screenNavigator.onSaveInstanceState(outState);
     }
 
+    @NonNull
     public ScreenNavigator getScreenNavigator() {
         return screenNavigator;
     }
@@ -66,5 +76,11 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     @Override
     public void unregisterListener(BackPressedListener listener) {
         backPressedListeners.remove(listener);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        pauseController.onPause();
     }
 }
