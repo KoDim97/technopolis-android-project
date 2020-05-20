@@ -44,6 +44,8 @@
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/profile_content_container"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBackground">
@@ -87,7 +89,6 @@
                         android:layout_marginTop="12dp"
                         android:layout_toEndOf="@id/profile_image"
                         android:fontFamily="@font/roboto_bold"
-                        android:text="А где имя?"
                         android:textColor="@color/colorBlack"
                         android:textSize="14sp" />
 
@@ -100,7 +101,6 @@
                         android:layout_marginTop="10dp"
                         android:layout_toEndOf="@id/profile_image"
                         android:fontFamily="@font/roboto_regular"
-                        android:text="@string/graduated"
                         android:textSize="13sp" />
 
                 </RelativeLayout>
@@ -132,7 +132,6 @@
                         android:layout_marginBottom="9dp"
                         android:fontFamily="@font/roboto_regular"
                         android:padding="3dp"
-                        android:text="Студент ИУ-7"
                         android:textColor="@color/colorBlack"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -199,6 +198,14 @@
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_gravity="center"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/loading"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
 </LinearLayout>
 
 

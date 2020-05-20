@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -44,6 +45,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final LinearLayout contactsLinearLayout;
     private final LinearLayout accountsLinearLayout;
     private final LinearLayout profileWrapper;
+    private final FrameLayout profileContentContainer;
 
 
     private final float scale;
@@ -51,6 +53,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     public ProfileViewMvpImpl(LayoutInflater layoutInflater, ViewGroup parent) {
         setRootView(layoutInflater.inflate(R.layout.profile_fragment, parent, false));
         scale = getContext().getResources().getDisplayMetrics().density;
+        profileContentContainer = findViewById(R.id.profile_content_container);
         image = findViewById(R.id.profile_image);
         name = findViewById(R.id.profile_fullname);
         status = findViewById(R.id.profile_status);
@@ -93,6 +96,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
                 image.setImageResource(R.drawable.img_no_avatar);
             }
         });
+        profileContentContainer.setVisibility(View.VISIBLE);
         name.setText(userProfile.getFullName());
         status.setText(userProfile.getMainGroup());
         about.setText(userProfile.getAbout());
