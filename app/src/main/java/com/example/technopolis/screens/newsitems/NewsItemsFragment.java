@@ -54,7 +54,7 @@ public class NewsItemsFragment extends Fragment {
 
         ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
 
-        final NewsItemsMvpViewImpl view = new NewsItemsMvpViewImpl(inflater, container, getContext());
+        final NewsItemsMvpViewImpl view = new NewsItemsMvpViewImpl(inflater, container, getContext(),(App)getMainActivity().getApplication());
         final IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(view.getRvNewsItems(),
                 OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 

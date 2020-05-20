@@ -130,7 +130,7 @@ class SaveNewsController {
                 return false;
             final String url = new String(buf);
 
-            newsItemRepository[0].add(new NewsItem(id, name, title, section, date, userpic, comments_number, url,app.getStorage()));
+            newsItemRepository[0].add(new NewsItem(id, name, title, section, date, userpic, comments_number, url));
         }
         reader.close();
         return true;

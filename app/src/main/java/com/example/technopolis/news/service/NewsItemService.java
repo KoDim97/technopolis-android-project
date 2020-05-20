@@ -6,8 +6,6 @@ import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.repo.NewsItemRepository;
 import com.example.technopolis.screens.common.download.ImageStorage;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class NewsItemService {
@@ -34,6 +32,7 @@ public class NewsItemService {
     }
 
     public List<NewsItem> updateNewsItems() {
+        cleanImageNews();
         newsItemRepo.clear();
 
         return requestNewsFromServer();
@@ -49,6 +48,7 @@ public class NewsItemService {
     }
 
     public List<NewsItem> updateSubsItems() {
+        cleanImageSubNews();
         subsItemRepo.clear();
 
         return requestSubsFromServer();
@@ -67,8 +67,7 @@ public class NewsItemService {
                             newsDto.getPublish_date(),
                             newsDto.getAvatar_url(),
                             newsDto.getComments_count(),
-                            newsDto.getPost_url(),
-                            storage
+                            newsDto.getPost_url()
                     )
             );
         }
@@ -88,8 +87,7 @@ public class NewsItemService {
                             newsDto.getPublish_date(),
                             newsDto.getAvatar_url(),
                             newsDto.getComments_count(),
-                            newsDto.getPost_url(),
-                            storage
+                            newsDto.getPost_url()
                     )
             );
         }
@@ -97,6 +95,17 @@ public class NewsItemService {
         return subsItemRepo.findAll();
     }
 
+    private void cleanImageNews(){
+        for(NewsItem item:newsItemRepo.findAll()){
+            storage.deleteImage(item.getUserpic());
+        }
+    }
+
+    private void cleanImageSubNews(){
+        for(NewsItem item:subsItemRepo.findAll()){
+            storage.deleteImage(item.getUserpic());
+        }
+    }
 //    private ImageView castLinkToBitmap(String link) {
 //        Bitmap bitmap_on_return = null;
 //

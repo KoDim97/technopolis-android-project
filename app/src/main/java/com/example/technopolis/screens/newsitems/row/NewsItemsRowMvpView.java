@@ -1,6 +1,7 @@
 package com.example.technopolis.screens.newsitems.row;
 
 import com.example.technopolis.news.model.NewsItem;
+import com.example.technopolis.screens.common.download.ImageStorage;
 import com.example.technopolis.screens.common.mvp.MvpView;
 
 public interface NewsItemsRowMvpView extends MvpView {
@@ -11,5 +12,5 @@ public interface NewsItemsRowMvpView extends MvpView {
 
     }
 
-    void bindData(NewsItem newsItem);
+    void bindData(NewsItem newsItem, ImageStorage storage);
 }
