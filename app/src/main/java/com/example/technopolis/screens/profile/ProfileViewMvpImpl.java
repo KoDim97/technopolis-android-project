@@ -223,10 +223,23 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
                 return context.getDrawable(R.drawable.ic_github_mark_24);
             case "vkontakte":
                 return context.getDrawable(R.drawable.ic_vk_logo_24);
-            default:
+            case "odnoklassniki":
                 return context.getDrawable(R.drawable.ic_ok_48);
+            case "facebook":
+                return context.getDrawable(R.drawable.ic_fb_24);
+            case "skype":
+                return context.getDrawable(R.drawable.ic_skype_24);
+            case "tamtam":
+                return context.getDrawable(R.drawable.ic_tamtam_24);
+            case "telegram":
+                return context.getDrawable(R.drawable.ic_telegram_24);
+            case "bitbucket":
+                return context.getDrawable(R.drawable.ic_bitbucket_24);
+            default:
+                return context.getDrawable(R.drawable.ic_mail_ru_agent_24);
         }
     }
+
 
     public void showExitButton() {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
