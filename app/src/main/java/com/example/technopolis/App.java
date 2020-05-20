@@ -163,7 +163,7 @@ public class App extends Application {
 
     public NewsItemService provideNewsItemService() {
         if (newsItemService == null) {
-            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi(),getStorage());
+            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi(), getStorage());
         }
         return newsItemService;
     }
@@ -192,14 +192,12 @@ public class App extends Application {
 
     public void preload() {
         ProfileService profileService = new ProfileService(provideUserProfileRepo(), provideMailApi());
-
         Thread profileThread = new Thread(() -> {
             profileService.findByUserName("");
         });
         profileThread.start();
 
         SchedulerItemService schedulerItemService = new SchedulerItemService(provideSchedulerItemRepo(), provideMailApi());
-        
         Thread schedulerThread = new Thread(schedulerItemService::items);
         schedulerThread.start();
     }
