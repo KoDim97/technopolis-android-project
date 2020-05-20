@@ -1,5 +1,6 @@
 package com.example.technopolis.news.service;
 
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.api.MailApi;
 import com.example.technopolis.api.dto.NewsDto;
 import com.example.technopolis.news.model.NewsItem;
@@ -34,9 +35,11 @@ public class NewsItemService {
     }
 
     public List<NewsItem> updateNewsItems() {
-        newsItemRepo.clear();
-
         return requestNewsFromServer();
+    }
+
+    public void clearNews() {
+        newsItemRepo.clear();
     }
 
     public List<NewsItem> getSubsItems() {
@@ -49,9 +52,11 @@ public class NewsItemService {
     }
 
     public List<NewsItem> updateSubsItems() {
-        subsItemRepo.clear();
-
         return requestSubsFromServer();
+    }
+
+    public void clearSubs() {
+        subsItemRepo.clear();
     }
 
     private List<NewsItem> requestNewsFromServer() {
