@@ -6,6 +6,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.api.MailApi;
 import com.example.technopolis.api.MailApiImpl;
+import com.example.technopolis.api.dto.ProfileDto;
 import com.example.technopolis.group.repo.GroupItemRepo;
 import com.example.technopolis.group.repo.GroupItemRepoImpl;
 import com.example.technopolis.group.service.FindGroupItemService;
@@ -13,6 +14,7 @@ import com.example.technopolis.news.repo.NewsItemRepository;
 import com.example.technopolis.news.repo.NewsItemRepositoryImpl;
 import com.example.technopolis.news.repo.NewsItemRepositoryImplSubs;
 import com.example.technopolis.news.service.NewsItemService;
+import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.profile.repo.UserProfileRepo;
 import com.example.technopolis.profile.repo.UserProfileRepoImpl;
 import com.example.technopolis.profile.service.ProfileService;
@@ -119,7 +121,7 @@ public class App extends Application {
 
     public ProfileService provideProfileService() {
         if (profileService == null) {
-            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), getApplicationContext());
+            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi());
         }
         return profileService;
     }
@@ -180,5 +182,15 @@ public class App extends Application {
 
     public void setAuthorized(boolean authorized) {
         this.authorized = authorized;
+    }
+
+    public void loadData() {
+        UserProfileRepo userProfileRepo = provideUserProfileRepo();
+        ProfileService profileService = new ProfileService(userProfileRepo, provideMailApi());
+
+        Thread thread = new Thread(() -> {
+            profileService.findByUserName("");
+        });
+        thread.start();
     }
 }
