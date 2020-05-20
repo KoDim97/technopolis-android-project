@@ -184,7 +184,7 @@ public class App extends Application {
         this.authorized = authorized;
     }
 
-    public void loadData() {
+    public void preload() {
         UserProfileRepo userProfileRepo = provideUserProfileRepo();
         ProfileService profileService = new ProfileService(userProfileRepo, provideMailApi());
 
