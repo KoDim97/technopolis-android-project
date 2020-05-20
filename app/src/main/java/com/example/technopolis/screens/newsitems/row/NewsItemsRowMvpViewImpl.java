@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.example.technopolis.R;
 import com.example.technopolis.news.model.NewsItem;
-import com.example.technopolis.screens.common.download.ImageStorage;
+import com.example.technopolis.screens.common.storage.ImageStorage;
 import com.example.technopolis.screens.common.mvp.MvpViewBase;
 
 import java.text.ParseException;

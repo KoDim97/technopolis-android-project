@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import androidx.annotation.NonNull;
 
 import com.example.technopolis.App;
-import com.example.technopolis.screens.common.download.ImageStorage;
+import com.example.technopolis.screens.common.storage.ImageStorage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

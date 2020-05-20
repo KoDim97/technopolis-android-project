@@ -4,7 +4,7 @@ import com.example.technopolis.api.MailApi;
 import com.example.technopolis.api.dto.NewsDto;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.repo.NewsItemRepository;
-import com.example.technopolis.screens.common.download.ImageStorage;
+import com.example.technopolis.screens.common.storage.ImageStorage;
 
 import java.util.List;
 

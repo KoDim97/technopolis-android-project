@@ -6,7 +6,7 @@ import com.example.technopolis.App;
 import com.example.technopolis.news.repo.NewsItemRepository;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
-import com.example.technopolis.screens.common.download.ImageStorage;
+import com.example.technopolis.screens.common.storage.ImageStorage;
 import com.example.technopolis.user.model.User;
 
 import java.io.IOException;

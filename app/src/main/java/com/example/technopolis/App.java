@@ -21,7 +21,7 @@ import com.example.technopolis.profile.service.ProfileService;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepoImpl;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
-import com.example.technopolis.screens.common.download.ImageStorage;
+import com.example.technopolis.screens.common.storage.ImageStorage;
 import com.example.technopolis.user.model.User;
 import com.example.technopolis.user.service.AuthService;
 import com.example.technopolis.util.MainThreadPoster;

@@ -1,4 +1,4 @@
-package com.example.technopolis.screens.common.download;
+package com.example.technopolis.screens.common.storage;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
