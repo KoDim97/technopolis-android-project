@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ImageStorage {
@@ -34,7 +35,7 @@ public class ImageStorage {
             if (getImage(imageUrl) != null)
                 view.setImageBitmap(getImage(imageUrl));
             else
-                images.get(imageUrl).addInQueue(view);
+                Objects.requireNonNull(images.get(imageUrl)).addInQueue(view);
         }
     }
 
@@ -42,12 +43,11 @@ public class ImageStorage {
     private Bitmap getImage(@NonNull String imageUrl) {
         if (!images.containsKey(imageUrl))
             return null;
-        return images.get(imageUrl).getImage();
+        return Objects.requireNonNull(images.get(imageUrl)).getImage();
     }
 
     public void deleteImage(@NonNull String imageUrl) {
-        if (images.containsKey(imageUrl))
-            images.remove(imageUrl);
+        images.remove(imageUrl);
     }
 
     @NonNull

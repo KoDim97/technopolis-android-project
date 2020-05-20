@@ -1,6 +1,7 @@
 package com.example.technopolis.screens.common.download;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
@@ -56,12 +57,16 @@ public class ImageTarget implements Target {
                 imageView.setImageBitmap(image);
             }
         } else {
-            if (view != null)
+            if (view != null) {
                 view.setImageResource(R.drawable.img_no_avatar);
+                final BitmapDrawable drawable = (BitmapDrawable) view.getDrawable();
+                image = drawable.getBitmap();
+            }
             while (!queue.isEmpty()) {
                 final ImageView imageView = queue.pop();
                 imageView.setImageResource(R.drawable.img_no_avatar);
             }
+
         }
     }
 
