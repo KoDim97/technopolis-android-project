@@ -232,7 +232,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             case "facebook":
                 return context.getDrawable(R.drawable.ic_fb_24);
             case "skype":
-                return context.getDrawable(R.drawable.ic_skype_24);
+                return context.getDrawable(R.drawable.ic_skype_28);
             case "tamtam":
                 return context.getDrawable(R.drawable.ic_tamtam_24);
             case "telegram":
@@ -240,8 +240,9 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             case "bitbucket":
                 return context.getDrawable(R.drawable.ic_bitbucket_24);
             default:
-                return context.getDrawable(R.drawable.ic_mail_ru_agent_24);
+                return context.getDrawable(R.drawable.ic_mail_agent_24);
         }
+
     }
 
 
