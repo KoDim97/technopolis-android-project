@@ -20,6 +20,8 @@
     <string name="accounts">Accounts</string>
 
     <string name="authFailed">Invalid login or password</string>
+    <string name="reloadRequest">Reload request</string>
+    <string name="networkError">No connection</string>
 
     <string name="schedule_icon" translatable="false">\uf041</string>
 

@@ -63,7 +63,9 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
             if (authService.CheckAuth(login, password)) {
                 activity.runOnUiThread(() -> screenNavigator.changeAuthorized(true));
             } else {
-                activity.runOnUiThread(() -> Toast.makeText(activity, apiHelper.getMessage(), Toast.LENGTH_SHORT).show());
+                activity.runOnUiThread(() -> {
+                    Toast.makeText(activity, activity.getResources().getString(apiHelper.getMessage()), Toast.LENGTH_SHORT).show();
+                });
                 screenNavigator.changeAuthorized(false);
             }
         });
