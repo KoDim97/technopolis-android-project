@@ -1,7 +1,5 @@
 package com.example.technopolis.profile.service;
 
-import android.content.Context;
-
 import com.example.technopolis.api.MailApi;
 import com.example.technopolis.api.dto.ProfileDto;
 import com.example.technopolis.profile.model.UserProfile;
@@ -10,25 +8,11 @@ import com.example.technopolis.profile.repo.UserProfileRepo;
 public class ProfileService {
     private final UserProfileRepo userProfileRepo;
     private final MailApi api;
-    private UserProfile currentUserProfile;
-
 
     public ProfileService(UserProfileRepo userProfileRepo, MailApi api) {
         this.userProfileRepo = userProfileRepo;
         this.api = api;
     }
-
-//    public UserProfile getUserProfile(String userName) {
-////        Если передали пустую строку, запрашиваем профиль активного пользователя
-//        if (userName.equals("")) {
-//            if (currentUserProfile == null) {
-//                currentUserProfile = requestFromServer("");
-//            }
-//            return currentUserProfile;
-//        } else {
-//            return findByUserName(userName);
-//        }
-//    }
 
     public UserProfile findByUserName(String userName) {
         UserProfile userProfile = userProfileRepo.findByUserName(userName);
