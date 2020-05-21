@@ -31,6 +31,7 @@ import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_ST
 public class NewsItemsFragment extends Fragment {
 
     private NewsItemsPresenter presenter;
+    private NewsItemsMvpViewImpl view;
 
     public static Fragment newInstance() {
         return new NewsItemsFragment();
@@ -52,7 +53,7 @@ public class NewsItemsFragment extends Fragment {
 
         ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
 
-        final NewsItemsMvpViewImpl view = new NewsItemsMvpViewImpl(inflater, container, getContext(),(App)getMainActivity().getApplication());
+        view = new NewsItemsMvpViewImpl(inflater, container, getContext(),(App)getMainActivity().getApplication());
         final IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(view.getRvNewsItems(),
                 OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
@@ -89,7 +90,6 @@ public class NewsItemsFragment extends Fragment {
         presenter.onStart();
     }
 
-
     @Override
     public void onStop() {
         presenter.onStop();
@@ -101,6 +101,8 @@ public class NewsItemsFragment extends Fragment {
         presenter.onDestroy();
         super.onDestroy();
     }
+
+
 
     @Nullable
     private BaseActivity getMainActivity() {
