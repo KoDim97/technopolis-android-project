@@ -3,6 +3,7 @@ package com.example.technopolis.save;
 import androidx.annotation.NonNull;
 
 import com.example.technopolis.App;
+import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.news.repo.NewsItemRepository;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
@@ -14,7 +15,7 @@ public class PauseControllerImpl implements PauseController {
     private final SaveAuthorizationController saveAuthController;
     private final App app;
 
-    public PauseControllerImpl(@NonNull App app) {
+    public PauseControllerImpl(@NonNull final App app) {
         saveAuthController = new SaveAuthorizationController(app);
         this.app = app;
     }
@@ -22,10 +23,10 @@ public class PauseControllerImpl implements PauseController {
     private void saveAuthorized() {
         saveAuthController.saveAuthorizationInfo(app.provideUser());
         try {
+            SaveImageController.serialize(app.provideImagesRepo(), app);
             SaveNewsController.serialize(app.provideNewsItemRepo(), app.provideSubsItemRepo(), app);
             SaveSchedulerController.serialize(app.provideSchedulerItemRepo(), app);
             SaveProfileController.serialize(app.provideUserProfileRepo().findByUserName(""), app);
-            //SaveImageController.serialize(app.getStorage(), app);
         } catch (IOException | NullPointerException e) {
             exit();
         }
@@ -44,6 +45,7 @@ public class PauseControllerImpl implements PauseController {
         final SchedulerItemRepo[] repoScheduler = new SchedulerItemRepo[1];
         final NewsItemRepository[] repoNews = new NewsItemRepository[2];
         final UserProfile[] repoProfile = new UserProfile[1];
+        final ImagesRepo[] repos = new ImagesRepo[1];
         if (!saveAuthController.getAuthorized()) {
             app.setAuthorized(false);
             return;
@@ -54,9 +56,10 @@ public class PauseControllerImpl implements PauseController {
         }
         boolean status;
         try {
-            status = SaveNewsController.read(repoNews, app);
+            status = SaveImageController.read(repos, app);
+            status = status && SaveNewsController.read(repoNews, app, repos[0]);
             status = status && SaveSchedulerController.read(repoScheduler, app);
-            status = status && SaveProfileController.read(repoProfile, app);
+            status = status && SaveProfileController.read(repoProfile, repos[0], app);
         } catch (IOException e) {
             app.setAuthorized(false);
             return;
@@ -66,10 +69,11 @@ public class PauseControllerImpl implements PauseController {
             return;
         }
         app.setUser(user[0]);
+        app.setImagesRepo(repos[0]);
         app.setSchedulerItemRepo(repoScheduler[0]);
         app.setSubsItemRepo(repoNews[1]);
         app.setNewsItemRepo(repoNews[0]);
-//        app.provideUserProfileRepo().add(repoProfile[0]);
+        app.provideUserProfileRepo().add(repoProfile[0]);
         app.setAuthorized(true);
     }
 

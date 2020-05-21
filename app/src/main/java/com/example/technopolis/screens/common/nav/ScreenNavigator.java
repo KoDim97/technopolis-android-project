@@ -77,6 +77,9 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         if (!authorized && !app.isAuthorized()) {
             return;
         }
+        if (!authorized) {
+            activity.getRootViewController().setNavElem(0);
+        }
         app.setAuthorized(authorized);
         fragNavController.initialize(FragNavController.TAB1, null);
     }

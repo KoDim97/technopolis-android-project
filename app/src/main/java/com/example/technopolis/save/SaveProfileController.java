@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.example.technopolis.App;
+import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.profile.model.UserAccount;
 import com.example.technopolis.profile.model.UserContact;
 import com.example.technopolis.profile.model.UserGroup;
@@ -20,7 +21,7 @@ import java.util.List;
 class SaveProfileController {
     private final static String fileName = "ProfileRepoDisk";
 
-    static void serialize(@NonNull UserProfile profile, @NonNull App app) throws IOException {
+    static void serialize(@NonNull final UserProfile profile, @NonNull final App app) throws IOException {
         final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         writer.write(String.valueOf(profile.getId()).getBytes().length);
         writer.write(String.valueOf(profile.getId()).getBytes());
@@ -40,8 +41,8 @@ class SaveProfileController {
         writer.write(profile.getGender().getBytes().length);
         writer.write(profile.getGender().getBytes());
 
-        //writer.write(profile.getAvatarUrl().getBytes().length);
-        //writer.write(profile.getAvatarUrl().getBytes());
+        writer.write(profile.getAvatarUrl().getBytes().length);
+        writer.write(profile.getAvatarUrl().getBytes());
 
         writer.write(profile.getMainGroup().getBytes().length);
         writer.write(profile.getMainGroup().getBytes());
@@ -85,7 +86,7 @@ class SaveProfileController {
         writer.close();
     }
 
-    static boolean read(@NonNull UserProfile[] userProfile, @NonNull App app) throws IOException {
+    static boolean read(@NonNull final UserProfile[] userProfile, @NonNull final ImagesRepo imagesRepo, @NonNull final App app) throws IOException {
         FileInputStream reader;
         try {
             reader = app.getApplicationContext().openFileInput(fileName);
@@ -216,7 +217,7 @@ class SaveProfileController {
             accounts.add(new UserAccount(nameAccount, valueAccount));
         }
 
-       // userProfile[0] = new UserProfile(id, userName, project_id, projectName, fullName, gender, avatarUrl, mainGroup, birthDate, about, joinDate, lastSeen, contacts, groups, accounts);
+        userProfile[0] = new UserProfile(id, userName, project_id, projectName, fullName, gender, imagesRepo.findById(avatarUrl), avatarUrl, mainGroup, birthDate, about, joinDate, lastSeen, contacts, groups, accounts);
 
         reader.close();
         return true;

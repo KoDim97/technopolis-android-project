@@ -1,34 +1,36 @@
 package com.example.technopolis.save;
-/*
+
 import android.content.Context;
-        import android.graphics.Bitmap;
-        import android.graphics.BitmapFactory;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
-        import androidx.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-        import com.example.technopolis.App;
-        import com.example.technopolis.screens.common.storage.ImageStorage;
+import com.example.technopolis.App;
+import com.example.technopolis.images.model.ImageItem;
+import com.example.technopolis.images.repo.ImagesRepo;
+import com.example.technopolis.images.repo.ImagesRepoImpl;
 
-        import java.io.FileInputStream;
-        import java.io.FileNotFoundException;
-        import java.io.FileOutputStream;
-        import java.io.IOException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class SaveImageController {
     private static final String fileNameImage = "Image";
     private static final String fileName = "ImageRepoDisk";
 
-    static void serialize(@NonNull ImageStorage storage, @NonNull App app) throws IOException {
+    static void serialize(@NonNull ImagesRepo imagesRepo, @NonNull App app) throws IOException {
         final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         int i = 0;
-        writer.write(storage.getImages().size());
-        for (String key : storage.getImages().keySet()) {
-            writer.write(key.getBytes().length);
-            writer.write(key.getBytes());
+        writer.write(imagesRepo.findAll().size());
+        for (ImageItem item : imagesRepo.findAll()) {
+            writer.write(item.getImageUrl().getBytes().length);
+            writer.write(item.getImageUrl().getBytes());
             writer.write(i);
             final String name = fileNameImage + i;
             final FileOutputStream writerImage = app.getApplicationContext().openFileOutput(name, Context.MODE_PRIVATE);
-            final Bitmap bitmap = storage.getImages().get(key).getImage();
+            final Bitmap bitmap = item.getImage();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, writerImage);
             writerImage.close();
             i++;
@@ -36,9 +38,9 @@ public class SaveImageController {
         writer.close();
     }
 
-    static boolean read(@NonNull ImageStorage[] storage, App app) throws IOException {
+    static boolean read(@NonNull ImagesRepo[] imagesRepo, App app) throws IOException {
         FileInputStream reader;
-        ImageStorage imageStorage = new ImageStorage();
+        ImagesRepo imageStorage = new ImagesRepoImpl();
         try {
             reader = app.getApplicationContext().openFileInput(fileName);
         } catch (FileNotFoundException e) {
@@ -62,11 +64,10 @@ public class SaveImageController {
             }
             final Bitmap bitmap = BitmapFactory.decodeStream(readerImage);
             readerImage.close();
-            imageStorage.setImage(bitmap, imageUrl);
+            imageStorage.add(imageUrl, bitmap);
         }
         reader.close();
-        storage[0] = imageStorage;
+        imagesRepo[0] = imageStorage;
         return true;
     }
 }
-*/

@@ -14,7 +14,7 @@ public interface ImagesRepo {
     @NonNull
     List<ImageItem> findAll();
 
-    void add(final @NonNull String imageUrl, final @NonNull Bitmap bitmap);
+    void add(final @NonNull String imageUrl, final Bitmap bitmap);
 
     @Nullable
     Bitmap findById(final @NonNull String imageUrl);

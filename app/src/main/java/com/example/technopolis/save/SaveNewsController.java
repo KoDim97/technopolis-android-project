@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 
 import com.example.technopolis.App;
+import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.repo.NewsItemRepository;
 import com.example.technopolis.news.repo.NewsItemRepositoryImpl;
@@ -19,30 +20,30 @@ class SaveNewsController {
     private final static String fileName = "NewsRepoDisk";
     private final static String fileNameSub = "NewsSubRepoDisk";
 
-    static void serialize(@NonNull NewsItemRepository newsItemRepository, @NonNull NewsItemRepository newsSubItemRepository, @NonNull App app) throws IOException {
+    static void serialize(@NonNull final NewsItemRepository newsItemRepository, @NonNull final NewsItemRepository newsSubItemRepository, @NonNull final App app) throws IOException {
         serializeNews(newsItemRepository, app, fileName);
         serializeNews(newsSubItemRepository, app, fileNameSub);
     }
 
     //чтение репозитория и основных новостей и подписок, поэтому размер 2
-    static boolean read(@NonNull NewsItemRepository[] newsItemRepositories, @NonNull App app) throws IOException {
+    static boolean read(@NonNull final NewsItemRepository[] newsItemRepositories, @NonNull final App app, @NonNull ImagesRepo repo) throws IOException {
         final NewsItemRepository[] newsItemRepositoriesBuf = new NewsItemRepository[1];
         if (newsItemRepositories.length != 2)
             return false;
         newsItemRepositoriesBuf[0] = new NewsItemRepositoryImpl();
-        if (!readNews(newsItemRepositoriesBuf, app, fileName)) {
+        if (!readNews(newsItemRepositoriesBuf, app, fileName, repo)) {
             return false;
         }
         newsItemRepositories[0] = newsItemRepositoriesBuf[0];
         newsItemRepositoriesBuf[0] = new NewsItemRepositoryImplSubs();
-        if (!readNews(newsItemRepositoriesBuf, app, fileNameSub)) {
+        if (!readNews(newsItemRepositoriesBuf, app, fileNameSub, repo)) {
             return false;
         }
         newsItemRepositories[1] = newsItemRepositoriesBuf[0];
         return true;
     }
 
-    private static void serializeNews(@NonNull NewsItemRepository newsItemRepository, @NonNull App app, @NonNull String fileName) throws IOException {
+    private static void serializeNews(@NonNull final NewsItemRepository newsItemRepository, @NonNull final App app, @NonNull final String fileName) throws IOException {
         final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         writer.write(newsItemRepository.findAll().size());
         for (NewsItem item : newsItemRepository.findAll()) {
@@ -73,7 +74,7 @@ class SaveNewsController {
         writer.close();
     }
 
-    private static boolean readNews(@NonNull NewsItemRepository[] newsItemRepository, @NonNull App app, @NonNull String fileName) throws IOException {
+    private static boolean readNews(@NonNull final NewsItemRepository[] newsItemRepository, @NonNull final App app, @NonNull final String fileName, @NonNull ImagesRepo repo) throws IOException {
         FileInputStream reader;
         try {
             reader = app.getApplicationContext().openFileInput(fileName);
@@ -130,7 +131,7 @@ class SaveNewsController {
                 return false;
             final String url = new String(buf);
 
-            //newsItemRepository[0].add(new NewsItem(id, name, title, section, date, userpic, comments_number, url));
+            newsItemRepository[0].add(new NewsItem(id, name, title, section, date, userpic, comments_number, url, repo.findById(userpic)));
         }
         reader.close();
         return true;
