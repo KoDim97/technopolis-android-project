@@ -28,11 +28,9 @@ public class FindGroupItemService {
         this.imagesRepo = imagesRepo;
     }
 
-    public void ReloadAuthToken(){
+    public void reloadAuthToken(){
         User user = api.getUser();
         AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
-        //todo
-        //invalid logpass
         user.setAuth_token(authDto.getAuth_token());
     }
 
