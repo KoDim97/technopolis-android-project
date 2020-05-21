@@ -30,7 +30,7 @@ public class ImagesRepoImpl implements ImagesRepo {
     }
 
     @Override
-    public void add(final @NonNull String imageUrl, final @NonNull Bitmap bitmap) {
+    public void add(final @NonNull String imageUrl, final Bitmap bitmap) {
         storage.put(imageUrl, bitmap);
     }
 
