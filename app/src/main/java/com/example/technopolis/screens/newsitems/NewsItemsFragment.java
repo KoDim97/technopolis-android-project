@@ -42,8 +42,9 @@ public class NewsItemsFragment extends Fragment {
 
         presenter = new NewsItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
                 getFindNewsItemService(), getMainThreadPoster(), getContext(), getApiHelper());
-        presenter.newsItems();
         presenter.subsItems();
+        presenter.newsItems();
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
