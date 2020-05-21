@@ -84,48 +84,64 @@ class SaveNewsController {
         int size = reader.read();
         for (int i = 0; i < size; i++) {
             int sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             byte[] buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final long id = Long.parseLong(new String(buf));
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String name = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String title = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String section = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String date = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String userpic = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String comments_number = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;

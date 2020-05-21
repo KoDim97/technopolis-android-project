@@ -38,7 +38,7 @@ class SaveImageController {
         writer.close();
     }
 
-    static boolean read(@NonNull final ImagesRepo[] imagesRepo,@NonNull final App app) throws IOException {
+    static boolean read(@NonNull final ImagesRepo[] imagesRepo, @NonNull final App app) throws IOException {
         FileInputStream reader;
         ImagesRepo imageStorage = new ImagesRepoImpl();
         try {
@@ -49,6 +49,8 @@ class SaveImageController {
         int size = reader.read();
         for (int i = 0; i < size; i++) {
             final int sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             final byte[] buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
