@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.Toast;
 
+import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.news.model.NewsItem;
@@ -144,7 +145,10 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
     @Override
     public void onNewsItemClicked(String url) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        context.startActivity(browserIntent);
+        App app = (App) activity.getApplication();
+        if (app.isAuthorized()) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            context.startActivity(browserIntent);
+        }
     }
 }

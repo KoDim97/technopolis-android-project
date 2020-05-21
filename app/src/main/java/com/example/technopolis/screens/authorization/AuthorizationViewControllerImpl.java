@@ -59,19 +59,21 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
 
     @Override
     public void enterBtnClick(@NonNull final String login, @NonNull final String password) {
-        final Thread thread = new Thread(() -> {
-            if (authService.CheckAuth(login, password)) {
-                activity.runOnUiThread(() -> screenNavigator.changeAuthorized(true));
-            } else {
-                Integer message = apiHelper.getMessage();
-                if (message != null){
-                    activity.runOnUiThread(() -> {
-                        Toast.makeText(activity, apiHelper.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
+        if(!app.isAuthorized()) {
+            final Thread thread = new Thread(() -> {
+                if (authService.CheckAuth(login, password)) {
+                    activity.runOnUiThread(() -> screenNavigator.changeAuthorized(true));
+                } else {
+                    Integer message = apiHelper.getMessage();
+                    if (message != null) {
+                        activity.runOnUiThread(() -> {
+                            Toast.makeText(activity, apiHelper.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+                    }
+                    screenNavigator.changeAuthorized(false);
                 }
-                screenNavigator.changeAuthorized(false);
-            }
-        });
-        thread.start();
+            });
+            thread.start();
+        }
     }
 }
