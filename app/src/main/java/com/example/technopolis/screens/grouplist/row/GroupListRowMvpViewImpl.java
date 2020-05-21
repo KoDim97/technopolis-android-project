@@ -37,21 +37,11 @@ public class GroupListRowMvpViewImpl extends MvpViewBase
     public void bindData(Student student) {
         this.student = student;
         tvName.setText(student.getFullname());
-        String url = student.getAvatarUrl();
-        if (!url.contains("https")) {
-            url = url.replace("http", "https");
+        if(student.getAvatar()!=null){
+            ivAvatar.setImageBitmap(student.getAvatar());
+        }else {
+            ivAvatar.setImageResource(R.drawable.img_no_avatar);
         }
-        Picasso.get().load(url).fit().into(ivAvatar, new Callback() {
-            @Override
-            public void onSuccess() {
-
-            }
-
-            @Override
-            public void onError(Exception e) {
-                ivAvatar.setImageResource(R.drawable.img_no_avatar);
-            }
-        });
     }
 
     public void onStudentClicked() {

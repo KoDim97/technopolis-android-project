@@ -11,6 +11,8 @@ import com.example.technopolis.api.MailApiImpl;
 import com.example.technopolis.group.repo.GroupItemRepo;
 import com.example.technopolis.group.repo.GroupItemRepoImpl;
 import com.example.technopolis.group.service.FindGroupItemService;
+import com.example.technopolis.images.repo.ImagesRepo;
+import com.example.technopolis.images.repo.ImagesRepoImpl;
 import com.example.technopolis.news.repo.NewsItemRepository;
 import com.example.technopolis.news.repo.NewsItemRepositoryImpl;
 import com.example.technopolis.news.repo.NewsItemRepositoryImplSubs;
@@ -48,25 +50,38 @@ public class App extends Application {
     private FindGroupItemService findGroupItemService;
     private GroupItemRepo groupItemRepo;
 
-    public void setUser(@NonNull User user) {
+    private ImagesRepo imagesRepo;
+
+    public void setImagesRepo(@NonNull final ImagesRepo imagesRepo) {
+        this.imagesRepo = imagesRepo;
+    }
+
+    public void setUser(@NonNull final User user) {
         this.user = user;
     }
 
-    public void setSchedulerItemRepo(@NonNull SchedulerItemRepo repo) {
+    public void setSchedulerItemRepo(@NonNull final SchedulerItemRepo repo) {
         this.schedulerItemRepo = repo;
     }
 
-    public void setNewsItemRepo(@NonNull NewsItemRepository newsItemRepo) {
+    public void setNewsItemRepo(@NonNull final NewsItemRepository newsItemRepo) {
         this.newsItemRepo = newsItemRepo;
     }
 
-    public void setSubsItemRepo(@NonNull NewsItemRepository subsItemRepo) {
+    public void setSubsItemRepo(@NonNull final NewsItemRepository subsItemRepo) {
         this.subsItemRepo = subsItemRepo;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    @NonNull
+    public ImagesRepo provideImagesRepo() {
+        if (imagesRepo == null)
+            imagesRepo = new ImagesRepoImpl();
+        return imagesRepo;
     }
 
     public MailApi provideMailApi() {
@@ -113,7 +128,7 @@ public class App extends Application {
 
     public ProfileService provideProfileService() {
         if (profileService == null) {
-            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi());
+            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), provideImagesRepo());
         }
         return profileService;
     }
@@ -149,7 +164,7 @@ public class App extends Application {
 
     public NewsItemService provideNewsItemService() {
         if (newsItemService == null) {
-            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi());
+            newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi(), provideImagesRepo());
         }
         return newsItemService;
     }
@@ -163,7 +178,7 @@ public class App extends Application {
 
     public FindGroupItemService provideFindGroupItemService() {
         if (findGroupItemService == null) {
-            findGroupItemService = new FindGroupItemService(provideGroupItemRepo(), provideMailApi());
+            findGroupItemService = new FindGroupItemService(provideGroupItemRepo(), provideMailApi(), provideImagesRepo());
         }
         return findGroupItemService;
     }
@@ -177,11 +192,13 @@ public class App extends Application {
     }
 
     public void preload() {
-        ProfileService profileService = new ProfileService(provideUserProfileRepo(), provideMailApi());
+        ProfileService profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), provideImagesRepo());
         Thread profileThread = new Thread(() -> {
             profileService.findByUserName("");
         });
         profileThread.start();
+        NewsItemService newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi(), provideImagesRepo());
+        new Thread(newsItemService::getSubsItems).start();
 
         SchedulerItemService schedulerItemService = new SchedulerItemService(provideSchedulerItemRepo(), provideMailApi());
         Thread schedulerThread = new Thread(schedulerItemService::items);

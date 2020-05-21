@@ -69,7 +69,7 @@ public class PauseControllerImpl implements PauseController {
         app.setSchedulerItemRepo(repoScheduler[0]);
         app.setSubsItemRepo(repoNews[1]);
         app.setNewsItemRepo(repoNews[0]);
-        app.provideUserProfileRepo().add(repoProfile[0]);
+//        app.provideUserProfileRepo().add(repoProfile[0]);
         app.setAuthorized(true);
     }
 
