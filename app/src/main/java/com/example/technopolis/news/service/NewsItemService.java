@@ -1,12 +1,15 @@
 package com.example.technopolis.news.service;
 
+import android.graphics.Bitmap;
+
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.api.MailApi;
 import com.example.technopolis.api.dto.NewsDto;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.repo.NewsItemRepository;
-import com.example.technopolis.screens.common.download.ImageStorage;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.util.List;
 
 public class NewsItemService {
@@ -14,13 +17,11 @@ public class NewsItemService {
     private final NewsItemRepository newsItemRepo;
     private final NewsItemRepository subsItemRepo;
     private final MailApi api;
-    private final ImageStorage storage;
 
-    public NewsItemService(NewsItemRepository newsItemRepo, NewsItemRepository subsItemRepo, MailApi api, ImageStorage storage) {
+    public NewsItemService(NewsItemRepository newsItemRepo, NewsItemRepository subsItemRepo, MailApi api) {
         this.newsItemRepo = newsItemRepo;
         this.subsItemRepo = subsItemRepo;
         this.api = api;
-        this.storage = storage;
     }
 
     public List<NewsItem> getNewsItems() {
@@ -61,6 +62,12 @@ public class NewsItemService {
         List<NewsDto> newsDtoList = api.requestMainNewsDto(Integer.MAX_VALUE, 0);
 
         for (final NewsDto newsDto : newsDtoList) {
+            Bitmap bitmap = null;
+            try {
+                bitmap = Picasso.get().load(newsDto.getAvatar_url()).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             newsItemRepo.add(
                     new NewsItem(
                             newsDto.getId(),
@@ -70,7 +77,8 @@ public class NewsItemService {
                             newsDto.getPublish_date(),
                             newsDto.getAvatar_url(),
                             newsDto.getComments_count(),
-                            newsDto.getPost_url()
+                            newsDto.getPost_url(),
+                            bitmap
                     )
             );
         }
@@ -81,6 +89,12 @@ public class NewsItemService {
     private List<NewsItem> requestSubsFromServer() {
         List<NewsDto> newsDtoList = api.requestSubscribedNewsDto(Integer.MAX_VALUE, 0);
         for (final NewsDto newsDto : newsDtoList) {
+            Bitmap bitmap = null;
+            try {
+                bitmap = Picasso.get().load(newsDto.getAvatar_url()).get();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             subsItemRepo.add(
                     new NewsItem(
                             newsDto.getId(),
@@ -90,7 +104,8 @@ public class NewsItemService {
                             newsDto.getPublish_date(),
                             newsDto.getAvatar_url(),
                             newsDto.getComments_count(),
-                            newsDto.getPost_url()
+                            newsDto.getPost_url(),
+                            bitmap
                     )
             );
         }
@@ -98,17 +113,7 @@ public class NewsItemService {
         return subsItemRepo.findAll();
     }
 
-    private void cleanImageNews(){
-        for(NewsItem item:newsItemRepo.findAll()){
-            storage.deleteImage(item.getUserpic());
-        }
-    }
 
-    private void cleanImageSubNews(){
-        for(NewsItem item:subsItemRepo.findAll()){
-            storage.deleteImage(item.getUserpic());
-        }
-    }
 //    private ImageView castLinkToBitmap(String link) {
 //        Bitmap bitmap_on_return = null;
 //

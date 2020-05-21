@@ -1,18 +1,18 @@
 package com.example.technopolis.save;
-
+/*
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+        import android.graphics.Bitmap;
+        import android.graphics.BitmapFactory;
 
-import androidx.annotation.NonNull;
+        import androidx.annotation.NonNull;
 
-import com.example.technopolis.App;
-import com.example.technopolis.screens.common.download.ImageStorage;
+        import com.example.technopolis.App;
+        import com.example.technopolis.screens.common.storage.ImageStorage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+        import java.io.FileInputStream;
+        import java.io.FileNotFoundException;
+        import java.io.FileOutputStream;
+        import java.io.IOException;
 
 public class SaveImageController {
     private static final String fileNameImage = "Image";
@@ -69,3 +69,4 @@ public class SaveImageController {
         return true;
     }
 }
+*/

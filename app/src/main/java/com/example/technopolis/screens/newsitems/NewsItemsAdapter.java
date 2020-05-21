@@ -50,7 +50,7 @@ public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.News
     @Override
     public void onBindViewHolder(@NonNull NewsItemViewHolder holder, int position) {
         NewsItem newsItem = items.get(position);
-        holder.newsItemsRowMvpView.bindData(newsItem, app.getStorage());
+        holder.newsItemsRowMvpView.bindData(newsItem);
     }
 
     @Override
