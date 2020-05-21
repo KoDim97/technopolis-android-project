@@ -38,6 +38,7 @@ public class ImageTarget implements Target {
 
     @Override
     public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+        checkView();
         if (view != null)
             view.setImageBitmap(bitmap);
         while (!queue.isEmpty()) {
@@ -49,24 +50,11 @@ public class ImageTarget implements Target {
 
     @Override
     public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+        checkView();
         if (image != null) {
-            if (view != null)
-                view.setImageBitmap(image);
-            while (!queue.isEmpty()) {
-                final ImageView imageView = queue.pop();
-                imageView.setImageBitmap(image);
-            }
+            loadImage();
         } else {
-            if (view != null) {
-                view.setImageResource(R.drawable.img_no_avatar);
-                final BitmapDrawable drawable = (BitmapDrawable) view.getDrawable();
-                image = drawable.getBitmap();
-            }
-            while (!queue.isEmpty()) {
-                final ImageView imageView = queue.pop();
-                imageView.setImageResource(R.drawable.img_no_avatar);
-            }
-
+            loadDefaultImage();
         }
     }
 
@@ -77,6 +65,33 @@ public class ImageTarget implements Target {
     @Nullable
     public Bitmap getImage() {
         return image;
+    }
+
+
+    private void loadImage() {
+        if (view != null)
+            view.setImageBitmap(image);
+        while (!queue.isEmpty()) {
+            final ImageView imageView = queue.pop();
+            imageView.setImageBitmap(image);
+        }
+    }
+
+    private void loadDefaultImage() {
+        if (view != null) {
+            view.setImageResource(R.drawable.img_no_avatar);
+            final BitmapDrawable drawable = (BitmapDrawable) view.getDrawable();
+            image = drawable.getBitmap();
+        }
+        while (!queue.isEmpty()) {
+            final ImageView imageView = queue.pop();
+            imageView.setImageResource(R.drawable.img_no_avatar);
+        }
+    }
+
+    private void checkView() {
+        if (view == null && !queue.isEmpty())
+            view = queue.pop();
     }
 }
 
