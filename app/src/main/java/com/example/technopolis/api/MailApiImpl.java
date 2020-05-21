@@ -1,6 +1,5 @@
 package com.example.technopolis.api;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -44,6 +43,8 @@ public class MailApiImpl implements MailApi {
     private User user;
     private ApiHelper apiHelper;
     private String projectUrl;
+    private static final String TAG = "TAG";
+    private static boolean flag = false;
 
     public MailApiImpl(RequestQueue queue, User user, ApiHelper apiHelper) {
         this.queue = queue;
@@ -100,6 +101,7 @@ public class MailApiImpl implements MailApi {
             }
         });
 
+        queue.cancelAll(TAG);
         queue.add(request);
 
         try {
@@ -124,6 +126,11 @@ public class MailApiImpl implements MailApi {
             //unknown error
         }
         return null;
+    }
+
+    @Override
+    public User getUser() {
+        return user;
     }
 
     @Override
@@ -221,21 +228,19 @@ public class MailApiImpl implements MailApi {
     public GroupDto requestGroupDto(long id) {
         final String url = projectUrl + "/api/mobile/v1/groups/" + id;
 
-        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
+        if (!flag){
+            user.setAuth_token("gg");
+            flag = true;
+        }
 
+        RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, error -> {
             if (error.networkResponse == null) {
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
             } else {
                 if (error.networkResponse.statusCode == 401) {
-                    AuthDto authDto = requestAuthDto(user.getLogin(), user.getPassword());
-                    if (authDto != null) {
-                        user.setAuth_token(authDto.getAuth_token());
-                        apiHelper.setMessage(RELOAD_REQUEST);
-                    } else {
-                        apiHelper.setMessage(INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE);
-                    }
+                    apiHelper.setMessage(RELOAD_REQUEST);
                 }
             }
         }) {
@@ -244,6 +249,7 @@ public class MailApiImpl implements MailApi {
                 return getAuthHeader();
             }
         };
+        request.setTag(TAG);
         queue.add(request);
 
         try {
@@ -264,7 +270,6 @@ public class MailApiImpl implements MailApi {
             return new GroupDto(id, name, list);
         } catch (InterruptedException | TimeoutException e) {
             System.out.println("Time out");
-            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             System.out.println("Update token");
         } catch (JSONException e) {

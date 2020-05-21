@@ -3,12 +3,14 @@ package com.example.technopolis.group.service;
 import android.graphics.Bitmap;
 
 import com.example.technopolis.api.MailApi;
+import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.api.dto.GroupDto;
 import com.example.technopolis.api.dto.StudentDto;
 import com.example.technopolis.group.model.GroupItem;
 import com.example.technopolis.group.model.Student;
 import com.example.technopolis.group.repo.GroupItemRepo;
 import com.example.technopolis.images.repo.ImagesRepo;
+import com.example.technopolis.user.model.User;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -24,6 +26,14 @@ public class FindGroupItemService {
         this.groupItemRepo = groupItemRepo;
         this.api = api;
         this.imagesRepo = imagesRepo;
+    }
+
+    public void ReloadAuthToken(){
+        User user = api.getUser();
+        AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
+        //todo
+        //invalid logpass
+        user.setAuth_token(authDto.getAuth_token());
     }
 
     public GroupItem findById(long id) {
