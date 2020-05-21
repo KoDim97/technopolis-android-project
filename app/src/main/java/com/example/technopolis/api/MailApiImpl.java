@@ -6,6 +6,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.RequestFuture;
+import com.example.technopolis.R;
 import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.api.dto.GroupDto;
 import com.example.technopolis.api.dto.NewsDto;
@@ -35,13 +36,13 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 public class MailApiImpl implements MailApi {
-    private static final String NETWORK_ERROR_MESSAGE = "Нет соединения";
-    private static final String INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE = "Неверный логин или пароль";
+    private static final int NETWORK_ERROR_MESSAGE = R.string.networkError;
+    private static final int INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE = R.string.authFailed;
+    private static final int RELOAD_REQUEST = R.string.reloadRequest;
 
     private RequestQueue queue;
     private User user;
     private ApiHelper apiHelper;
-
     private String projectUrl;
 
     public MailApiImpl(RequestQueue queue, User user, ApiHelper apiHelper) {
@@ -55,6 +56,13 @@ public class MailApiImpl implements MailApi {
     @Override
     public void setProjectUrl(String string) {
         projectUrl = string;
+    }
+
+
+    private Map<String, String> getAuthHeader() {
+        Map<String, String> params = new HashMap<>();
+        params.put("Authorization", "Token " + user.getAuth_token());
+        return params;
     }
 
     @Override
@@ -128,9 +136,7 @@ public class MailApiImpl implements MailApi {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, requestFuture) {
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + user.getAuth_token());
-                return params;
+                return getAuthHeader();
             }
         };
         queue.add(request);
@@ -213,15 +219,29 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public GroupDto requestGroupDto(long id) {
-        final String url = "https://polis.mail.ru/api/mobile/v1/groups/" + String.valueOf(id);
+        final String url = projectUrl + "/api/mobile/v1/groups/" + id;
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, requestFuture) {
+
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, error -> {
+            if (error.networkResponse == null) {
+                apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            } else {
+                if (error.networkResponse.statusCode == 401) {
+                    AuthDto authDto = requestAuthDto(user.getLogin(), user.getPassword());
+                    if (authDto != null) {
+                        user.setAuth_token(authDto.getAuth_token());
+                        apiHelper.setMessage(RELOAD_REQUEST);
+                    } else {
+                        apiHelper.setMessage(INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE);
+                    }
+                }
+            }
+        }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Token " + user.getAuth_token());
-                return params;
+            public Map<String, String> getHeaders() {
+                return getAuthHeader();
             }
         };
         queue.add(request);
@@ -244,6 +264,7 @@ public class MailApiImpl implements MailApi {
             return new GroupDto(id, name, list);
         } catch (InterruptedException | TimeoutException e) {
             System.out.println("Time out");
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             System.out.println("Update token");
         } catch (JSONException e) {
@@ -256,7 +277,7 @@ public class MailApiImpl implements MailApi {
     @Override
     public List<NewsDto> requestMainNewsDto(Integer limit, Integer offset) {
         final List<NewsDto> newsDtoList = new ArrayList<>();
-        final StringBuilder url = new StringBuilder("https://polis.mail.ru/api/mobile/v1/topics/main/?");
+        final StringBuilder url = new StringBuilder(projectUrl).append("/api/mobile/v1/topics/main/?");
         url.append("limit=").append(limit).append("&offset=").append(offset);
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(
@@ -264,12 +285,16 @@ public class MailApiImpl implements MailApi {
                 url.toString(),
                 null,
                 future,
-                future) {
+                error -> {
+                    if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
+                        //Надо обновить токен!!!
+                        //updateToken
+                        //reload request
+//                requestSchedulerItems();
+                    }}) {
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Token " + user.getAuth_token());
-                return headers;
+                return getAuthHeader();
             }
         };
         queue.add(jsonArrayRequest);
@@ -313,7 +338,7 @@ public class MailApiImpl implements MailApi {
     @Override
     public List<NewsDto> requestSubscribedNewsDto(Integer limit, Integer offset) {
         final List<NewsDto> newsDtoList = new ArrayList<>();
-        final StringBuilder url = new StringBuilder("https://polis.mail.ru/api/mobile/v1/topics/subscribed/?");
+        final StringBuilder url = new StringBuilder(projectUrl).append("/api/mobile/v1/topics/subscribed/?");
         url.append("limit=").append(limit).append("&offset=").append(offset);
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(
@@ -321,17 +346,21 @@ public class MailApiImpl implements MailApi {
                 url.toString(),
                 null,
                 future,
-                future) {
+                error -> {
+                    if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
+                        //Надо обновить токен!!!
+                        //updateToken
+                        //reload request
+//                requestSchedulerItems();
+                    }}) {
             @Override
             public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "Token " + user.getAuth_token());
-                return headers;
+                return getAuthHeader();
             }
         };
         queue.add(jsonArrayRequest);
         try {
-            JSONObject response = future.get();
+            JSONObject response = future.get(1, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject one_new = results.getJSONObject(i);
@@ -357,20 +386,23 @@ public class MailApiImpl implements MailApi {
             }
 
 
-        } catch (JSONException | ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | TimeoutException e) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+        } catch (ExecutionException e) {
+            System.out.println("Update token");
+        } catch (JSONException e) {
+            System.out.println("Json creating failed");
         }
         return newsDtoList;
     }
+
+
 
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
 
         ArrayList<SchedulerItemDto> items = new ArrayList<>();
         final String url = "https://polis.mail.ru/api/mobile/v1/schedule/";
-
-        Map<String, String> mHeaders = new HashMap<>();
-        mHeaders.put("Authorization", "Token " + user.getAuth_token());
 
         RequestFuture<JSONArray> requestFuture = RequestFuture.newFuture();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, new JSONArray(), requestFuture, error -> {
@@ -383,7 +415,7 @@ public class MailApiImpl implements MailApi {
         }) {
             @Override
             public Map<String, String> getHeaders() {
-                return mHeaders;
+                return getAuthHeader();
             }
         };
         queue.add(jsonArrayRequest);
@@ -428,9 +460,6 @@ public class MailApiImpl implements MailApi {
         final String url = "https://polis.mail.ru/api/mobile/v1/schedule/" + id + "/check/";
         JSONObject json = new JSONObject();
 
-        Map<String, String> mHeaders = new HashMap<>();
-        mHeaders.put("Authorization", "Token " + user.getAuth_token());
-
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, error -> {
             if (error.networkResponse == null) {
@@ -445,7 +474,7 @@ public class MailApiImpl implements MailApi {
         }) {
             @Override
             public Map<String, String> getHeaders() {
-                return mHeaders;
+                return getAuthHeader();
             }
         };
         queue.add(request);

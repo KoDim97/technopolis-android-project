@@ -8,6 +8,7 @@ import com.example.technopolis.api.dto.SchedulerItemCheckInDto;
 import com.example.technopolis.api.dto.SchedulerItemDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MailApi {
 
@@ -27,6 +28,5 @@ public interface MailApi {
     List<NewsDto> requestMainNewsDto(Integer limit, Integer offset);
 
     List<NewsDto> requestSubscribedNewsDto(Integer limit, Integer offset);
-
 
 }

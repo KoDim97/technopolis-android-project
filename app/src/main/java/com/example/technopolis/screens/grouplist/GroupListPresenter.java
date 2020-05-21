@@ -1,5 +1,11 @@
 package com.example.technopolis.screens.grouplist;
 
+import android.app.Activity;
+import android.widget.Toast;
+
+import com.example.technopolis.BaseActivity;
+import com.example.technopolis.R;
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.group.model.GroupItem;
 import com.example.technopolis.group.model.Student;
 import com.example.technopolis.group.service.FindGroupItemService;
@@ -19,17 +25,21 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     private final BackPressDispatcher backPressDispatcher;
     private final FindGroupItemService findGroupItemService;
     private final ThreadPoster mainThreadPoster;
+    private final ApiHelper apiHelper;
+    private final BaseActivity activity;
 
     private GroupListMvpView view;
     private Thread thread;
 
-    public GroupListPresenter(long id, ScreenNavigator screenNavigator, BackPressDispatcher backPressDispatcher,
-                              FindGroupItemService findGroupItemService, ThreadPoster mainThreadPoster) {
+    public GroupListPresenter(long id, ScreenNavigator screenNavigator, BaseActivity activity,
+                              FindGroupItemService findGroupItemService, ThreadPoster mainThreadPoster, ApiHelper apiHelper) {
         this.id = id;
         this.screenNavigator = screenNavigator;
-        this.backPressDispatcher = backPressDispatcher;
+        this.backPressDispatcher = activity;
         this.findGroupItemService = findGroupItemService;
         this.mainThreadPoster = mainThreadPoster;
+        this.activity = activity;
+        this.apiHelper = apiHelper;
     }
 
     @Override
@@ -42,8 +52,21 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     private void loadItems() {
         thread = new Thread(() -> {
             GroupItem groupItem = findGroupItemService.findById(id);
+            Integer message = apiHelper.getMessage();
+            if (message != null) {
+                if (message == R.string.reloadRequest){
+                    groupItem = findGroupItemService.findById(id);
+                }else if(message == R.string.authFailed){
+                    activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
+                }else {
+                    activity.runOnUiThread(() -> {
+                        Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
             if (!thread.isInterrupted()) {
-                mainThreadPoster.post(() -> onItemsLoaded(groupItem));
+                GroupItem finalGroupItem = groupItem;
+                mainThreadPoster.post(() -> onItemsLoaded(finalGroupItem));
             }
         });
         thread.start();
@@ -52,7 +75,9 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     private void onItemsLoaded(GroupItem groupItem) {
         // prepare to show
         view.hideProgress();
-        view.bindData(groupItem);
+        if (groupItem != null){
+            view.bindData(groupItem);
+        }
     }
 
     @Override

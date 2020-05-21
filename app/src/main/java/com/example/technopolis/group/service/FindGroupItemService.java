@@ -29,21 +29,24 @@ public class FindGroupItemService {
 
     private GroupItem requestFromServer(long id) {
         GroupDto groupDto = api.requestGroupDto(id);
+        if (groupDto != null){
+            List<StudentDto> studentDtoList = groupDto.getStudents();
+            List<Student> studentList = new ArrayList<>();
 
-        List<StudentDto> studentDtoList = groupDto.getStudents();
-        List<Student> studentList = new ArrayList<>();
+            for (final StudentDto studentDto : studentDtoList) {
+                studentList.add(new Student(studentDto.getId(), studentDto.getUsername(),
+                        studentDto.getFullname(), studentDto.getAvatar(), studentDto.isOnline()));
+            }
 
-        for (final StudentDto studentDto : studentDtoList) {
-            studentList.add(new Student(studentDto.getId(), studentDto.getUsername(),
-                    studentDto.getFullname(), studentDto.getAvatar(), studentDto.isOnline()));
+            GroupItem groupItem = new GroupItem(
+                    id,
+                    groupDto.getName(),
+                    studentList
+            );
+            groupItemRepo.add(groupItem);
+            return groupItem;
+        }else {
+            return null;
         }
-
-        GroupItem groupItem = new GroupItem(
-                id,
-                groupDto.getName(),
-                studentList
-        );
-        groupItemRepo.add(groupItem);
-        return groupItem;
     }
 }

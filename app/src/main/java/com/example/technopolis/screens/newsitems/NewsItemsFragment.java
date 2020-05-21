@@ -42,12 +42,10 @@ public class NewsItemsFragment extends Fragment {
 
         presenter = new NewsItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
                 getFindNewsItemService(), getMainThreadPoster(), getContext(), getApiHelper());
-        presenter.subsItems();
         presenter.newsItems();
-
+//        presenter.subsItems();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
