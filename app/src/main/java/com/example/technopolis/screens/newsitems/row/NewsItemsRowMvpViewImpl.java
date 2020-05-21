@@ -7,7 +7,6 @@ import android.widget.TextView;
 
 import com.example.technopolis.R;
 import com.example.technopolis.news.model.NewsItem;
-import com.example.technopolis.screens.common.storage.ImageStorage;
 import com.example.technopolis.screens.common.mvp.MvpViewBase;
 
 import java.text.ParseException;
@@ -45,7 +44,7 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
     }
 
     @Override
-    public void bindData(NewsItem newsItem, ImageStorage storage) {
+    public void bindData(NewsItem newsItem) {
         this.newsItem = newsItem;
         fullNameTextView.setText(newsItem.getName());
         titleTextView.setText(newsItem.getTitle());
@@ -66,7 +65,7 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
 
 
         commentsCountTextView.setText(newsItem.getComments_number());
-        storage.downloadImage(newsItem.getUserpic(), avatarImage);
+        avatarImage.setImageBitmap(newsItem.getBitmap());
     }
 
     public void onNewsItemClicked() {
