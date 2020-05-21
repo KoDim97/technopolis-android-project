@@ -277,7 +277,7 @@ public class MailApiImpl implements MailApi {
     @Override
     public List<NewsDto> requestMainNewsDto(Integer limit, Integer offset) {
         final List<NewsDto> newsDtoList = new ArrayList<>();
-        final StringBuilder url = new StringBuilder("https://polis.mail.ru/api/mobile/v1/topics/main/?");
+        final StringBuilder url = new StringBuilder(projectUrl).append("/api/mobile/v1/topics/main/?");
         url.append("limit=").append(limit).append("&offset=").append(offset);
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(
@@ -285,7 +285,13 @@ public class MailApiImpl implements MailApi {
                 url.toString(),
                 null,
                 future,
-                future) {
+                error -> {
+                    if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
+                        //Надо обновить токен!!!
+                        //updateToken
+                        //reload request
+//                requestSchedulerItems();
+                    }}) {
             @Override
             public Map<String, String> getHeaders() {
                 return getAuthHeader();
@@ -332,7 +338,7 @@ public class MailApiImpl implements MailApi {
     @Override
     public List<NewsDto> requestSubscribedNewsDto(Integer limit, Integer offset) {
         final List<NewsDto> newsDtoList = new ArrayList<>();
-        final StringBuilder url = new StringBuilder("https://polis.mail.ru/api/mobile/v1/topics/subscribed/?");
+        final StringBuilder url = new StringBuilder(projectUrl).append("/api/mobile/v1/topics/subscribed/?");
         url.append("limit=").append(limit).append("&offset=").append(offset);
         RequestFuture<JSONObject> future = RequestFuture.newFuture();
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(
@@ -340,7 +346,13 @@ public class MailApiImpl implements MailApi {
                 url.toString(),
                 null,
                 future,
-                future) {
+                error -> {
+                    if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
+                        //Надо обновить токен!!!
+                        //updateToken
+                        //reload request
+//                requestSchedulerItems();
+                    }}) {
             @Override
             public Map<String, String> getHeaders() {
                 return getAuthHeader();
@@ -348,7 +360,7 @@ public class MailApiImpl implements MailApi {
         };
         queue.add(jsonArrayRequest);
         try {
-            JSONObject response = future.get();
+            JSONObject response = future.get(1, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject one_new = results.getJSONObject(i);
@@ -374,8 +386,12 @@ public class MailApiImpl implements MailApi {
             }
 
 
-        } catch (JSONException | ExecutionException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (InterruptedException | TimeoutException e) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+        } catch (ExecutionException e) {
+            System.out.println("Update token");
+        } catch (JSONException e) {
+            System.out.println("Json creating failed");
         }
         return newsDtoList;
     }
