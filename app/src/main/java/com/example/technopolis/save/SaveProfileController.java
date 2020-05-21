@@ -40,8 +40,8 @@ class SaveProfileController {
         writer.write(profile.getGender().getBytes().length);
         writer.write(profile.getGender().getBytes());
 
-        writer.write(profile.getAvatarUrl().getBytes().length);
-        writer.write(profile.getAvatarUrl().getBytes());
+        //writer.write(profile.getAvatarUrl().getBytes().length);
+        //writer.write(profile.getAvatarUrl().getBytes());
 
         writer.write(profile.getMainGroup().getBytes().length);
         writer.write(profile.getMainGroup().getBytes());
@@ -216,7 +216,7 @@ class SaveProfileController {
             accounts.add(new UserAccount(nameAccount, valueAccount));
         }
 
-        userProfile[0] = new UserProfile(id, userName, project_id, projectName, fullName, gender, avatarUrl, mainGroup, birthDate, about, joinDate, lastSeen, contacts, groups, accounts);
+       // userProfile[0] = new UserProfile(id, userName, project_id, projectName, fullName, gender, avatarUrl, mainGroup, birthDate, about, joinDate, lastSeen, contacts, groups, accounts);
 
         reader.close();
         return true;

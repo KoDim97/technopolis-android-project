@@ -84,7 +84,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     private void showMessageIfExist() {
         Integer message = apiHelper.getMessage();
         if (message != null) {
-            Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show();
+            activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
         }
     }
 

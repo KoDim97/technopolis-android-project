@@ -50,7 +50,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     public void updateDataNews() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.updateNewsItems();
-            String message = apiHelper.getMessage();
+            Integer message = apiHelper.getMessage();
             if (message != null) {
                 activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
             } else {
@@ -79,7 +79,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     public void updateDataSubs() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.updateSubsItems();
-            String message = apiHelper.getMessage();
+            Integer message = apiHelper.getMessage();
             if (message != null) {
                 activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
             } else {
@@ -108,7 +108,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     private void showMessageIfExist() {
         Integer message = apiHelper.getMessage();
         if (message != null) {
-            Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show();
+            activity.runOnUiThread(() -> Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show());
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.technopolis.profile.model;
 
+import android.graphics.Bitmap;
+
 import java.util.List;
 
 public class UserProfile {
@@ -10,7 +12,7 @@ public class UserProfile {
     private String projectName;
     private String fullName;
     private String gender;
-    private String avatarUrl;
+    private Bitmap avatar;
     //   Основная роль пользователя в образовательном проекте в данный момент
 //	 (студент, преподаватель, администратор или другое)
     private String mainGroup;
@@ -26,7 +28,7 @@ public class UserProfile {
     private List<UserAccount> accounts;
 
     public UserProfile(long id, String userName, long projectId, String projectName, String fullName,
-                       String gender, String avatarUrl, String mainGroup, String birthDate, String about,
+                       String gender, Bitmap avatar, String mainGroup, String birthDate, String about,
                        String joinDate, String lastSeen, List<UserContact> contacts, List<UserGroup> groups,
                        List<UserAccount> accounts) {
         this.id = id;
@@ -35,7 +37,7 @@ public class UserProfile {
         this.projectName = projectName;
         this.fullName = fullName;
         this.gender = gender;
-        this.avatarUrl = avatarUrl;
+        this.avatar = avatar;
         this.mainGroup = mainGroup;
         this.birthDate = birthDate;
         this.about = about;
@@ -70,8 +72,8 @@ public class UserProfile {
         return gender;
     }
 
-    public String getAvatarUrl() {
-        return avatarUrl;
+    public Bitmap getAvatar() {
+        return avatar;
     }
 
     public String getMainGroup() {
@@ -130,8 +132,8 @@ public class UserProfile {
         this.gender = gender;
     }
 
-    public void setAvatarUrl(String avatarUrl) {
-        this.avatarUrl = avatarUrl;
+    public void setAvatar(Bitmap avatar) {
+        this.avatar = avatar;
     }
 
     public void setMainGroup(String mainGroup) {
