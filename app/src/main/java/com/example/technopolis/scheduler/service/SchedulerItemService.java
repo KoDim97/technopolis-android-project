@@ -8,9 +8,13 @@ import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SchedulerItemService {
+    private static final Comparator<SchedulerItem> SCHEDULER_ITEM_BY_TIME_COMPARATOR =
+            (SchedulerItem i1, SchedulerItem i2) -> i1.getDate().compareTo(i2.getDate());
+
 
     private final SchedulerItemRepo schedulerItemRepo;
     private final MailApi api;
@@ -25,7 +29,7 @@ public class SchedulerItemService {
         if (schedulerItems.isEmpty()) {
             schedulerItems = requestFromApi();
         }
-        Collections.sort(schedulerItems, (SchedulerItem i1, SchedulerItem i2) -> i1.getDate().compareTo(i2.getDate()));
+        Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
         return schedulerItems;
     }
 
@@ -58,9 +62,11 @@ public class SchedulerItemService {
 
     public List<SchedulerItem> checkInItem(long id) {
         SchedulerItemCheckInDto schedulerItemCheckInDto = api.checkInSchedulerItem(id);
-        SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(id);
+        SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(schedulerItemCheckInDto.getId());
         schedulerItemFromCache.setFeedbackUrl(schedulerItemCheckInDto.getFeedbackURL());
-        return schedulerItemRepo.update(schedulerItemFromCache);
+        List<SchedulerItem> schedulerItems = schedulerItemRepo.update(schedulerItemFromCache);
+        Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
+        return schedulerItems;
     }
 
     public List<SchedulerItem> findAll() {
