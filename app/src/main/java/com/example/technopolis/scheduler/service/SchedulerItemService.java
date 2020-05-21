@@ -36,7 +36,11 @@ public class SchedulerItemService {
     public List<SchedulerItem> requestFromApi() {
         List<SchedulerItemDto> schedulerItemsDto = api.requestSchedulerItems();
         List<SchedulerItem> schedulerItems = transformToModelList(schedulerItemsDto);
-        schedulerItemRepo.updateAll(schedulerItems);
+        if (schedulerItems.size() != 0) {
+            schedulerItemRepo.updateAll(schedulerItems);
+        }
+        schedulerItems = schedulerItemRepo.findAll();
+        Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
         return schedulerItems;
     }
 
