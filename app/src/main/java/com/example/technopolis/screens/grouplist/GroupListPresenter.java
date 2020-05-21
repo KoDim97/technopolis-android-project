@@ -1,12 +1,10 @@
 package com.example.technopolis.screens.grouplist;
 
-import android.app.Activity;
 import android.widget.Toast;
 
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
-import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.group.model.GroupItem;
 import com.example.technopolis.group.model.Student;
 import com.example.technopolis.group.service.FindGroupItemService;
@@ -56,7 +54,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
             Integer message = apiHelper.getMessage();
             if (message != null) {
                 if (message == R.string.reloadRequest){
-                    findGroupItemService.ReloadAuthToken();
+                    findGroupItemService.reloadAuthToken();
                     loadItems();
                     return;
                 }else if(message == R.string.authFailed){
@@ -67,9 +65,8 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
                     });
                 }
             }
-            if (!thread.isInterrupted()) {
-                GroupItem finalGroupItem = groupItem;
-                mainThreadPoster.post(() -> onItemsLoaded(finalGroupItem));
+            if (thread != null && !thread.isInterrupted()) {
+                mainThreadPoster.post(() -> onItemsLoaded(groupItem));
             }
         });
         thread.start();

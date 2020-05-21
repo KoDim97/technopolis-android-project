@@ -44,7 +44,6 @@ public class MailApiImpl implements MailApi {
     private ApiHelper apiHelper;
     private String projectUrl;
     private static final String TAG = "TAG";
-    private static boolean flag = false;
 
     public MailApiImpl(RequestQueue queue, User user, ApiHelper apiHelper) {
         this.queue = queue;
@@ -146,6 +145,7 @@ public class MailApiImpl implements MailApi {
                 return getAuthHeader();
             }
         };
+        request.setTag(TAG);
         queue.add(request);
 
         try {
@@ -228,11 +228,6 @@ public class MailApiImpl implements MailApi {
     public GroupDto requestGroupDto(long id) {
         final String url = projectUrl + "/api/mobile/v1/groups/" + id;
 
-        if (!flag){
-            user.setAuth_token("gg");
-            flag = true;
-        }
-
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, error -> {
@@ -270,6 +265,7 @@ public class MailApiImpl implements MailApi {
             return new GroupDto(id, name, list);
         } catch (InterruptedException | TimeoutException e) {
             System.out.println("Time out");
+            //apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             System.out.println("Update token");
         } catch (JSONException e) {
@@ -482,6 +478,7 @@ public class MailApiImpl implements MailApi {
                 return getAuthHeader();
             }
         };
+        request.setTag(TAG);
         queue.add(request);
 
         SchedulerItemCheckInDto schedulerItemCheckInDto = null;
