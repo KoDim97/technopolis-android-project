@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
-import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.user.service.AuthService;
@@ -59,7 +58,7 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
 
     @Override
     public void enterBtnClick(@NonNull final String login, @NonNull final String password) {
-        if(!app.isAuthorized()) {
+        if (!app.isAuthorized()) {
             final Thread thread = new Thread(() -> {
                 if (authService.CheckAuth(login, password)) {
                     activity.runOnUiThread(() -> screenNavigator.changeAuthorized(true));
@@ -67,7 +66,7 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
                     Integer message = apiHelper.getMessage();
                     if (message != null) {
                         activity.runOnUiThread(() -> {
-                            Toast.makeText(activity, apiHelper.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         });
                     }
                     screenNavigator.changeAuthorized(false);

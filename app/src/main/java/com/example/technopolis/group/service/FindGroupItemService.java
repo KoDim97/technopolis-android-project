@@ -28,7 +28,7 @@ public class FindGroupItemService {
         this.imagesRepo = imagesRepo;
     }
 
-    public void reloadAuthToken(){
+    public void reloadAuthToken() {
         User user = api.getUser();
         AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
         user.setAuth_token(authDto.getAuth_token());
@@ -49,20 +49,21 @@ public class FindGroupItemService {
             List<Student> studentList = new ArrayList<>();
 
             for (final StudentDto studentDto : studentDtoList) {
+                boolean download = true;
                 String imageUrl = studentDto.getAvatar();
                 if (!imageUrl.equals("null")) {
                     if (!imageUrl.contains("https")) {
                         imageUrl = imageUrl.replace("http", "https");
                     }
-                    if (imagesRepo.findById(imageUrl) == null) {
-                        Bitmap bitmap;
-                        try {
-                            bitmap = Picasso.get().load(imageUrl).get();
-                        } catch (IOException e) {
-                            bitmap = null;
-                        }
-                        imagesRepo.add(imageUrl, bitmap);
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = Picasso.get().load(imageUrl).get();
+                    } catch (IOException e) {
+                        download = false;
                     }
+                    if (download)
+                        imagesRepo.add(imageUrl, bitmap);
+
                     studentList.add(new Student(studentDto.getId(), studentDto.getUsername(),
                             studentDto.getFullname(), imagesRepo.findById(imageUrl), studentDto.isOnline()));
                 } else {

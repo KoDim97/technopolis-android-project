@@ -42,19 +42,20 @@ public class ProfileService {
 //        Если не использует, принудительно меняем http на https
 //        Иначе на некоторых устройствах изображение не будет загружаться
         String imageUrl = profileDto.getAvatarUrl();
+        boolean download = true;
         if (!imageUrl.equals("null")) {
             if (!imageUrl.contains("https")) {
                 imageUrl = imageUrl.replace("http", "https");
             }
-            if (imagesRepo.findById(imageUrl) == null) {
-                Bitmap bitmap;
-                try {
-                    bitmap = Picasso.get().load(imageUrl).get();
-                } catch (IOException e) {
-                    bitmap = null;
-                }
-                imagesRepo.add(imageUrl, bitmap);
+            Bitmap bitmap = null;
+            try {
+                bitmap = Picasso.get().load(imageUrl).get();
+            } catch (IOException e) {
+                download = false;
             }
+            if (download)
+                imagesRepo.add(imageUrl, bitmap);
+
             userProfile = new UserProfile(
                     profileDto.getId(),
                     profileDto.getUserName(),

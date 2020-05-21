@@ -64,20 +64,20 @@ public class NewsItemService {
         List<NewsDto> newsDtoList = api.requestMainNewsDto(Integer.MAX_VALUE, 0);
 
         for (final NewsDto newsDto : newsDtoList) {
+            boolean download = true;
             String imageUrl = newsDto.getAvatar_url();
             if (!imageUrl.equals("null")) {
                 if (!imageUrl.contains("https")) {
                     imageUrl = imageUrl.replace("http", "https");
                 }
-                if (imagesRepo.findById(imageUrl) == null) {
-                    Bitmap bitmap;
-                    try {
-                        bitmap = Picasso.get().load(imageUrl).get();
-                    } catch (IOException e) {
-                        bitmap = null;
-                    }
-                    imagesRepo.add(imageUrl, bitmap);
+                Bitmap bitmap = null;
+                try {
+                    bitmap = Picasso.get().load(imageUrl).get();
+                } catch (IOException e) {
+                    download = false;
                 }
+                if (download)
+                    imagesRepo.add(imageUrl, bitmap);
                 newsItemRepo.add(
                         new NewsItem(
                                 newsDto.getId(),
@@ -114,20 +114,20 @@ public class NewsItemService {
     private List<NewsItem> requestSubsFromServer() {
         List<NewsDto> newsDtoList = api.requestSubscribedNewsDto(Integer.MAX_VALUE, 0);
         for (final NewsDto newsDto : newsDtoList) {
+            boolean download = true;
             String imageUrl = newsDto.getAvatar_url();
             if (!imageUrl.equals("null")) {
                 if (!imageUrl.contains("https")) {
                     imageUrl = imageUrl.replace("http", "https");
                 }
-                if (imagesRepo.findById(imageUrl) == null) {
-                    Bitmap bitmap;
-                    try {
-                        bitmap = Picasso.get().load(imageUrl).get();
-                    } catch (IOException e) {
-                        bitmap = null;
-                    }
-                    imagesRepo.add(imageUrl, bitmap);
+                Bitmap bitmap = null;
+                try {
+                    bitmap = Picasso.get().load(imageUrl).get();
+                } catch (IOException e) {
+                    download = false;
                 }
+                if (download)
+                    imagesRepo.add(imageUrl, bitmap);
                 subsItemRepo.add(
                         new NewsItem(
                                 newsDto.getId(),
