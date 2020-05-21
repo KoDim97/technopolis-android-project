@@ -5,13 +5,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class ApiHelper {
 
-    private Queue<String> messages = new LinkedBlockingQueue<>();
+    private Queue<Integer> messages = new LinkedBlockingQueue<>();
 
-    public String getMessage() {
+    public Integer getMessage() {
         return messages.poll();
     }
 
-    public void setMessage(String message) {
+    public void setMessage(Integer message) {
         messages.offer(message);
     }
 }

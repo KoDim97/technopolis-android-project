@@ -54,6 +54,7 @@ public class ProfileFragment extends Fragment {
         String backButtonText = arguments.getString(BACK_BUTTON_TEXT);
         presenter = new ProfilePresenter(userProfile, backButtonText, getProfileService(),
                 getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity());
+
     }
 
 

@@ -113,7 +113,7 @@ public class App extends Application {
 
     public ProfileService provideProfileService() {
         if (profileService == null) {
-            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), getApplicationContext());
+            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi());
         }
         return profileService;
     }
@@ -174,5 +174,17 @@ public class App extends Application {
 
     public void setAuthorized(boolean authorized) {
         this.authorized = authorized;
+    }
+
+    public void preload() {
+        ProfileService profileService = new ProfileService(provideUserProfileRepo(), provideMailApi());
+        Thread profileThread = new Thread(() -> {
+            profileService.findByUserName("");
+        });
+        profileThread.start();
+
+        SchedulerItemService schedulerItemService = new SchedulerItemService(provideSchedulerItemRepo(), provideMailApi());
+        Thread schedulerThread = new Thread(schedulerItemService::items);
+        schedulerThread.start();
     }
 }

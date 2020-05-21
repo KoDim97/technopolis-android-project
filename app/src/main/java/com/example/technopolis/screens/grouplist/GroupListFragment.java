@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.group.service.FindGroupItemService;
 import com.example.technopolis.util.ThreadPoster;
 
@@ -34,7 +35,7 @@ public class GroupListFragment extends Fragment {
         long id = getArguments().getLong(ARG_ITEM_ID);
         //noinspection ConstantConditions
         presenter = new GroupListPresenter(id, getMainActivity().getScreenNavigator(), getMainActivity(),
-                getFindGroupItemService(), getMainThreadPoster());
+                getFindGroupItemService(), getMainThreadPoster(), getApiHelper());
     }
 
     @Nullable
@@ -42,7 +43,7 @@ public class GroupListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         GroupListMvpView view = new GroupListMvpViewImpl(inflater, container, getContext());
-        ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.GONE);
+        getMainActivity().getRootViewController().setBarVisible(View.GONE);
         presenter.bindView(view);
         return view.getRootView();
     }
@@ -80,5 +81,11 @@ public class GroupListFragment extends Fragment {
         App app = (App) getActivity().getApplication();
         assert app != null;
         return app.provideMainThreadPoster();
+    }
+
+    private ApiHelper getApiHelper() {
+        App app = (App) getActivity().getApplication();
+        assert app != null;
+        return app.provideApiHelper();
     }
 }

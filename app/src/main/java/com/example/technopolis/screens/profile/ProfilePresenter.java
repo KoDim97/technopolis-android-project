@@ -47,7 +47,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     private void loadItem() {
         thread = new Thread(() -> {
-            UserProfile userProfile = profileService.getUserProfile(userName);
+            UserProfile userProfile = profileService.findByUserName(userName);
             if (!thread.isInterrupted()) {
                 mainThreadPoster.post(() -> onItemLoaded(userProfile));
             }
