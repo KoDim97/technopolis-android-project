@@ -101,9 +101,9 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     }
 
     private void showMessageIfExist() {
-        String message = apiHelper.getMessage();
+        Integer message = apiHelper.getMessage();
         if (message != null) {
-            activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
+            Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show();
         }
     }
 
