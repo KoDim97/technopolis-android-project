@@ -56,6 +56,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
                 if (message == R.string.reloadRequest){
                     findGroupItemService.reloadAuthToken();
                     loadItems();
+                    return;
                 }else if(message == R.string.authFailed){
                     activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
                 }else {
@@ -63,10 +64,9 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
                         Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show();
                     });
                 }
-            }else {
-                if (!thread.isInterrupted()) {
-                    mainThreadPoster.post(() -> onItemsLoaded(groupItem));
-                }
+            }
+            if (thread != null && !thread.isInterrupted()) {
+                mainThreadPoster.post(() -> onItemsLoaded(groupItem));
             }
         });
         thread.start();

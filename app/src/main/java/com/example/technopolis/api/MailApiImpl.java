@@ -265,6 +265,7 @@ public class MailApiImpl implements MailApi {
             return new GroupDto(id, name, list);
         } catch (InterruptedException | TimeoutException e) {
             System.out.println("Time out");
+            //apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             System.out.println("Update token");
         } catch (JSONException e) {
