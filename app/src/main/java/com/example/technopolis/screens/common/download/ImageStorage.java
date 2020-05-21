@@ -39,9 +39,19 @@ public class ImageStorage {
     }
 
     @Nullable
-    public Bitmap getImage(@NonNull String imageUrl) {
+    private Bitmap getImage(@NonNull String imageUrl) {
         if (!images.containsKey(imageUrl))
             return null;
         return images.get(imageUrl).getImage();
+    }
+
+    public void deleteImage(@NonNull String imageUrl) {
+        if (images.containsKey(imageUrl))
+            images.remove(imageUrl);
+    }
+
+    @NonNull
+    public ConcurrentHashMap<String, ImageTarget> getImages() {
+        return images;
     }
 }

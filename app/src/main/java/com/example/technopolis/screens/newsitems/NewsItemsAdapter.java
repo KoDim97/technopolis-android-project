@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.technopolis.App;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.screens.newsitems.row.NewsItemsRowMvpView;
 import com.example.technopolis.screens.newsitems.row.NewsItemsRowMvpViewImpl;
@@ -27,14 +28,16 @@ public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.News
         }
     }
 
+    private final App app;
     private final LayoutInflater layoutInflater;
     private final NewsItemsRowMvpView.Listener listener;
 
     private final List<NewsItem> items = new ArrayList<>();
 
-    public NewsItemsAdapter(LayoutInflater layoutInflater, NewsItemsRowMvpView.Listener listener) {
+    public NewsItemsAdapter(LayoutInflater layoutInflater, NewsItemsRowMvpView.Listener listener, App app) {
         this.layoutInflater = layoutInflater;
         this.listener = listener;
+        this.app = app;
     }
 
     @NonNull
@@ -47,7 +50,7 @@ public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.News
     @Override
     public void onBindViewHolder(@NonNull NewsItemViewHolder holder, int position) {
         NewsItem newsItem = items.get(position);
-        holder.newsItemsRowMvpView.bindData(newsItem);
+        holder.newsItemsRowMvpView.bindData(newsItem, app.getStorage());
     }
 
     @Override

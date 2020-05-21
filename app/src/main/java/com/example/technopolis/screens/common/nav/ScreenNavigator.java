@@ -50,6 +50,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragments.add(NewsItemsFragment.newInstance());
         fragments.add(SchedulerFragment.newInstance());
         fragments.add(ProfileFragment.newInstance());
+        app.preload();
     }
 
     @Override
