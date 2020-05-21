@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.technopolis.App;
 import com.example.technopolis.R;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.screens.common.mvp.MvpViewObservableBase;
@@ -23,10 +24,10 @@ public class NewsItemsMvpViewImpl extends MvpViewObservableBase<NewsItemsMvpView
 
     private final View view;
 
-    public NewsItemsMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent, Context context) {
+    public NewsItemsMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent, Context context, App app) {
         setRootView(layoutInflater.inflate(R.layout.news_fragment, parent, false));
 
-        newsItemsAdapter = new NewsItemsAdapter(layoutInflater, this);
+        newsItemsAdapter = new NewsItemsAdapter(layoutInflater, this,app);
         rvNewsItems = findViewById(R.id.activity_news__news_list);
         rvNewsItems.setLayoutManager(new LinearLayoutManager(context));
         rvNewsItems.setAdapter(newsItemsAdapter);

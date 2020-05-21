@@ -70,7 +70,7 @@ public class ImageTarget implements Target {
     }
 
     @Nullable
-    Bitmap getImage() {
+    public Bitmap getImage() {
         return image;
     }
 }

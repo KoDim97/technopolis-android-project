@@ -1,22 +1,17 @@
 package com.example.technopolis.screens.newsitems.row;
 
-import android.os.Build;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
-
 import com.example.technopolis.R;
 import com.example.technopolis.news.model.NewsItem;
+import com.example.technopolis.screens.common.download.ImageStorage;
 import com.example.technopolis.screens.common.mvp.MvpViewBase;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -50,7 +45,7 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
     }
 
     @Override
-    public void bindData(NewsItem newsItem) {
+    public void bindData(NewsItem newsItem, ImageStorage storage) {
         this.newsItem = newsItem;
         fullNameTextView.setText(newsItem.getName());
         titleTextView.setText(newsItem.getTitle());
@@ -71,7 +66,7 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
 
 
         commentsCountTextView.setText(newsItem.getComments_number());
-        newsItem.getStorage().downloadImage(newsItem.getUserpic(), avatarImage);
+        storage.downloadImage(newsItem.getUserpic(), avatarImage);
     }
 
     public void onNewsItemClicked() {

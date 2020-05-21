@@ -2,6 +2,8 @@ package com.example.technopolis;
 
 import android.app.Application;
 
+import androidx.annotation.NonNull;
+
 import com.android.volley.toolbox.Volley;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.api.MailApi;
@@ -54,19 +56,23 @@ public class App extends Application {
         return storage;
     }
 
-    public void setUser(User user) {
+    public void setStorage(@NonNull ImageStorage storage) {
+        this.storage = storage;
+    }
+
+    public void setUser(@NonNull User user) {
         this.user = user;
     }
 
-    public void setSchedulerItemRepo(SchedulerItemRepo repo) {
+    public void setSchedulerItemRepo(@NonNull SchedulerItemRepo repo) {
         this.schedulerItemRepo = repo;
     }
 
-    public void setNewsItemRepo(NewsItemRepository newsItemRepo) {
+    public void setNewsItemRepo(@NonNull NewsItemRepository newsItemRepo) {
         this.newsItemRepo = newsItemRepo;
     }
 
-    public void setSubsItemRepo(NewsItemRepository subsItemRepo) {
+    public void setSubsItemRepo(@NonNull NewsItemRepository subsItemRepo) {
         this.subsItemRepo = subsItemRepo;
     }
 
@@ -119,7 +125,7 @@ public class App extends Application {
 
     public ProfileService provideProfileService() {
         if (profileService == null) {
-            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), getApplicationContext());
+            profileService = new ProfileService(provideUserProfileRepo(), provideMailApi());
         }
         return profileService;
     }
@@ -180,5 +186,17 @@ public class App extends Application {
 
     public void setAuthorized(boolean authorized) {
         this.authorized = authorized;
+    }
+
+    public void preload() {
+        ProfileService profileService = new ProfileService(provideUserProfileRepo(), provideMailApi());
+        Thread profileThread = new Thread(() -> {
+            profileService.findByUserName("");
+        });
+        profileThread.start();
+
+        SchedulerItemService schedulerItemService = new SchedulerItemService(provideSchedulerItemRepo(), provideMailApi());
+        Thread schedulerThread = new Thread(schedulerItemService::items);
+        schedulerThread.start();
     }
 }
