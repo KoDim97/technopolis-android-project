@@ -15,7 +15,7 @@ public class PauseControllerImpl implements PauseController {
     private final SaveAuthorizationController saveAuthController;
     private final App app;
 
-    public PauseControllerImpl(@NonNull App app) {
+    public PauseControllerImpl(@NonNull final App app) {
         saveAuthController = new SaveAuthorizationController(app);
         this.app = app;
     }
