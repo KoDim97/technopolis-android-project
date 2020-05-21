@@ -13,6 +13,7 @@ public class UserProfile {
     private String fullName;
     private String gender;
     private Bitmap avatar;
+    private String avatarUrl;
     //   Основная роль пользователя в образовательном проекте в данный момент
 //	 (студент, преподаватель, администратор или другое)
     private String mainGroup;
@@ -28,7 +29,7 @@ public class UserProfile {
     private List<UserAccount> accounts;
 
     public UserProfile(long id, String userName, long projectId, String projectName, String fullName,
-                       String gender, Bitmap avatar, String mainGroup, String birthDate, String about,
+                       String gender, Bitmap avatar, String avatarUrl, String mainGroup, String birthDate, String about,
                        String joinDate, String lastSeen, List<UserContact> contacts, List<UserGroup> groups,
                        List<UserAccount> accounts) {
         this.id = id;
@@ -46,6 +47,11 @@ public class UserProfile {
         this.contacts = contacts;
         this.groups = groups;
         this.accounts = accounts;
+        this.avatarUrl = avatarUrl;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
     public long getId() {
