@@ -6,6 +6,7 @@ import android.widget.Toast;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
+import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.group.model.GroupItem;
 import com.example.technopolis.group.model.Student;
 import com.example.technopolis.group.service.FindGroupItemService;
@@ -55,7 +56,9 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
             Integer message = apiHelper.getMessage();
             if (message != null) {
                 if (message == R.string.reloadRequest){
-                    groupItem = findGroupItemService.findById(id);
+                    findGroupItemService.ReloadAuthToken();
+                    loadItems();
+                    return;
                 }else if(message == R.string.authFailed){
                     activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
                 }else {
