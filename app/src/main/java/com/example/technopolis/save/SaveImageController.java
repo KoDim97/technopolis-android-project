@@ -16,11 +16,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class SaveImageController {
+class SaveImageController {
     private static final String fileNameImage = "Image";
     private static final String fileName = "ImageRepoDisk";
 
-    static void serialize(@NonNull ImagesRepo imagesRepo, @NonNull App app) throws IOException {
+    static void serialize(@NonNull final ImagesRepo imagesRepo, @NonNull final App app) throws IOException {
         final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         int i = 0;
         writer.write(imagesRepo.findAll().size());
@@ -38,7 +38,7 @@ public class SaveImageController {
         writer.close();
     }
 
-    static boolean read(@NonNull ImagesRepo[] imagesRepo, App app) throws IOException {
+    static boolean read(@NonNull final ImagesRepo[] imagesRepo,@NonNull final App app) throws IOException {
         FileInputStream reader;
         ImagesRepo imageStorage = new ImagesRepoImpl();
         try {

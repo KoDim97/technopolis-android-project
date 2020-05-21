@@ -18,11 +18,11 @@ class SaveAuthorizationController {
     private static final String APP_PREFERENCES_USER_ID = "id";
     private final SharedPreferences mSettings;
 
-    SaveAuthorizationController(@NonNull App app) {
+    SaveAuthorizationController(@NonNull final App app) {
         mSettings = app.getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
     }
 
-    void saveAuthorizationInfo(@NonNull User user) {
+    void saveAuthorizationInfo(@NonNull final User user) {
         final SharedPreferences.Editor editor = mSettings.edit();
         editor.putBoolean(APP_PREFERENCES_AUTHORIZED, true);
         editor.putString(APP_PREFERENCES_LOGIN, user.getLogin());
@@ -39,7 +39,7 @@ class SaveAuthorizationController {
         editor.apply();
     }
 
-    boolean getUser(@NonNull User[] user) {
+    boolean getUser(@NonNull final User[] user) {
         if (!mSettings.getBoolean(APP_PREFERENCES_AUTHORIZED, false)) {
             return false;
         }

@@ -19,7 +19,7 @@ import java.util.List;
 class SaveSchedulerController {
     private static final String fileName = "SchedulerRepoDisk";
 
-    static void serialize(@NonNull SchedulerItemRepo schedulerItemRepo, @NonNull App app) throws IOException {
+    static void serialize(@NonNull final SchedulerItemRepo schedulerItemRepo, @NonNull final App app) throws IOException {
         final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         writer.write(schedulerItemRepo.findAll().size());
         for (final SchedulerItem item : schedulerItemRepo.findAll()) {
@@ -59,7 +59,7 @@ class SaveSchedulerController {
         writer.close();
     }
 
-    static boolean read(@NonNull SchedulerItemRepo[] schedulerItemRepo, @NonNull App app) throws IOException {
+    static boolean read(@NonNull final SchedulerItemRepo[] schedulerItemRepo, @NonNull final App app) throws IOException {
         FileInputStream reader;
         try {
             reader = app.getApplicationContext().openFileInput(fileName);
