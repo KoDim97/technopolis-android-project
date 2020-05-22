@@ -10,6 +10,9 @@ import com.example.technopolis.App;
 import com.example.technopolis.images.model.ImageItem;
 import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.images.repo.ImagesRepoImpl;
+import com.example.technopolis.news.model.NewsItem;
+import com.example.technopolis.news.repo.NewsItemRepository;
+import com.example.technopolis.profile.model.UserProfile;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -71,5 +74,24 @@ class SaveImageController {
         reader.close();
         imagesRepo[0] = imageStorage;
         return true;
+    }
+
+    @NonNull
+    static ImagesRepo filterImages(@NonNull final ImagesRepo repo, @NonNull final UserProfile profile, @NonNull final NewsItemRepository newsRepo, @NonNull final NewsItemRepository subNewsRepo) {
+        final ImagesRepo imagesRepo = new ImagesRepoImpl();
+        for (final NewsItem item : newsRepo.findAll()) {
+            final String imageUrl = item.getUserpic();
+            if (!imageUrl.equals("null") && repo.findById(imageUrl) != null)
+                imagesRepo.add(imageUrl, repo.findById(imageUrl));
+        }
+        for (final NewsItem item : subNewsRepo.findAll()) {
+            final String imageUrl = item.getUserpic();
+            if (!imageUrl.equals("null") && repo.findById(imageUrl) != null)
+                imagesRepo.add(imageUrl, repo.findById(imageUrl));
+        }
+        final String imageUrl = profile.getAvatarUrl();
+        if (!imageUrl.equals("null") && repo.findById(imageUrl) != null)
+            imagesRepo.add(imageUrl, repo.findById(imageUrl));
+        return imagesRepo;
     }
 }
