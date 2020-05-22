@@ -65,18 +65,19 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         IOverScrollStateListener overScrollStateListener = (decor, oldState, newState) -> {
             if (newState == STATE_BOUNCE_BACK) {
                 if (oldState == STATE_DRAG_START_SIDE && currentOverScrollOffset > 100) {
-                    new Thread(() -> {
+                    thread = new Thread(() -> {
                         final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
                         final int actualDayPosition = calculateActualDayPosition(schedulerItems);
                         if (!showMessageIfExist()) {
                             final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-                            if (!thread.isInterrupted()) {
+                            if (thread != null && !thread.isInterrupted()) {
                                 mainThreadPoster.post(() -> {
-                                    onItemsLoaded(schedulerItems, listeners, actualDayPosition);
+                                    onItemsLoaded(schedulerItems, listeners, 0);
                                 });
                             }
                         }
-                    }).start();
+                    });
+                    thread.start();
                 }
             }
         };

@@ -36,15 +36,16 @@ public class SchedulerItemService {
         List<SchedulerItem> schedulerItems = schedulerItemRepo.findAll();
         if (schedulerItems.isEmpty()) {
             schedulerItems = requestFromApi();
+        } else {
+            Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
         }
-        Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
         return schedulerItems;
     }
 
     public List<SchedulerItem> requestFromApi() {
         List<SchedulerItemDto> schedulerItemsDto = api.requestSchedulerItems();
         List<SchedulerItem> schedulerItems = transformToModelList(schedulerItemsDto);
-        if (schedulerItems.size() != 0) {
+        if (!schedulerItems.isEmpty()) {
             schedulerItemRepo.updateAll(schedulerItems);
         }
         schedulerItems = schedulerItemRepo.findAll();
@@ -74,8 +75,10 @@ public class SchedulerItemService {
 
     public List<SchedulerItem> checkInItem(long id) {
         SchedulerItemCheckInDto schedulerItemCheckInDto = api.checkInSchedulerItem(id);
+        
         SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(schedulerItemCheckInDto.getId());
         schedulerItemFromCache.setFeedbackUrl(schedulerItemCheckInDto.getFeedbackURL());
+
         List<SchedulerItem> schedulerItems = schedulerItemRepo.update(schedulerItemFromCache);
         Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
         return schedulerItems;
