@@ -68,12 +68,13 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                     new Thread(() -> {
                         final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
                         final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-                        showMessageIfExist();
-                        final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-                        if (!thread.isInterrupted()) {
-                            mainThreadPoster.post(() -> {
-                                onItemsLoaded(schedulerItems, listeners, actualDayPosition);
-                            });
+                        if (!showMessageIfExist()) {
+                            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                            if (!thread.isInterrupted()) {
+                                mainThreadPoster.post(() -> {
+                                    onItemsLoaded(schedulerItems, listeners, actualDayPosition);
+                                });
+                            }
                         }
                     }).start();
                 }
@@ -86,7 +87,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     }
 
 
-    private void showMessageIfExist() {
+    private boolean showMessageIfExist() {
         System.err.println(apiHelper.size());
         Integer message = apiHelper.getMessage();
         System.err.println("message: " + message);
@@ -106,7 +107,9 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
             } else if (message == R.string.authFailed) {
                 activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
             }
+            return true;
         }
+        return false;
     }
 
     private void loadItems() {
@@ -163,8 +166,10 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         thread = new Thread(() -> {
             final List<SchedulerItem> schedulerItems = schedulerItemService.checkInItem(id);
             final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-            mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
+            if (showMessageIfExist()) {
+                final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
+            }
         });
         thread.start();
     }

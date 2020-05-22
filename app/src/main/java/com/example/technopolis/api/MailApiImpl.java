@@ -399,6 +399,7 @@ public class MailApiImpl implements MailApi {
     }
 
 
+    private boolean flag = false;
 
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
@@ -420,7 +421,10 @@ public class MailApiImpl implements MailApi {
         jsonArrayRequest.setTag(TAG);
         queue.add(jsonArrayRequest);
 
-
+        if (flag) {
+            user.setAuth_token("ggg");
+        }
+        flag = !flag;
 
         try {
             JSONArray response = requestFuture.get(1, TimeUnit.SECONDS);
@@ -445,17 +449,13 @@ public class MailApiImpl implements MailApi {
                 items.add(schedulerItemDto);
                 ++count;
             }
-            System.err.println("fine request");
-
         } catch (InterruptedException | TimeoutException e) {
             apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-            System.out.print("not ");
         } catch (ExecutionException e) {
             System.out.println("Update token");
         } catch (JSONException e) {
             System.out.println("Json creating failed");
         }
-        System.err.println("fine request");
         return items;
     }
 
@@ -468,12 +468,8 @@ public class MailApiImpl implements MailApi {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, error -> {
             if (error.networkResponse == null) {
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-                System.out.println(NETWORK_ERROR_MESSAGE);
             } else if (error.networkResponse.statusCode == 401) {
-                //Надо обновить токен!!!
-                //updateToken
-                //reload request
-                //checkInSchedulerItem(id);
+                apiHelper.setMessage(RELOAD_REQUEST);
             }
         }) {
             @Override
@@ -492,14 +488,14 @@ public class MailApiImpl implements MailApi {
                     response.getInt("schedule_item"),
                     response.getString("feedback_url")
             );
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-
         } catch (TimeoutException e) {
-            e.printStackTrace();
+            System.err.println("timeout");
         } catch (JSONException e) {
-            e.printStackTrace();
+            int a = 5;
+            System.err.println("jsonException");
+        } catch (ExecutionException | InterruptedException e) {
+            System.err.println("another");
+            //unknown error
         }
 
         return schedulerItemCheckInDto;
