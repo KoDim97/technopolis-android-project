@@ -1,10 +1,12 @@
 package com.example.technopolis.scheduler.service;
 
 import com.example.technopolis.api.MailApi;
+import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.api.dto.SchedulerItemCheckInDto;
 import com.example.technopolis.api.dto.SchedulerItemDto;
 import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
+import com.example.technopolis.user.model.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +24,12 @@ public class SchedulerItemService {
     public SchedulerItemService(SchedulerItemRepo schedulerItemRepo, MailApi api) {
         this.schedulerItemRepo = schedulerItemRepo;
         this.api = api;
+    }
+
+    public void reloadAuthToken() {
+        User user = api.getUser();
+        AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
+        user.setAuth_token(authDto.getAuth_token());
     }
 
     public List<SchedulerItem> items() {

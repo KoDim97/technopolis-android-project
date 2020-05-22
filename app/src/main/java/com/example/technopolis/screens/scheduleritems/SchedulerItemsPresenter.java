@@ -1,9 +1,13 @@
 package com.example.technopolis.screens.scheduleritems;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.technopolis.BaseActivity;
+import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
@@ -63,11 +67,12 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                 if (oldState == STATE_DRAG_START_SIDE && currentOverScrollOffset > 100) {
                     new Thread(() -> {
                         final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
+                        final int actualDayPosition = calculateActualDayPosition(schedulerItems);
                         showMessageIfExist();
                         final List<View.OnClickListener> listeners = createListeners(schedulerItems);
                         if (!thread.isInterrupted()) {
                             mainThreadPoster.post(() -> {
-                                onItemsLoaded(schedulerItems, listeners, 0);
+                                onItemsLoaded(schedulerItems, listeners, actualDayPosition);
                             });
                         }
                     }).start();
@@ -82,9 +87,25 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
 
 
     private void showMessageIfExist() {
+        System.err.println(apiHelper.size());
         Integer message = apiHelper.getMessage();
+        System.err.println("message: " + message);
+        System.err.println("reload: " + R.string.reloadRequest);
+        System.err.println("networkError: " + R.string.networkError);
         if (message != null) {
-            activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
+            System.err.println("enter");
+            if (message == R.string.networkError) {
+                if (!apiHelper.isOnline(activity)) {
+                    activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
+                }
+            } else if (message == R.string.reloadRequest) {
+                System.err.println("reload auth token");
+                apiHelper.clear();
+                schedulerItemService.reloadAuthToken();
+                loadItems();
+            } else if (message == R.string.authFailed) {
+                activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
+            }
         }
     }
 

@@ -67,7 +67,7 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
                     Integer message = apiHelper.getMessage();
                     if (message != null) {
                         activity.runOnUiThread(() -> {
-                            Toast.makeText(activity, apiHelper.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
                         });
                     }
                     screenNavigator.changeAuthorized(false);

@@ -1,5 +1,9 @@
 package com.example.technopolis.api;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -91,11 +95,8 @@ public class MailApiImpl implements MailApi {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, error -> {
             // TODO: Handle error
             if (error.networkResponse == null) {
-                System.out.println("Нет подключения");
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
             } else {
-                System.err.println("Неверный логин или пароль");
-                System.err.println(error.networkResponse.statusCode);
                 apiHelper.setMessage(INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE);
             }
         });
@@ -149,7 +150,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);
             JSONObject activity = response.getJSONObject("activity");
 
 //            Convert JSONArray contacts to List<UserContact>
@@ -399,6 +400,8 @@ public class MailApiImpl implements MailApi {
 
 
 
+    private boolean flag = true;
+
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
 
@@ -408,10 +411,7 @@ public class MailApiImpl implements MailApi {
         RequestFuture<JSONArray> requestFuture = RequestFuture.newFuture();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, new JSONArray(), requestFuture, error -> {
             if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
-                //Надо обновить токен!!!
-                //updateToken
-                //reload request
-//                requestSchedulerItems();
+                apiHelper.setMessage(RELOAD_REQUEST);
             }
         }) {
             @Override
@@ -419,11 +419,16 @@ public class MailApiImpl implements MailApi {
                 return getAuthHeader();
             }
         };
+        jsonArrayRequest.setTag(TAG);
         queue.add(jsonArrayRequest);
+
+        if (!flag) {
+            user.setAuth_token("ggg");
+        }
+        flag = !flag;
 
 
         try {
-
             JSONArray response = requestFuture.get(1, TimeUnit.SECONDS);
 
             int count = 0;
@@ -446,13 +451,17 @@ public class MailApiImpl implements MailApi {
                 items.add(schedulerItemDto);
                 ++count;
             }
+            System.err.println("fine request");
+
         } catch (InterruptedException | TimeoutException e) {
             apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            System.out.print("not ");
         } catch (ExecutionException e) {
             System.out.println("Update token");
         } catch (JSONException e) {
             System.out.println("Json creating failed");
         }
+        System.err.println("fine request");
         return items;
     }
 
