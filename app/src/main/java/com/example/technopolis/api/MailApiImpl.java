@@ -399,13 +399,11 @@ public class MailApiImpl implements MailApi {
     }
 
 
-    private boolean flag = false;
-
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
 
         ArrayList<SchedulerItemDto> items = new ArrayList<>();
-        final String url = "https://polis.mail.ru/api/mobile/v1/schedule/";
+        final String url = projectUrl + "/api/mobile/v1/schedule/";
 
         RequestFuture<JSONArray> requestFuture = RequestFuture.newFuture();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, new JSONArray(), requestFuture, error -> {
@@ -420,11 +418,6 @@ public class MailApiImpl implements MailApi {
         };
         jsonArrayRequest.setTag(TAG);
         queue.add(jsonArrayRequest);
-
-        if (flag) {
-            user.setAuth_token("ggg");
-        }
-        flag = !flag;
 
         try {
             JSONArray response = requestFuture.get(1, TimeUnit.SECONDS);
@@ -461,7 +454,7 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public SchedulerItemCheckInDto checkInSchedulerItem(long id) {
-        final String url = "https://polis.mail.ru/api/mobile/v1/schedule/" + id + "/check/";
+        final String url = projectUrl + "/api/mobile/v1/schedule/" + id + "/check/";
         JSONObject json = new JSONObject();
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
