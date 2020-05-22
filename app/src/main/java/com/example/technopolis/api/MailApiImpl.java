@@ -400,8 +400,6 @@ public class MailApiImpl implements MailApi {
 
 
 
-    private boolean flag = true;
-
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
 
@@ -422,10 +420,6 @@ public class MailApiImpl implements MailApi {
         jsonArrayRequest.setTag(TAG);
         queue.add(jsonArrayRequest);
 
-        if (!flag) {
-            user.setAuth_token("ggg");
-        }
-        flag = !flag;
 
 
         try {
