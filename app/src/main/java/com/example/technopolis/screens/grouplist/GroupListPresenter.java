@@ -129,7 +129,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
                         }
                     }
                 }
-            } else {g
+            } else {
                 filteredStudent = students;
             }
 
