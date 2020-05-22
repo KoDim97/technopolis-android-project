@@ -88,19 +88,13 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
 
 
     private boolean showMessageIfExist() {
-        System.err.println(apiHelper.size());
         Integer message = apiHelper.getMessage();
-        System.err.println("message: " + message);
-        System.err.println("reload: " + R.string.reloadRequest);
-        System.err.println("networkError: " + R.string.networkError);
         if (message != null) {
-            System.err.println("enter");
             if (message == R.string.networkError) {
                 if (!apiHelper.isOnline(activity)) {
                     activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
                 }
             } else if (message == R.string.reloadRequest) {
-                System.err.println("reload auth token");
                 apiHelper.clear();
                 schedulerItemService.reloadAuthToken();
                 loadItems();
