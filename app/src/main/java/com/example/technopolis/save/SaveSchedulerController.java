@@ -71,66 +71,88 @@ class SaveSchedulerController {
         final List<SchedulerItem> itemList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             int sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             byte[] buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final long id = Long.parseLong(new String(buf));
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String subjectName = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String lessonName = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String lessonType = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String startTime = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String endTime = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String location = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String date = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String feedbackUrl = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final boolean isAttended = Boolean.parseBoolean(new String(buf));
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;

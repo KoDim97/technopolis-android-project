@@ -95,72 +95,96 @@ class SaveProfileController {
         }
 
         int sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         byte[] buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final long id = Long.parseLong(new String(buf));
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final String userName = new String(buf);
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final long project_id = Long.parseLong(new String(buf));
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final String projectName = new String(buf);
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final String fullName = new String(buf);
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final String gender = new String(buf);
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final String avatarUrl = new String(buf);
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final String mainGroup = new String(buf);
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final String birthDate = new String(buf);
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final String about = new String(buf);
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
         final String joinDate = new String(buf);
 
         sizeRead = reader.read();
+        if (sizeRead == -1)
+            return false;
         buf = new byte[sizeRead];
         if (reader.read(buf) != sizeRead)
             return false;
@@ -170,12 +194,16 @@ class SaveProfileController {
         final List<UserContact> contacts = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String nameContact = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
@@ -187,12 +215,16 @@ class SaveProfileController {
         final List<UserGroup> groups = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final long idGroup = Long.parseLong(new String(buf));
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
@@ -204,12 +236,16 @@ class SaveProfileController {
         final List<UserAccount> accounts = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
             final String nameAccount = new String(buf);
 
             sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
