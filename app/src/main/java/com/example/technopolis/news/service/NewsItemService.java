@@ -109,7 +109,7 @@ public class NewsItemService {
                             newsDto.getTitle(),
                             newsDto.getBlog(),
                             newsDto.getPublish_date(),
-                            newsDto.getAvatar_url(),
+                            imageUrl,
                             newsDto.getComments_count(),
                             newsDto.getPost_url(),
                             bitmap
