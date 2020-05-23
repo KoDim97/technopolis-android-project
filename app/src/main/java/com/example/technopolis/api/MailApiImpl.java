@@ -287,11 +287,11 @@ public class MailApiImpl implements MailApi {
                 null,
                 future,
                 error -> {
-                    if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
-                        //Надо обновить токен!!!
-                        //updateToken
-                        //reload request
-//                requestSchedulerItems();
+                    if (error.networkResponse == null) {
+                        apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+                    } else if (error.networkResponse.statusCode == 401) {
+//                        AuthDto authDto = requestAuthDto(user.getLogin(), user.getPassword());
+//                        user.setAuth_token(authDto.getAuth_token());
                     }}) {
             @Override
             public Map<String, String> getHeaders() {
@@ -327,7 +327,7 @@ public class MailApiImpl implements MailApi {
 
 
         } catch (InterruptedException | TimeoutException e) {
-            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+//            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             System.out.println("Update token");
         } catch (JSONException e) {
@@ -348,11 +348,11 @@ public class MailApiImpl implements MailApi {
                 null,
                 future,
                 error -> {
-                    if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
-                        //Надо обновить токен!!!
-                        //updateToken
-                        //reload request
-//                requestSchedulerItems();
+                    if (error.networkResponse == null) {
+                        apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+                    } else if (error.networkResponse.statusCode == 401) {
+//                        AuthDto authDto = requestAuthDto(user.getLogin(), user.getPassword());
+//                        user.setAuth_token(authDto.getAuth_token());
                     }}) {
             @Override
             public Map<String, String> getHeaders() {
@@ -388,7 +388,7 @@ public class MailApiImpl implements MailApi {
 
 
         } catch (InterruptedException | TimeoutException e) {
-            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+//            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             System.out.println("Update token");
         } catch (JSONException e) {

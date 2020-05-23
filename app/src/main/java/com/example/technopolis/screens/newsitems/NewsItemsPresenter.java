@@ -56,7 +56,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
                 activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
             } else {
                 newsItemService.clearNews();
-                if (!thread.isInterrupted()) {
+                if (thread != null && !thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
                 }
             }
@@ -69,7 +69,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getNewsItems();
             showMessageIfExist();
-            if (!thread.isInterrupted()) {
+            if (thread != null && !thread.isInterrupted()) {
                 mainThreadPoster.post(() -> onItemsLoaded(newsItems));
             }
         });
@@ -85,7 +85,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
                 activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
             } else {
                 newsItemService.clearSubs();
-                if (!thread.isInterrupted()) {
+                if (thread != null && !thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
                 }
             }
@@ -98,7 +98,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getSubsItems();
             showMessageIfExist();
-            if (!thread.isInterrupted()) {
+            if (thread != null && !thread.isInterrupted()) {
                 mainThreadPoster.post(() -> onItemsLoaded(newsItems));
             }
         });

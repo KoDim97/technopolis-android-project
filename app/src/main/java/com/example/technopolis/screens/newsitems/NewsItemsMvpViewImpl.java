@@ -32,6 +32,7 @@ public class NewsItemsMvpViewImpl extends MvpViewObservableBase<NewsItemsMvpView
         rvNewsItems.setLayoutManager(new LinearLayoutManager(context));
         rvNewsItems.setAdapter(newsItemsAdapter);
         view = getRootView();
+
     }
 
     public View getView() {
@@ -52,5 +53,6 @@ public class NewsItemsMvpViewImpl extends MvpViewObservableBase<NewsItemsMvpView
     @Override
     public void bindData(List<NewsItem> newsItems) {
         newsItemsAdapter.bindData(newsItems);
+        view.findViewById(R.id.activity_news__news_list).setBackgroundResource(R.color.colorBackground);
     }
 }
