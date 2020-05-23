@@ -84,6 +84,10 @@ public class SchedulerItemService {
         return schedulerItems;
     }
 
+    public MailApi getApi() {
+        return api;
+    }
+
     public List<SchedulerItem> findAll() {
         return schedulerItemRepo.findAll();
     }

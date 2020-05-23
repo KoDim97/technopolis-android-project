@@ -67,8 +67,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                 if (oldState == STATE_DRAG_START_SIDE && currentOverScrollOffset > 100) {
                     thread = new Thread(() -> {
                         final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
-                        final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-                        if (!showMessageIfExist()) {
+                        if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                             final List<View.OnClickListener> listeners = createListeners(schedulerItems);
                             if (thread != null && !thread.isInterrupted()) {
                                 mainThreadPoster.post(() -> {
@@ -87,34 +86,15 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         view.setOnReloadListener(overScrollStateListener, overScrollUpdateListener);
     }
 
-
-    private boolean showMessageIfExist() {
-        Integer message = apiHelper.getMessage();
-        if (message != null) {
-            if (message == R.string.networkError) {
-                if (!apiHelper.isOnline(activity)) {
-                    activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
-                }
-            } else if (message == R.string.reloadRequest) {
-                apiHelper.clear();
-                schedulerItemService.reloadAuthToken();
-                loadItems();
-            } else if (message == R.string.authFailed) {
-                activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
-            }
-            return true;
-        }
-        return false;
-    }
-
     private void loadItems() {
         thread = new Thread(() -> {
             final List<SchedulerItem> schedulerItems = schedulerItemService.items();
-            showMessageIfExist();
-            final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-            if (thread != null && !thread.isInterrupted()) {
-                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
+            if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
+                final int actualDayPosition = calculateActualDayPosition(schedulerItems);
+                final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                if (thread != null && !thread.isInterrupted()) {
+                    mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
+                }
             }
         });
         thread.start();
@@ -161,7 +141,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         thread = new Thread(() -> {
             final List<SchedulerItem> schedulerItems = schedulerItemService.checkInItem(id);
             final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-            if (showMessageIfExist()) {
+            if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                 final List<View.OnClickListener> listeners = createListeners(schedulerItems);
                 mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
             }

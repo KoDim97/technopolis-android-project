@@ -289,17 +289,18 @@ public class MailApiImpl implements MailApi {
                 future,
                 error -> {
                     if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
-                        //Надо обновить токен!!!
-                        //updateToken
-                        //reload request
-//                requestSchedulerItems();
-                    }}) {
+                        apiHelper.setMessage(RELOAD_REQUEST);
+                    }
+                }
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 return getAuthHeader();
             }
         };
+        jsonArrayRequest.setTag(TAG);
         queue.add(jsonArrayRequest);
+
         try {
             JSONObject response = future.get(1, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
@@ -350,17 +351,18 @@ public class MailApiImpl implements MailApi {
                 future,
                 error -> {
                     if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
-                        //Надо обновить токен!!!
-                        //updateToken
-                        //reload request
-//                requestSchedulerItems();
-                    }}) {
+                        apiHelper.setMessage(RELOAD_REQUEST);
+                    }
+                }
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 return getAuthHeader();
             }
         };
+        jsonArrayRequest.setTag(TAG);
         queue.add(jsonArrayRequest);
+
         try {
             JSONObject response = future.get(1, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
