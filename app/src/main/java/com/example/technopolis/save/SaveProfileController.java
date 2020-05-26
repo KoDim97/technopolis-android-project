@@ -21,6 +21,27 @@ import java.util.List;
 class SaveProfileController {
     private final static String fileName = "ProfileRepoDisk";
 
+    /**
+     * Save profile's information  in "ProfileRepoDisk" file
+     * number of news | size of profile's id in bytes | profile's id in bytes
+     * | size of profile's name in bytes | profile's name in bytes
+     * |size of profile's project's id in bytes | profile's project's id in bytes
+     * |size of profile's project's name in bytes | profile's project's name in bytes
+     * |size of profile's full name in bytes | profile's full name in bytes
+     * |size of profile's gender in bytes | profile's gender in bytes
+     * |size of profile's image's url in bytes | profile's image's url in bytes
+     * |size of profile's main group in bytes | profile's main group in bytes
+     * |size of profile's birth date in bytes | profile's birth date in bytes
+     * |size of profile's about in bytes | profile's about in bytes
+     * |size of profile's join date in bytes | profile's join date in bytes
+     * |size of profile's last seen in bytes | profile's last seen in bytes
+     * number of profile's contacts || size of profile's contact's name in bytes | profile's contact's name in bytes
+     * | size of profile's contact's value in bytes | profile's contact's value in bytes |
+     * number of profile's groups || size of profile's group's id in bytes | profile's group's id in bytes
+     * | size of profile's group's name in bytes | profile's group's name in bytes |
+     * number of profile's accounts || size of profile's account's name in bytes | profile's account's name in bytes
+     * | size of profile's account's value in bytes | profile's account's value in bytes ||
+     */
     static void serialize(@NonNull final UserProfile profile, @NonNull final App app) throws IOException {
         final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         writer.write(String.valueOf(profile.getId()).getBytes().length);
@@ -86,6 +107,11 @@ class SaveProfileController {
         writer.close();
     }
 
+    /**
+     * Read user's profile's information from "ProfileRepoDisk" file
+     *
+     * @return true if read all information of user's profile else false
+     */
     static boolean read(@NonNull final UserProfile[] userProfile, @NonNull final ImagesRepo imagesRepo, @NonNull final App app) throws IOException {
         FileInputStream reader;
         try {

@@ -23,6 +23,11 @@ class SaveImageController {
     private static final String fileNameImage = "Image";
     private static final String fileName = "ImageRepoDisk";
 
+    /**
+     * Save information about saved images in "ImageRepoDisk" file
+     * number of images || size of image in bytes | image in bytes | number of file ||
+     * Save image[i] in "Imagei" file
+     */
     static void serialize(@NonNull final ImagesRepo imagesRepo, @NonNull final App app) throws IOException {
         final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         int i = 0;
@@ -41,6 +46,12 @@ class SaveImageController {
         writer.close();
     }
 
+    /**
+     * Read information about saved images from "ImageRepoDisk" file
+     * Read image[i] from "Imagei" file
+     *
+     * @return true if read all images else false
+     */
     static boolean read(@NonNull final ImagesRepo[] imagesRepo, @NonNull final App app) throws IOException {
         FileInputStream reader;
         ImagesRepo imageStorage = new ImagesRepoImpl();
@@ -76,6 +87,11 @@ class SaveImageController {
         return true;
     }
 
+    /**
+     * Take only that images that need save (images of profile and news)  from general images's repository and put it in local
+     *
+     * @return images's repository that need save
+     */
     @NonNull
     static ImagesRepo filterImages(@NonNull final ImagesRepo repo, @NonNull final UserProfile profile, @NonNull final NewsItemRepository newsRepo, @NonNull final NewsItemRepository subNewsRepo) {
         final ImagesRepo imagesRepo = new ImagesRepoImpl();
