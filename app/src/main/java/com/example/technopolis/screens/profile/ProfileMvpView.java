@@ -26,7 +26,7 @@ public interface ProfileMvpView extends MvpViewObservable<ProfileMvpView.Listene
 
     void showExitButton();
 
-    void hideNavBar();
+    void showNavBar();
 
     void showNameOnToolbar(String userName);
 

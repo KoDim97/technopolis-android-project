@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -13,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.profile.service.ProfileService;
 import com.example.technopolis.util.ThreadPoster;
 
@@ -53,7 +53,8 @@ public class ProfileFragment extends Fragment {
         String userProfile = arguments.getString(PROFILE_NAME);
         String backButtonText = arguments.getString(BACK_BUTTON_TEXT);
         presenter = new ProfilePresenter(userProfile, backButtonText, getProfileService(),
-                getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity());
+                getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity(),
+                getApiHelper(), getBaseActivity());
 
     }
 
@@ -62,13 +63,13 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container);
-        ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.GONE);
+
 
 //      set up good scroll
         ScrollView scrollView = (ScrollView) view.getRootView().findViewById(R.id.profile_scroll_view);
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
-//      Показываем navBar, если был скрыт
-        ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.VISIBLE);
+//      Скрываем navbar на время загрузки
+        ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.GONE);
 
         presenter.bindView(view);
         return view.getRootView();
@@ -107,5 +108,11 @@ public class ProfileFragment extends Fragment {
         App app = (App) getActivity().getApplication();
         assert app != null;
         return app.provideMainThreadPoster();
+    }
+
+    private ApiHelper getApiHelper() {
+        App app = (App) getActivity().getApplication();
+        assert app != null;
+        return app.provideApiHelper();
     }
 }

@@ -139,7 +139,15 @@ public class MailApiImpl implements MailApi {
         final String url = projectUrl + "/api/mobile/v1/profile/" + username;
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, requestFuture) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, error -> {
+            if (error.networkResponse == null) {
+                apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            } else {
+                if (error.networkResponse.statusCode == 401) {
+                    apiHelper.setMessage(RELOAD_REQUEST);
+                }
+            }
+        }) {
             @Override
             public Map<String, String> getHeaders() {
                 return getAuthHeader();
@@ -215,6 +223,7 @@ public class MailApiImpl implements MailApi {
             return profileDto;
 
         } catch (InterruptedException | TimeoutException e) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
             System.out.println("Time out");
         } catch (ExecutionException e) {
             System.out.println("Invalid login or password");

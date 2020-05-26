@@ -83,10 +83,11 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
 
     @Override
     public void bindData(UserProfile userProfile) {
-        if (userProfile.getAvatar() != null)
+        if (userProfile.getAvatar() != null) {
             image.setImageBitmap(userProfile.getAvatar());
-        else
+        } else {
             image.setImageResource(R.drawable.img_no_avatar);
+        }
         profileContentContainer.setVisibility(View.VISIBLE);
         name.setText(userProfile.getFullName());
         status.setText(userProfile.getMainGroup());
@@ -284,8 +285,8 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     }
 
     @Override
-    public void hideNavBar() {
-        ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.GONE);
+    public void showNavBar() {
+        ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.VISIBLE);
     }
 
     @Override
