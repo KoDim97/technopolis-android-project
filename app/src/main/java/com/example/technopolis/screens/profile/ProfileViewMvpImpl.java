@@ -91,7 +91,13 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         profileContentContainer.setVisibility(View.VISIBLE);
         name.setText(userProfile.getFullName());
         status.setText(userProfile.getMainGroup());
-        about.setText(userProfile.getAbout());
+
+        String aboutText = userProfile.getAbout();
+        if (aboutText.equals("null")) {
+            aboutText = getContext().getString(R.string.aboutPlaceholder);
+        }
+        about.setText(aboutText);
+        
 //        Добавляем кнопки для просмотра групп
         addGroupsButtons(userProfile.getGroups());
 //        Добавляем textView для контактов
@@ -146,8 +152,6 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
 
             button.setOnClickListener(this);
             groupsLinearLayout.addView(button);
-
-
         }
     }
 
