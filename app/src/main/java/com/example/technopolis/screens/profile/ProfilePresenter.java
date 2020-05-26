@@ -92,8 +92,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 //        Показываем кнопку "Выйти", если имеем дело с профилем пользователя
         if (userName.equals("")) {
             view.showExitButton();
-//          Показываем navBar
-            view.showNavBar();
         } else {
 //          Показываем имя пользователя в toolbar'e
             view.showNameOnToolbar(userProfile.getFullName());

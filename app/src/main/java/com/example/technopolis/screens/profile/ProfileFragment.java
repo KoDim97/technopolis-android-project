@@ -24,6 +24,8 @@ public class ProfileFragment extends Fragment {
     private static final String PROFILE_NAME = "user_name";
     private static final String BACK_BUTTON_TEXT = "back_button_text";
 
+    private String userProfile;
+
     public ProfileFragment() {
     }
 
@@ -50,7 +52,7 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //noinspection ConstantConditions
         Bundle arguments = getArguments();
-        String userProfile = arguments.getString(PROFILE_NAME);
+        userProfile = arguments.getString(PROFILE_NAME);
         String backButtonText = arguments.getString(BACK_BUTTON_TEXT);
         presenter = new ProfilePresenter(userProfile, backButtonText, getProfileService(),
                 getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity(),
@@ -68,8 +70,12 @@ public class ProfileFragment extends Fragment {
 //      set up good scroll
         ScrollView scrollView = (ScrollView) view.getRootView().findViewById(R.id.profile_scroll_view);
         OverScrollDecoratorHelper.setUpOverScroll(scrollView);
-//      Скрываем navbar на время загрузки
-        ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.GONE);
+        if (userProfile.equals("")) {
+            ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.VISIBLE);
+        } else {
+            ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.GONE);
+        }
+
 
         presenter.bindView(view);
         return view.getRootView();

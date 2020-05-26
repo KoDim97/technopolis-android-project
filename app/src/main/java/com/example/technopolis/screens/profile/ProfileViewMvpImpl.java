@@ -285,11 +285,6 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     }
 
     @Override
-    public void showNavBar() {
-        ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.VISIBLE);
-    }
-
-    @Override
     public void showNameOnToolbar(String userName) {
         toolbarTextView.setText(userName);
     }
