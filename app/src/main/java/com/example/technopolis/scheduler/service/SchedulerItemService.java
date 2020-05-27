@@ -26,12 +26,6 @@ public class SchedulerItemService {
         this.api = api;
     }
 
-    public void reloadAuthToken() {
-        User user = api.getUser();
-        AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
-        user.setAuth_token(authDto.getAuth_token());
-    }
-
     public List<SchedulerItem> items() {
         List<SchedulerItem> schedulerItems = schedulerItemRepo.findAll();
         if (schedulerItems.isEmpty()) {
@@ -75,13 +69,16 @@ public class SchedulerItemService {
 
     public List<SchedulerItem> checkInItem(long id) {
         SchedulerItemCheckInDto schedulerItemCheckInDto = api.checkInSchedulerItem(id);
-        
-        SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(schedulerItemCheckInDto.getId());
-        schedulerItemFromCache.setFeedbackUrl(schedulerItemCheckInDto.getFeedbackURL());
+        if (schedulerItemCheckInDto != null) {
+            SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(schedulerItemCheckInDto.getId());
+            schedulerItemFromCache.setFeedbackUrl(schedulerItemCheckInDto.getFeedbackURL());
 
-        List<SchedulerItem> schedulerItems = schedulerItemRepo.update(schedulerItemFromCache);
-        Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
-        return schedulerItems;
+            List<SchedulerItem> schedulerItems = schedulerItemRepo.update(schedulerItemFromCache);
+            Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
+            return schedulerItems;
+        }
+
+        return null;
     }
 
     public MailApi getApi() {

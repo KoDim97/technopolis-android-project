@@ -13,7 +13,7 @@ import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
 
 public interface SchedulerItemsMvpView extends MvpViewObservable<BackPressedListener> {
 
-    void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, int actualPosition);
+    void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, List<IsOnlineSupplier> suppliers, int actualPosition);
 
     void setOnReloadListener(IOverScrollStateListener overScrollStateListener, IOverScrollUpdateListener overScrollUpdateListener);
 
