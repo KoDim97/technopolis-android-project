@@ -9,6 +9,7 @@ import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.images.service.ImagesService;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.repo.NewsItemRepository;
+import com.example.technopolis.user.model.User;
 
 import java.util.List;
 

@@ -9,6 +9,7 @@ import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.images.service.ImagesService;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.profile.repo.UserProfileRepo;
+import com.example.technopolis.user.model.User;
 
 public class ProfileService {
     private final UserProfileRepo userProfileRepo;
