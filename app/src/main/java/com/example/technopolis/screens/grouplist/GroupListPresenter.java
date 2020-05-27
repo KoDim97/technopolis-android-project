@@ -53,7 +53,9 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
             GroupItem groupItem = findGroupItemService.findById(id);
             apiHelper.showMessageIfExist(activity, findGroupItemService.getApi(),screenNavigator, this::loadItems);
             if (thread != null && !thread.isInterrupted()) {
-                mainThreadPoster.post(() -> onItemsLoaded(groupItem));
+                if (groupItem != null){
+                    mainThreadPoster.post(() -> onItemsLoaded(groupItem));
+                }
             }else {
                 onBackPressed();
             }
