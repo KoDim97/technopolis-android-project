@@ -1,5 +1,9 @@
 package com.example.technopolis.api;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -91,11 +95,8 @@ public class MailApiImpl implements MailApi {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, error -> {
             // TODO: Handle error
             if (error.networkResponse == null) {
-                System.out.println("Нет подключения");
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
             } else {
-                System.err.println("Неверный логин или пароль");
-                System.err.println(error.networkResponse.statusCode);
                 apiHelper.setMessage(INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE);
             }
         });
@@ -139,7 +140,15 @@ public class MailApiImpl implements MailApi {
         final String url = projectUrl + "/api/mobile/v1/profile/" + username;
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, requestFuture) {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, error -> {
+            if (error.networkResponse == null) {
+                apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            } else {
+                if (error.networkResponse.statusCode == 401) {
+                    apiHelper.setMessage(RELOAD_REQUEST);
+                }
+            }
+        }) {
             @Override
             public Map<String, String> getHeaders() {
                 return getAuthHeader();
@@ -149,7 +158,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);
             JSONObject activity = response.getJSONObject("activity");
 
 //            Convert JSONArray contacts to List<UserContact>
@@ -215,6 +224,7 @@ public class MailApiImpl implements MailApi {
             return profileDto;
 
         } catch (InterruptedException | TimeoutException e) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
             System.out.println("Time out");
         } catch (ExecutionException e) {
             System.out.println("Invalid login or password");
@@ -289,16 +299,19 @@ public class MailApiImpl implements MailApi {
                 error -> {
                     if (error.networkResponse == null) {
                         apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-                    } else if (error.networkResponse.statusCode == 401) {
-//                        AuthDto authDto = requestAuthDto(user.getLogin(), user.getPassword());
-//                        user.setAuth_token(authDto.getAuth_token());
-                    }}) {
+                    }else if (error.networkResponse.statusCode == 401) {
+                        apiHelper.setMessage(RELOAD_REQUEST);
+                    }
+                }
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 return getAuthHeader();
             }
         };
+        jsonArrayRequest.setTag(TAG);
         queue.add(jsonArrayRequest);
+
         try {
             JSONObject response = future.get(1, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
@@ -351,15 +364,18 @@ public class MailApiImpl implements MailApi {
                     if (error.networkResponse == null) {
                         apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
                     } else if (error.networkResponse.statusCode == 401) {
-//                        AuthDto authDto = requestAuthDto(user.getLogin(), user.getPassword());
-//                        user.setAuth_token(authDto.getAuth_token());
-                    }}) {
+                        apiHelper.setMessage(RELOAD_REQUEST);
+                    }
+                }
+        ) {
             @Override
             public Map<String, String> getHeaders() {
                 return getAuthHeader();
             }
         };
+        jsonArrayRequest.setTag(TAG);
         queue.add(jsonArrayRequest);
+
         try {
             JSONObject response = future.get(1, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
@@ -398,20 +414,16 @@ public class MailApiImpl implements MailApi {
     }
 
 
-
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
 
         ArrayList<SchedulerItemDto> items = new ArrayList<>();
-        final String url = "https://polis.mail.ru/api/mobile/v1/schedule/";
+        final String url = projectUrl + "/api/mobile/v1/schedule/";
 
         RequestFuture<JSONArray> requestFuture = RequestFuture.newFuture();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, new JSONArray(), requestFuture, error -> {
             if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
-                //Надо обновить токен!!!
-                //updateToken
-                //reload request
-//                requestSchedulerItems();
+                apiHelper.setMessage(RELOAD_REQUEST);
             }
         }) {
             @Override
@@ -419,11 +431,10 @@ public class MailApiImpl implements MailApi {
                 return getAuthHeader();
             }
         };
+        jsonArrayRequest.setTag(TAG);
         queue.add(jsonArrayRequest);
 
-
         try {
-
             JSONArray response = requestFuture.get(1, TimeUnit.SECONDS);
 
             int count = 0;
@@ -458,19 +469,15 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public SchedulerItemCheckInDto checkInSchedulerItem(long id) {
-        final String url = "https://polis.mail.ru/api/mobile/v1/schedule/" + id + "/check/";
+        final String url = projectUrl + "/api/mobile/v1/schedule/" + id + "/check/";
         JSONObject json = new JSONObject();
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, json, requestFuture, error -> {
             if (error.networkResponse == null) {
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-                System.out.println(NETWORK_ERROR_MESSAGE);
             } else if (error.networkResponse.statusCode == 401) {
-                //Надо обновить токен!!!
-                //updateToken
-                //reload request
-                //checkInSchedulerItem(id);
+                apiHelper.setMessage(RELOAD_REQUEST);
             }
         }) {
             @Override
@@ -489,14 +496,14 @@ public class MailApiImpl implements MailApi {
                     response.getInt("schedule_item"),
                     response.getString("feedback_url")
             );
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-
         } catch (TimeoutException e) {
-            e.printStackTrace();
+            System.err.println("timeout");
         } catch (JSONException e) {
-            e.printStackTrace();
+            int a = 5;
+            System.err.println("jsonException");
+        } catch (ExecutionException | InterruptedException e) {
+            System.err.println("another");
+            //unknown error
         }
 
         return schedulerItemCheckInDto;
