@@ -55,7 +55,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
             if (!apiHelper.showMessageIfExist(activity, newsItemService.getApi(), screenNavigator, this::updateDataNews)) {
                 newsItemService.clearNews();
-                if (!thread.isInterrupted()) {
+                if (thread != null && !thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
                 }
             }
@@ -83,7 +83,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
             if (!apiHelper.showMessageIfExist(activity, newsItemService.getApi(), screenNavigator, this::updateDataSubs)) {
                 newsItemService.clearSubs();
-                if (!thread.isInterrupted()) {
+                if (thread != null && !thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
                 }
             }
