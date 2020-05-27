@@ -73,4 +73,8 @@ public class FindGroupItemService {
             return null;
         }
     }
+
+    public MailApi getApi() {
+        return api;
+    }
 }

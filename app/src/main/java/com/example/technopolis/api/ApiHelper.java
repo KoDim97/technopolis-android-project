@@ -1,5 +1,6 @@
 package com.example.technopolis.api;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -30,13 +31,13 @@ public class ApiHelper {
         return messages.size();
     }
 
-    public boolean isOnline(BaseActivity activity) {
+    public boolean isOnline(Activity activity) {
         ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public boolean showMessageIfExist(BaseActivity activity, MailApi api, ScreenNavigator screenNavigator, Runnable load) {
+    public boolean showMessageIfExist(Activity activity, MailApi api, ScreenNavigator screenNavigator, Runnable load) {
         Integer message = getMessage();
         if (message != null) {
             if (message == R.string.networkError) {

@@ -51,29 +51,12 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     private void loadItems() {
         thread = new Thread(() -> {
             GroupItem groupItem = findGroupItemService.findById(id);
-            Integer message = apiHelper.getMessage();
-            if (message != null) {
-                if (message == R.string.reloadRequest) {
-                    findGroupItemService.reloadAuthToken();
-                    loadItems();
-                    return;
-                } else if (message == R.string.authFailed) {
-                    activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
-                } else {
-                    activity.runOnUiThread(() -> {
-                        Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show();
-                    });
+            if (!apiHelper.showMessageIfExist(activity, findGroupItemService.getApi(),screenNavigator, this::loadItems)){
+                if (thread != null && !thread.isInterrupted()) {
+                    mainThreadPoster.post(() -> onItemsLoaded(groupItem));
                 }
-            }
-            if (thread != null && !thread.isInterrupted()) {
-                mainThreadPoster.post(() -> {
-                            if (groupItem != null) {
-                                onItemsLoaded(groupItem);
-                            } else {
-                                onBackPressed();
-                            }
-                        }
-                );
+            }else {
+                onBackPressed();
             }
         });
         thread.start();
