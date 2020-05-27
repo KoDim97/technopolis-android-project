@@ -39,6 +39,13 @@ public class ProfileService {
         user.setAuth_token(authDto.getAuth_token());
     }
 
+    public void preload() {
+        UserProfile userProfile = requestFromServer("");
+        if (userProfile != null) {
+            userProfileRepo.add(userProfile);
+        }
+    }
+
     private UserProfile requestFromServer(String userName) {
         ProfileDto profileDto = api.requestProfileDto(userName);
         if (profileDto == null) {

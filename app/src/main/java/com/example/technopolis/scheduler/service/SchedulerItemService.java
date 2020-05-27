@@ -1,12 +1,10 @@
 package com.example.technopolis.scheduler.service;
 
 import com.example.technopolis.api.MailApi;
-import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.api.dto.SchedulerItemCheckInDto;
 import com.example.technopolis.api.dto.SchedulerItemDto;
 import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
-import com.example.technopolis.user.model.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,10 +24,13 @@ public class SchedulerItemService {
         this.api = api;
     }
 
-    public void reloadAuthToken() {
-        User user = api.getUser();
-        AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
-        user.setAuth_token(authDto.getAuth_token());
+    public void preload() {
+        List<SchedulerItemDto> schedulerItemsDto = api.requestSchedulerItems();
+        if (!schedulerItemsDto.isEmpty()) {
+            List<SchedulerItem> schedulerItems = transformToModelList(schedulerItemsDto);
+            Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
+            schedulerItemRepo.updateAll(schedulerItems);
+        }
     }
 
     public List<SchedulerItem> items() {
@@ -75,7 +76,7 @@ public class SchedulerItemService {
 
     public List<SchedulerItem> checkInItem(long id) {
         SchedulerItemCheckInDto schedulerItemCheckInDto = api.checkInSchedulerItem(id);
-        
+
         SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(schedulerItemCheckInDto.getId());
         schedulerItemFromCache.setFeedbackUrl(schedulerItemCheckInDto.getFeedbackURL());
 

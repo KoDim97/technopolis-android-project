@@ -27,10 +27,13 @@ public class NewsItemService {
         this.imagesRepo = imagesRepo;
     }
 
-    public void reloadAuthToken() {
-        User user = api.getUser();
-        AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
-        user.setAuth_token(authDto.getAuth_token());
+    public void preload(){
+        List<NewsItem> subsItemList = requestSubsFromServer();
+        if (!subsItemList.isEmpty()) {
+            for(NewsItem item : subsItemList){
+                subsItemRepo.add(item);
+            }
+        }
     }
 
     public List<NewsItem> getNewsItems() {

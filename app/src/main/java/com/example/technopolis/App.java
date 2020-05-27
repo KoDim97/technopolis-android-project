@@ -193,15 +193,12 @@ public class App extends Application {
 
     public void preload() {
         ProfileService profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), provideImagesRepo());
-        Thread profileThread = new Thread(() -> {
-            profileService.findByUserName("");
-        });
-        profileThread.start();
+        new Thread(profileService::preload).start();
+
         NewsItemService newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi(), provideImagesRepo());
-        new Thread(newsItemService::getSubsItems).start();
+        new Thread(newsItemService::preload).start();
 
         SchedulerItemService schedulerItemService = new SchedulerItemService(provideSchedulerItemRepo(), provideMailApi());
-        Thread schedulerThread = new Thread(schedulerItemService::items);
-        schedulerThread.start();
+        new Thread(schedulerItemService::preload).start();
     }
 }
