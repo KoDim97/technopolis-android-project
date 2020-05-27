@@ -47,28 +47,14 @@ public class ApiHelper {
         if (message != null) {
             if (message == R.string.networkError) {
                 if (!isOnline()) {
-                    Handler mainHandler = new Handler(context.getMainLooper());
-                    Runnable showToast = new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-                        }
-                    };
-                    mainHandler.post(showToast);
+                    new Handler(context.getMainLooper()).post(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show());
                 }
             } else if (message == R.string.reloadRequest) {
                 clear();
                 reloadAuthToken(api);
                 load.run();
             } else if (message == R.string.authFailed) {
-                Handler mainHandler = new Handler(context.getMainLooper());
-                Runnable logout = new Runnable() {
-                    @Override
-                    public void run() {
-                        screenNavigator.changeAuthorized(false);
-                    }
-                };
-                mainHandler.post(logout);
+                new Handler(context.getMainLooper()).post(() -> screenNavigator.changeAuthorized(false));
             }
             return true;
         }
