@@ -40,8 +40,8 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
     }
 
     @Override
-    public void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, int actualPosition) {
-        schedulerItemAdapter.bindData(schedulerItems, listeners);
+    public void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, List<IsOnlineSupplier> suppliers, int actualPosition) {
+        schedulerItemAdapter.bindData(schedulerItems, listeners, suppliers);
         linearLayoutManager.scrollToPosition(actualPosition * 2);
     }
 
