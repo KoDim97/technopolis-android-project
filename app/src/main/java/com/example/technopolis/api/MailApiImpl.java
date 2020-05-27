@@ -1,9 +1,5 @@
 package com.example.technopolis.api;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -20,7 +16,6 @@ import com.example.technopolis.api.dto.StudentDto;
 import com.example.technopolis.profile.model.UserAccount;
 import com.example.technopolis.profile.model.UserContact;
 import com.example.technopolis.profile.model.UserGroup;
-import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.user.model.User;
 
 import org.json.JSONArray;
@@ -320,7 +315,7 @@ public class MailApiImpl implements MailApi {
                 error -> {
                     if (error.networkResponse == null) {
                         apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-                    }else if (error.networkResponse.statusCode == 401) {
+                    } else if (error.networkResponse.statusCode == 401) {
                         apiHelper.setMessage(RELOAD_REQUEST);
                     }
                 }

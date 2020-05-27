@@ -1,13 +1,11 @@
 package com.example.technopolis.api;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.widget.Toast;
 
-import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
