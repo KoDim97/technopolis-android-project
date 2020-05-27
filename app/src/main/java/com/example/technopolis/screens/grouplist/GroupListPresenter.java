@@ -51,12 +51,10 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     private void loadItems() {
         thread = new Thread(() -> {
             GroupItem groupItem = findGroupItemService.findById(id);
-            if (!apiHelper.showMessageIfExist(activity, findGroupItemService.getApi(),screenNavigator, this::loadItems)){
-                if (thread != null && !thread.isInterrupted()) {
-                    mainThreadPoster.post(() -> onItemsLoaded(groupItem));
-                }
+            apiHelper.showMessageIfExist(activity, findGroupItemService.getApi(),screenNavigator, this::loadItems);
+            if (thread != null && !thread.isInterrupted()) {
+                mainThreadPoster.post(() -> onItemsLoaded(groupItem));
             }else {
-                System.out.println("GroupPresenter backPressed");
                 onBackPressed();
             }
         });
