@@ -24,4 +24,7 @@
     <string name="reloadRequest">Обнови запрос</string>
     <string name="networkError">Нет соединения</string>
 
+    <string name="aboutPlaceholder">Пользователь ничего о себе не рассказал</string>>
+
+
 </resources>

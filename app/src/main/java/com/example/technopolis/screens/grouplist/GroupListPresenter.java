@@ -53,20 +53,27 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
             GroupItem groupItem = findGroupItemService.findById(id);
             Integer message = apiHelper.getMessage();
             if (message != null) {
-                if (message == R.string.reloadRequest){
+                if (message == R.string.reloadRequest) {
                     findGroupItemService.reloadAuthToken();
                     loadItems();
                     return;
-                }else if(message == R.string.authFailed){
+                } else if (message == R.string.authFailed) {
                     activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
-                }else {
+                } else {
                     activity.runOnUiThread(() -> {
                         Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show();
                     });
                 }
             }
             if (thread != null && !thread.isInterrupted()) {
-                mainThreadPoster.post(() -> onItemsLoaded(groupItem));
+                mainThreadPoster.post(() -> {
+                            if (groupItem != null) {
+                                onItemsLoaded(groupItem);
+                            } else {
+                                onBackPressed();
+                            }
+                        }
+                );
             }
         });
         thread.start();
@@ -75,9 +82,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     private void onItemsLoaded(GroupItem groupItem) {
         // prepare to show
         view.hideProgress();
-        if (groupItem != null){
-            view.bindData(groupItem);
-        }
+        view.bindData(groupItem);
     }
 
     @Override
@@ -115,8 +120,13 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
 
             if (text.length() != 0) {
                 for (Student student : students) {
-                    if (student.getFullname().toLowerCase().contains(text.toLowerCase())) {
-                        filteredStudent.add(student);
+                    String[] split_str = student.getFullname().toLowerCase().split(" ");
+                    String lowerCaseText = text.toLowerCase();
+                    for (String word : split_str){
+                        if (word.substring(0, text.length()).equals(lowerCaseText)){
+                            filteredStudent.add(student);
+                            break;
+                        }
                     }
                 }
             } else {

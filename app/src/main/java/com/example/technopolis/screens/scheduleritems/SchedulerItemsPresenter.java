@@ -1,9 +1,13 @@
 package com.example.technopolis.screens.scheduleritems;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.technopolis.BaseActivity;
+import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
@@ -61,16 +65,18 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         IOverScrollStateListener overScrollStateListener = (decor, oldState, newState) -> {
             if (newState == STATE_BOUNCE_BACK) {
                 if (oldState == STATE_DRAG_START_SIDE && currentOverScrollOffset > 100) {
-                    new Thread(() -> {
+                    thread = new Thread(() -> {
                         final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
-                        showMessageIfExist();
-                        final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-                        if (!thread.isInterrupted()) {
-                            mainThreadPoster.post(() -> {
-                                onItemsLoaded(schedulerItems, listeners, 0);
-                            });
+                        if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
+                            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                            if (thread != null && !thread.isInterrupted()) {
+                                mainThreadPoster.post(() -> {
+                                    onItemsLoaded(schedulerItems, listeners, 0);
+                                });
+                            }
                         }
-                    }).start();
+                    });
+                    thread.start();
                 }
             }
         };
@@ -80,22 +86,15 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         view.setOnReloadListener(overScrollStateListener, overScrollUpdateListener);
     }
 
-
-    private void showMessageIfExist() {
-        Integer message = apiHelper.getMessage();
-        if (message != null) {
-            activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
-        }
-    }
-
     private void loadItems() {
         thread = new Thread(() -> {
             final List<SchedulerItem> schedulerItems = schedulerItemService.items();
-            showMessageIfExist();
-            final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-            if (thread != null && !thread.isInterrupted()) {
-                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
+            if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
+                final int actualDayPosition = calculateActualDayPosition(schedulerItems);
+                final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                if (thread != null && !thread.isInterrupted()) {
+                    mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
+                }
             }
         });
         thread.start();
@@ -142,8 +141,10 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         thread = new Thread(() -> {
             final List<SchedulerItem> schedulerItems = schedulerItemService.checkInItem(id);
             final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-            mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
+            if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
+                final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
+            }
         });
         thread.start();
     }

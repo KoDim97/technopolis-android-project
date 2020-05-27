@@ -3,6 +3,7 @@ package com.example.technopolis.news.service;
 import android.graphics.Bitmap;
 
 import com.example.technopolis.api.MailApi;
+import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.api.dto.NewsDto;
 import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.images.service.ImagesService;
@@ -23,6 +24,12 @@ public class NewsItemService {
         this.subsItemRepo = subsItemRepo;
         this.api = api;
         this.imagesRepo = imagesRepo;
+    }
+
+    public void reloadAuthToken() {
+        User user = api.getUser();
+        AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
+        user.setAuth_token(authDto.getAuth_token());
     }
 
     public List<NewsItem> getNewsItems() {
@@ -126,6 +133,11 @@ public class NewsItemService {
 //
 //        return bitmap_on_return;
 //    }
+
+
+    public MailApi getApi() {
+        return api;
+    }
 
     public List<NewsItem> findAll() {
         return newsItemRepo.findAll();

@@ -32,6 +32,7 @@ public class NewsItemsFragment extends Fragment {
 
     private NewsItemsPresenter presenter;
     private NewsItemsMvpViewImpl view;
+    private float overScrollOffset = 0;
 
     public static Fragment newInstance() {
         return new NewsItemsFragment();
@@ -44,6 +45,7 @@ public class NewsItemsFragment extends Fragment {
         presenter = new NewsItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
                 getFindNewsItemService(), getMainThreadPoster(), getContext(), getApiHelper());
         presenter.newsItems();
+
     }
 
     @Nullable
@@ -53,35 +55,37 @@ public class NewsItemsFragment extends Fragment {
 
         ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
 
-        view = new NewsItemsMvpViewImpl(inflater, container, getContext(),(App)getMainActivity().getApplication());
+        view = new NewsItemsMvpViewImpl(inflater, container, getContext(), (App) getMainActivity().getApplication());
         final IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(view.getRvNewsItems(),
                 OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
 
         presenter.bindView(view);
-
         RadioGroup radioGroup = view.getView().findViewById(R.id.activity_news__top_bar);
+
+        provideListener(decor, presenter::updateDataNews);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (R.id.activity_news__radio_subs == checkedId) {
                 presenter.subsItems();
-                decor.setOverScrollStateListener((decor1, oldState, newState) -> {
-                    if (newState == STATE_BOUNCE_BACK && oldState == STATE_DRAG_START_SIDE) {
-                        presenter.updateDataSubs();
-                    }
-                });
+                provideListener(decor, presenter::updateDataSubs);
             } else {
                 presenter.newsItems();
-                decor.setOverScrollStateListener((decor12, oldState, newState) -> {
-                    if (newState == STATE_BOUNCE_BACK) {
-                        if (oldState == STATE_DRAG_START_SIDE) {
-                            presenter.updateDataNews();
-                        }
-                    }
-                });
+                provideListener(decor, presenter::updateDataNews);
             }
         });
 
-
         return view.getRootView();
+    }
+
+    private void provideListener(IOverScrollDecor decor, Runnable method) {
+        decor.setOverScrollStateListener((decor12, oldState, newState) -> {
+            if (newState == STATE_BOUNCE_BACK && oldState == STATE_DRAG_START_SIDE && overScrollOffset > 100) {
+                method.run();
+            }
+        });
+        decor.setOverScrollUpdateListener((decor1, state, offset) -> {
+            overScrollOffset = offset;
+        });
+
     }
 
     @Override
@@ -101,7 +105,6 @@ public class NewsItemsFragment extends Fragment {
         presenter.onDestroy();
         super.onDestroy();
     }
-
 
 
     @Nullable

@@ -3,6 +3,7 @@ package com.example.technopolis.profile.service;
 import android.graphics.Bitmap;
 
 import com.example.technopolis.api.MailApi;
+import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.api.dto.ProfileDto;
 import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.images.service.ImagesService;
@@ -24,13 +25,25 @@ public class ProfileService {
         UserProfile userProfile = userProfileRepo.findByUserName(userName);
         if (userProfile == null) {
             userProfile = requestFromServer(userName);
-            userProfileRepo.add(userProfile);
+            if (userProfile != null) {
+                userProfileRepo.add(userProfile);
+            }
         }
         return userProfile;
     }
 
+    public void reloadAuthToken() {
+        User user = api.getUser();
+        AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
+        user.setAuth_token(authDto.getAuth_token());
+    }
+
     private UserProfile requestFromServer(String userName) {
         ProfileDto profileDto = api.requestProfileDto(userName);
+        if (profileDto == null) {
+            return null;
+        }
+
         UserProfile userProfile;
         if (userName.equals("")) {
             profileDto.setUserName("");
