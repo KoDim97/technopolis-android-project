@@ -20,12 +20,22 @@ class SaveNewsController {
     private final static String fileName = "NewsRepoDisk";
     private final static String fileNameSub = "NewsSubRepoDisk";
 
+    /**
+     * Save news's information in "NewsRepoDisk" file
+     * Save subscribers's news's information in "NewsSubRepoDisk" file
+     */
     static void serialize(@NonNull final NewsItemRepository newsItemRepository, @NonNull final NewsItemRepository newsSubItemRepository, @NonNull final App app) throws IOException {
         serializeNews(newsItemRepository, app, fileName);
         serializeNews(newsSubItemRepository, app, fileNameSub);
     }
 
-    //чтение репозитория и основных новостей и подписок, поэтому размер 2
+    /**
+     * Read news's information from "NewsRepoDisk" file
+     * Read subscribers's news's information from "NewsSubRepoDisk" file
+     *
+     * @param newsItemRepositories - repositories of news and subscribers's news (size = 2)
+     * @return true if read all news else false
+     */
     static boolean read(@NonNull final NewsItemRepository[] newsItemRepositories, @NonNull final App app, @NonNull ImagesRepo repo) throws IOException {
         final NewsItemRepository[] newsItemRepositoriesBuf = new NewsItemRepository[1];
         if (newsItemRepositories.length != 2)
@@ -43,6 +53,20 @@ class SaveNewsController {
         return true;
     }
 
+
+    /**
+     * Save news's information  in "fileName" file
+     * number of news |
+     * | size of news's id in bytes | news's id in bytes
+     * | size of news's name in bytes | news's name in bytes
+     * |size of news's title in bytes | news's title in bytes
+     * |size of news's section in bytes | news's section in bytes
+     * |size of news's date in bytes | news's date in bytes
+     * |size of news's image's url in bytes | news's image's url in bytes
+     * |size of news's number of comments in bytes | news's number of comments in bytes
+     * |size of news's url in bytes | news's url in bytes
+     * |
+     */
     private static void serializeNews(@NonNull final NewsItemRepository newsItemRepository, @NonNull final App app, @NonNull final String fileName) throws IOException {
         final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         writer.write(newsItemRepository.findAll().size());

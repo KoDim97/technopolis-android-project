@@ -23,7 +23,8 @@ public class PauseControllerImpl implements PauseController {
     private void saveAuthorized() {
         saveAuthController.saveAuthorizationInfo(app.provideUser());
         try {
-            SaveImageController.serialize(app.provideImagesRepo(), app);
+            ImagesRepo repo = SaveImageController.filterImages(app.provideImagesRepo(), app.provideUserProfileRepo().findByUserName(""), app.provideNewsItemRepo(), app.provideSubsItemRepo());
+            SaveImageController.serialize(repo, app);
             SaveNewsController.serialize(app.provideNewsItemRepo(), app.provideSubsItemRepo(), app);
             SaveSchedulerController.serialize(app.provideSchedulerItemRepo(), app);
             SaveProfileController.serialize(app.provideUserProfileRepo().findByUserName(""), app);

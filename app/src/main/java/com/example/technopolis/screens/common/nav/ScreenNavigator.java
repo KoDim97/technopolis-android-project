@@ -42,7 +42,6 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragNavController.initialize(FragNavController.TAB1, savedInstanceState);
         log = new TreeMap<>();
         log.put(0, 0);
-
     }
 
     private void initListFragments() {
@@ -72,11 +71,14 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     public void changeAuthorized(final boolean authorized) {
+        // if already authorized and @authorized return
         if (app.isAuthorized() && fragNavController.getCurrentFrag() == fragments.get(0) && authorized)
             return;
+        // if already not authorized and !@authorized return
         if (!authorized && !app.isAuthorized()) {
             return;
         }
+        //if !@authorized set first view and set app !authorized
         if (!authorized) {
             activity.getRootViewController().setNavElem(0);
         }
@@ -96,6 +98,9 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragNavController.onSaveInstanceState(outState);
     }
 
+    /**
+     * delete loop of navigation, when we go back at the elem at index
+     */
     private void deleteLoop(final int index) {
         boolean find = false;
         int n = log.size();
@@ -122,19 +127,28 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
     }
 
+    /**
+     * load fragment view from fragment list
+     *
+     * @return true if fragment list contains @menuItem else false
+     */
     public boolean loadFragment(@NonNull final MenuItem menuItem) {
         final Integer index = getIndexByMenuItem(menuItem);
         if (index == null)
             return false;
+        //if back press
         if (pop) {
             pop = false;
             return true;
         }
+        //if were not on this fragment
         if (!log.containsValue(index)) {
             log.put(log.size(), index);
             fragNavController.pushFragment(fragments.get(index));
+            //if not root
         } else if (index != 0) {
             deleteLoop(index);
+            //if root
         } else {
             fragNavController.clearStack();
             log.clear();
@@ -143,12 +157,18 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         return true;
     }
 
+    /**
+     * Check fragment is one of fragments at bottom navigation view ( list fragments)
+     *
+     * @return true if @fragment is one of fragments at bottom navigation view else false
+     */
     private boolean navBarElem(final Fragment fragment) {
         if (fragments.get(1) == fragment) {
             return true;
         } else return fragments.get(2) == fragment;
     }
 
+    //processing backpress
     public boolean navigateUp() {
         if (!fragNavController.isRootFragment()) {
             if (navBarElem(fragNavController.getCurrentFrag())) {

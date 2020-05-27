@@ -19,6 +19,21 @@ import java.util.List;
 class SaveSchedulerController {
     private static final String fileName = "SchedulerRepoDisk";
 
+    /**
+     * Save scheduler's information  in "SchedulerRepoDisk" file
+     * number of scheduler's items |
+     * | size of scheduler's item's id in bytes | scheduler's item's id in bytes
+     * | size of scheduler's item's subject's name in bytes | scheduler's subject's name in bytes
+     * |size of scheduler's item's lesson's name in bytes | scheduler's item's lesson's name in bytes
+     * |size of scheduler's item's lesson's type in bytes | scheduler's lesson's type in bytes
+     * |size of scheduler's item's start time in bytes | scheduler's item's start time in bytes
+     * |size of scheduler's item's end time in bytes | scheduler's item's end time in bytes
+     * |size of scheduler's item's location in bytes | scheduler's item's location in bytes
+     * |size of scheduler's item's date in bytes | scheduler's item's date in bytes
+     * |size of scheduler's item's feedback's url in bytes | scheduler's item's feedback's url in bytes
+     * |size of scheduler's item's isAttended flag in bytes | scheduler's item's isAttended flag in bytes
+     * |size of scheduler's item's isCheckInOpen flag in bytes | scheduler's item's isCheckInOpen flag in bytes
+     */
     static void serialize(@NonNull final SchedulerItemRepo schedulerItemRepo, @NonNull final App app) throws IOException {
         final FileOutputStream writer = app.getApplicationContext().openFileOutput(fileName, Context.MODE_PRIVATE);
         writer.write(schedulerItemRepo.findAll().size());
@@ -59,6 +74,11 @@ class SaveSchedulerController {
         writer.close();
     }
 
+    /**
+     * Read user's profile's information from "SchedulerRepoDisk" file
+     *
+     * @return true if read all scheduler's information else false
+     */
     static boolean read(@NonNull final SchedulerItemRepo[] schedulerItemRepo, @NonNull final App app) throws IOException {
         FileInputStream reader;
         try {

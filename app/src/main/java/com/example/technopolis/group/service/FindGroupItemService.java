@@ -10,10 +10,9 @@ import com.example.technopolis.group.model.GroupItem;
 import com.example.technopolis.group.model.Student;
 import com.example.technopolis.group.repo.GroupItemRepo;
 import com.example.technopolis.images.repo.ImagesRepo;
+import com.example.technopolis.images.service.ImagesService;
 import com.example.technopolis.user.model.User;
-import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class FindGroupItemService {
         this.imagesRepo = imagesRepo;
     }
 
-    public void reloadAuthToken(){
+    public void reloadAuthToken() {
         User user = api.getUser();
         AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
         user.setAuth_token(authDto.getAuth_token());
@@ -50,25 +49,17 @@ public class FindGroupItemService {
 
             for (final StudentDto studentDto : studentDtoList) {
                 String imageUrl = studentDto.getAvatar();
+                Bitmap bitmap = null;
                 if (!imageUrl.equals("null")) {
                     if (!imageUrl.contains("https")) {
                         imageUrl = imageUrl.replace("http", "https");
                     }
-                    if (imagesRepo.findById(imageUrl) == null) {
-                        Bitmap bitmap;
-                        try {
-                            bitmap = Picasso.get().load(imageUrl).get();
-                        } catch (IOException e) {
-                            bitmap = null;
-                        }
-                        imagesRepo.add(imageUrl, bitmap);
-                    }
-                    studentList.add(new Student(studentDto.getId(), studentDto.getUsername(),
-                            studentDto.getFullname(), imagesRepo.findById(imageUrl), studentDto.isOnline()));
-                } else {
-                    studentList.add(new Student(studentDto.getId(), studentDto.getUsername(),
-                            studentDto.getFullname(), null, studentDto.isOnline()));
+                    ImagesService.downloadImage(imageUrl, imagesRepo);
+                    bitmap = imagesRepo.findById(imageUrl);
                 }
+                studentList.add(new Student(studentDto.getId(), studentDto.getUsername(),
+                        studentDto.getFullname(), bitmap, studentDto.isOnline()));
+
             }
 
             GroupItem groupItem = new GroupItem(

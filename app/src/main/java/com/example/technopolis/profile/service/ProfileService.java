@@ -6,12 +6,9 @@ import com.example.technopolis.api.MailApi;
 import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.api.dto.ProfileDto;
 import com.example.technopolis.images.repo.ImagesRepo;
+import com.example.technopolis.images.service.ImagesService;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.profile.repo.UserProfileRepo;
-import com.example.technopolis.user.model.User;
-import com.squareup.picasso.Picasso;
-
-import java.io.IOException;
 
 public class ProfileService {
     private final UserProfileRepo userProfileRepo;
@@ -56,57 +53,34 @@ public class ProfileService {
 //        Если не использует, принудительно меняем http на https
 //        Иначе на некоторых устройствах изображение не будет загружаться
         String imageUrl = profileDto.getAvatarUrl();
+        Bitmap bitmap = null;
         if (!imageUrl.equals("null")) {
             if (!imageUrl.contains("https")) {
                 imageUrl = imageUrl.replace("http", "https");
             }
-            if (imagesRepo.findById(imageUrl) == null) {
-                Bitmap bitmap;
-                try {
-                    bitmap = Picasso.get().load(imageUrl).get();
-                } catch (IOException e) {
-                    bitmap = null;
-                }
-                imagesRepo.add(imageUrl, bitmap);
-            }
-            userProfile = new UserProfile(
-                    profileDto.getId(),
-                    profileDto.getUserName(),
-                    profileDto.getProjectId(),
-                    profileDto.getProjectName(),
-                    profileDto.getFullName(),
-                    profileDto.getGender(),
-                    imagesRepo.findById(imageUrl),
-                    imageUrl,
-                    profileDto.getMainGroup(),
-                    profileDto.getBirthDate(),
-                    profileDto.getAbout(),
-                    profileDto.getJoinDate(),
-                    profileDto.getLastSeen(),
-                    profileDto.getContacts(),
-                    profileDto.getGroups(),
-                    profileDto.getAccounts()
-            );
-        } else {
-            userProfile = new UserProfile(
-                    profileDto.getId(),
-                    profileDto.getUserName(),
-                    profileDto.getProjectId(),
-                    profileDto.getProjectName(),
-                    profileDto.getFullName(),
-                    profileDto.getGender(),
-                    null,
-                    imageUrl,
-                    profileDto.getMainGroup(),
-                    profileDto.getBirthDate(),
-                    profileDto.getAbout(),
-                    profileDto.getJoinDate(),
-                    profileDto.getLastSeen(),
-                    profileDto.getContacts(),
-                    profileDto.getGroups(),
-                    profileDto.getAccounts()
-            );
+            ImagesService.downloadImage(imageUrl, imagesRepo);
+            bitmap = imagesRepo.findById(imageUrl);
         }
+
+        userProfile = new UserProfile(
+                profileDto.getId(),
+                profileDto.getUserName(),
+                profileDto.getProjectId(),
+                profileDto.getProjectName(),
+                profileDto.getFullName(),
+                profileDto.getGender(),
+                bitmap,
+                imageUrl,
+                profileDto.getMainGroup(),
+                profileDto.getBirthDate(),
+                profileDto.getAbout(),
+                profileDto.getJoinDate(),
+                profileDto.getLastSeen(),
+                profileDto.getContacts(),
+                profileDto.getGroups(),
+                profileDto.getAccounts()
+        );
+
         userProfileRepo.add(userProfile);
         return userProfile;
     }

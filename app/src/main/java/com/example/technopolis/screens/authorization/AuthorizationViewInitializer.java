@@ -29,6 +29,9 @@ class AuthorizationViewInitializer {
     private final AuthorizationViewController controller;
     private boolean authorized = false;
 
+    /**
+     * Handler of view's events
+     */
     AuthorizationViewInitializer(@NonNull final View rootView, @NonNull final BaseActivity activity) {
         controller = new AuthorizationViewControllerImpl(activity);
         logoPagerAdapter = new LogoPagerAdapter(activity);
