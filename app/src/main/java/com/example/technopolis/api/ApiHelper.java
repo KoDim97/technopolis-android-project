@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.example.technopolis.BaseActivity;
@@ -17,7 +18,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class ApiHelper {
 
+    private Context context;
+
     private Queue<Integer> messages = new LinkedBlockingQueue<>();
+
+    public ApiHelper(Context context) {
+        this.context = context;
+    }
 
     public Integer getMessage() {
         return messages.poll();
@@ -31,25 +38,39 @@ public class ApiHelper {
         return messages.size();
     }
 
-    public boolean isOnline(Activity activity) {
-        ConnectivityManager cm = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 
-    public boolean showMessageIfExist(Activity activity, MailApi api, ScreenNavigator screenNavigator, Runnable load) {
+    public boolean showMessageIfExist(MailApi api, ScreenNavigator screenNavigator, Runnable load) {
         Integer message = getMessage();
         if (message != null) {
             if (message == R.string.networkError) {
-                if (!isOnline(activity)) {
-                    activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
+                if (!isOnline()) {
+                    Handler mainHandler = new Handler(context.getMainLooper());
+                    Runnable showToast = new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    mainHandler.post(showToast);
                 }
             } else if (message == R.string.reloadRequest) {
                 clear();
                 reloadAuthToken(api);
                 load.run();
             } else if (message == R.string.authFailed) {
-                activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
+                Handler mainHandler = new Handler(context.getMainLooper());
+                Runnable logout = new Runnable() {
+                    @Override
+                    public void run() {
+                        screenNavigator.changeAuthorized(false);
+                    }
+                };
+                mainHandler.post(logout);
             }
             return true;
         }

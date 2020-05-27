@@ -57,7 +57,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private void loadItem() {
         thread = new Thread(() -> {
             UserProfile userProfile = profileService.findByUserName(userName);
-            apiHelper.showMessageIfExist(activity, profileService.getApi(), screenNavigator, this::loadItem);
+            apiHelper.showMessageIfExist(profileService.getApi(), screenNavigator, this::loadItem);
             if (thread != null && !thread.isInterrupted()) {
                 if (userProfile != null) {
                     mainThreadPoster.post(() -> onItemLoaded(userProfile));

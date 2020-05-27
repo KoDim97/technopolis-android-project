@@ -20,6 +20,7 @@ import com.example.technopolis.api.dto.StudentDto;
 import com.example.technopolis.profile.model.UserAccount;
 import com.example.technopolis.profile.model.UserContact;
 import com.example.technopolis.profile.model.UserGroup;
+import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.user.model.User;
 
 import org.json.JSONArray;
@@ -71,6 +72,11 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public AuthDto requestAuthDto(String login, String password) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return null;
+        }
+
         AuthDto authDto;
         final String url = projectUrl + "/api/mobile/v1/auth/";
         JSONObject json = new JSONObject();
@@ -135,6 +141,11 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public ProfileDto requestProfileDto(String username) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return null;
+        }
+
         ProfileDto profileDto;
 
         final String url = projectUrl + "/api/mobile/v1/profile/" + username;
@@ -236,6 +247,11 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public GroupDto requestGroupDto(long id) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return null;
+        }
+
         final String url = projectUrl + "/api/mobile/v1/groups/" + id;
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
@@ -287,6 +303,11 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public List<NewsDto> requestMainNewsDto(Integer limit, Integer offset) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return new ArrayList<>();
+        }
+
         final List<NewsDto> newsDtoList = new ArrayList<>();
         final StringBuilder url = new StringBuilder(projectUrl).append("/api/mobile/v1/topics/main/?");
         url.append("limit=").append(limit).append("&offset=").append(offset);
@@ -351,6 +372,11 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public List<NewsDto> requestSubscribedNewsDto(Integer limit, Integer offset) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return new ArrayList<NewsDto>();
+        }
+
         final List<NewsDto> newsDtoList = new ArrayList<>();
         final StringBuilder url = new StringBuilder(projectUrl).append("/api/mobile/v1/topics/subscribed/?");
         url.append("limit=").append(limit).append("&offset=").append(offset);
@@ -416,6 +442,10 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return new ArrayList<SchedulerItemDto>();
+        }
 
         ArrayList<SchedulerItemDto> items = new ArrayList<>();
         final String url = projectUrl + "/api/mobile/v1/schedule/";
@@ -469,6 +499,11 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public SchedulerItemCheckInDto checkInSchedulerItem(long id) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return null;
+        }
+
         final String url = projectUrl + "/api/mobile/v1/schedule/" + id + "/check/";
         JSONObject json = new JSONObject();
 
