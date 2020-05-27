@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
+import com.example.technopolis.api.MailApi;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.profile.service.ProfileService;
 import com.example.technopolis.screens.common.mvp.MvpPresenter;
@@ -56,28 +57,12 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private void loadItem() {
         thread = new Thread(() -> {
             UserProfile userProfile = profileService.findByUserName(userName);
-            Integer message = apiHelper.getMessage();
-            if (message != null) {
-                if (message == R.string.reloadRequest) {
-                    profileService.reloadAuthToken();
-                    loadItem();
-                    return;
-                } else if (message == R.string.authFailed) {
-                    activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
-                } else {
-                    activity.runOnUiThread(() -> {
-                        Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show();
-                    });
+            if (!apiHelper.showMessageIfExist(activity, profileService.getApi(), screenNavigator, this::loadItem)) {
+                if (thread != null && !thread.isInterrupted()) {
+                    mainThreadPoster.post(() -> onItemLoaded(userProfile));
                 }
-            }
-            if (!thread.isInterrupted()) {
-                mainThreadPoster.post(() -> {
-                    if (userProfile != null) {
-                        onItemLoaded(userProfile);
-                    } else {
-                        onBackPressed();
-                    }
-                });
+            } else {
+                onBackPressed();
             }
         });
         thread.start();

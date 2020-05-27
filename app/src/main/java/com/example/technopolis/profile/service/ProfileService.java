@@ -1,5 +1,6 @@
 package com.example.technopolis.profile.service;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 
 import com.example.technopolis.api.MailApi;
@@ -93,5 +94,7 @@ public class ProfileService {
         return userProfile;
     }
 
-
+    public MailApi getApi() {
+        return api;
+    }
 }
