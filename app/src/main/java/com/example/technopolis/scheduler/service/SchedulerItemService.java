@@ -76,13 +76,15 @@ public class SchedulerItemService {
 
     public List<SchedulerItem> checkInItem(long id) {
         SchedulerItemCheckInDto schedulerItemCheckInDto = api.checkInSchedulerItem(id);
+        if (schedulerItemCheckInDto != null) {
+            SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(schedulerItemCheckInDto.getId());
+            schedulerItemFromCache.setFeedbackUrl(schedulerItemCheckInDto.getFeedbackURL());
+            List<SchedulerItem> schedulerItems = schedulerItemRepo.update(schedulerItemFromCache);
+            Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
+            return schedulerItems;
+        }
 
-        SchedulerItem schedulerItemFromCache = schedulerItemRepo.findById(schedulerItemCheckInDto.getId());
-        schedulerItemFromCache.setFeedbackUrl(schedulerItemCheckInDto.getFeedbackURL());
-
-        List<SchedulerItem> schedulerItems = schedulerItemRepo.update(schedulerItemFromCache);
-        Collections.sort(schedulerItems, SCHEDULER_ITEM_BY_TIME_COMPARATOR);
-        return schedulerItems;
+        return null;
     }
 
     public MailApi getApi() {

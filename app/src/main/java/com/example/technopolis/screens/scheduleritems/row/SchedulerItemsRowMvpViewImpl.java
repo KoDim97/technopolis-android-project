@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat;
 import com.example.technopolis.R;
 import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.screens.common.mvp.MvpViewObservableBase;
+import com.example.technopolis.screens.scheduleritems.IsOnlineSupplier;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,7 +57,7 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
 
 
     @Override
-    public void bindData(SchedulerItem schedulerItem, View.OnClickListener listener) {
+    public void bindData(SchedulerItem schedulerItem, View.OnClickListener listener, IsOnlineSupplier supplier) {
         this.schedulerItem = schedulerItem;
         subjectNameTextView.setText(schedulerItem.getSubjectName());
         lessonNameTextView.setText(schedulerItem.getLessonName());
@@ -64,7 +65,7 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
 
         String lessonType = schedulerItem.getLessonType();
         lessonTypeTextView.setText(lessonType.length() > 8 ? lessonType.substring(0, 8) + "..." : lessonType);
-        bindActionButton(schedulerItem, listener);
+        bindActionButton(schedulerItem, listener, supplier);
         bindLessonTime(startTimeTextView, schedulerItem.getStartTime());
         bindLessonTime(endTimeTextView, schedulerItem.getEndTime());
     }
@@ -81,9 +82,9 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
         }
     }
 
-    private void bindActionButton(final SchedulerItem schedulerItem, final View.OnClickListener listener) {
+    private void bindActionButton(final SchedulerItem schedulerItem, final View.OnClickListener listener, final IsOnlineSupplier supplier) {
         if (!schedulerItem.getFeedbackUrl().equals("null")) {
-            setOnFeedback(schedulerItem);
+            setOnFeedback(schedulerItem, supplier);
         } else if (schedulerItem.isAttended()) {
             setOnIsAttended();
         } else if (schedulerItem.isCheckInOpen()) {
@@ -94,7 +95,7 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
         }
     }
 
-    private void setOnFeedback(final SchedulerItem schedulerItem) {
+    private void setOnFeedback(final SchedulerItem schedulerItem, final IsOnlineSupplier supplier) {
         setButtonCharacteristics(
                 "Оценить",
                 ContextCompat.getDrawable(getContext(), R.drawable.scheduler_on_rate_element),
@@ -102,11 +103,8 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
         );
         onActionButton.setVisibility(View.VISIBLE);
         acceptReportImageView.setVisibility(View.INVISIBLE);
-        onActionButton.setOnClickListener(new View.OnClickListener() {
-            //need to use schedulerItem.getFeedbackUrl() instead of https://www.google.ru/
-            //when API will connected to the App
-            @Override
-            public void onClick(View v) {
+        onActionButton.setOnClickListener(v -> {
+            if (supplier.isOnline()) {
                 Intent viewIntent = new Intent(
                         "android.intent.action.VIEW",
                         Uri.parse(schedulerItem.getFeedbackUrl())

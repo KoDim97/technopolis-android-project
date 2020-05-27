@@ -1,8 +1,5 @@
 package com.example.technopolis.screens.scheduleritems;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.view.View;
 import android.widget.Toast;
 
@@ -69,10 +66,9 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                         final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
                         if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                             final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                            final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
                             if (thread != null && !thread.isInterrupted()) {
-                                mainThreadPoster.post(() -> {
-                                    onItemsLoaded(schedulerItems, listeners, 0);
-                                });
+                                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, 0));
                             }
                         }
                     });
@@ -91,9 +87,10 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
             final List<SchedulerItem> schedulerItems = schedulerItemService.items();
             if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                 final int actualDayPosition = calculateActualDayPosition(schedulerItems);
+                final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
                 final List<View.OnClickListener> listeners = createListeners(schedulerItems);
                 if (thread != null && !thread.isInterrupted()) {
-                    mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
+                    mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, actualDayPosition));
                 }
             }
         });
@@ -114,8 +111,8 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         return actualPosition;
     }
 
-    private void onItemsLoaded(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, int actualPosition) {
-        view.bindData(schedulerItems, listeners, actualPosition);
+    private void onItemsLoaded(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, List<IsOnlineSupplier> suppliers, int actualPosition) {
+        view.bindData(schedulerItems, listeners, suppliers, actualPosition);
     }
 
     @Override
@@ -140,10 +137,11 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     public void onCheckInClicked(long id) {
         thread = new Thread(() -> {
             final List<SchedulerItem> schedulerItems = schedulerItemService.checkInItem(id);
-            final int actualDayPosition = calculateActualDayPosition(schedulerItems);
             if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
+                final int actualDayPosition = calculateActualDayPosition(schedulerItems);
                 final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, actualDayPosition));
+                final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
+                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, actualDayPosition));
             }
         });
         thread.start();
@@ -152,9 +150,29 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     private List<View.OnClickListener> createListeners(List<SchedulerItem> items) {
         List<View.OnClickListener> listeners = new ArrayList<>();
         for (SchedulerItem schedulerItem : items) {
-            listeners.add(v -> onCheckInClicked(schedulerItem.getId()));
+            listeners.add(v -> {
+                if (apiHelper.isOnline(activity)) {
+                    onCheckInClicked(schedulerItem.getId());
+                } else {
+                    activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
+                }
+            });
         }
         return listeners;
+    }
+
+    private List<IsOnlineSupplier> createEstimateSupplier(final int count) {
+        List<IsOnlineSupplier> suppliers = new ArrayList<>();
+        for (int i = 0; i < count; ++i) {
+            suppliers.add(() -> {
+                if (!apiHelper.isOnline(activity)) {
+                    activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
+                    return false;
+                }
+                return true;
+            });
+        }
+        return suppliers;
     }
 
     @Override
