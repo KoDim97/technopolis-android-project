@@ -120,8 +120,13 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
 
             if (text.length() != 0) {
                 for (Student student : students) {
-                    if (student.getFullname().toLowerCase().contains(text.toLowerCase())) {
-                        filteredStudent.add(student);
+                    String[] split_str = student.getFullname().toLowerCase().split(" ");
+                    String lowerCaseText = text.toLowerCase();
+                    for (String word : split_str){
+                        if (word.substring(0, text.length()).equals(lowerCaseText)){
+                            filteredStudent.add(student);
+                            break;
+                        }
                     }
                 }
             } else {
