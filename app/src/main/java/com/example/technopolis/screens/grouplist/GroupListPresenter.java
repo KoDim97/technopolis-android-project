@@ -51,12 +51,12 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     private void loadItems() {
         thread = new Thread(() -> {
             GroupItem groupItem = findGroupItemService.findById(id);
-            apiHelper.showMessageIfExist(activity, findGroupItemService.getApi(),screenNavigator, this::loadItems);
+            apiHelper.showMessageIfExist(activity, findGroupItemService.getApi(), screenNavigator, this::loadItems);
             if (thread != null && !thread.isInterrupted()) {
-                mainThreadPoster.post(() ->{
-                    if (groupItem != null){
+                mainThreadPoster.post(() -> {
+                    if (groupItem != null) {
                         onItemsLoaded(groupItem);
-                    }else {
+                    } else {
                         onBackPressed();
                     }
                 });
@@ -108,8 +108,8 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
                 for (Student student : students) {
                     String[] split_str = student.getFullname().toLowerCase().split(" ");
                     String lowerCaseText = text.toLowerCase();
-                    for (String word : split_str){
-                        if (word.substring(0, text.length()).equals(lowerCaseText)){
+                    for (String word : split_str) {
+                        if (word.substring(0, text.length()).equals(lowerCaseText)) {
                             filteredStudent.add(student);
                             break;
                         }
