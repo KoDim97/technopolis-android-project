@@ -56,6 +56,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
                     mainThreadPoster.post(() -> onItemsLoaded(groupItem));
                 }
             }else {
+                System.out.println("GroupPresenter backPressed");
                 onBackPressed();
             }
         });
