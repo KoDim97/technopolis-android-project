@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
+import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.service.NewsItemService;
@@ -51,10 +52,8 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     public void updateDataNews() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.updateNewsItems();
-            Integer message = apiHelper.getMessage();
-            if (message != null) {
-                activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
-            } else {
+
+            if (!apiHelper.showMessageIfExist(activity, newsItemService.getApi(), screenNavigator, this::updateDataNews)) {
                 newsItemService.clearNews();
                 if (!thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
@@ -68,9 +67,10 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     public void newsItems() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getNewsItems();
-            showMessageIfExist();
-            if (!thread.isInterrupted()) {
-                mainThreadPoster.post(() -> onItemsLoaded(newsItems));
+            if (!apiHelper.showMessageIfExist(activity, newsItemService.getApi(), screenNavigator, this::newsItems)) {
+                if (!thread.isInterrupted()) {
+                    mainThreadPoster.post(() -> onItemsLoaded(newsItems));
+                }
             }
         });
 
@@ -80,10 +80,8 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     public void updateDataSubs() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.updateSubsItems();
-            Integer message = apiHelper.getMessage();
-            if (message != null) {
-                activity.runOnUiThread(() -> Toast.makeText(activity, message, Toast.LENGTH_SHORT).show());
-            } else {
+
+            if (!apiHelper.showMessageIfExist(activity, newsItemService.getApi(), screenNavigator, this::updateDataSubs)) {
                 newsItemService.clearSubs();
                 if (!thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
@@ -97,20 +95,14 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     public void subsItems() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getSubsItems();
-            showMessageIfExist();
-            if (!thread.isInterrupted()) {
-                mainThreadPoster.post(() -> onItemsLoaded(newsItems));
+            if (!apiHelper.showMessageIfExist(activity, newsItemService.getApi(), screenNavigator, this::subsItems)) {
+                if (!thread.isInterrupted()) {
+                    mainThreadPoster.post(() -> onItemsLoaded(newsItems));
+                }
             }
         });
 
         thread.start();
-    }
-
-    private void showMessageIfExist() {
-        Integer message = apiHelper.getMessage();
-        if (message != null) {
-            activity.runOnUiThread(() -> Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show());
-        }
     }
 
 
