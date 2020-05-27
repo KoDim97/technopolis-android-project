@@ -83,14 +83,21 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
 
     @Override
     public void bindData(UserProfile userProfile) {
-        if (userProfile.getAvatar() != null)
+        if (userProfile.getAvatar() != null) {
             image.setImageBitmap(userProfile.getAvatar());
-        else
+        } else {
             image.setImageResource(R.drawable.img_no_avatar);
+        }
         profileContentContainer.setVisibility(View.VISIBLE);
         name.setText(userProfile.getFullName());
         status.setText(userProfile.getMainGroup());
-        about.setText(userProfile.getAbout());
+
+        String aboutText = userProfile.getAbout();
+        if (aboutText.equals("null")) {
+            aboutText = getContext().getString(R.string.aboutPlaceholder);
+        }
+        about.setText(aboutText);
+        
 //        Добавляем кнопки для просмотра групп
         addGroupsButtons(userProfile.getGroups());
 //        Добавляем textView для контактов
@@ -145,8 +152,6 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
 
             button.setOnClickListener(this);
             groupsLinearLayout.addView(button);
-
-
         }
     }
 
@@ -281,11 +286,6 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
                 }
             });
         });
-    }
-
-    @Override
-    public void hideNavBar() {
-        ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.GONE);
     }
 
     @Override

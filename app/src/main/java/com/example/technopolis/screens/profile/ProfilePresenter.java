@@ -6,7 +6,9 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
+import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.profile.service.ProfileService;
 import com.example.technopolis.screens.common.mvp.MvpPresenter;
@@ -24,19 +26,25 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private final ScreenNavigator screenNavigator;
     private final ThreadPoster mainThreadPoster;
     private final BackPressDispatcher backPressDispatcher;
+    private final ApiHelper apiHelper;
+    private final BaseActivity activity;
+
     private Thread thread;
     private ClipboardManager myClipboard;
     private ClipData myClip;
 
     public ProfilePresenter(String userName, String backButtonText, ProfileService profileService,
                             ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster,
-                            BackPressDispatcher backPressDispatcher) {
+                            BackPressDispatcher backPressDispatcher, ApiHelper apiHelper,
+                            BaseActivity activity) {
         this.userName = userName;
         this.backButtonText = backButtonText;
         this.profileService = profileService;
         this.screenNavigator = screenNavigator;
         this.mainThreadPoster = mainThreadPoster;
         this.backPressDispatcher = backPressDispatcher;
+        this.apiHelper = apiHelper;
+        this.activity = activity;
     }
 
     @Override
@@ -48,8 +56,28 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private void loadItem() {
         thread = new Thread(() -> {
             UserProfile userProfile = profileService.findByUserName(userName);
+            Integer message = apiHelper.getMessage();
+            if (message != null) {
+                if (message == R.string.reloadRequest) {
+                    profileService.reloadAuthToken();
+                    loadItem();
+                    return;
+                } else if (message == R.string.authFailed) {
+                    activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
+                } else {
+                    activity.runOnUiThread(() -> {
+                        Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show();
+                    });
+                }
+            }
             if (!thread.isInterrupted()) {
-                mainThreadPoster.post(() -> onItemLoaded(userProfile));
+                mainThreadPoster.post(() -> {
+                    if (userProfile != null) {
+                        onItemLoaded(userProfile);
+                    } else {
+                        onBackPressed();
+                    }
+                });
             }
         });
         thread.start();
@@ -62,12 +90,9 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         }
 
 //        Показываем кнопку "Выйти", если имеем дело с профилем пользователя
-
         if (userName.equals("")) {
             view.showExitButton();
         } else {
-//          скрываем navBar
-            view.hideNavBar();
 //          Показываем имя пользователя в toolbar'e
             view.showNameOnToolbar(userProfile.getFullName());
         }
@@ -127,5 +152,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
             myClipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
         }
     }
+
 
 }
