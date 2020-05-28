@@ -206,13 +206,13 @@ public class App extends Application {
     }
 
     public void preload() {
-        ProfileService profileService = new ProfileService(provideUserProfileRepo(), provideMailApi(), provideImagesRepo());
+        ProfileService profileService = provideProfileService();
         new Thread(profileService::preload).start();
 
-        NewsItemService newsItemService = new NewsItemService(provideNewsItemRepo(), provideSubsItemRepo(), provideMailApi(), provideImagesRepo());
+        NewsItemService newsItemService = provideNewsItemService();
         new Thread(newsItemService::preload).start();
 
-        SchedulerItemService schedulerItemService = new SchedulerItemService(provideSchedulerItemRepo(), provideMailApi());
+        SchedulerItemService schedulerItemService = provideSchedulerItemService();
         new Thread(schedulerItemService::preload).start();
     }
 }
