@@ -6,7 +6,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.profile.model.UserProfile;
@@ -27,7 +26,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private final ThreadPoster mainThreadPoster;
     private final BackPressDispatcher backPressDispatcher;
     private final ApiHelper apiHelper;
-    private final BaseActivity activity;
 
     private Thread thread;
     private ClipboardManager myClipboard;
@@ -35,8 +33,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     public ProfilePresenter(String userName, String backButtonText, ProfileService profileService,
                             ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster,
-                            BackPressDispatcher backPressDispatcher, ApiHelper apiHelper,
-                            BaseActivity activity) {
+                            BackPressDispatcher backPressDispatcher, ApiHelper apiHelper) {
         this.userName = userName;
         this.backButtonText = backButtonText;
         this.profileService = profileService;
@@ -44,7 +41,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         this.mainThreadPoster = mainThreadPoster;
         this.backPressDispatcher = backPressDispatcher;
         this.apiHelper = apiHelper;
-        this.activity = activity;
     }
 
     @Override
@@ -56,28 +52,13 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private void loadItem() {
         thread = new Thread(() -> {
             UserProfile userProfile = profileService.findByUserName(userName);
-            Integer message = apiHelper.getMessage();
-            if (message != null) {
-                if (message == R.string.reloadRequest) {
-                    profileService.reloadAuthToken();
-                    loadItem();
-                    return;
-                } else if (message == R.string.authFailed) {
-                    activity.runOnUiThread(() -> screenNavigator.changeAuthorized(false));
+            apiHelper.showMessageIfExist(profileService.getApi(), screenNavigator, this::loadItem);
+            if (thread != null && !thread.isInterrupted()) {
+                if (userProfile != null) {
+                    mainThreadPoster.post(() -> onItemLoaded(userProfile));
                 } else {
-                    activity.runOnUiThread(() -> {
-                        Toast.makeText(activity, activity.getResources().getString(message), Toast.LENGTH_SHORT).show();
-                    });
+                    onBackPressed();
                 }
-            }
-            if (!thread.isInterrupted()) {
-                mainThreadPoster.post(() -> {
-                    if (userProfile != null) {
-                        onItemLoaded(userProfile);
-                    } else {
-                        onBackPressed();
-                    }
-                });
             }
         });
         thread.start();

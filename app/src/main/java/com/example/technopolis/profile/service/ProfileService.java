@@ -3,13 +3,11 @@ package com.example.technopolis.profile.service;
 import android.graphics.Bitmap;
 
 import com.example.technopolis.api.MailApi;
-import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.api.dto.ProfileDto;
 import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.images.service.ImagesService;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.profile.repo.UserProfileRepo;
-import com.example.technopolis.user.model.User;
 
 public class ProfileService {
     private final UserProfileRepo userProfileRepo;
@@ -31,12 +29,6 @@ public class ProfileService {
             }
         }
         return userProfile;
-    }
-
-    public void reloadAuthToken() {
-        User user = api.getUser();
-        AuthDto authDto = api.requestAuthDto(user.getLogin(), user.getPassword());
-        user.setAuth_token(authDto.getAuth_token());
     }
 
     public void preload() {
@@ -93,5 +85,7 @@ public class ProfileService {
         return userProfile;
     }
 
-
+    public MailApi getApi() {
+        return api;
+    }
 }

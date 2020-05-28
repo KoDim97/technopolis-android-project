@@ -19,10 +19,15 @@
     <string name="contacts">Контакты</string>
     <string name="accounts">Аккаунты</string>
     <string name="top_bar_name">Новости</string>
+    <string name="exit_confirmation">Вы уверены, что хотите выйти?</string>>
+
 
     <string name="authFailed">Неправильный логин или пароль</string>
     <string name="reloadRequest">Обнови запрос</string>
     <string name="networkError">Нет соединения</string>
+    <string name="serverError">Сервер не отвечает</string>
+    <string name="jsonParseError">Ошибка в формате ответа сервера</string>
+    <string name="unknownError">Ошибка</string>
 
     <string name="aboutPlaceholder">Пользователь ничего о себе не рассказал</string>>
 

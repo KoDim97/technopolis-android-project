@@ -53,7 +53,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.updateNewsItems();
 
-            if (!apiHelper.showMessageIfExist(activity, newsItemService.getApi(), screenNavigator, this::updateDataNews)) {
+            if (!apiHelper.showMessageIfExist(newsItemService.getApi(), screenNavigator, this::updateDataNews)) {
                 newsItemService.clearNews();
                 if (thread != null && !thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
@@ -67,7 +67,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     public void newsItems() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getNewsItems();
-            if (!apiHelper.showMessageIfExist(activity, newsItemService.getApi(), screenNavigator, this::newsItems)) {
+            if (!apiHelper.showMessageIfExist(newsItemService.getApi(), screenNavigator, this::newsItems)) {
                 if (!thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
                 }
@@ -81,7 +81,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.updateSubsItems();
 
-            if (!apiHelper.showMessageIfExist(activity, newsItemService.getApi(), screenNavigator, this::updateDataSubs)) {
+            if (!apiHelper.showMessageIfExist(newsItemService.getApi(), screenNavigator, this::updateDataSubs)) {
                 newsItemService.clearSubs();
                 if (thread != null && !thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
@@ -95,7 +95,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     public void subsItems() {
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getSubsItems();
-            if (!apiHelper.showMessageIfExist(activity, newsItemService.getApi(), screenNavigator, this::subsItems)) {
+            if (!apiHelper.showMessageIfExist(newsItemService.getApi(), screenNavigator, this::subsItems)) {
                 if (!thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
                 }
