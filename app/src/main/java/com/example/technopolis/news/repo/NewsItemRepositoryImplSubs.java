@@ -14,7 +14,6 @@ public class NewsItemRepositoryImplSubs implements NewsItemRepository {
 
     @Override
     public List<NewsItem> findAll() {
-        System.out.println(itemsSubs.values());
         return new ArrayList<>(itemsSubs.values());
     }
 

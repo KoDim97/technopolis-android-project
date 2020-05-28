@@ -22,6 +22,9 @@
     <string name="authFailed">Invalid login or password</string>
     <string name="reloadRequest">Reload request</string>
     <string name="networkError">No connection</string>
+    <string name="serverError">Server response error</string>
+    <string name="jsonParseError">Can not parse server response</string>
+    <string name="unknownError">Error</string>
 
     <string name="aboutPlaceholder">The user didn\'t tell about himself</string>>
 

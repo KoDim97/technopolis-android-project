@@ -48,16 +48,22 @@ public class ApiHelper {
     public boolean showMessageIfExist(MailApi api, ScreenNavigator screenNavigator, Runnable load) {
         Integer message = getMessage();
         if (message != null) {
-            if (message == R.string.networkError) {
-                if (!isOnline()) {
+            switch (message){
+                case R.string.networkError:
+                    if (!isOnline()) {
+                        mainThreadPoster.post(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show());
+                    }
+                    break;
+                case R.string.reloadRequest:
+                    clear();
+                    reloadAuthToken(api);
+                    load.run();
+                    break;
+                case R.string.authFailed:
+                    mainThreadPoster.post(() -> screenNavigator.changeAuthorized(false));
+                    break;
+                default:
                     mainThreadPoster.post(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show());
-                }
-            } else if (message == R.string.reloadRequest) {
-                clear();
-                reloadAuthToken(api);
-                load.run();
-            } else if (message == R.string.authFailed) {
-                mainThreadPoster.post(() -> screenNavigator.changeAuthorized(false));
             }
             return true;
         }
