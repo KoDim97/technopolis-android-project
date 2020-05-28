@@ -105,7 +105,7 @@ public class App extends Application {
 
     public ApiHelper provideApiHelper() {
         if (apiHelper == null) {
-            apiHelper = new ApiHelper(getContext());
+            apiHelper = new ApiHelper(getContext(), provideMainThreadPoster());
         }
         return apiHelper;
     }

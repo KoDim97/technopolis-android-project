@@ -10,6 +10,8 @@ import com.example.technopolis.R;
 import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.user.model.User;
+import com.example.technopolis.util.MainThreadPoster;
+import com.example.technopolis.util.ThreadPoster;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -17,11 +19,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class ApiHelper {
 
     private Context context;
-
+    private ThreadPoster mainThreadPoster;
     private Queue<Integer> messages = new LinkedBlockingQueue<>();
 
-    public ApiHelper(Context context) {
+    public ApiHelper(Context context, ThreadPoster mainThreadPoster) {
         this.context = context;
+        this.mainThreadPoster = mainThreadPoster;
     }
 
     public Integer getMessage() {
@@ -47,14 +50,14 @@ public class ApiHelper {
         if (message != null) {
             if (message == R.string.networkError) {
                 if (!isOnline()) {
-                    new Handler(context.getMainLooper()).post(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show());
+                    mainThreadPoster.post(() -> Toast.makeText(context, message, Toast.LENGTH_SHORT).show());
                 }
             } else if (message == R.string.reloadRequest) {
                 clear();
                 reloadAuthToken(api);
                 load.run();
             } else if (message == R.string.authFailed) {
-                new Handler(context.getMainLooper()).post(() -> screenNavigator.changeAuthorized(false));
+                mainThreadPoster.post(() -> screenNavigator.changeAuthorized(false));
             }
             return true;
         }
