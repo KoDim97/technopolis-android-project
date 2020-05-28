@@ -1,6 +1,5 @@
 package com.example.technopolis.profile.service;
 
-import android.app.Activity;
 import android.graphics.Bitmap;
 
 import com.example.technopolis.api.MailApi;

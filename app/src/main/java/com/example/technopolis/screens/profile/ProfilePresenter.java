@@ -9,7 +9,6 @@ import android.widget.Toast;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
-import com.example.technopolis.api.MailApi;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.profile.service.ProfileService;
 import com.example.technopolis.screens.common.mvp.MvpPresenter;
@@ -28,7 +27,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private final ThreadPoster mainThreadPoster;
     private final BackPressDispatcher backPressDispatcher;
     private final ApiHelper apiHelper;
-    private final BaseActivity activity;
 
     private Thread thread;
     private ClipboardManager myClipboard;
@@ -36,8 +34,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     public ProfilePresenter(String userName, String backButtonText, ProfileService profileService,
                             ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster,
-                            BackPressDispatcher backPressDispatcher, ApiHelper apiHelper,
-                            BaseActivity activity) {
+                            BackPressDispatcher backPressDispatcher, ApiHelper apiHelper) {
         this.userName = userName;
         this.backButtonText = backButtonText;
         this.profileService = profileService;
@@ -45,7 +42,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         this.mainThreadPoster = mainThreadPoster;
         this.backPressDispatcher = backPressDispatcher;
         this.apiHelper = apiHelper;
-        this.activity = activity;
     }
 
     @Override
@@ -57,7 +53,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private void loadItem() {
         thread = new Thread(() -> {
             UserProfile userProfile = profileService.findByUserName(userName);
-            apiHelper.showMessageIfExist(activity, profileService.getApi(), screenNavigator, this::loadItem);
+            apiHelper.showMessageIfExist(profileService.getApi(), screenNavigator, this::loadItem);
             if (thread != null && !thread.isInterrupted()) {
                 if (userProfile != null) {
                     mainThreadPoster.post(() -> onItemLoaded(userProfile));

@@ -15,8 +15,10 @@
         android:id="@+id/confirm_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Вы уверены, что хотите выйти из приложения?"
+        android:text="@string/exit_confirmation"
+        android:fontFamily="@font/roboto_regular"
         android:gravity="left"
+        android:textSize="18sp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
@@ -31,7 +33,6 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginTop="10dp"
-        android:textColor="@color/colorRed"
         android:fontFamily="@font/roboto_regular"
         android:textAllCaps="false"
         style="?android:attr/borderlessButtonStyle"
@@ -46,13 +47,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:layout_marginTop="5dp"
-        android:fontFamily="@font/roboto_bold"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:fontFamily="@font/roboto_regular"
         android:text="@string/cancel"
         android:textAllCaps="false"
-        android:textColor="@color/colorBlueBright"
         android:textSize="16sp"
         app:layout_constraintRight_toLeftOf="@id/exitButtonApprove"
-        app:layout_constraintTop_toBottomOf="@id/confirm_text"/>
+        app:layout_constraintTop_toBottomOf="@id/confirm_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

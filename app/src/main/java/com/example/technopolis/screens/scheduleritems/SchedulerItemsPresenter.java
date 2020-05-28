@@ -64,7 +64,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                 if (oldState == STATE_DRAG_START_SIDE && currentOverScrollOffset > 100) {
                     thread = new Thread(() -> {
                         final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
-                        if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
+                        if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                             final List<View.OnClickListener> listeners = createListeners(schedulerItems);
                             final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
                             if (thread != null && !thread.isInterrupted()) {
@@ -85,7 +85,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     private void loadItems() {
         thread = new Thread(() -> {
             final List<SchedulerItem> schedulerItems = schedulerItemService.items();
-            if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
+            if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                 final int actualDayPosition = calculateActualDayPosition(schedulerItems);
                 final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
                 final List<View.OnClickListener> listeners = createListeners(schedulerItems);
@@ -137,7 +137,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     public void onCheckInClicked(long id) {
         thread = new Thread(() -> {
             final List<SchedulerItem> schedulerItems = schedulerItemService.checkInItem(id);
-            if (!apiHelper.showMessageIfExist(activity, schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
+            if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                 final int actualDayPosition = calculateActualDayPosition(schedulerItems);
                 final List<View.OnClickListener> listeners = createListeners(schedulerItems);
                 final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
@@ -151,7 +151,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         List<View.OnClickListener> listeners = new ArrayList<>();
         for (SchedulerItem schedulerItem : items) {
             listeners.add(v -> {
-                if (apiHelper.isOnline(activity)) {
+                if (apiHelper.isOnline()) {
                     onCheckInClicked(schedulerItem.getId());
                 } else {
                     activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
@@ -165,7 +165,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         List<IsOnlineSupplier> suppliers = new ArrayList<>();
         for (int i = 0; i < count; ++i) {
             suppliers.add(() -> {
-                if (!apiHelper.isOnline(activity)) {
+                if (!apiHelper.isOnline()) {
                     activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
                     return false;
                 }
