@@ -44,7 +44,9 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     @Override
     public void bindView(GroupListMvpView view) {
         this.view = view;
-        view.showProgress();
+        if (!findGroupItemService.isContain(id)){
+            view.showProgress();
+        }
         loadItems();
     }
 

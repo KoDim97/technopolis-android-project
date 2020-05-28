@@ -74,6 +74,10 @@ public class FindGroupItemService {
         }
     }
 
+    public boolean isContain(long id){
+        return groupItemRepo.findById(id) != null;
+    }
+
     public MailApi getApi() {
         return api;
     }
