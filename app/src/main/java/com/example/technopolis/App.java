@@ -1,6 +1,7 @@
 package com.example.technopolis;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 
@@ -52,6 +53,8 @@ public class App extends Application {
 
     private ImagesRepo imagesRepo;
 
+    private static Application app;
+
     public void setImagesRepo(@NonNull final ImagesRepo imagesRepo) {
         this.imagesRepo = imagesRepo;
     }
@@ -75,6 +78,15 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        app = this;
+    }
+
+    public static Application getApplication() {
+        return app;
+    }
+
+    public static Context getContext() {
+        return getApplication().getApplicationContext();
     }
 
     @NonNull
@@ -93,7 +105,7 @@ public class App extends Application {
 
     public ApiHelper provideApiHelper() {
         if (apiHelper == null) {
-            apiHelper = new ApiHelper();
+            apiHelper = new ApiHelper(getContext(), provideMainThreadPoster());
         }
         return apiHelper;
     }
@@ -175,6 +187,8 @@ public class App extends Application {
         }
         return groupItemRepo;
     }
+
+
 
     public FindGroupItemService provideFindGroupItemService() {
         if (findGroupItemService == null) {

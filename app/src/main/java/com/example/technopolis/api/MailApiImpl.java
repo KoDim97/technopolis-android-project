@@ -1,9 +1,5 @@
 package com.example.technopolis.api;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -42,6 +38,9 @@ public class MailApiImpl implements MailApi {
     private static final int NETWORK_ERROR_MESSAGE = R.string.networkError;
     private static final int INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE = R.string.authFailed;
     private static final int RELOAD_REQUEST = R.string.reloadRequest;
+    private static final int SERVER_ERROR_MESSAGE = R.string.serverError;
+    private static final int JSON_PARSE_ERROR = R.string.jsonParseError;
+    private static final int UNKNOWN_ERROR = R.string.unknownError;
 
     private RequestQueue queue;
     private User user;
@@ -71,6 +70,11 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public AuthDto requestAuthDto(String login, String password) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return null;
+        }
+
         AuthDto authDto;
         final String url = projectUrl + "/api/mobile/v1/auth/";
         JSONObject json = new JSONObject();
@@ -113,17 +117,11 @@ public class MailApiImpl implements MailApi {
             authDto = new AuthDto(auth_token, user_id, username);
             return authDto;
         } catch (TimeoutException e) {
-            int a = 5;
-            //Time out
-            System.err.println("timeout");
+            apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (JSONException e) {
-            int a = 5;
-            System.err.println("jsonException");
-            //Json creating failed
+            apiHelper.setMessage(JSON_PARSE_ERROR);
         } catch (ExecutionException | InterruptedException e) {
-            int a = 5;
-            System.err.println("another");
-            //unknown error
+            apiHelper.setMessage(UNKNOWN_ERROR);
         }
         return null;
     }
@@ -135,6 +133,14 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public ProfileDto requestProfileDto(String username) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException ignored) {}
+            return null;
+        }
+
         ProfileDto profileDto;
 
         final String url = projectUrl + "/api/mobile/v1/profile/" + username;
@@ -158,7 +164,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(2, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
             JSONObject activity = response.getJSONObject("activity");
 
 //            Convert JSONArray contacts to List<UserContact>
@@ -224,18 +230,22 @@ public class MailApiImpl implements MailApi {
             return profileDto;
 
         } catch (InterruptedException | TimeoutException e) {
-            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-            System.out.println("Time out");
+            apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
-            System.out.println("Invalid login or password");
+            apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
-            e.printStackTrace();
+            apiHelper.setMessage(JSON_PARSE_ERROR);
         }
         return null;
     }
 
     @Override
     public GroupDto requestGroupDto(long id) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return null;
+        }
+
         final String url = projectUrl + "/api/mobile/v1/groups/" + id;
 
         RequestFuture<JSONObject> requestFuture = RequestFuture.newFuture();
@@ -274,12 +284,11 @@ public class MailApiImpl implements MailApi {
             }
             return new GroupDto(id, name, list);
         } catch (InterruptedException | TimeoutException e) {
-            System.out.println("Time out");
-            //apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
-            System.out.println("Update token");
+            apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
-            System.out.println("Json creating failed");
+            apiHelper.setMessage(JSON_PARSE_ERROR);
         }
         return null;
     }
@@ -287,6 +296,11 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public List<NewsDto> requestMainNewsDto(Integer limit, Integer offset) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return new ArrayList<>();
+        }
+
         final List<NewsDto> newsDtoList = new ArrayList<>();
         final StringBuilder url = new StringBuilder(projectUrl).append("/api/mobile/v1/topics/main/?");
         url.append("limit=").append(limit).append("&offset=").append(offset);
@@ -299,7 +313,7 @@ public class MailApiImpl implements MailApi {
                 error -> {
                     if (error.networkResponse == null) {
                         apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-                    }else if (error.networkResponse.statusCode == 401) {
+                    } else if (error.networkResponse.statusCode == 401) {
                         apiHelper.setMessage(RELOAD_REQUEST);
                     }
                 }
@@ -340,17 +354,22 @@ public class MailApiImpl implements MailApi {
 
 
         } catch (InterruptedException | TimeoutException e) {
-//            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
-            System.out.println("Update token");
+            apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
-            System.out.println("Json creating failed");
+            apiHelper.setMessage(JSON_PARSE_ERROR);
         }
         return newsDtoList;
     }
 
     @Override
     public List<NewsDto> requestSubscribedNewsDto(Integer limit, Integer offset) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return new ArrayList<NewsDto>();
+        }
+
         final List<NewsDto> newsDtoList = new ArrayList<>();
         final StringBuilder url = new StringBuilder(projectUrl).append("/api/mobile/v1/topics/subscribed/?");
         url.append("limit=").append(limit).append("&offset=").append(offset);
@@ -404,11 +423,11 @@ public class MailApiImpl implements MailApi {
 
 
         } catch (InterruptedException | TimeoutException e) {
-//            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+           apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
-            System.out.println("Update token");
+            apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
-            System.out.println("Json creating failed");
+            apiHelper.setMessage(JSON_PARSE_ERROR);
         }
         return newsDtoList;
     }
@@ -416,13 +435,22 @@ public class MailApiImpl implements MailApi {
 
     @Override
     public List<SchedulerItemDto> requestSchedulerItems() {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return new ArrayList<SchedulerItemDto>();
+        }
 
         ArrayList<SchedulerItemDto> items = new ArrayList<>();
         final String url = projectUrl + "/api/mobile/v1/schedule/";
 
         RequestFuture<JSONArray> requestFuture = RequestFuture.newFuture();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, new JSONArray(), requestFuture, error -> {
-            if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
+//            if (error.networkResponse != null && error.networkResponse.statusCode == 401) {
+//                apiHelper.setMessage(RELOAD_REQUEST);
+//            }
+            if (error.networkResponse == null) {
+                apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            }else if (error.networkResponse.statusCode == 401) {
                 apiHelper.setMessage(RELOAD_REQUEST);
             }
         }) {
@@ -458,17 +486,23 @@ public class MailApiImpl implements MailApi {
                 ++count;
             }
         } catch (InterruptedException | TimeoutException e) {
-            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            //apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
-            System.out.println("Update token");
+            apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
-            System.out.println("Json creating failed");
+            apiHelper.setMessage(JSON_PARSE_ERROR);
         }
         return items;
     }
 
     @Override
     public SchedulerItemCheckInDto checkInSchedulerItem(long id) {
+        if (!apiHelper.isOnline()) {
+            apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            return null;
+        }
+
         final String url = projectUrl + "/api/mobile/v1/schedule/" + id + "/check/";
         JSONObject json = new JSONObject();
 
@@ -497,13 +531,11 @@ public class MailApiImpl implements MailApi {
                     response.getString("feedback_url")
             );
         } catch (TimeoutException e) {
-            System.err.println("timeout");
+            apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (JSONException e) {
-            int a = 5;
-            System.err.println("jsonException");
+            apiHelper.setMessage(JSON_PARSE_ERROR);
         } catch (ExecutionException | InterruptedException e) {
-            System.err.println("another");
-            //unknown error
+            apiHelper.setMessage(UNKNOWN_ERROR);
         }
 
         return schedulerItemCheckInDto;

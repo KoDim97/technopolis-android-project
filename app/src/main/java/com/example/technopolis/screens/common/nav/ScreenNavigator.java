@@ -49,7 +49,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragments.add(NewsItemsFragment.newInstance());
         fragments.add(SchedulerFragment.newInstance());
         fragments.add(ProfileFragment.newInstance());
-        if (app.provideApiHelper().isOnline(activity)) {
+        if (app.provideApiHelper().isOnline()) {
             app.preload();
         }
     }
