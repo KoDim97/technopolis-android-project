@@ -3,14 +3,12 @@ package com.example.technopolis.api;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
 import android.widget.Toast;
 
 import com.example.technopolis.R;
 import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.user.model.User;
-import com.example.technopolis.util.MainThreadPoster;
 import com.example.technopolis.util.ThreadPoster;
 
 import java.util.Queue;

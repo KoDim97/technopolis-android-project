@@ -3,7 +3,6 @@ package com.example.technopolis.screens.grouplist;
 import android.widget.Toast;
 
 import com.example.technopolis.BaseActivity;
-import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.group.model.GroupItem;
 import com.example.technopolis.group.model.Student;
