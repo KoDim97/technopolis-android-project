@@ -100,7 +100,7 @@ public class MailApiImpl implements MailApi {
             // TODO: Handle error
             if (error.networkResponse == null) {
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-            } else {
+            } else if (error.networkResponse.statusCode != 400){
                 apiHelper.setMessage(INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE);
             }
         });

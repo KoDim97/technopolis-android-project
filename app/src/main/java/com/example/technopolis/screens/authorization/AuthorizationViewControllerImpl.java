@@ -61,6 +61,7 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
         if (!app.isAuthorized()) {
             final Thread thread = new Thread(() -> {
                 if (authService.CheckAuth(login, password)) {
+                    apiHelper.clear();
                     activity.runOnUiThread(() -> screenNavigator.changeAuthorized(true));
                 } else {
                     Integer message = apiHelper.getMessage();

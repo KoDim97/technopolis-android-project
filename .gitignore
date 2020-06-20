@@ -10,6 +10,8 @@
 /.idea/assetWizardSettings.xml
 /app/release
 
+/app/src/main/java/com/example/technopolis/api/Salt.java
+
 .DS_Store
 /build
 /captures
