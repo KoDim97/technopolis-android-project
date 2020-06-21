@@ -486,7 +486,6 @@ public class MailApiImpl implements MailApi {
                 ++count;
             }
         } catch (InterruptedException | TimeoutException e) {
-            //apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
