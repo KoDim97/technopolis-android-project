@@ -327,7 +327,7 @@ public class MailApiImpl implements MailApi {
         queue.add(jsonArrayRequest);
 
         try {
-            JSONObject response = future.get(1, TimeUnit.SECONDS);
+            JSONObject response = future.get(3, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject one_new = results.getJSONObject(i);
@@ -396,7 +396,7 @@ public class MailApiImpl implements MailApi {
         queue.add(jsonArrayRequest);
 
         try {
-            JSONObject response = future.get(1, TimeUnit.SECONDS);
+            JSONObject response = future.get(3, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject one_new = results.getJSONObject(i);
@@ -486,7 +486,6 @@ public class MailApiImpl implements MailApi {
                 ++count;
             }
         } catch (InterruptedException | TimeoutException e) {
-            //apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);

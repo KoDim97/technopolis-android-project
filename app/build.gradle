@@ -46,7 +46,9 @@ dependencies {
 //    CircleView
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'com.ncapdevi:frag-nav:3.2.0'
+//    Refresh
     implementation 'me.everything:overscroll-decor-android:1.0.4'
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     //noinspection GradleCompatible
     implementation 'com.android.support:appcompat-v7:21.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

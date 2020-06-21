@@ -1,7 +1,10 @@
 package com.example.technopolis.screens.scheduleritems;
 
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
@@ -19,12 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import me.everything.android.ui.overscroll.IOverScrollStateListener;
-import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
-
-import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
-import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
 
 public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpView>,
         BackPressedListener {
@@ -59,27 +56,26 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     }
 
     private void setOnReloadListener() {
-        IOverScrollStateListener overScrollStateListener = (decor, oldState, newState) -> {
-            if (newState == STATE_BOUNCE_BACK) {
-                if (oldState == STATE_DRAG_START_SIDE && currentOverScrollOffset > 100) {
-                    thread = new Thread(() -> {
-                        final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
-                        if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
-                            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-                            final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
-                            if (thread != null && !thread.isInterrupted()) {
-                                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, 0));
-                            }
-                        }
-                    });
-                    thread.start();
+        SwipeRefreshLayout swipeRefreshLayout = view.getRootView().findViewById(R.id.swiperefresh_scheduler);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            new Thread(() -> {
+                final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
+                if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
+                    final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                    final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
+                    if (thread != null && !thread.isInterrupted()) {
+                        mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, 0));
+                    }
                 }
-            }
-        };
-        IOverScrollUpdateListener overScrollUpdateListener = (decor, state, offset) -> {
-            currentOverScrollOffset = offset;
-        };
-        view.setOnReloadListener(overScrollStateListener, overScrollUpdateListener);
+            }).start();
+            final Handler handler = new Handler();
+            handler.postDelayed(() -> {
+                if (swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }, 1000);
+        });
+
     }
 
     private void loadItems() {
