@@ -111,7 +111,6 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         view.bindData(newsItems);
     }
 
-    @Override
     public void onStart() {
         view.registerListener(this);
         backPressDispatcher.registerListener(this);
@@ -138,9 +137,16 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     @Override
     public void onNewsItemClicked(String url) {
         App app = (App) activity.getApplication();
+
         if (app.isAuthorized()) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            context.startActivity(browserIntent);
+            if (!apiHelper.isOnline()) {
+                activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
+            } else {
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                context.startActivity(browserIntent);
+                screenNavigator.toFeedBack(url);
+            }
+
         }
     }
 }

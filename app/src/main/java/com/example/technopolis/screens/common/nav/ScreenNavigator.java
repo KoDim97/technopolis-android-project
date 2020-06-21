@@ -2,6 +2,7 @@ package com.example.technopolis.screens.common.nav;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,7 +19,6 @@ import com.example.technopolis.screens.scheduleritems.SchedulerFeedbackFragment;
 import com.example.technopolis.screens.scheduleritems.SchedulerFragment;
 import com.ncapdevi.fragnav.FragNavController;
 
-import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -99,7 +99,11 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     public void toProfile(String username, String groupname) {
-        fragNavController.pushFragment(ProfileFragment.newInstance(username, groupname));
+        if (fragNavController.getSize() > 10) {
+            activity.runOnUiThread(() -> Toast.makeText(activity, R.string.stackError, Toast.LENGTH_SHORT).show());
+        } else {
+            fragNavController.pushFragment(ProfileFragment.newInstance(username, groupname));
+        }
     }
 
     public void onSaveInstanceState(Bundle outState) {
