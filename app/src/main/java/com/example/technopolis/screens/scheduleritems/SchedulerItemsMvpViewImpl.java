@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.technopolis.R;
 import com.example.technopolis.scheduler.model.SchedulerItem;
@@ -16,11 +15,6 @@ import com.example.technopolis.screens.common.nav.BackPressedListener;
 import com.example.technopolis.screens.scheduleritems.stickyHeader.SchedulerItemDecoration;
 
 import java.util.List;
-
-import me.everything.android.ui.overscroll.IOverScrollDecor;
-import me.everything.android.ui.overscroll.IOverScrollStateListener;
-import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
-import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 
 public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressedListener>
         implements SchedulerItemsMvpView {
@@ -45,12 +39,4 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
         schedulerItemAdapter.bindData(schedulerItems, listeners, suppliers);
         linearLayoutManager.scrollToPosition(actualPosition * 2);
     }
-
-//    @Override
-//    public void setOnReloadListener(IOverScrollStateListener overScrollStateListener, IOverScrollUpdateListener overScrollUpdateListener) {
-//        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(rvSchedulerItems, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
-//
-//        decor.setOverScrollStateListener(overScrollStateListener);
-//        decor.setOverScrollUpdateListener(overScrollUpdateListener);
-//    }
 }

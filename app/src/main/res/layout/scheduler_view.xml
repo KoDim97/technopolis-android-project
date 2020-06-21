@@ -22,24 +22,6 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <!--    <RelativeLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent">-->
-
-    <!--        <pl.droidsonroids.gif.GifImageView-->
-    <!--            android:layout_width="20dp"-->
-    <!--            android:layout_height="20dp"-->
-    <!--            android:src="@drawable/loading"-->
-    <!--            android:layout_centerHorizontal="true"-->
-    <!--            android:layout_marginTop="10dp"/>-->
-    <!--        -->
-    <!--        <androidx.recyclerview.widget.RecyclerView-->
-    <!--            android:id="@+id/scheduler_recycler_view"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:overScrollMode="never"-->
-    <!--            />-->
-    <!--    </RelativeLayout>-->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swiperefresh_scheduler"
         android:layout_width="match_parent"

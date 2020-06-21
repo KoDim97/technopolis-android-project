@@ -56,27 +56,6 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     }
 
     private void setOnReloadListener() {
-//        IOverScrollStateListener overScrollStateListener = (decor, oldState, newState) -> {
-//            if (newState == STATE_BOUNCE_BACK) {
-//                if (oldState == STATE_DRAG_START_SIDE && currentOverScrollOffset > 100) {
-//                    thread = new Thread(() -> {
-//                        final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
-//                        if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
-//                            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-//                            final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
-//                            if (thread != null && !thread.isInterrupted()) {
-//                                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, 0));
-//                            }
-//                        }
-//                    });
-//                    thread.start();
-//                }
-//            }
-//        };
-//        IOverScrollUpdateListener overScrollUpdateListener = (decor, state, offset) -> {
-//            currentOverScrollOffset = offset;
-//        };
-//        view.setOnReloadListener(overScrollStateListener, overScrollUpdateListener);
         SwipeRefreshLayout swipeRefreshLayout = view.getRootView().findViewById(R.id.swiperefresh_scheduler);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             new Thread(() -> {
