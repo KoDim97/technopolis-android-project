@@ -29,6 +29,9 @@ import com.example.technopolis.user.service.AuthService;
 import com.example.technopolis.util.MainThreadPoster;
 import com.example.technopolis.util.ThreadPoster;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+
 
 public class App extends Application {
 
@@ -36,6 +39,8 @@ public class App extends Application {
     private MailApi api;
     private ApiHelper apiHelper;
     private MainThreadPoster mainThreadPoster;
+    private CookieManager cookieManager;
+    private String feedbackURL;
 
     private User user;
     private AuthService authService;
@@ -59,6 +64,14 @@ public class App extends Application {
         this.imagesRepo = imagesRepo;
     }
 
+    public void setFeedbackURL(String feedbackURL) {
+        this.feedbackURL = feedbackURL;
+    }
+
+    public String getFeedbackURL() {
+        return feedbackURL;
+    }
+
     public void setUser(@NonNull final User user) {
         this.user = user;
     }
@@ -79,6 +92,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         app = this;
+        CookieHandler.setDefault(provideCookieManager());
     }
 
     public static Application getApplication() {
@@ -94,6 +108,13 @@ public class App extends Application {
         if (imagesRepo == null)
             imagesRepo = new ImagesRepoImpl();
         return imagesRepo;
+    }
+
+    public CookieManager provideCookieManager() {
+        if (cookieManager == null) {
+            cookieManager = new CookieManager();
+        }
+        return cookieManager;
     }
 
     public MailApi provideMailApi() {

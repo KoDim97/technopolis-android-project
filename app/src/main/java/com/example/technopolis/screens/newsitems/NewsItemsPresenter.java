@@ -68,7 +68,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getNewsItems();
             if (!apiHelper.showMessageIfExist(newsItemService.getApi(), screenNavigator, this::newsItems)) {
-                if (!thread.isInterrupted()) {
+                if (thread != null && !thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
                 }
             }

@@ -22,10 +22,10 @@ public class MenuRootViewInitializer {
     public void setNavElem(final int index) {
         switch (index) {
             case 0:
-                navigation.setSelectedItemId(R.id.navigation_news);
+                navigation.setSelectedItemId(R.id.navigation_schedule);
                 return;
             case 1:
-                navigation.setSelectedItemId(R.id.navigation_schedule);
+                navigation.setSelectedItemId(R.id.navigation_news);
                 return;
             case 2:
                 navigation.setSelectedItemId(R.id.navigation_profile);

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,12 +33,14 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
     public SchedulerItemsMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent, Context context) {
         setRootView(layoutInflater.inflate(R.layout.scheduler_view, parent, false));
 
-        rvSchedulerItems = findViewById(R.id.scheduler_recycler_view);
+        rvSchedulerItems = (RecyclerView) findViewById(R.id.scheduler_recycler_view);
+
         schedulerItemAdapter = new SchedulerItemAdapter(layoutInflater);
         linearLayoutManager = new LinearLayoutManager(context);
         rvSchedulerItems.setLayoutManager(linearLayoutManager);
         rvSchedulerItems.setAdapter(schedulerItemAdapter);
         rvSchedulerItems.addItemDecoration(new SchedulerItemDecoration(schedulerItemAdapter));
+
     }
 
     @Override
