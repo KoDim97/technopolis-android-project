@@ -11,6 +11,8 @@ import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.user.service.AuthService;
 
+import java.net.HttpCookie;
+
 public class AuthorizationViewControllerImpl implements AuthorizationViewController {
     private final App app;
     private final AuthService authService;
@@ -62,7 +64,16 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
             final Thread thread = new Thread(() -> {
                 if (authService.CheckAuth(login, password)) {
                     apiHelper.clear();
-                    activity.runOnUiThread(() -> screenNavigator.changeAuthorized(true));
+
+                    activity.runOnUiThread(() ->  {
+                        screenNavigator.changeAuthorized(true);
+
+                        android.webkit.CookieManager webkitCookies = android.webkit.CookieManager.getInstance();
+
+                        for (HttpCookie cookie : app.provideCookieManager().getCookieStore().getCookies()) {
+                            webkitCookies.setCookie(cookie.getDomain(), cookie.getName() + "=" + cookie.getValue());
+                        }
+                    });
                 } else {
                     Integer message = apiHelper.getMessage();
                     if (message != null) {

@@ -164,7 +164,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(3, TimeUnit.SECONDS);
             JSONObject activity = response.getJSONObject("activity");
 
 //            Convert JSONArray contacts to List<UserContact>
@@ -268,7 +268,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(3, TimeUnit.SECONDS);
             String name = response.getString("name");
             JSONArray students = response.getJSONArray("students");
             List<StudentDto> list = new ArrayList<>();
@@ -463,7 +463,7 @@ public class MailApiImpl implements MailApi {
         queue.add(jsonArrayRequest);
 
         try {
-            JSONArray response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONArray response = requestFuture.get(3, TimeUnit.SECONDS);
 
             int count = 0;
             while (count < response.length()) {
@@ -523,7 +523,7 @@ public class MailApiImpl implements MailApi {
 
         SchedulerItemCheckInDto schedulerItemCheckInDto = null;
         try {
-            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(3, TimeUnit.SECONDS);
 
             schedulerItemCheckInDto = new SchedulerItemCheckInDto(
                     response.getInt("schedule_item"),

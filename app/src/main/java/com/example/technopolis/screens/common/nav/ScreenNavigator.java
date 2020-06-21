@@ -14,9 +14,11 @@ import com.example.technopolis.screens.authorization.AuthorizationFragment;
 import com.example.technopolis.screens.grouplist.GroupListFragment;
 import com.example.technopolis.screens.newsitems.NewsItemsFragment;
 import com.example.technopolis.screens.profile.ProfileFragment;
+import com.example.technopolis.screens.scheduleritems.SchedulerFeedbackFragment;
 import com.example.technopolis.screens.scheduleritems.SchedulerFragment;
 import com.ncapdevi.fragnav.FragNavController;
 
+import java.net.HttpCookie;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -46,8 +48,8 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     private void initListFragments() {
         fragments = new ArrayList<>();
-        fragments.add(NewsItemsFragment.newInstance());
         fragments.add(SchedulerFragment.newInstance());
+        fragments.add(NewsItemsFragment.newInstance());
         fragments.add(ProfileFragment.newInstance());
         if (app.provideApiHelper().isOnline()) {
             app.preload();
@@ -92,6 +94,10 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragNavController.pushFragment(GroupListFragment.newInstance(id));
     }
 
+    public void toFeedBack(String url) {
+        fragNavController.pushFragment(SchedulerFeedbackFragment.newInstance(url));
+    }
+
     public void toProfile(String username, String groupname) {
         fragNavController.pushFragment(ProfileFragment.newInstance(username, groupname));
     }
@@ -118,9 +124,9 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     private Integer getIndexByMenuItem(@NonNull final MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.navigation_news:
-                return 0;
             case R.id.navigation_schedule:
+                return 0;
+            case R.id.navigation_news:
                 return 1;
             case R.id.navigation_profile:
                 return 2;

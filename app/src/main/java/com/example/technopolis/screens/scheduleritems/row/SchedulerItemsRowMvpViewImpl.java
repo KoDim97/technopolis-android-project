@@ -1,9 +1,6 @@
 package com.example.technopolis.screens.scheduleritems.row;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +19,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import static androidx.core.content.ContextCompat.startActivity;
 
 public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implements SchedulerItemsRowMvpView {
 
@@ -104,14 +99,15 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
         onActionButton.setVisibility(View.VISIBLE);
         acceptReportImageView.setVisibility(View.INVISIBLE);
         onActionButton.setOnClickListener(v -> {
-            if (supplier.isOnline()) {
-                Intent viewIntent = new Intent(
-                        "android.intent.action.VIEW",
-                        Uri.parse(schedulerItem.getFeedbackUrl())
-                );
-                startActivity(getContext(), viewIntent, new Bundle());
-                setOnIsAttended();
-            }
+            supplier.openOnFeedbackView();
+//            if (supplier.openOnFeedbackView();) {
+//                Intent viewIntent = new Intent(
+//                        "android.intent.action.VIEW",
+//                        Uri.parse(schedulerItem.getFeedbackUrl())
+//                );
+//                startActivity(getContext(), viewIntent, new Bundle());
+//                setOnIsAttended();
+//            }
         });
     }
 
