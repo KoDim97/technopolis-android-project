@@ -1,6 +1,5 @@
 package com.example.technopolis.screens.scheduleritems;
 
-import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -161,17 +160,6 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         }
         return listeners;
     }
-
-//    private List<View.OnClickListener> createOnFeedbackListeners(List<SchedulerItem> items) {
-//        List<View.OnClickListener> listeners = new ArrayList<>();
-//        for (SchedulerItem schedulerItem : items) {
-//            listeners.add(v -> {
-//                String feedbackUrl = schedulerItem.getFeedbackUrl();
-//                screenNavigator.toFeedBack("vk.com");//feedbackUrl);
-//            });
-//        }
-//        return listeners;
-//    }
 
     private List<IsOnlineSupplier> createEstimateSupplier(List<SchedulerItem> items) {
         List<IsOnlineSupplier> suppliers = new ArrayList<>();
