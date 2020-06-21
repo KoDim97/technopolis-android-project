@@ -2,6 +2,8 @@ package com.example.technopolis.screens.scheduleritems;
 
 import android.view.View;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.screens.common.mvp.MvpViewObservable;
 import com.example.technopolis.screens.common.nav.BackPressedListener;
@@ -15,6 +17,6 @@ public interface SchedulerItemsMvpView extends MvpViewObservable<BackPressedList
 
     void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, List<IsOnlineSupplier> suppliers, int actualPosition);
 
-    void setOnReloadListener(IOverScrollStateListener overScrollStateListener, IOverScrollUpdateListener overScrollUpdateListener);
+//    void setOnReloadListener(IOverScrollStateListener overScrollStateListener, IOverScrollUpdateListener overScrollUpdateListener);
 
 }

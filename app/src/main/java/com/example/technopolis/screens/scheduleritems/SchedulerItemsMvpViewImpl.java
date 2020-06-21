@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.technopolis.R;
 import com.example.technopolis.scheduler.model.SchedulerItem;
@@ -45,11 +46,11 @@ public class SchedulerItemsMvpViewImpl extends MvpViewObservableBase<BackPressed
         linearLayoutManager.scrollToPosition(actualPosition * 2);
     }
 
-    @Override
-    public void setOnReloadListener(IOverScrollStateListener overScrollStateListener, IOverScrollUpdateListener overScrollUpdateListener) {
-        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(rvSchedulerItems, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
-
-        decor.setOverScrollStateListener(overScrollStateListener);
-        decor.setOverScrollUpdateListener(overScrollUpdateListener);
-    }
+//    @Override
+//    public void setOnReloadListener(IOverScrollStateListener overScrollStateListener, IOverScrollUpdateListener overScrollUpdateListener) {
+//        IOverScrollDecor decor = OverScrollDecoratorHelper.setUpOverScroll(rvSchedulerItems, OverScrollDecoratorHelper.ORIENTATION_VERTICAL);
+//
+//        decor.setOverScrollStateListener(overScrollStateListener);
+//        decor.setOverScrollUpdateListener(overScrollUpdateListener);
+//    }
 }
