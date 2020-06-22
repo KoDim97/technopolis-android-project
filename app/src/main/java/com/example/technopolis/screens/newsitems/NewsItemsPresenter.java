@@ -46,7 +46,6 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     @Override
     public void bindView(NewsItemsMvpView view) {
         this.view = view;
-        newsItems();
     }
 
     public void updateDataNews() {

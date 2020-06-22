@@ -24,6 +24,8 @@ public class NewsItemsFragment extends Fragment {
     private NewsItemsPresenter presenter;
     private NewsItemsMvpViewImpl view;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private static boolean isSubscriptions = false;
+    private static boolean checkSubs;
 
     public static Fragment newInstance() {
         return new NewsItemsFragment();
@@ -34,15 +36,13 @@ public class NewsItemsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         presenter = new NewsItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
                 getFindNewsItemService(), getMainThreadPoster(), getContext(), getApiHelper());
-
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
+        checkSubs = false;
         ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
 
         view = new NewsItemsMvpViewImpl(inflater, container, getContext(), (App) getMainActivity().getApplication());
@@ -51,21 +51,29 @@ public class NewsItemsFragment extends Fragment {
 
         final RadioGroup radioGroup = view.getView().findViewById(R.id.activity_news__top_bar);
 
-        if (radioGroup.getCheckedRadioButtonId() == R.id.activity_news__radio_main) {
-            presenter.newsItems();
-        }
-
         swipeRefreshLayout = view.getView().findViewById(R.id.swiperefresh_items);
 
-        provideListener(presenter::updateDataNews);
+        if (isSubscriptions) {
+            presenter.subsItems();
+            provideListener(presenter::updateDataSubs);
+        } else {
+            presenter.newsItems();
+            provideListener(presenter::updateDataNews);
+        }
+
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (R.id.activity_news__radio_subs == checkedId) {
+                isSubscriptions = true;
                 presenter.subsItems();
                 provideListener(presenter::updateDataSubs);
             } else {
-                presenter.newsItems();
-                provideListener(presenter::updateDataNews);
+                if (checkSubs) {
+                    isSubscriptions = false;
+                    presenter.newsItems();
+                    provideListener(presenter::updateDataNews);
+                }
             }
+            checkSubs = true;
         });
 
         return view.getRootView();
