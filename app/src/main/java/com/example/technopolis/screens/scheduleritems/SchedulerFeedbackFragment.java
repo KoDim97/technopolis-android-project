@@ -52,7 +52,7 @@ public class SchedulerFeedbackFragment extends Fragment implements BackPressedLi
         System.out.println(url);
         webView.setWebViewClient(new WebViewClient());
 
-        getBaseActivity().getRootViewController().setBarVisible(View.VISIBLE);
+        getBaseActivity().getRootViewController().setBarVisible(View.GONE);
         return view.getRootView();
     }
 
@@ -63,7 +63,13 @@ public class SchedulerFeedbackFragment extends Fragment implements BackPressedLi
 
     @Override
     public boolean onBackPressed() {
-        getBaseActivity().unregisterListener(this);
         return screenNavigator.navigateUp();
+    }
+
+    @Override
+    public void onDestroyView() {
+        getBaseActivity().unregisterListener(this);
+        super.onDestroyView();
+
     }
 }
