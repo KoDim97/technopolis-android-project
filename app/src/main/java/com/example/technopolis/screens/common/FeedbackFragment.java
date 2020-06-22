@@ -1,4 +1,4 @@
-package com.example.technopolis.screens.scheduleritems;
+package com.example.technopolis.screens.common;
 
 
 import android.os.Bundle;
@@ -17,7 +17,7 @@ import com.example.technopolis.R;
 import com.example.technopolis.screens.common.nav.BackPressedListener;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
 
-public class SchedulerFeedbackFragment extends Fragment implements BackPressedListener {
+public class FeedbackFragment extends Fragment implements BackPressedListener {
 
     private static final String ARG_FEEDBACK_URL = "FEEDBACK_URL";
 
@@ -26,7 +26,7 @@ public class SchedulerFeedbackFragment extends Fragment implements BackPressedLi
     private ScreenNavigator screenNavigator;
 
     public static Fragment newInstance(String url) {
-        Fragment fragment = new SchedulerFeedbackFragment();
+        Fragment fragment = new FeedbackFragment();
         Bundle args = new Bundle();
         args.putString(ARG_FEEDBACK_URL, url);
         fragment.setArguments(args);

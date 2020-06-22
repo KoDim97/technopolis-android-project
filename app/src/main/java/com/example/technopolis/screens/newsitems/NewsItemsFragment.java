@@ -34,7 +34,7 @@ public class NewsItemsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         presenter = new NewsItemsPresenter(getMainActivity().getScreenNavigator(), getMainActivity(),
                 getFindNewsItemService(), getMainThreadPoster(), getContext(), getApiHelper());
-        presenter.newsItems();
+
 
     }
 
@@ -50,6 +50,11 @@ public class NewsItemsFragment extends Fragment {
         presenter.bindView(view);
 
         final RadioGroup radioGroup = view.getView().findViewById(R.id.activity_news__top_bar);
+
+        if (radioGroup.getCheckedRadioButtonId() == R.id.activity_news__radio_main) {
+            presenter.newsItems();
+        }
+
         swipeRefreshLayout = view.getView().findViewById(R.id.swiperefresh_items);
 
         provideListener(presenter::updateDataNews);
