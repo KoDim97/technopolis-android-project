@@ -25,6 +25,7 @@
     <string name="authFailed">Неправильный логин или пароль</string>
     <string name="reloadRequest">Обнови запрос</string>
     <string name="networkError">Нет соединения</string>
+    <string name="stackError">Вы открыли слишком много страниц</string>
     <string name="serverError">Сервер не отвечает</string>
     <string name="jsonParseError">Ошибка в формате ответа сервера</string>
     <string name="unknownError">Ошибка</string>
