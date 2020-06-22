@@ -15,7 +15,7 @@ import com.example.technopolis.screens.authorization.AuthorizationFragment;
 import com.example.technopolis.screens.grouplist.GroupListFragment;
 import com.example.technopolis.screens.newsitems.NewsItemsFragment;
 import com.example.technopolis.screens.profile.ProfileFragment;
-import com.example.technopolis.screens.scheduleritems.SchedulerFeedbackFragment;
+import com.example.technopolis.screens.common.FeedbackFragment;
 import com.example.technopolis.screens.scheduleritems.SchedulerFragment;
 import com.ncapdevi.fragnav.FragNavController;
 
@@ -95,7 +95,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     public void toFeedBack(String url) {
-        fragNavController.pushFragment(SchedulerFeedbackFragment.newInstance(url));
+        fragNavController.pushFragment(FeedbackFragment.newInstance(url));
     }
 
     public void toProfile(String username, String groupname) {
