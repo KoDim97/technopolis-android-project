@@ -124,7 +124,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private static final String MAIL_RU_APP_PACKAGE_ID = "ru.mail.mailapp";
 
 
-    public static void openLink(Activity activity, String url, String name) {
+    private static void openLink(Activity activity, String url, String name) {
         Uri uri = Uri.parse(url);
         if (uri.isRelative()) {
             switch (name) {
@@ -135,8 +135,8 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
                     uri = Uri.parse("skype:" + url + "?chat");
                     break;
                 case "agent":
-                    uri = Uri.parse(url + "@mail.ru");
-                    break;
+                    openMailApp(activity, url, MAIL_RU_APP_PACKAGE_ID);
+                    return;
             }
         }
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -152,12 +152,19 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
                     || TELEGRAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
                     || SKYPE_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
                     || TAMTAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                    || MAIL_RU_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
             ) {
                 intent.setPackage(info.activityInfo.packageName);
                 break;
             }
         }
+        activity.startActivity(intent);
+    }
+
+    private static void openMailApp(Activity activity, String mail, String packageName) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL, mail +  "@mail.ru");
+        intent.setPackage(packageName);
+        intent.setType("message/rfc822");
         activity.startActivity(intent);
     }
 
