@@ -19,6 +19,14 @@ import java.util.List;
 
 public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMvpView.Listener {
 
+    private static final String VK_APP_PACKAGE_ID = "com.vkontakte.android";
+    private static final String FACEBOOK_APP_PACKAGE_ID = "com.facebook.katana";
+    private static final String TELEGRAM_APP_PACKAGE_ID = "org.telegram.messenger";
+    private static final String  SKYPE_APP_PACKAGE_ID = "com.skype.raider";
+    private static final String  TAMTAM_APP_PACKAGE_ID = "chat.tamtam";
+    private static final String MAIL_RU_APP_PACKAGE_ID = "ru.mail.mailapp";
+    private static final String GITHUB_APP_PACKAGE_ID = "com.github";
+
     private final String userName;
     private final String backButtonText;
 
@@ -30,8 +38,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private final ApiHelper apiHelper;
 
     private Thread thread;
-    private ClipboardManager myClipboard;
-    private ClipData myClip;
 
     public ProfilePresenter(String userName, String backButtonText, ProfileService profileService,
                             ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster,
@@ -116,45 +122,45 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         screenNavigator.navigateUp();
     }
 
-    private static final String VK_APP_PACKAGE_ID = "com.vkontakte.android";
-    private static final String FACEBOOK_APP_PACKAGE_ID = "com.facebook.katana";
-    private static final String TELEGRAM_APP_PACKAGE_ID = "org.telegram.messenger";
-    private static final String  SKYPE_APP_PACKAGE_ID = "com.skype.raider";
-    private static final String  TAMTAM_APP_PACKAGE_ID = "chat.tamtam";
-    private static final String MAIL_RU_APP_PACKAGE_ID = "ru.mail.mailapp";
-    private static final String GITHUB_APP_PACKAGE_ID = "com.github";
+    private static Uri correctUri(String url, String name) {
+        Uri uri = null;
+        switch (name) {
+            case "telegram":
+                uri = Uri.parse("https://telegram.me/" + url);
+                break;
+            case "vkontakte":
+                uri = Uri.parse("https://vk.com/" + url);
+                break;
+            case "odnoklassniki":
+                uri = Uri.parse("https://ok.ru/profile/" + url);
+                break;
+            case "facebook":
+                uri = Uri.parse("https://www.facebook.com/" + url);
+                break;
+            case "tamtam":
+                uri = Uri.parse("https://tt.me/" + url);
+                break;
+            case "guthub":
+                uri = Uri.parse("https://github.com/" + url);
+                break;
+            case "bitbucket":
+                uri = Uri.parse("https://bitbucket.org/" + url);
+                break;
+            case "skype":
+                uri = Uri.parse("skype:" + url + "?chat");
+                break;
+        }
+        return uri;
+    }
 
     private static void openLink(Activity activity, String url, String name) {
         Uri uri = Uri.parse(url);
         if (uri.isRelative()) {
-            switch (name) {
-                case "telegram":
-                    uri = Uri.parse("https://telegram.me/" + url);
-                    break;
-                case "vkontakte":
-                    uri = Uri.parse("https://vk.com/" + url);
-                    break;
-                case "odnoklassniki":
-                    uri = Uri.parse("https://ok.ru/profile/" + url);
-                    break;
-                case "facebook":
-                    uri = Uri.parse("https://www.facebook.com/" + url);
-                    break;
-                case "tamtam":
-                    uri = Uri.parse("https://tt.me/" + url);
-                    break;
-                case "guthub":
-                    uri = Uri.parse("https://github.com/" + url);
-                    break;
-                case "bitbucket":
-                    uri = Uri.parse("https://bitbucket.org/" + url);
-                    break;
-                case "skype":
-                    uri = Uri.parse("skype:" + url + "?chat");
-                    break;
-                case "agent":
-                    openMailApp(activity, url, MAIL_RU_APP_PACKAGE_ID);
-                    return;
+            if ("agent".equals(name)) {
+                openMailApp(activity, url, MAIL_RU_APP_PACKAGE_ID);
+                return;
+            } else {
+                uri = correctUri(url, name);
             }
         }
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -165,18 +171,21 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
         for (ResolveInfo info: resInfo) {
             if (info.activityInfo == null) continue;
-            if (VK_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                    || FACEBOOK_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                    || TELEGRAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                    || SKYPE_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                    || TAMTAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                    || GITHUB_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-            ) {
+            if (isAppFromTheList(info)) {
                 intent.setPackage(info.activityInfo.packageName);
                 break;
             }
         }
         activity.startActivity(intent);
+    }
+
+    private static boolean isAppFromTheList(ResolveInfo info) {
+        return VK_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                || FACEBOOK_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                || TELEGRAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                || SKYPE_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                || TAMTAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                || GITHUB_APP_PACKAGE_ID.equals(info.activityInfo.packageName);
     }
 
     private static void openMailApp(Activity activity, String mail, String packageName) {
@@ -188,7 +197,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     }
 
     @Override
-    public void onContactClick(Activity activity, String text, String name) {
+    public void onAccountClick(Activity activity, String text, String name) {
         openLink(activity, text, name);
     }
 

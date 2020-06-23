@@ -114,7 +114,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         String text = textView.getText().toString();
         String name = textViewsUrls.get(textView.getId());
         for (Listener listener : getListeners()) {
-            listener.onContactClick((Activity) getContext(), text, name);
+            listener.onAccountClick((Activity) getContext(), text, name);
         }
     }
 

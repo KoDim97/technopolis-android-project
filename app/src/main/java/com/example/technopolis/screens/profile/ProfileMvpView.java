@@ -12,7 +12,7 @@ public interface ProfileMvpView extends MvpViewObservable<ProfileMvpView.Listene
 
         void onBtnGoBackClicked();
 
-        void onContactClick(Activity activity, String text, String name);
+        void onAccountClick(Activity activity, String text, String name);
 
         void onGroupButtonClicked(long id);
 
