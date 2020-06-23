@@ -109,7 +109,15 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         addAccountsTextViews(userProfile.getAccounts());
     }
 
-    public void onContactClick(View v) {
+    private void onContactClick(View v) {
+        TextView textView = (TextView) v;
+        String contactInfo = textView.getText().toString();
+        for (Listener listener : getListeners()) {
+            listener.onContactClick((Activity) getContext(), contactInfo);
+        }
+    }
+
+    private void onAccountClick(View v) {
         TextView textView = (TextView) v;
         String text = textView.getText().toString();
         String name = textViewsUrls.get(textView.getId());
@@ -216,7 +224,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             account.setGravity(Gravity.CENTER_VERTICAL);
             account.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
             account.setLayoutParams(params);
-            account.setOnClickListener(this::onContactClick);
+            account.setOnClickListener(this::onAccountClick);
             account.setId(i);
             textViewsUrls.put(account.getId(), accounts.get(i).getName());
             accountsLinearLayout.addView(account);

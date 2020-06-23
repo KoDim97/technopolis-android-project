@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 
+import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.profile.service.ProfileService;
@@ -153,6 +154,23 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         return uri;
     }
 
+    private static void openMailApp(Activity activity, String mail, String packageName) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL, mail +  "@mail.ru");
+        intent.setPackage(packageName);
+        intent.setType("message/rfc822");
+        activity.startActivity(intent);
+    }
+
+    private static boolean isAppFromTheList(ResolveInfo info) {
+        return VK_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                || FACEBOOK_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                || TELEGRAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                || SKYPE_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                || TAMTAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                || GITHUB_APP_PACKAGE_ID.equals(info.activityInfo.packageName);
+    }
+
     private static void openLink(Activity activity, String url, String name) {
         Uri uri = Uri.parse(url);
         if (uri.isRelative()) {
@@ -179,26 +197,36 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         activity.startActivity(intent);
     }
 
-    private static boolean isAppFromTheList(ResolveInfo info) {
-        return VK_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                || FACEBOOK_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                || TELEGRAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                || SKYPE_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                || TAMTAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
-                || GITHUB_APP_PACKAGE_ID.equals(info.activityInfo.packageName);
+    @Override
+    public void onAccountClick(Activity activity, String text, String name) {
+        openLink(activity, text, name);
     }
 
-    private static void openMailApp(Activity activity, String mail, String packageName) {
+    private void openMailActivity(Activity activity, String email) {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_EMAIL, mail +  "@mail.ru");
-        intent.setPackage(packageName);
+        intent.putExtra(Intent.EXTRA_EMAIL, email);
         intent.setType("message/rfc822");
+
+        String title = activity.getResources().getString(R.string.choose_email_client);
+
+        activity.startActivity(Intent.createChooser(intent, title));
+    }
+
+    private void openTelActivity(Activity activity, String telephone) {
+        Intent intent = new Intent(
+                Intent.ACTION_DIAL,
+                Uri.parse("tel:89213103917")
+        );
         activity.startActivity(intent);
     }
 
     @Override
-    public void onAccountClick(Activity activity, String text, String name) {
-        openLink(activity, text, name);
+    public void onContactClick(Activity activity, String contact) {
+        if (contact.contains("@")) {
+            openMailActivity(activity, contact);
+        } else {
+            openTelActivity(activity, contact);
+        }
     }
 
     @Override

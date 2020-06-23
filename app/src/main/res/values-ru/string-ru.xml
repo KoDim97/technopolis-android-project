@@ -32,5 +32,7 @@
 
     <string name="aboutPlaceholder">Пользователь ничего о себе не рассказал</string>>
 
+    <string name="choose_email_client">Выберете способ отправки письма</string>
+
 
 </resources>
