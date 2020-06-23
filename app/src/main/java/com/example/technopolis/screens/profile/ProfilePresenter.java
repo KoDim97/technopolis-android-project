@@ -3,10 +3,10 @@ package com.example.technopolis.screens.profile;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.Context;
-import android.widget.Toast;
+import android.content.Intent;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 
-import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.profile.service.ProfileService;
@@ -14,6 +14,8 @@ import com.example.technopolis.screens.common.mvp.MvpPresenter;
 import com.example.technopolis.screens.common.nav.BackPressDispatcher;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.util.ThreadPoster;
+
+import java.util.List;
 
 public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMvpView.Listener {
 
@@ -114,24 +116,59 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         screenNavigator.navigateUp();
     }
 
-    @Override
-    public void onLongClick(Activity activity, String text) {
-        myClip = ClipData.newPlainText("text", text);
-        provideClipboardManager(activity);
-        myClipboard.setPrimaryClip(myClip);
-        Toast.makeText(activity, R.string.copied, Toast.LENGTH_SHORT).show();
+    private static final String VK_APP_PACKAGE_ID = "com.vkontakte.android";
+    private static final String FACEBOOK_APP_PACKAGE_ID = "com.facebook.katana";
+    private static final String TELEGRAM_APP_PACKAGE_ID = "org.telegram.messenger";
+    private static final String  SKYPE_APP_PACKAGE_ID = "com.skype.raider";
+    private static final String  TAMTAM_APP_PACKAGE_ID = "chat.tamtam";
+    private static final String MAIL_RU_APP_PACKAGE_ID = "ru.mail.mailapp";
+
+
+    public static void openLink(Activity activity, String url, String name) {
+        Uri uri = Uri.parse(url);
+        if (uri.isRelative()) {
+            switch (name) {
+                case "telegram":
+                    uri = Uri.parse("https://telegram.me/" + url);
+                    break;
+                case "skype":
+                    uri = Uri.parse("skype:" + url + "?chat");
+                    break;
+                case "agent":
+                    uri = Uri.parse(url + "@mail.ru");
+                    break;
+            }
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+
+        List<ResolveInfo> resInfo = activity.getPackageManager().queryIntentActivities(intent, 0);
+
+        if (resInfo.isEmpty()) return;
+
+        for (ResolveInfo info: resInfo) {
+            if (info.activityInfo == null) continue;
+            if (VK_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                    || FACEBOOK_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                    || TELEGRAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                    || SKYPE_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                    || TAMTAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                    || MAIL_RU_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+            ) {
+                intent.setPackage(info.activityInfo.packageName);
+                break;
+            }
+        }
+        activity.startActivity(intent);
     }
 
+    @Override
+    public void onContactClick(Activity activity, String text, String name) {
+        openLink(activity, text, name);
+    }
 
     @Override
     public boolean onBackPressed() {
         return screenNavigator.navigateUp();
-    }
-
-    private void provideClipboardManager(Activity activity) {
-        if (myClipboard == null) {
-            myClipboard = (ClipboardManager) activity.getSystemService(Context.CLIPBOARD_SERVICE);
-        }
     }
 
 

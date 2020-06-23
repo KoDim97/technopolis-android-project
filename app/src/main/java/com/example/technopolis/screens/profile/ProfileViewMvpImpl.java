@@ -17,7 +17,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.profile.model.UserAccount;
 import com.example.technopolis.profile.model.UserContact;
@@ -25,13 +24,15 @@ import com.example.technopolis.profile.model.UserGroup;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.screens.common.mvp.MvpViewObservableBase;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Listener>
-        implements ProfileMvpView, View.OnLongClickListener, View.OnClickListener {
+        implements ProfileMvpView, View.OnClickListener {
 
     private final CircleImageView image;
     private final TextView name;
@@ -44,6 +45,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final LinearLayout accountsLinearLayout;
     private final LinearLayout profileWrapper;
     private final FrameLayout profileContentContainer;
+    private final Map<Integer, String> textViewsUrls;
 
 
     private final float scale;
@@ -63,6 +65,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         accountsLinearLayout = findViewById(R.id.accounts);
         profileWrapper = findViewById(R.id.profile_wrapper);
 
+        textViewsUrls = new HashMap<>();
     }
 
     @Override
@@ -106,14 +109,13 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         addAccountsTextViews(userProfile.getAccounts());
     }
 
-    @Override
-    public boolean onLongClick(View v) {
+    public void onContactClick(View v) {
         TextView textView = (TextView) v;
         String text = textView.getText().toString();
+        String name = textViewsUrls.get(textView.getId());
         for (Listener listener : getListeners()) {
-            listener.onLongClick((Activity) getContext(), text);
+            listener.onContactClick((Activity) getContext(), text, name);
         }
-        return true;
     }
 
     @Override
@@ -149,7 +151,6 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             button.setPadding((int) (13 * scale + 0.5f), 0, 0, 0);
             button.setAllCaps(false);
             button.setId((int) groups.get(i).getId());
-
             button.setOnClickListener(this);
             groupsLinearLayout.addView(button);
         }
@@ -176,7 +177,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             contact.setGravity(Gravity.CENTER_VERTICAL);
             contact.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
             contact.setLayoutParams(params);
-            contact.setOnLongClickListener(this);
+            contact.setOnClickListener(this::onContactClick);
             contactsLinearLayout.addView(contact);
         }
     }
@@ -199,6 +200,10 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
                     LinearLayout.LayoutParams.MATCH_PARENT,
                     (int) (43 * scale + 0.5f)
             );
+
+            System.out.println(accounts.get(i).getName());
+            System.out.println(accounts.get(i).getValue());
+
             params.setMargins(0, (int) (1 * scale + 0.5f), 0, 0);
             TextView account = new TextView(getContext());
             Drawable icon = getAccountsIcon(accounts.get(i));
@@ -211,7 +216,9 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             account.setGravity(Gravity.CENTER_VERTICAL);
             account.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
             account.setLayoutParams(params);
-            account.setOnLongClickListener(this);
+            account.setOnClickListener(this::onContactClick);
+            account.setId(i);
+            textViewsUrls.put(account.getId(), accounts.get(i).getName());
             accountsLinearLayout.addView(account);
         }
     }
