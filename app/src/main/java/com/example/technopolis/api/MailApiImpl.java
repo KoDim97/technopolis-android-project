@@ -100,7 +100,7 @@ public class MailApiImpl implements MailApi {
             // TODO: Handle error
             if (error.networkResponse == null) {
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-            } else if (error.networkResponse.statusCode != 400){
+            } else {
                 apiHelper.setMessage(INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE);
             }
         });
@@ -117,7 +117,9 @@ public class MailApiImpl implements MailApi {
             authDto = new AuthDto(auth_token, user_id, username);
             return authDto;
         } catch (TimeoutException e) {
-            apiHelper.setMessage(SERVER_ERROR_MESSAGE);
+            if (apiHelper.size() == 0) {
+                apiHelper.setMessage(SERVER_ERROR_MESSAGE);
+            }
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
         } catch (ExecutionException | InterruptedException e) {
