@@ -122,7 +122,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private static final String  SKYPE_APP_PACKAGE_ID = "com.skype.raider";
     private static final String  TAMTAM_APP_PACKAGE_ID = "chat.tamtam";
     private static final String MAIL_RU_APP_PACKAGE_ID = "ru.mail.mailapp";
-
+    private static final String GITHUB_APP_PACKAGE_ID = "com.github";
 
     private static void openLink(Activity activity, String url, String name) {
         Uri uri = Uri.parse(url);
@@ -130,6 +130,24 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
             switch (name) {
                 case "telegram":
                     uri = Uri.parse("https://telegram.me/" + url);
+                    break;
+                case "vkontakte":
+                    uri = Uri.parse("https://vk.com/" + url);
+                    break;
+                case "odnoklassniki":
+                    uri = Uri.parse("https://ok.ru/profile/" + url);
+                    break;
+                case "facebook":
+                    uri = Uri.parse("https://www.facebook.com/" + url);
+                    break;
+                case "tamtam":
+                    uri = Uri.parse("https://tt.me/" + url);
+                    break;
+                case "guthub":
+                    uri = Uri.parse("https://github.com/" + url);
+                    break;
+                case "bitbucket":
+                    uri = Uri.parse("https://bitbucket.org/" + url);
                     break;
                 case "skype":
                     uri = Uri.parse("skype:" + url + "?chat");
@@ -152,6 +170,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
                     || TELEGRAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
                     || SKYPE_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
                     || TAMTAM_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
+                    || GITHUB_APP_PACKAGE_ID.equals(info.activityInfo.packageName)
             ) {
                 intent.setPackage(info.activityInfo.packageName);
                 break;
