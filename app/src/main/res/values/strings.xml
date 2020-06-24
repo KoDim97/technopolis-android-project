@@ -31,5 +31,7 @@
 
     <string name="schedule_icon" translatable="false">\uf041</string>
 
+    <string name="choose_email_client">Choose an email client</string>
+
 
 </resources>
