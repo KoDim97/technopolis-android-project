@@ -32,7 +32,7 @@ public class MailApiTest {
         mailApi = new MailApiImpl(requestQueue, user, apiHelper);
     }
 
-    private void auth(User user) {
+    public static void auth(MailApi mailApi, User user) {
         AuthDto authDto = mailApi.requestAuthDto(
                 UserData.login,
                 UserData.password
@@ -65,7 +65,7 @@ public class MailApiTest {
 
     @Test
     public void requestProfileDtoTest() {
-        auth(user);
+        auth(mailApi, user);
         Assert.assertNotNull(mailApi.requestProfileDto(user.getUsername()));
 
         user.setAuth_token("123");
@@ -75,7 +75,7 @@ public class MailApiTest {
 
     @Test
     public void requestGroupDtoTest() {
-        auth(user);
+        auth(mailApi, user);
         ProfileDto profile = mailApi.requestProfileDto(user.getUsername());
         if (profile.getGroups().size() != 0) {
             UserGroup group = profile.getGroups().get(0);
@@ -89,7 +89,7 @@ public class MailApiTest {
 
     @Test
     public void requestMainNewsDtoTest() {
-        auth(user);
+        auth(mailApi, user);
         Assert.assertNotNull(mailApi.requestMainNewsDto(Integer.MAX_VALUE, 0));
 
         user.setAuth_token("123");
@@ -99,7 +99,7 @@ public class MailApiTest {
 
     @Test
     public void requestSubscribedNewsDtoTest() {
-        auth(user);
+        auth(mailApi, user);
         Assert.assertNotNull(mailApi.requestSubscribedNewsDto(Integer.MAX_VALUE, 0));
 
         user.setAuth_token("123");
@@ -109,7 +109,7 @@ public class MailApiTest {
 
     @Test
     public void requestSchedulerItemsTest() {
-        auth(user);
+        auth(mailApi, user);
         Assert.assertNotNull(mailApi.requestSchedulerItems());
 
         user.setAuth_token("123");
