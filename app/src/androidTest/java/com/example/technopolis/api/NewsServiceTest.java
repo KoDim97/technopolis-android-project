@@ -50,6 +50,7 @@ public class NewsServiceTest {
         //check that we can get data before authorization
         Assert.assertTrue(newsRepo.findAll().isEmpty());
         Assert.assertTrue(subsRepo.findAll().isEmpty());
+        Assert.assertTrue(imagesRepo.findAll().isEmpty());
         MailApiTest.auth(mailApi, user);
         //test that we get user after request auth data
         Assert.assertNotNull(user);
@@ -57,6 +58,7 @@ public class NewsServiceTest {
         //check that news were got from the api and were pushed to the repository
         Assert.assertFalse(newsItemService.getNewsItems().isEmpty());
         Assert.assertFalse(newsRepo.findAll().isEmpty());
+        Assert.assertFalse(imagesRepo.findAll().isEmpty());
 
         //check that subs were got from the api and were pushed to the repository
         Assert.assertFalse(newsItemService.getSubsItems().isEmpty());
@@ -65,14 +67,17 @@ public class NewsServiceTest {
         //check service method: request from api
         newsRepo.clear();
         subsRepo.clear();
+        imagesRepo.clear();
         Assert.assertTrue(newsRepo.findAll().isEmpty());
         Assert.assertTrue(subsRepo.findAll().isEmpty());
+        Assert.assertTrue(imagesRepo.findAll().isEmpty());
         //request data from api again
         Assert.assertFalse(newsItemService.updateNewsItems().isEmpty());
         Assert.assertFalse(newsItemService.updateSubsItems().isEmpty());
         //check that data were pushed again to the repos
         Assert.assertFalse(newsRepo.findAll().isEmpty());
         Assert.assertFalse(subsRepo.findAll().isEmpty());
+        Assert.assertFalse(imagesRepo.findAll().isEmpty());
     }
 
 }
