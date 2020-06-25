@@ -284,22 +284,14 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             exitDialog.setCancelable(true);
             exitDialog.show();
 
-            exitDialog.findViewById(R.id.exitButtonApprove).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    exitDialog.dismiss();
-                    for (Listener listener : getListeners()) {
-                        listener.onSignOutClicked();
-                    }
+            exitDialog.findViewById(R.id.exitButtonApprove).setOnClickListener(v12 -> {
+                exitDialog.dismiss();
+                for (Listener listener : getListeners()) {
+                    listener.onSignOutClicked();
+                }
 
-                }
             });
-            exitDialog.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    exitDialog.dismiss();
-                }
-            });
+            exitDialog.findViewById(R.id.cancelButton).setOnClickListener(v1 -> exitDialog.dismiss());
         });
     }
 

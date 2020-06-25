@@ -14,6 +14,7 @@ import com.example.technopolis.group.repo.GroupItemRepoImpl;
 import com.example.technopolis.group.service.FindGroupItemService;
 import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.images.repo.ImagesRepoImpl;
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.news.repo.NewsItemRepository;
 import com.example.technopolis.news.repo.NewsItemRepositoryImpl;
 import com.example.technopolis.news.repo.NewsItemRepositoryImplSubs;
@@ -93,6 +94,7 @@ public class App extends Application {
         super.onCreate();
         app = this;
         CookieHandler.setDefault(provideCookieManager());
+        LogHelper.createLog("log");
     }
 
     public static Application getApplication() {
