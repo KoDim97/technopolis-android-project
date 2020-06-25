@@ -68,7 +68,7 @@ public class SchedulerItemService {
                     item.getDate(),
                     item.isCheckedInOpen(),
                     item.isAttended(),
-                    "https://polis.mail.ru/schedule/responses/144411/056f6538e09045e994650090901c2a9d/"
+                    item.getFeedbackURL()
             ));
         }
         return schedulerItems;
