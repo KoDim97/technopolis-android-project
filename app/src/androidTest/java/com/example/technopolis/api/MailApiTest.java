@@ -29,7 +29,6 @@ public class MailApiTest {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         user = new User();
         apiHelper = new ApiHelper(context, new MainThreadPoster());
-        apiHelper.setMessage(R.string.networkError);
         mailApi = new MailApiImpl(requestQueue, user, apiHelper);
     }
 
@@ -68,7 +67,6 @@ public class MailApiTest {
     public void requestProfileDtoTest() {
         auth(user);
         Assert.assertNotNull(mailApi.requestProfileDto(user.getUsername()));
-        apiHelper.clear();
 
         user.setAuth_token("123");
         Assert.assertNull(mailApi.requestProfileDto(user.getUsername()));
@@ -82,7 +80,6 @@ public class MailApiTest {
         if (profile.getGroups().size() != 0) {
             UserGroup group = profile.getGroups().get(0);
             Assert.assertNotNull(mailApi.requestGroupDto(group.getId()));
-            apiHelper.clear();
 
             user.setAuth_token("123");
             Assert.assertNull(mailApi.requestGroupDto(group.getId()));
@@ -94,7 +91,6 @@ public class MailApiTest {
     public void requestMainNewsDtoTest() {
         auth(user);
         Assert.assertNotNull(mailApi.requestMainNewsDto(Integer.MAX_VALUE, 0));
-        apiHelper.clear();
 
         user.setAuth_token("123");
         Assert.assertTrue(mailApi.requestMainNewsDto(Integer.MAX_VALUE, 0).isEmpty());
@@ -105,7 +101,6 @@ public class MailApiTest {
     public void requestSubscribedNewsDtoTest() {
         auth(user);
         Assert.assertNotNull(mailApi.requestSubscribedNewsDto(Integer.MAX_VALUE, 0));
-        apiHelper.clear();
 
         user.setAuth_token("123");
         Assert.assertTrue(mailApi.requestSubscribedNewsDto(Integer.MAX_VALUE, 0).isEmpty());
@@ -116,7 +111,6 @@ public class MailApiTest {
     public void requestSchedulerItemsTest() {
         auth(user);
         Assert.assertNotNull(mailApi.requestSchedulerItems());
-        apiHelper.clear();
 
         user.setAuth_token("123");
         Assert.assertTrue(mailApi.requestSchedulerItems().isEmpty());
