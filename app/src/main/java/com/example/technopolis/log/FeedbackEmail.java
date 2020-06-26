@@ -41,20 +41,22 @@ public class FeedbackEmail {
 
     public FeedbackEmail cacheAttach(String name) {
         File file = new File(activity.getCacheDir(), name + ".log");
-        if (file.length() > 0) cacheAttaches.add(file);
-        return this;
-    }
+        if (file.length() > 0) {
+            cacheAttaches.add(file);
+        }
 
-    public FeedbackEmail cacheAttach(File file) {
-        if (file.length() > 0) cacheAttaches.add(file);
         return this;
     }
 
     public FeedbackEmail build() {
-        if (TextUtils.isEmpty(subject))
+        if (subject.isEmpty()) {
             subject = activity.getString(R.string.app_name) + " Feedback";
+        }
 
-        if (TextUtils.isEmpty(content)) content = buildContent();
+        if (content.isEmpty()) {
+            content = buildContent();
+        }
+
         return this;
     }
 
@@ -64,7 +66,6 @@ public class FeedbackEmail {
 
         builder.append("App version: " + BuildConfig.VERSION_NAME + "\n");
         builder.append("Debuggable: " + LogHelper.DEBUG + "\n");
-        builder.append("App version: " + BuildConfig.VERSION_NAME + "\n");
         builder.append("Device: " + Build.MANUFACTURER + " " + Build.PRODUCT + " " + Build.MODEL + "\n");
         builder.append("Android: " + android.os.Build.VERSION.RELEASE + " (API " + Build.VERSION.SDK_INT + ")");
 

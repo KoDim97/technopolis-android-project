@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.save.PauseController;
 import com.example.technopolis.save.PauseControllerImpl;
 import com.example.technopolis.screens.common.nav.BackPressDispatcher;
@@ -82,5 +83,12 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     public void onPause() {
         super.onPause();
         pauseController.onPause();
+        LogHelper.i(this, "app paused");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogHelper.i(this, "app resumed");
     }
 }

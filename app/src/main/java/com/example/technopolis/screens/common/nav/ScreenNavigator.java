@@ -103,6 +103,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     public void toFeedBack(String url) {
         fragNavController.pushFragment(FeedbackFragment.newInstance(url));
+        LogHelper.i(this, "opened feedback frag");
     }
 
     public void toProfile(String username, String groupname) {
@@ -143,11 +144,10 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
         logDialog.findViewById(R.id.sendButton).setOnClickListener(v12 -> {
             logDialog.dismiss();
-            // todo send logs
+            //send logs
             new FeedbackEmail(activity)
                     .setSubject("Feedback")
                     .cacheAttach(LogHelper.FILENAME)
-                    .cacheAttach("compilation")
                     .build()
                     .send();
         });
@@ -183,17 +183,20 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
         //if were not on this fragment
         if (!log.containsValue(index)) {
+            LogHelper.i(this, "Switched to fragment " + index);
             profileCounter = 0;
             log.put(log.size(), index);
             fragNavController.pushFragment(fragments.get(index));
             //if not root
         } else if (index != 0) {
+            LogHelper.i(this, "Switched to fragment " + index);
             deleteLoop(index);
             if (index == 2) {
                 profileCounter++;
             }
             //if root
         } else {
+            LogHelper.i(this, "Switched to fragment " + index);
             profileCounter = 0;
             fragNavController.clearStack();
             log.clear();
