@@ -45,9 +45,9 @@ public class ProfileService {
         }
 
         UserProfile userProfile;
-//        if (userName.equals("")) {
-//            profileDto.setUserName("");
-//        }
+        if (userName.equals("")) {
+            profileDto.setUserName("");
+        }
 
 //        Проверяем, ссылка на картинку использует https
 //        Если не использует, принудительно меняем http на https
