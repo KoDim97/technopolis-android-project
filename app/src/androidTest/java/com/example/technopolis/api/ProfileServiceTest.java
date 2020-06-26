@@ -55,7 +55,9 @@ public class ProfileServiceTest {
         Assert.assertNotNull(profileService.findByUserName(user.getUsername()));
         Assert.assertNotNull(userProfileRepo.findByUserName(user.getUsername()));
         Assert.assertFalse(userProfileRepo.findAll().isEmpty());
-        Assert.assertFalse(imagesRepo.findAll().isEmpty());
+        if (userProfileRepo.findByUserName(user.getUsername()).getAvatar() != null) {
+            Assert.assertFalse(imagesRepo.findAll().isEmpty());
+        }
 
         //check service method: request from api
         userProfileRepo.removeByUserName(user.getUsername());
@@ -66,7 +68,9 @@ public class ProfileServiceTest {
         Assert.assertNotNull(profileService.findByUserName(user.getUsername()));
         Assert.assertNotNull(userProfileRepo.findByUserName(user.getUsername()));
         Assert.assertFalse(userProfileRepo.findAll().isEmpty());
-        Assert.assertFalse(imagesRepo.findAll().isEmpty());
+        if (userProfileRepo.findByUserName(user.getUsername()).getAvatar() != null) {
+            Assert.assertFalse(imagesRepo.findAll().isEmpty());
+        }
     }
 
 }
