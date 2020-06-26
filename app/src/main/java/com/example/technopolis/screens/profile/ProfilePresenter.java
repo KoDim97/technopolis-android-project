@@ -236,6 +236,9 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     }
 
     private String formUrlFromUserName(String username) {
+        if (username.equals("")) {
+            username = profileService.getApi().getUser().getUsername();
+        }
         return "https://polis.mail.ru/cabinet/" + username + "/progress/";
     }
 
