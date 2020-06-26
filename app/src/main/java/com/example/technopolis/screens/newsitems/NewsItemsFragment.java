@@ -16,6 +16,7 @@ import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.news.service.NewsItemService;
 import com.example.technopolis.util.ThreadPoster;
 
@@ -63,12 +64,14 @@ public class NewsItemsFragment extends Fragment {
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             if (R.id.activity_news__radio_subs == checkedId) {
+                LogHelper.i(this, "Changed to subs");
                 isSubscriptions = true;
                 presenter.subsItems();
                 provideListener(presenter::updateDataSubs);
             } else {
                 if (checkSubs) {
                     isSubscriptions = false;
+                    LogHelper.i(this, "Changed to news");
                     presenter.newsItems();
                     provideListener(presenter::updateDataNews);
                 }
@@ -81,6 +84,7 @@ public class NewsItemsFragment extends Fragment {
 
     private void provideListener(Runnable method) {
         swipeRefreshLayout.setOnRefreshListener(() -> {
+            LogHelper.i(this, "Init refresh");
             method.run();
             final Handler handler = new Handler();
             handler.postDelayed(() -> {

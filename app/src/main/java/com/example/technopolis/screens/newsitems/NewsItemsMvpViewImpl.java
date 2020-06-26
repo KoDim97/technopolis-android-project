@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.technopolis.App;
 import com.example.technopolis.R;
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.screens.common.mvp.MvpViewObservableBase;
 import com.example.technopolis.screens.newsitems.row.NewsItemsRowMvpView;
@@ -53,6 +54,6 @@ public class NewsItemsMvpViewImpl extends MvpViewObservableBase<NewsItemsMvpView
     @Override
     public void bindData(List<NewsItem> newsItems) {
         newsItemsAdapter.bindData(newsItems);
-        view.findViewById(R.id.activity_news__news_list).setBackgroundResource(R.color.colorBackground);
+        LogHelper.i(this, "bound data on news fragment");
     }
 }

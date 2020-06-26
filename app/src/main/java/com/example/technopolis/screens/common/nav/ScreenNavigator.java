@@ -1,5 +1,8 @@
 package com.example.technopolis.screens.common.nav;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -11,11 +14,14 @@ import androidx.fragment.app.FragmentManager;
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
+import com.example.technopolis.log.FeedbackEmail;
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.screens.authorization.AuthorizationFragment;
 import com.example.technopolis.screens.grouplist.GroupListFragment;
 import com.example.technopolis.screens.newsitems.NewsItemsFragment;
 import com.example.technopolis.screens.profile.ProfileFragment;
 import com.example.technopolis.screens.common.FeedbackFragment;
+import com.example.technopolis.screens.profile.ProfileMvpView;
 import com.example.technopolis.screens.scheduleritems.SchedulerFragment;
 import com.ncapdevi.fragnav.FragNavController;
 
@@ -31,6 +37,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     private final App app;
     private boolean pop = false;
     private ArrayList<Fragment> fragments;
+    private int profileCounter = 0;
     private Fragment authorizationFragment;
 
     public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, @NonNull final BaseActivity activity) {
@@ -96,6 +103,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     public void toFeedBack(String url) {
         fragNavController.pushFragment(FeedbackFragment.newInstance(url));
+        LogHelper.i(this, "opened feedback frag");
     }
 
     public void toProfile(String username, String groupname) {
@@ -124,6 +132,26 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
                 find = true;
             }
         }
+    }
+
+    private void provideLogs() {
+        final Dialog logDialog = new Dialog(fragments.get(2).getContext(), R.style.ExitDialogAnimation);
+        logDialog.getWindow().getAttributes().windowAnimations = R.style.ExitDialogAnimation;
+        logDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(50, 0, 0, 0)));
+        logDialog.setContentView(R.layout.log_popup_view);
+        logDialog.setCancelable(true);
+        logDialog.show();
+
+        logDialog.findViewById(R.id.sendButton).setOnClickListener(v12 -> {
+            logDialog.dismiss();
+            //send logs
+            new FeedbackEmail(activity)
+                    .setSubject("Feedback")
+                    .cacheAttach(LogHelper.FILENAME)
+                    .build()
+                    .send();
+        });
+        logDialog.findViewById(R.id.closeButton).setOnClickListener(v1 -> logDialog.dismiss());
     }
 
     private Integer getIndexByMenuItem(@NonNull final MenuItem menuItem) {
@@ -155,17 +183,31 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
         //if were not on this fragment
         if (!log.containsValue(index)) {
+            LogHelper.i(this, "Switched to fragment " + index);
+            profileCounter = 0;
             log.put(log.size(), index);
             fragNavController.pushFragment(fragments.get(index));
             //if not root
         } else if (index != 0) {
+            LogHelper.i(this, "Switched to fragment " + index);
             deleteLoop(index);
+            if (index == 2) {
+                profileCounter++;
+            }
             //if root
         } else {
+            LogHelper.i(this, "Switched to fragment " + index);
+            profileCounter = 0;
             fragNavController.clearStack();
             log.clear();
             log.put(0, 0);
         }
+
+        if (profileCounter == 5) {
+            profileCounter = 0;
+            provideLogs();
+        }
+
         return true;
     }
 

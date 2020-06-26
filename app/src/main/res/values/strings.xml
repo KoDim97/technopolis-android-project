@@ -18,7 +18,9 @@
     <string name="marks">Marks</string>
     <string name="contacts">Contacts</string>
     <string name="accounts">Accounts</string>
-    <string name="exit_confirmation" >Are you sure you want to exit?</string>>
+    <string name="exit_confirmation" >Are you sure you want to exit?</string>
+    <string name="log_confirmation" >Are you sure you want to send log via Email?</string>
+    <string name="send">Yes</string>
 
     <string name="authFailed">Invalid login or password</string>
     <string name="reloadRequest">Reload request</string>
