@@ -215,7 +215,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private void openTelActivity(Activity activity, String telephone) {
         Intent intent = new Intent(
                 Intent.ACTION_DIAL,
-                Uri.parse("tel:89213103917")
+                Uri.parse("tel:" + telephone)
         );
         activity.startActivity(intent);
     }
