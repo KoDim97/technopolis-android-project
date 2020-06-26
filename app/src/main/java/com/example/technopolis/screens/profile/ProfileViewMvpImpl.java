@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.technopolis.R;
@@ -41,12 +42,12 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final androidx.appcompat.widget.Toolbar toolbar;
     private final TextView toolbarTextView;
     private final LinearLayout groupsLinearLayout;
+    private final RelativeLayout marksRelativeLayout;
     private final LinearLayout contactsLinearLayout;
     private final LinearLayout accountsLinearLayout;
     private final LinearLayout profileWrapper;
     private final FrameLayout profileContentContainer;
     private final Map<Integer, String> textViewsUrls;
-
 
     private final float scale;
 
@@ -61,6 +62,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         toolbar = findViewById(R.id.toolbar);
         toolbarTextView = findViewById(R.id.toolbar__text_view);
         groupsLinearLayout = findViewById(R.id.groups);
+        marksRelativeLayout = findViewById(R.id.marks);
         contactsLinearLayout = findViewById(R.id.contacts);
         accountsLinearLayout = findViewById(R.id.accounts);
         profileWrapper = findViewById(R.id.profile_wrapper);
@@ -100,13 +102,21 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             aboutText = getContext().getString(R.string.aboutPlaceholder);
         }
         about.setText(aboutText);
-        
+
+        marksRelativeLayout.setOnClickListener(v -> onMarksClick(userProfile.getUserName()));
+
 //        Добавляем кнопки для просмотра групп
         addGroupsButtons(userProfile.getGroups());
 //        Добавляем textView для контактов
         addContactsTextViews(userProfile.getContacts());
 //        Добавляем textView для аккаунтов
         addAccountsTextViews(userProfile.getAccounts());
+    }
+
+    private void onMarksClick(String username) {
+        for (Listener listener : getListeners()) {
+            listener.onMarksClick(username);
+        }
     }
 
     private void onContactClick(View v) {
@@ -161,6 +171,10 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             button.setId((int) groups.get(i).getId());
             button.setOnClickListener(this);
             groupsLinearLayout.addView(button);
+        }
+
+        if (length == 0) {
+            groupsLinearLayout.setVisibility(View.GONE);
         }
     }
 
@@ -284,7 +298,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             exitDialog.setCancelable(true);
             exitDialog.show();
 
-            exitDialog.findViewById(R.id.exitButtonApprove).setOnClickListener(v12 -> {
+            exitDialog.findViewById(R.id.exitButtonApprove).setOnClickListener(v1 -> {
                 exitDialog.dismiss();
                 for (Listener listener : getListeners()) {
                     listener.onSignOutClicked();

@@ -16,6 +16,8 @@ public interface ProfileMvpView extends MvpViewObservable<ProfileMvpView.Listene
 
         void onContactClick(Activity activity, String contact);
 
+        void onMarksClick(String username);
+
         void onGroupButtonClicked(long id);
 
         void onSignOutClicked();

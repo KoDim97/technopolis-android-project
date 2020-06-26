@@ -10,19 +10,18 @@
 
     <string name="schedule">Расписание</string>
 
-
     <string name="copied">Скопировано</string>
     <string name="exit">Выйти</string>
     <string name="cancel">Отмена</string>
     <string name="about">О себе</string>
     <string name="groups">Группы</string>
+    <string name="marks">Оценки</string>
     <string name="contacts">Контакты</string>
     <string name="accounts">Аккаунты</string>
     <string name="top_bar_name">Новости</string>
     <string name="exit_confirmation">Вы уверены, что хотите выйти?</string>
     <string name="log_confirmation" >Вы уверены, что хотите отправить лог?</string>
     <string name="send">Да</string>
-
 
     <string name="authFailed">Неправильный логин или пароль</string>
     <string name="reloadRequest">Обновите запрос</string>
@@ -35,6 +34,5 @@
     <string name="aboutPlaceholder">Пользователь ничего о себе не рассказал</string>>
 
     <string name="choose_email_client">Выберете способ отправки письма</string>
-
 
 </resources>

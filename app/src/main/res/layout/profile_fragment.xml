@@ -16,7 +16,6 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorBlue"
             android:paddingLeft="-8dp">
-            <!--            app:navigationIcon="@drawable/ic_navigate_before_black_24dp"-->
 
             <TextView
                 android:id="@+id/toolbar__text_view"
@@ -65,13 +64,11 @@
                 android:orientation="vertical"
                 tools:context=".screens.profile.ProfileFragment">
 
-
                 <RelativeLayout
                     android:id="@+id/bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorWhite">
-
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/profile_image"
@@ -79,7 +76,6 @@
                         android:layout_height="74dp"
                         android:layout_margin="6dp"
                         android:src="@drawable/img_no_avatar" />
-
 
                     <TextView
                         android:id="@+id/profile_fullname"
@@ -155,6 +151,33 @@
                         android:textSize="13sp" />
 
                 </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/marks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:background="@color/colorWhite"
+                        android:fontFamily="@font/roboto_regular"
+                        android:paddingLeft="13dp"
+                        android:paddingTop="11dp"
+                        android:paddingBottom="11dp"
+                        android:text="@string/marks"
+                        android:textSize="15sp"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:paddingTop="10dp"
+                        android:src="@drawable/ic_mark_open"
+                        android:layout_alignParentEnd="true"/>
+
+                </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/contacts"

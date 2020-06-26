@@ -230,6 +230,16 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     }
 
     @Override
+    public void onMarksClick(String username) {
+        String url = formUrlFromUserName(username);
+        screenNavigator.toFeedBack(url);
+    }
+
+    private String formUrlFromUserName(String username) {
+        return "https://polis.mail.ru/cabinet/" + username + "/progress/";
+    }
+
+    @Override
     public boolean onBackPressed() {
         return screenNavigator.navigateUp();
     }
