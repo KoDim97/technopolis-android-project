@@ -75,6 +75,7 @@ public class PauseControllerImpl implements PauseController {
         app.setSubsItemRepo(repoNews[1]);
         app.setNewsItemRepo(repoNews[0]);
         app.provideUserProfileRepo().add(repoProfile[0]);
+        app.provideSaveCookieController().setCookies();
         app.setAuthorized(true);
     }
 

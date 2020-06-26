@@ -22,6 +22,7 @@ import com.example.technopolis.news.service.NewsItemService;
 import com.example.technopolis.profile.repo.UserProfileRepo;
 import com.example.technopolis.profile.repo.UserProfileRepoImpl;
 import com.example.technopolis.profile.service.ProfileService;
+import com.example.technopolis.save.SaveCookieController;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepoImpl;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
@@ -58,6 +59,8 @@ public class App extends Application {
     private GroupItemRepo groupItemRepo;
 
     private ImagesRepo imagesRepo;
+
+    private SaveCookieController saveCookieController;
 
     private static Application app;
 
@@ -211,13 +214,18 @@ public class App extends Application {
         return groupItemRepo;
     }
 
-
-
     public FindGroupItemService provideFindGroupItemService() {
         if (findGroupItemService == null) {
             findGroupItemService = new FindGroupItemService(provideGroupItemRepo(), provideMailApi(), provideImagesRepo());
         }
         return findGroupItemService;
+    }
+
+    public SaveCookieController provideSaveCookieController() {
+        if (saveCookieController == null) {
+            saveCookieController = new SaveCookieController(this);
+        }
+        return saveCookieController;
     }
 
     public boolean isAuthorized() {

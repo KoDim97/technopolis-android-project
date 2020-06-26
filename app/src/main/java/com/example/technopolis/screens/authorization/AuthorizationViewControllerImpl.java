@@ -12,6 +12,8 @@ import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.user.service.AuthService;
 
 import java.net.HttpCookie;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AuthorizationViewControllerImpl implements AuthorizationViewController {
     private final App app;
@@ -67,12 +69,21 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
 
                     activity.runOnUiThread(() ->  {
                         screenNavigator.changeAuthorized(true);
+                        boolean isDomainSaved = false;
+                        List<String> cookies = new ArrayList<>();
 
                         android.webkit.CookieManager webkitCookies = android.webkit.CookieManager.getInstance();
-
                         for (HttpCookie cookie : app.provideCookieManager().getCookieStore().getCookies()) {
-                            webkitCookies.setCookie(cookie.getDomain(), cookie.getName() + "=" + cookie.getValue());
+                            if (!isDomainSaved) {
+                                cookies.add(cookie.getDomain());
+                                isDomainSaved = true;
+                            }
+                            String next = cookie.getName() + "=" + cookie.getValue();
+                            cookies.add(next);
+                            webkitCookies.setCookie(cookie.getDomain(), next);
                         }
+
+                        app.provideSaveCookieController().saveCookies(cookies);
                     });
                 } else {
                     Integer message = apiHelper.getMessage();
