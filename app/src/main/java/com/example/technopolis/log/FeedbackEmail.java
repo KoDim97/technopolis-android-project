@@ -4,21 +4,20 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+
 import androidx.core.content.FileProvider;
-import android.text.TextUtils;
 
 import com.example.technopolis.BuildConfig;
 import com.example.technopolis.R;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class FeedbackEmail {
     private final Activity activity;
     private String email = "ilya.gusarov.2000@yandex.ru";
     private String subject = "";
     private String content = "";
-    private ArrayList<File> cacheAttaches = new ArrayList<>();
+    private File cacheAttache;
 
     public FeedbackEmail(Activity activity) {
         this.activity = activity;
@@ -42,7 +41,7 @@ public class FeedbackEmail {
     public FeedbackEmail cacheAttach(String name) {
         File file = new File(activity.getCacheDir(), name + ".log");
         if (file.length() > 0) {
-            cacheAttaches.add(file);
+            cacheAttache = file;
         }
 
         return this;
@@ -73,23 +72,22 @@ public class FeedbackEmail {
     }
 
     public void send() {
-        String action = cacheAttaches.size() > 0 ? Intent.ACTION_SEND_MULTIPLE : Intent.ACTION_SEND;
+        String action = Intent.ACTION_SEND;
 
         Intent emailIntent = new Intent(action);
-        emailIntent.setType("plain/text");
+        emailIntent.setType("message/rfc822");
         emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{email});
         emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, content);
 
-        ArrayList<Uri> uris = new ArrayList<>();
 
-        for (File file : cacheAttaches) {
-            Uri contentUri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".fileprovider", file);
-            uris.add(contentUri);
-        }
+        Uri contentUri = FileProvider.getUriForFile(activity, BuildConfig.APPLICATION_ID + ".fileprovider", cacheAttache);
 
-        emailIntent.putParcelableArrayListExtra(android.content.Intent.EXTRA_STREAM, uris);
-        activity.startActivity(emailIntent);
+        emailIntent.putExtra(android.content.Intent.EXTRA_STREAM, contentUri);
+
+        activity.startActivity(Intent.createChooser(emailIntent, activity.getResources().getString(R.string.choose_email_client)));
+
+
     }
 
 }

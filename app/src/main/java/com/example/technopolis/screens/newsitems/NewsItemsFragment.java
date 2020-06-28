@@ -2,6 +2,7 @@ package com.example.technopolis.screens.newsitems;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class NewsItemsFragment extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private static boolean isSubscriptions = false;
     private static boolean checkSubs;
+    public static Handler handler;
 
     public static Fragment newInstance() {
         return new NewsItemsFragment();
@@ -86,12 +88,15 @@ public class NewsItemsFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             LogHelper.i(this, "Init refresh");
             method.run();
-            final Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                if (swipeRefreshLayout.isRefreshing()) {
+            handler = new Handler(){
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
                     swipeRefreshLayout.setRefreshing(false);
+                    LogHelper.i(this, "data refreshed");
                 }
-            }, 1000);
+            };
+
         });
     }
 

@@ -66,10 +66,6 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container);
 
-
-//      set up good scroll
-        ScrollView scrollView = (ScrollView) view.getRootView().findViewById(R.id.profile_scroll_view);
-        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         if (userProfile.equals("")) {
             ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.VISIBLE);
         } else {
