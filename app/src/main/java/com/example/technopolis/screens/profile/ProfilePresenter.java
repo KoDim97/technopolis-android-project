@@ -55,6 +55,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     @Override
     public void bindView(ProfileMvpView view) {
         this.view = view;
+        view.showProgress();
         loadItem();
     }
 
@@ -74,6 +75,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     }
 
     private void onItemLoaded(UserProfile userProfile) {
+        view.showProgress();
         view.bindData(userProfile);
         if (!backButtonText.equals("")) {
             view.showBackButton(backButtonText);
@@ -100,7 +102,6 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     @Override
     public void onStart() {
         view.registerListener(this);
-        view.showProgress();
         backPressDispatcher.registerListener(this);
     }
 
