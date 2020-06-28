@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -47,6 +48,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final LinearLayout accountsLinearLayout;
     private final LinearLayout profileWrapper;
     private final FrameLayout profileContentContainer;
+    private final ProgressBar progressBar;
     private final Map<Integer, String> textViewsUrls;
 
     private final float scale;
@@ -55,6 +57,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         setRootView(layoutInflater.inflate(R.layout.profile_fragment, parent, false));
         scale = getContext().getResources().getDisplayMetrics().density;
         profileContentContainer = findViewById(R.id.profile_content_container);
+        progressBar = findViewById(R.id.profile_fragment__progress);
         image = findViewById(R.id.profile_image);
         name = findViewById(R.id.profile_fullname);
         status = findViewById(R.id.profile_status);
@@ -68,6 +71,18 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         profileWrapper = findViewById(R.id.profile_wrapper);
 
         textViewsUrls = new HashMap<>();
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+        profileContentContainer.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+        profileContentContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -111,6 +126,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         addContactsTextViews(userProfile.getContacts());
 //        Добавляем textView для аккаунтов
         addAccountsTextViews(userProfile.getAccounts());
+        hideProgress();
     }
 
     private void onMarksClick(String username) {

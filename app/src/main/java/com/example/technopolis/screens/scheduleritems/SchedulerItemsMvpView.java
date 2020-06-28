@@ -12,4 +12,7 @@ public interface SchedulerItemsMvpView extends MvpViewObservable<BackPressedList
 
     void bindData(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, List<IsOnlineSupplier> suppliers, int actualPosition);
 
+    void showProgress();
+
+    void hideProgress();
 }

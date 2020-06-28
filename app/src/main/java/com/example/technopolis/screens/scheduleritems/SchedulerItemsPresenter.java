@@ -114,6 +114,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     @Override
     public void onStart() {
         view.registerListener(this);
+        view.showProgress();
         backPressDispatcher.registerListener(this);
     }
 

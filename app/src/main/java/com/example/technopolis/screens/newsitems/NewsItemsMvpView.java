@@ -14,5 +14,9 @@ public interface NewsItemsMvpView extends MvpViewObservable<NewsItemsMvpView.Lis
 
     }
 
+    void showProgress();
+
+    void hideProgress();
+
     void bindData(List<NewsItem> blogItems);
 }

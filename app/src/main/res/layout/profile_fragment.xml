@@ -42,6 +42,14 @@
             android:visibility="invisible" />
     </FrameLayout>
 
+    <ProgressBar
+        android:id="@+id/profile_fragment__progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+
     <FrameLayout
         android:id="@+id/profile_content_container"
         android:visibility="gone"
@@ -221,14 +229,6 @@
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
-
-    <pl.droidsonroids.gif.GifImageView
-        android:layout_gravity="center"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:src="@drawable/loading"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"/>
 </LinearLayout>
 
 

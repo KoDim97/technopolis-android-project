@@ -100,6 +100,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     @Override
     public void onStart() {
         view.registerListener(this);
+        view.showProgress();
         backPressDispatcher.registerListener(this);
     }
 

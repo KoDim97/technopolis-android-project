@@ -118,6 +118,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
     public void onStart() {
         view.registerListener(this);
+        view.showProgress();
         backPressDispatcher.registerListener(this);
     }
 
