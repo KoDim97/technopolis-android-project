@@ -54,10 +54,11 @@ public class ProfileFragment extends Fragment {
         Bundle arguments = getArguments();
         userProfile = arguments.getString(PROFILE_NAME);
         String backButtonText = arguments.getString(BACK_BUTTON_TEXT);
+
         presenter = new ProfilePresenter(userProfile, backButtonText, getProfileService(),
                 getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity(),
                 getApiHelper());
-
+        ((App) getBaseActivity().getApplication()).setProfilePresenter(presenter);
     }
 
 

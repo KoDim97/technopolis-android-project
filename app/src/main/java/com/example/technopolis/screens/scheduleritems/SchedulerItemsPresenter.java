@@ -27,16 +27,15 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         BackPressedListener {
     private static final String RESPONSE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    private final ScreenNavigator screenNavigator;
-    private final BackPressDispatcher backPressDispatcher;
     private final SchedulerItemService schedulerItemService;
     private final ThreadPoster mainThreadPoster;
     private final ApiHelper apiHelper;
-    private final BaseActivity activity;
+    private ScreenNavigator screenNavigator;
+    private BackPressDispatcher backPressDispatcher;
+    private BaseActivity activity;
 
     private SchedulerItemsMvpView view;
     private Thread thread;
-    private float currentOverScrollOffset;
 
     public SchedulerItemsPresenter(ScreenNavigator screenNavigator, BaseActivity activity,
                                    SchedulerItemService schedulerItemService, ThreadPoster mainThreadPoster, ApiHelper apiHelper) {
@@ -54,6 +53,13 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         view.showProgress();
         setOnReloadListener();
         loadItems();
+    }
+
+    @Override
+    public void onTurnScreen(ScreenNavigator screenNavigator, BaseActivity activity) {
+        this.screenNavigator = screenNavigator;
+        this.activity = activity;
+        this.backPressDispatcher = activity;
     }
 
     private void setOnReloadListener() {
@@ -109,7 +115,9 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     }
 
     private void onItemsLoaded(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, List<IsOnlineSupplier> suppliers, int actualPosition) {
-        view.bindData(schedulerItems, listeners, suppliers, actualPosition);
+        if (view != null) {
+            view.bindData(schedulerItems, listeners, suppliers, actualPosition);
+        }
     }
 
     @Override
@@ -126,7 +134,9 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
 
     @Override
     public void onDestroy() {
-        thread.interrupt();
+        if (thread != null) {
+            thread.interrupt();
+        }
         thread = null;
         view = null;
     }

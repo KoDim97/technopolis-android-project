@@ -17,24 +17,33 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class BaseActivity extends AppCompatActivity implements BackPressDispatcher {
-    private final Set<BackPressedListener> backPressedListeners;
+    private Set<BackPressedListener> backPressedListeners;
     private ScreenNavigator screenNavigator;
     private MenuRootViewInitializer rootViewController;
     private PauseController pauseController;
 
-    public BaseActivity() {
-        backPressedListeners = new HashSet<>();
-    }
+    private static final String CURRENT_NAV_ELEMENT_INDEX = "CURRENT_NAV_ELEMENT_INDEX";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.navigation_menu);
+        backPressedListeners = new HashSet<>();
         pauseController = new PauseControllerImpl((App) getApplication());
         pauseController.authorized();
         screenNavigator = new ScreenNavigator(getSupportFragmentManager(), savedInstanceState, this);
         rootViewController = new MenuRootViewInitializer(this, screenNavigator);
+        ((App) getApplication()).updatePresentersArgs(screenNavigator, this);
     }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        int currentNavElemIndex = savedInstanceState.getInt(CURRENT_NAV_ELEMENT_INDEX);
+        rootViewController.setNavElem(currentNavElemIndex);
+    }
+
+
 
     @NonNull
     public MenuRootViewInitializer getRootViewController() {
@@ -49,6 +58,7 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         screenNavigator.onSaveInstanceState(outState);
+        outState.putInt(CURRENT_NAV_ELEMENT_INDEX, rootViewController.getCurrentNavElemIndex());
     }
 
     @NonNull

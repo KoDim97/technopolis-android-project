@@ -1,7 +1,5 @@
 package com.example.technopolis.screens.grouplist;
 
-import android.widget.Toast;
-
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.group.model.GroupItem;
@@ -15,16 +13,14 @@ import com.example.technopolis.util.ThreadPoster;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
-        GroupListMvpView.Listener {
+public class GroupListPresenter implements MvpPresenter<GroupListMvpView>, GroupListMvpView.Listener {
 
     private final long id;
-    private final ScreenNavigator screenNavigator;
-    private final BackPressDispatcher backPressDispatcher;
     private final FindGroupItemService findGroupItemService;
     private final ThreadPoster mainThreadPoster;
     private final ApiHelper apiHelper;
-    private final BaseActivity activity;
+    private ScreenNavigator screenNavigator;
+    private BackPressDispatcher backPressDispatcher;
 
     private GroupListMvpView view;
     private Thread thread;
@@ -36,7 +32,6 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
         this.backPressDispatcher = activity;
         this.findGroupItemService = findGroupItemService;
         this.mainThreadPoster = mainThreadPoster;
-        this.activity = activity;
         this.apiHelper = apiHelper;
     }
 
@@ -47,6 +42,12 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
             view.showProgress();
         }
         loadItems();
+    }
+
+    @Override
+    public void onTurnScreen(ScreenNavigator screenNavigator, BaseActivity activity) {
+        this.screenNavigator = screenNavigator;
+        this.backPressDispatcher = activity;
     }
 
     private void loadItems() {
@@ -68,8 +69,10 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
 
     private void onItemsLoaded(GroupItem groupItem) {
         // prepare to show
-        view.hideProgress();
-        view.bindData(groupItem);
+        if (view != null) {
+            view.hideProgress();
+            view.bindData(groupItem);
+        }
     }
 
     @Override

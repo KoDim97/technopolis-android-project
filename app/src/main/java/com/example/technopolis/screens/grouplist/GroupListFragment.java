@@ -36,6 +36,8 @@ public class GroupListFragment extends Fragment {
         //noinspection ConstantConditions
         presenter = new GroupListPresenter(id, getMainActivity().getScreenNavigator(), getMainActivity(),
                 getFindGroupItemService(), getMainThreadPoster(), getApiHelper());
+        ((App) getMainActivity().getApplication()).setGroupListPresenter(presenter);
+
     }
 
     @Nullable

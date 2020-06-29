@@ -18,16 +18,15 @@ import com.example.technopolis.util.ThreadPoster;
 import java.util.List;
 
 
-public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
-        NewsItemsMvpView.Listener {
+public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>, NewsItemsMvpView.Listener {
 
-    private final ScreenNavigator screenNavigator;
-    private final BackPressDispatcher backPressDispatcher;
     private final NewsItemService newsItemService;
     private final ThreadPoster mainThreadPoster;
     private final Context context;
-    private final BaseActivity activity;
     private final ApiHelper apiHelper;
+    private ScreenNavigator screenNavigator;
+    private BackPressDispatcher backPressDispatcher;
+    private BaseActivity activity;
 
     private NewsItemsMvpView view;
     private Thread thread;
@@ -47,6 +46,13 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     public void bindView(NewsItemsMvpView view) {
         this.view = view;
         view.showProgress();
+    }
+
+    @Override
+    public void onTurnScreen(ScreenNavigator screenNavigator, BaseActivity activity) {
+        this.screenNavigator = screenNavigator;
+        this.activity = activity;
+        this.backPressDispatcher = activity;
     }
 
     public void updateDataNews() {
@@ -116,7 +122,9 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
     private void onItemsLoaded(List<NewsItem> newsItems) {
         // prepare to show
-        view.bindData(newsItems);
+        if (view != null) {
+            view.bindData(newsItems);
+        }
     }
 
     public void onStart() {
@@ -132,7 +140,9 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
     @Override
     public void onDestroy() {
-        thread.interrupt();
+        if (thread != null) {
+            thread.interrupt();
+        }
         thread = null;
         view = null;
     }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 
+import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.profile.model.UserProfile;
@@ -33,10 +34,10 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     private ProfileMvpView view;
     private final ProfileService profileService;
-    private final ScreenNavigator screenNavigator;
     private final ThreadPoster mainThreadPoster;
-    private final BackPressDispatcher backPressDispatcher;
     private final ApiHelper apiHelper;
+    private ScreenNavigator screenNavigator;
+    private BackPressDispatcher backPressDispatcher;
 
     private Thread thread;
 
@@ -59,6 +60,12 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         loadItem();
     }
 
+    @Override
+    public void onTurnScreen(ScreenNavigator screenNavigator, BaseActivity activity) {
+        this.screenNavigator = screenNavigator;
+        this.backPressDispatcher = activity;
+    }
+
     private void loadItem() {
         thread = new Thread(() -> {
             UserProfile userProfile = profileService.findByUserName(userName);
@@ -75,18 +82,21 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     }
 
     private void onItemLoaded(UserProfile userProfile) {
-        view.showProgress();
-        view.bindData(userProfile);
-        if (!backButtonText.equals("")) {
-            view.showBackButton(backButtonText);
-        }
+        if (view != null) {
+            view.showProgress();
+            view.bindData(userProfile);
+
+            if (!backButtonText.equals("")) {
+                view.showBackButton(backButtonText);
+            }
 
 //        Показываем кнопку "Выйти", если имеем дело с профилем пользователя
-        if (userName.equals("")) {
-            view.showExitButton();
-        } else {
+            if (userName.equals("")) {
+                view.showExitButton();
+            } else {
 //          Показываем имя пользователя в toolbar'e
-            view.showNameOnToolbar(userProfile.getFullName());
+                view.showNameOnToolbar(userProfile.getFullName());
+            }
         }
     }
 
@@ -114,7 +124,9 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     @Override
     public void onDestroy() {
         // dispose all requests
-        thread.interrupt();
+        if (thread != null) {
+            thread.interrupt();
+        }
         thread = null;
         view = null;
     }

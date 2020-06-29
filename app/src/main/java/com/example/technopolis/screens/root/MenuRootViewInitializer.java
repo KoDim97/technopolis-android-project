@@ -12,6 +12,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MenuRootViewInitializer {
     private final ScreenNavigator screenNavigator;
     private final BottomNavigationView navigation;
+    public static int currentNavElemIndex;
 
     public MenuRootViewInitializer(@NonNull final BaseActivity rootView, @NonNull final ScreenNavigator screenNavigator) {
         this.screenNavigator = screenNavigator;
@@ -19,7 +20,13 @@ public class MenuRootViewInitializer {
         setup();
     }
 
+    public int getCurrentNavElemIndex() {
+        return currentNavElemIndex;
+    }
+
+
     public void setNavElem(final int index) {
+        currentNavElemIndex = index;
         switch (index) {
             case 0:
                 navigation.setSelectedItemId(R.id.navigation_schedule);
@@ -46,7 +53,7 @@ public class MenuRootViewInitializer {
         }
     }
 
-    private void setup() {
+        private void setup() {
         final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = screenNavigator::loadFragment;
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
