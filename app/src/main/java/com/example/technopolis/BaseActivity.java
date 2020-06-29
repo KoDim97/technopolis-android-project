@@ -22,8 +22,6 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     private MenuRootViewInitializer rootViewController;
     private PauseController pauseController;
 
-    private static final String CURRENT_NAV_ELEMENT_INDEX = "CURRENT_NAV_ELEMENT_INDEX";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,8 +37,9 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        int currentNavElemIndex = savedInstanceState.getInt(CURRENT_NAV_ELEMENT_INDEX);
-        rootViewController.setNavElem(currentNavElemIndex);
+        App app = (App) getApplication();
+        screenNavigator.setFragmentsStack(app.getCurrentFragmentStack());
+        screenNavigator.setLog(app.getLog());
     }
 
 
@@ -58,7 +57,6 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         screenNavigator.onSaveInstanceState(outState);
-        outState.putInt(CURRENT_NAV_ELEMENT_INDEX, rootViewController.getCurrentNavElemIndex());
     }
 
     @NonNull
@@ -100,5 +98,14 @@ public class BaseActivity extends AppCompatActivity implements BackPressDispatch
     protected void onResume() {
         super.onResume();
         LogHelper.i(this, "app resumed");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        App app = ((App) getApplication());
+        app.setCurrentFragmentStack(screenNavigator.provideCurrentStack());
+        app.setLog(screenNavigator.provideLog());
+        LogHelper.i(this, "Current fragments stack and log were saved");
     }
 }

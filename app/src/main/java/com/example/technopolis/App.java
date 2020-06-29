@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.toolbox.Volley;
 import com.example.technopolis.api.ApiHelper;
@@ -38,6 +39,8 @@ import com.example.technopolis.util.ThreadPoster;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.util.Map;
+import java.util.Stack;
 
 
 public class App extends Application {
@@ -73,6 +76,26 @@ public class App extends Application {
     private SchedulerItemsPresenter schedulerItemsPresenter;
     private ProfilePresenter profilePresenter;
     private GroupListPresenter groupListPresenter;
+
+    private Stack<Fragment> currentFragmentStack;
+    private Map<Integer, Integer> log;
+
+    public Map<Integer, Integer> getLog() {
+        return log;
+    }
+
+    public void setLog(Map<Integer, Integer> log) {
+        this.log = log;
+    }
+
+
+    public void setCurrentFragmentStack(Stack<Fragment> currentFragmentStack) {
+        this.currentFragmentStack = currentFragmentStack;
+    }
+
+    public Stack<Fragment> getCurrentFragmentStack() {
+        return currentFragmentStack;
+    }
 
     public void setNewsItemsPresenter(NewsItemsPresenter newsItemsPresenter) {
         this.newsItemsPresenter = newsItemsPresenter;
