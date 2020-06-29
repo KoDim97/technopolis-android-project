@@ -83,9 +83,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     private void onItemLoaded(UserProfile userProfile) {
         if (view != null) {
-            view.showProgress();
             view.bindData(userProfile);
-
             if (!backButtonText.equals("")) {
                 view.showBackButton(backButtonText);
             }
