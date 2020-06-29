@@ -116,7 +116,9 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
     private void onItemsLoaded(List<NewsItem> newsItems) {
         // prepare to show
-        view.bindData(newsItems);
+        if (view != null) {
+            view.bindData(newsItems);
+        }
     }
 
     public void onStart() {

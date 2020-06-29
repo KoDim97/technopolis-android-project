@@ -75,18 +75,19 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     }
 
     private void onItemLoaded(UserProfile userProfile) {
-        view.showProgress();
-        view.bindData(userProfile);
-        if (!backButtonText.equals("")) {
-            view.showBackButton(backButtonText);
-        }
+        if (view != null) {
+            view.bindData(userProfile);
+            if (!backButtonText.equals("")) {
+                view.showBackButton(backButtonText);
+            }
 
 //        Показываем кнопку "Выйти", если имеем дело с профилем пользователя
-        if (userName.equals("")) {
-            view.showExitButton();
-        } else {
+            if (userName.equals("")) {
+                view.showExitButton();
+            } else {
 //          Показываем имя пользователя в toolbar'e
-            view.showNameOnToolbar(userProfile.getFullName());
+                view.showNameOnToolbar(userProfile.getFullName());
+            }
         }
     }
 

@@ -109,7 +109,9 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     }
 
     private void onItemsLoaded(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, List<IsOnlineSupplier> suppliers, int actualPosition) {
-        view.bindData(schedulerItems, listeners, suppliers, actualPosition);
+        if (view != null) {
+            view.bindData(schedulerItems, listeners, suppliers, actualPosition);
+        }
     }
 
     @Override
