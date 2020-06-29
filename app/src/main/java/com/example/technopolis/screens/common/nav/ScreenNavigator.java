@@ -131,6 +131,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
             if (find) {
                 log.remove(i);
                 fragNavController.popFragment();
+                fragNavController.executePendingTransactions();
             } else if (log.get(i) == index) {
                 find = true;
             }
@@ -199,7 +200,8 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
      *
      * @return true if fragment list contains @menuItem else false
      */
-    public boolean loadFragment(@NonNull final MenuItem menuItem) {
+
+    public synchronized boolean loadFragment(@NonNull final MenuItem menuItem) {
         final Integer index = getIndexByMenuItem(menuItem);
         if (index == null)
             return false;
@@ -214,6 +216,8 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
             profileCounter = 0;
             log.put(log.size(), index);
             fragNavController.pushFragment(fragments.get(index));
+            fragNavController.executePendingTransactions();
+
             //if not root
         } else if (index != 0) {
             LogHelper.i(this, "Switched to fragment " + index);
@@ -226,6 +230,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
             LogHelper.i(this, "Switched to fragment " + index);
             profileCounter = 0;
             fragNavController.clearStack();
+            fragNavController.executePendingTransactions();
             log.clear();
             log.put(0, 0);
         }
