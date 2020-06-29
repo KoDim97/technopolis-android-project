@@ -21,21 +21,23 @@ import com.example.technopolis.screens.common.FeedbackFragment;
 import com.example.technopolis.screens.grouplist.GroupListFragment;
 import com.example.technopolis.screens.newsitems.NewsItemsFragment;
 import com.example.technopolis.screens.profile.ProfileFragment;
+import com.example.technopolis.screens.root.MenuRootViewInitializer;
 import com.example.technopolis.screens.scheduleritems.SchedulerFragment;
 import com.ncapdevi.fragnav.FragNavController;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Stack;
 import java.util.TreeMap;
 
 public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     private final FragNavController fragNavController;
     private final BaseActivity activity;
-    private final Map<Integer, Integer> log;
     private final App app;
+    private Map<Integer, Integer> log;
     private boolean pop = false;
-    private ArrayList<Fragment> fragments;
+    private static ArrayList<Fragment> fragments;
     private int profileCounter = 0;
     private Fragment authorizationFragment;
 
@@ -53,10 +55,12 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     private void initListFragments() {
-        fragments = new ArrayList<>();
-        fragments.add(SchedulerFragment.newInstance());
-        fragments.add(NewsItemsFragment.newInstance());
-        fragments.add(ProfileFragment.newInstance());
+        if (fragments == null) {
+            fragments = new ArrayList<>();
+            fragments.add(SchedulerFragment.newInstance());
+            fragments.add(NewsItemsFragment.newInstance());
+            fragments.add(ProfileFragment.newInstance());
+        }
         if (app.provideApiHelper().isOnline()) {
             app.preload();
         }
@@ -153,6 +157,30 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         logDialog.findViewById(R.id.closeButton).setOnClickListener(v1 -> logDialog.dismiss());
     }
 
+    public void setFragmentsStack(Stack<Fragment> fragmentsStack) {
+        fragNavController.clearStack();
+        boolean isFirst = true;
+        for (Fragment fragment : fragmentsStack) {
+            if (isFirst) {
+                isFirst = false;
+                continue;
+            }
+            fragNavController.pushFragment(fragment);
+        }
+    }
+
+    public void setLog(Map<Integer, Integer> log) {
+        this.log = log;
+    }
+
+    public Stack<Fragment> provideCurrentStack() {
+        return fragNavController.getCurrentStack();
+    }
+
+    public Map<Integer, Integer> provideLog() {
+        return log;
+    }
+
     private Integer getIndexByMenuItem(@NonNull final MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.navigation_schedule:
@@ -207,6 +235,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
             provideLogs();
         }
 
+        MenuRootViewInitializer.currentNavElemIndex = index;
         return true;
     }
 

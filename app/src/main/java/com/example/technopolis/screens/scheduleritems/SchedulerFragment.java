@@ -31,6 +31,7 @@ public class SchedulerFragment extends Fragment {
 
         presenter = new SchedulerItemsPresenter(getBaseActivity().getScreenNavigator(), getBaseActivity(),
                 getFindBlogItemService(), getMainThreadPoster(), getApiHelper());
+        ((App) getBaseActivity().getApplication()).setSchedulerItemsPresenter(presenter);
     }
 
     @Override
@@ -39,7 +40,7 @@ public class SchedulerFragment extends Fragment {
         SchedulerItemsMvpView view = new SchedulerItemsMvpViewImpl(inflater, container, getContext());
         presenter.bindView(view);
 
-        ((BaseActivity) getActivity()).getRootViewController().setBarVisible(View.VISIBLE);
+        getBaseActivity().getRootViewController().setBarVisible(View.VISIBLE);
         return view.getRootView();
     }
 

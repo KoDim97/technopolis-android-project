@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.toolbox.Volley;
 import com.example.technopolis.api.ApiHelper;
@@ -26,6 +27,11 @@ import com.example.technopolis.save.SaveCookieController;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepoImpl;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
+import com.example.technopolis.screens.common.nav.ScreenNavigator;
+import com.example.technopolis.screens.grouplist.GroupListPresenter;
+import com.example.technopolis.screens.newsitems.NewsItemsPresenter;
+import com.example.technopolis.screens.profile.ProfilePresenter;
+import com.example.technopolis.screens.scheduleritems.SchedulerItemsPresenter;
 import com.example.technopolis.user.model.User;
 import com.example.technopolis.user.service.AuthService;
 import com.example.technopolis.util.MainThreadPoster;
@@ -33,6 +39,8 @@ import com.example.technopolis.util.ThreadPoster;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.util.Map;
+import java.util.Stack;
 
 
 public class App extends Application {
@@ -63,6 +71,62 @@ public class App extends Application {
     private SaveCookieController saveCookieController;
 
     private static Application app;
+
+    private NewsItemsPresenter newsItemsPresenter;
+    private SchedulerItemsPresenter schedulerItemsPresenter;
+    private ProfilePresenter profilePresenter;
+    private GroupListPresenter groupListPresenter;
+
+    private Stack<Fragment> currentFragmentStack;
+    private Map<Integer, Integer> log;
+
+    public Map<Integer, Integer> getLog() {
+        return log;
+    }
+
+    public void setLog(Map<Integer, Integer> log) {
+        this.log = log;
+    }
+
+
+    public void setCurrentFragmentStack(Stack<Fragment> currentFragmentStack) {
+        this.currentFragmentStack = currentFragmentStack;
+    }
+
+    public Stack<Fragment> getCurrentFragmentStack() {
+        return currentFragmentStack;
+    }
+
+    public void setNewsItemsPresenter(NewsItemsPresenter newsItemsPresenter) {
+        this.newsItemsPresenter = newsItemsPresenter;
+    }
+
+    public void setSchedulerItemsPresenter(SchedulerItemsPresenter schedulerItemsPresenter) {
+        this.schedulerItemsPresenter = schedulerItemsPresenter;
+    }
+
+    public void setProfilePresenter(ProfilePresenter profilePresenter) {
+        this.profilePresenter = profilePresenter;
+    }
+
+    public void setGroupListPresenter(GroupListPresenter groupListPresenter) {
+        this.groupListPresenter = groupListPresenter;
+    }
+
+    public void updatePresentersArgs(ScreenNavigator screenNavigator, BaseActivity activity) {
+        if (schedulerItemsPresenter != null) {
+            schedulerItemsPresenter.onTurnScreen(screenNavigator, activity);
+        }
+        if (newsItemsPresenter != null) {
+            newsItemsPresenter.onTurnScreen(screenNavigator, activity);
+        }
+        if (profilePresenter != null) {
+            profilePresenter.onTurnScreen(screenNavigator, activity);
+        }
+        if (groupListPresenter != null) {
+            groupListPresenter.onTurnScreen(screenNavigator, activity);
+        }
+    }
 
     public void setImagesRepo(@NonNull final ImagesRepo imagesRepo) {
         this.imagesRepo = imagesRepo;

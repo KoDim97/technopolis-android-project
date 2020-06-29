@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 
+import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.profile.model.UserProfile;
@@ -33,10 +34,10 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     private ProfileMvpView view;
     private final ProfileService profileService;
-    private final ScreenNavigator screenNavigator;
     private final ThreadPoster mainThreadPoster;
-    private final BackPressDispatcher backPressDispatcher;
     private final ApiHelper apiHelper;
+    private ScreenNavigator screenNavigator;
+    private BackPressDispatcher backPressDispatcher;
 
     private Thread thread;
 
@@ -57,6 +58,12 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         this.view = view;
         view.showProgress();
         loadItem();
+    }
+
+    @Override
+    public void onTurnScreen(ScreenNavigator screenNavigator, BaseActivity activity) {
+        this.screenNavigator = screenNavigator;
+        this.backPressDispatcher = activity;
     }
 
     private void loadItem() {
@@ -115,7 +122,9 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     @Override
     public void onDestroy() {
         // dispose all requests
-        thread.interrupt();
+        if (thread != null) {
+            thread.interrupt();
+        }
         thread = null;
         view = null;
     }

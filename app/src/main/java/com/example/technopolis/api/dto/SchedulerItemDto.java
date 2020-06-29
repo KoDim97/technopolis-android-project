@@ -11,7 +11,6 @@ public class SchedulerItemDto {
     private String startTime;
     private String endTime;
     private String location;
-    //???нужны ли группы??? see api
     private boolean checkedInOpen;
     private boolean attended;
     private String feedbackURL;
