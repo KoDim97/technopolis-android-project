@@ -25,6 +25,8 @@ public class FeedbackFragment extends Fragment implements BackPressedListener {
     private String url;
     private ScreenNavigator screenNavigator;
 
+    public static boolean isOpen = false;
+
     public static Fragment newInstance(String url) {
         Fragment fragment = new FeedbackFragment();
         Bundle args = new Bundle();
@@ -38,6 +40,7 @@ public class FeedbackFragment extends Fragment implements BackPressedListener {
         super.onCreate(savedInstanceState);
         screenNavigator = getBaseActivity().getScreenNavigator();
         url = getArguments().getString(ARG_FEEDBACK_URL);
+        isOpen = true;
     }
 
     @Override
@@ -63,6 +66,7 @@ public class FeedbackFragment extends Fragment implements BackPressedListener {
 
     @Override
     public boolean onBackPressed() {
+        isOpen = false;
         return screenNavigator.navigateUp();
     }
 

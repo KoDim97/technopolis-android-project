@@ -168,6 +168,10 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
             }
             fragNavController.pushFragment(fragment);
         }
+        if (FeedbackFragment.isOpen && !((App) activity.getApplication()).provideApiHelper().isOnline()) {
+            fragNavController.popFragment();
+            activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
+        }
     }
 
     public void setLog(Map<Integer, Integer> log) {
