@@ -90,7 +90,9 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>, Group
     @Override
     public void onDestroy() {
         // dispose all requests
-        thread.interrupt();
+        if (thread != null) {
+            thread.interrupt();
+        }
         thread = null;
         view = null;
     }
