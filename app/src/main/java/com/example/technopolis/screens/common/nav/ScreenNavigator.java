@@ -43,7 +43,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, @NonNull final BaseActivity activity) {
         this.activity = activity;
-        authorizationFragment = AuthorizationFragment.newInstance(activity);
+        authorizationFragment = AuthorizationFragment.newInstance();
         app = (App) activity.getApplication();
         if (app.isAuthorized())
             initListFragments();
