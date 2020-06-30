@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.widget.Toast;
 
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
@@ -242,9 +243,13 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     }
 
     @Override
-    public void onMarksClick(String username) {
+    public void onMarksClick(Activity activity, String username) {
         String url = formUrlFromUserName(username);
-        screenNavigator.toFeedBack(url);
+        if (apiHelper.isOnline()) {
+            screenNavigator.toFeedBack(url);
+        } else {
+            activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
+        }
     }
 
     private String formUrlFromUserName(String username) {

@@ -135,7 +135,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
 
     private void onMarksClick(String username) {
         for (Listener listener : getListeners()) {
-            listener.onMarksClick(username);
+            listener.onMarksClick((Activity) getContext(), username);
         }
     }
 
