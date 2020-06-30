@@ -40,6 +40,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     private static ArrayList<Fragment> fragments;
     private int profileCounter = 0;
     private Fragment authorizationFragment;
+    private final int STACK_SIZE = 10;
 
     public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, @NonNull final BaseActivity activity) {
         this.activity = activity;
@@ -110,7 +111,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     public void toProfile(String username, String groupname) {
-        if (fragNavController.getSize() > 10) {
+        if (fragNavController.getCurrentStack().size() > STACK_SIZE) {
             activity.runOnUiThread(() -> Toast.makeText(activity, R.string.stackError, Toast.LENGTH_SHORT).show());
         } else {
             fragNavController.pushFragment(ProfileFragment.newInstance(username, groupname));
