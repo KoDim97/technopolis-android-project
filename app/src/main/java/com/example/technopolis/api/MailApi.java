@@ -22,7 +22,9 @@ public interface MailApi {
 
     GroupDto requestGroupDto(long id);
 
-    void setProjectUrl(String string);
+    void setProjectUrl(String url);
+
+    String getProjectUrl();
 
     List<SchedulerItemDto> requestSchedulerItems();
 

@@ -118,7 +118,11 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         }
         about.setText(aboutText);
 
-        marksRelativeLayout.setOnClickListener(v -> onMarksClick(userProfile.getUserName()));
+        if (userProfile.getUserName().equals("")) {
+            marksRelativeLayout.setOnClickListener(v -> onMarksClick(userProfile.getUserName()));
+        } else {
+            marksRelativeLayout.setVisibility(View.GONE);
+        }
 
 //        Добавляем кнопки для просмотра групп
         addGroupsButtons(userProfile.getGroups());
@@ -222,12 +226,10 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
 
     private Drawable getContactsIcon(UserContact contact) {
         Context context = getContext();
-        switch (contact.getName()) {
-            case "email":
-                return context.getDrawable(R.drawable.icons8_mail_96);
-            default:
-                return context.getDrawable(R.drawable.icons8_iphone_96);
+        if ("email".equals(contact.getName())) {
+            return context.getDrawable(R.drawable.icons8_mail_96);
         }
+        return context.getDrawable(R.drawable.icons8_iphone_96);
     }
 
     private void addAccountsTextViews(List<UserAccount> accounts) {

@@ -251,7 +251,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         if (username.equals("")) {
             username = profileService.getApi().getUser().getUsername();
         }
-        return "https://polis.mail.ru/cabinet/" + username + "/progress/";
+        return profileService.getApi().getProjectUrl() + "/cabinet/" + username + "/progress/";
     }
 
     @Override

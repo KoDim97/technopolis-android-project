@@ -58,10 +58,14 @@ public class MailApiImpl implements MailApi {
     }
 
     @Override
-    public void setProjectUrl(String string) {
-        projectUrl = string;
+    public void setProjectUrl(String url) {
+        projectUrl = url;
     }
 
+    @Override
+    public String getProjectUrl() {
+        return projectUrl;
+    }
 
     private Map<String, String> getAuthHeader() {
         Map<String, String> params = new HashMap<>();
