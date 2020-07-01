@@ -171,7 +171,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
         if (FeedbackFragment.isOpen && !((App) activity.getApplication()).provideApiHelper().isOnline()) {
             fragNavController.popFragment();
-            activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
+            activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_LONG).show());
         }
     }
 

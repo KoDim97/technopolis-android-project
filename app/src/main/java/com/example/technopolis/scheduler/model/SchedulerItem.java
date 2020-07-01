@@ -1,12 +1,8 @@
 package com.example.technopolis.scheduler.model;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Objects;
 
 public class SchedulerItem {
-    private static final String RESPONSE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private long id;
     private String subjectName;
@@ -51,10 +47,7 @@ public class SchedulerItem {
         this.date = date.replace("T", " ").substring(0, date.length());
         this.isCheckInOpen = isCheckInOpen;
         this.isAttended = isAttended;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RESPONSE_FORMAT, new Locale("ru"));
-
-        int compareResult = simpleDateFormat.format(new Date()).compareTo(date);
-        this.feedbackUrl = (compareResult > 0) ? "null" : feedbackUrl;
+        this.feedbackUrl = feedbackUrl;
     }
 
     public long getId() {
