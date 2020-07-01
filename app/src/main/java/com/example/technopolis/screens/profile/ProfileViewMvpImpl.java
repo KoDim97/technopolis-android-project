@@ -186,7 +186,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             button.setGravity(Gravity.CENTER_VERTICAL);
             button.setLayoutParams(params);
 //            Конвертируем px в dp
-            button.setPadding((int) (13 * scale + 0.5f), 0, 0, 0);
+            button.setPadding((int) (13 * scale + 0.5f), 0, 15, 0);
             button.setAllCaps(false);
             button.setId((int) groups.get(i).getId());
             button.setOnClickListener(this);
