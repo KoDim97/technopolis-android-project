@@ -21,7 +21,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>, Group
     private final ApiHelper apiHelper;
     private ScreenNavigator screenNavigator;
     private BackPressDispatcher backPressDispatcher;
-
+    private String text;
     private GroupListMvpView view;
     private Thread thread;
 
@@ -38,7 +38,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>, Group
     @Override
     public void bindView(GroupListMvpView view) {
         this.view = view;
-        if (!findGroupItemService.isContain(id)){
+        if (!findGroupItemService.isContain(id)) {
             view.showProgress();
         }
         loadItems();
@@ -77,6 +77,9 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>, Group
 
     @Override
     public void onStart() {
+        if (text != null) {
+            onFilterTextUpdated(text);
+        }
         view.registerListener(this);
         backPressDispatcher.registerListener(this);
     }
@@ -106,18 +109,21 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>, Group
     @Override
     public void onFilterTextUpdated(String text) {
         thread = new Thread(() -> {
+            this.text = text;
             GroupItem groupItem = findGroupItemService.findById(id);
             List<Student> students = groupItem.getStudents();
             List<Student> filteredStudent = new ArrayList<>();
 
-            if (text.length() != 0) {
+            if (text != null && text.length() != 0) {
                 for (Student student : students) {
                     String[] split_str = student.getFullname().toLowerCase().split(" ");
                     String lowerCaseText = text.toLowerCase();
                     for (String word : split_str) {
-                        if (word.substring(0, text.length()).equals(lowerCaseText)) {
-                            filteredStudent.add(student);
-                            break;
+                        if (word.length() >= text.length()) {
+                            if (word.substring(0, text.length()).equals(lowerCaseText)) {
+                                filteredStudent.add(student);
+                                break;
+                            }
                         }
                     }
                 }
