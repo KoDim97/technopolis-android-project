@@ -67,6 +67,8 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>, NewsI
                         NewsItemsFragment.handler.sendMessage(NewsItemsFragment.handler.obtainMessage());
                     });
                 }
+            } else {
+                NewsItemsFragment.handler.sendMessage(NewsItemsFragment.handler.obtainMessage());
             }
         });
 
@@ -100,6 +102,8 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>, NewsI
                         NewsItemsFragment.handler.sendMessage(NewsItemsFragment.handler.obtainMessage());
                     });
                 }
+            } else {
+                NewsItemsFragment.handler.sendMessage(NewsItemsFragment.handler.obtainMessage());
             }
         });
 
