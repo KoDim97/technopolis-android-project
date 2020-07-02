@@ -106,6 +106,18 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>, Group
         return true;
     }
 
+    private boolean push(/*List<Student> filteredStudent, Student student, */String[] split_str, String checkText) {
+        for (String word : split_str) {
+            if (word.length() >= checkText.length()) {
+                if (word.substring(0, checkText.length()).equals(checkText)) {
+//                    filteredStudent.add(student);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onFilterTextUpdated(String text) {
         thread = new Thread(() -> {
@@ -117,13 +129,24 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>, Group
             if (text != null && text.length() != 0) {
                 for (Student student : students) {
                     String[] split_str = student.getFullname().toLowerCase().split(" ");
-                    String lowerCaseText = text.toLowerCase();
-                    for (String word : split_str) {
-                        if (word.length() >= text.length()) {
-                            if (word.substring(0, text.length()).equals(lowerCaseText)) {
-                                filteredStudent.add(student);
-                                break;
-                            }
+                    String[] lowerCaseText = text.toLowerCase().split(" ");
+                    if (lowerCaseText.length == 1) {
+//                        for (String word : split_str) {
+//                            if (word.length() >= lowerCaseText[0].length()) {
+//                                if (word.substring(0, lowerCaseText[0].length()).equals(lowerCaseText[0])) {
+//                                    filteredStudent.add(student);
+//                                    break;
+//                                }
+//                            }
+//                        }
+                        if (push(split_str, lowerCaseText[0])) {
+                            filteredStudent.add(student);
+                        }
+                    } else {
+                        String name = lowerCaseText[0];
+                        String surname = lowerCaseText[1];
+                        if (push(split_str, name) && push(split_str, surname)) {
+                            filteredStudent.add(student);
                         }
                     }
                 }
