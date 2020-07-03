@@ -116,7 +116,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(3, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(700, TimeUnit.MILLISECONDS);
 
             String username = response.getString("username");
             String auth_token = response.getString("auth_token");
@@ -130,8 +130,10 @@ public class MailApiImpl implements MailApi {
             }
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         return null;
     }
@@ -148,7 +150,8 @@ public class MailApiImpl implements MailApi {
             LogHelper.i(this, "no internet on profile");
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException ignored) {}
+            } catch (InterruptedException ignored) {
+            }
             return null;
         }
 
@@ -242,13 +245,15 @@ public class MailApiImpl implements MailApi {
             );
             return profileDto;
 
-        } catch (InterruptedException | TimeoutException e) {
+        } catch (TimeoutException e) {
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
             LogHelper.e(this, "timeout on profile");
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         return null;
     }
@@ -297,13 +302,15 @@ public class MailApiImpl implements MailApi {
                 list.add(new StudentDto(student_id, username, fullname, avatar_url, online, rating));
             }
             return new GroupDto(id, name, list);
-        } catch (InterruptedException | TimeoutException e) {
+        } catch (TimeoutException e) {
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
             LogHelper.i(this, "timeout on group");
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         return null;
     }
@@ -368,13 +375,16 @@ public class MailApiImpl implements MailApi {
             }
 
 
-        } catch (InterruptedException | TimeoutException e) {
+        } catch (TimeoutException e) {
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
+
         return newsDtoList;
     }
 
@@ -437,12 +447,14 @@ public class MailApiImpl implements MailApi {
             }
 
 
-        } catch (InterruptedException | TimeoutException e) {
-           apiHelper.setMessage(SERVER_ERROR_MESSAGE);
+        } catch (TimeoutException e) {
+            apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         return newsDtoList;
     }
@@ -465,7 +477,7 @@ public class MailApiImpl implements MailApi {
 //            }
             if (error.networkResponse == null) {
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-            }else if (error.networkResponse.statusCode == 401) {
+            } else if (error.networkResponse.statusCode == 401) {
                 apiHelper.setMessage(RELOAD_REQUEST);
             }
         }) {
@@ -500,12 +512,14 @@ public class MailApiImpl implements MailApi {
                 items.add(schedulerItemDto);
                 ++count;
             }
-        } catch (InterruptedException | TimeoutException e) {
+        } catch (TimeoutException e) {
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         return items;
     }
@@ -548,8 +562,10 @@ public class MailApiImpl implements MailApi {
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
 
         return schedulerItemCheckInDto;
