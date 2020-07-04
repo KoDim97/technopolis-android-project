@@ -70,8 +70,9 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                 if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                     final List<View.OnClickListener> listeners = createCheckInListeners(schedulerItems);
                     final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems);
+                    final int actualDayPosition = calculateActualDayPosition(schedulerItems);
                     if (thread != null && !thread.isInterrupted()) {
-                        mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, 0));
+                        mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, actualDayPosition));
                     }
                 }
             }).start();
