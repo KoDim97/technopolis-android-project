@@ -116,7 +116,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(700, TimeUnit.MILLISECONDS);
+            JSONObject response = requestFuture.get(1200, TimeUnit.MILLISECONDS);
 
             String username = response.getString("username");
             String auth_token = response.getString("auth_token");
