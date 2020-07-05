@@ -169,10 +169,26 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     private static void openMailApp(Activity activity, String mail, String packageName) {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_EMAIL, mail +  "@mail.ru");
+        if (!mail.contains("@mail.ru")) {
+            mail += "@mail.ru";
+        }
+        intent.putExtra(Intent.EXTRA_EMAIL, mail);
         intent.setPackage(packageName);
         intent.setType("message/rfc822");
-        activity.startActivity(intent);
+
+        List<ResolveInfo> resInfo = activity.getPackageManager().queryIntentActivities(intent, 0);
+
+        boolean isContainApp = false;
+        for (ResolveInfo info: resInfo) {
+            if (info.activityInfo == null) continue;
+            if (packageName.equals(info.activityInfo.packageName)) {
+                isContainApp = true;
+                break;
+            }
+        }
+        if (isContainApp) {
+            activity.startActivity(intent);
+        }
     }
 
     private static boolean isAppFromTheList(ResolveInfo info) {
