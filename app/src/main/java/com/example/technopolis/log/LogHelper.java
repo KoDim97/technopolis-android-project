@@ -60,17 +60,15 @@ public class LogHelper {
     public static void createLog(String filename) {
         LogHelper.FILENAME = filename;
         File file = getLogFile(filename);
-        if (file.exists()) {
-            file.delete();
-        }
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
 
-        try {
-            file.createNewFile();
+                appendLog(filename, "Created at " + new Date().toString());
 
-            appendLog(filename, "Created at " + new Date().toString());
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
