@@ -113,7 +113,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         status.setText(userProfile.getMainGroup());
 
         String aboutText = userProfile.getAbout();
-        if (aboutText.equals("null")) {
+        if (aboutText.equals("null") || aboutText.isEmpty()) {
             aboutText = getContext().getString(R.string.aboutPlaceholder);
         }
         about.setText(aboutText);
