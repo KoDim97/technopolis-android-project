@@ -26,6 +26,7 @@ import java.util.Locale;
 public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpView>,
         BackPressedListener {
     private static final String RESPONSE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static boolean isFeedbackFragmentWasOpened = false;
 
     private final SchedulerItemService schedulerItemService;
     private final ThreadPoster mainThreadPoster;
@@ -88,13 +89,23 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
 
     private void loadItems() {
         thread = new Thread(() -> {
-            final List<SchedulerItem> schedulerItems = schedulerItemService.items();
+            List<SchedulerItem> schedulerItems = null;
+            if (isFeedbackFragmentWasOpened) {
+                schedulerItems = schedulerItemService.requestFromApi();
+                if (!schedulerItems.isEmpty()) {
+                    isFeedbackFragmentWasOpened = false;
+                }
+            }
+            if (schedulerItems == null || schedulerItems.isEmpty()){
+                schedulerItems = schedulerItemService.items();
+            }
             if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                 final int actualDayPosition = calculateActualDayPosition(schedulerItems);
                 final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems);
                 final List<View.OnClickListener> listeners = createCheckInListeners(schedulerItems);
+                final List<SchedulerItem> finalSchedulerItems = schedulerItems;
                 if (thread != null && !thread.isInterrupted()) {
-                    mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, actualDayPosition));
+                    mainThreadPoster.post(() -> onItemsLoaded(finalSchedulerItems, listeners, suppliers, actualDayPosition));
                 }
             }
         });
@@ -178,6 +189,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                 } else {
                     String feedbackUrl = schedulerItem.getFeedbackUrl();
                     screenNavigator.toFeedBack(feedbackUrl);
+                    isFeedbackFragmentWasOpened = true;
                 }
             });
         }
