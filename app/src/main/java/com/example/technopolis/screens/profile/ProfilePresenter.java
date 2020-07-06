@@ -82,6 +82,25 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         thread.start();
     }
 
+    public void updateData() {
+        thread = new Thread(() -> {
+            UserProfile userProfile = profileService.requestFromServer(userName);
+            apiHelper.showMessageIfExist(profileService.getApi(), screenNavigator, this::loadItem);
+            profileService.clear(userName);
+            if (thread != null && !thread.isInterrupted()) {
+                if (userProfile != null) {
+                    mainThreadPoster.post(() -> {
+                        onItemLoaded(userProfile);
+                        ProfileFragment.handler.sendMessage(ProfileFragment.handler.obtainMessage());
+                    });
+                } else {
+                    onBackPressed();
+                }
+            }
+        });
+        thread.start();
+    }
+
     private void onItemLoaded(UserProfile userProfile) {
         if (view != null) {
             view.bindData(userProfile);

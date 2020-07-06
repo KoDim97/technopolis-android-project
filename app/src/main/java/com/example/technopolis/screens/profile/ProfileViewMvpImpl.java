@@ -19,6 +19,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.technopolis.R;
 import com.example.technopolis.profile.model.UserAccount;
 import com.example.technopolis.profile.model.UserContact;
@@ -47,7 +49,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final LinearLayout contactsLinearLayout;
     private final LinearLayout accountsLinearLayout;
     private final LinearLayout profileWrapper;
-    private final FrameLayout profileContentContainer;
+    private final SwipeRefreshLayout profileContentContainer;
     private final ProgressBar progressBar;
     private final Map<Integer, String> textViewsUrls;
 

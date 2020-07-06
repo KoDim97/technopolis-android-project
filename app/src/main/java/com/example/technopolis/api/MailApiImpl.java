@@ -54,7 +54,7 @@ public class MailApiImpl implements MailApi {
         this.user = user;
         this.apiHelper = apiHelper;
         //default
-        projectUrl = "https://polis.mail.ru";
+        projectUrl = "http://dpolis.stest.tech-mail.ru";
     }
 
     @Override
