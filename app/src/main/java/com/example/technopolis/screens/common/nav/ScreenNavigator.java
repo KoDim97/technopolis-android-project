@@ -235,6 +235,7 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
             LogHelper.i(this, "Switched to fragment " + index);
             profileCounter = 0;
             fragNavController.clearStack();
+            fragNavController.executePendingTransactions();
             log.clear();
             log.put(0, 0);
         }

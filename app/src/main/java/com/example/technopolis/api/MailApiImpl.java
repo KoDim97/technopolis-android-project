@@ -116,7 +116,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(1200, TimeUnit.MILLISECONDS);
+            JSONObject response = requestFuture.get(1500, TimeUnit.MILLISECONDS);
 
             String username = response.getString("username");
             String auth_token = response.getString("auth_token");
@@ -125,7 +125,6 @@ public class MailApiImpl implements MailApi {
             return authDto;
         } catch (TimeoutException e) {
             if (apiHelper.size() == 0) {
-                apiHelper.setMessage(SERVER_ERROR_MESSAGE);
                 LogHelper.e(this, "timeout on login");
             }
         } catch (JSONException e) {
