@@ -40,6 +40,7 @@ public class SchedulerFragment extends Fragment {
         SchedulerItemsMvpView view = new SchedulerItemsMvpViewImpl(inflater, container, getContext());
         presenter.bindView(view);
 
+
         getBaseActivity().getRootViewController().setBarVisible(View.VISIBLE);
         return view.getRootView();
     }

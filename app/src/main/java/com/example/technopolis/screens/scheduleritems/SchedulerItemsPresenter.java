@@ -1,14 +1,17 @@
 package com.example.technopolis.screens.scheduleritems;
 
 import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
 import com.example.technopolis.screens.common.mvp.MvpPresenter;
@@ -34,6 +37,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     private ScreenNavigator screenNavigator;
     private BackPressDispatcher backPressDispatcher;
     private BaseActivity activity;
+    public Handler handler;
 
     private SchedulerItemsMvpView view;
     private Thread thread;
@@ -65,6 +69,14 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
 
     private void setOnReloadListener() {
         SwipeRefreshLayout swipeRefreshLayout = view.getRootView().findViewById(R.id.swiperefresh_scheduler);
+        handler = new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                swipeRefreshLayout.setRefreshing(false);
+                LogHelper.i(this, "data refreshed");
+            }
+        };
         swipeRefreshLayout.setOnRefreshListener(() -> {
             new Thread(() -> {
                 final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
@@ -73,16 +85,15 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                     final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems);
                     final int actualDayPosition = calculateActualDayPosition(schedulerItems);
                     if (thread != null && !thread.isInterrupted()) {
-                        mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, actualDayPosition));
+                        mainThreadPoster.post(() -> {
+                            onItemsLoaded(schedulerItems, listeners, suppliers, actualDayPosition);
+                            handler.sendMessage(handler.obtainMessage());
+                        });
                     }
+                } else {
+                    handler.sendMessage(handler.obtainMessage());
                 }
             }).start();
-            final Handler handler = new Handler();
-            handler.postDelayed(() -> {
-                if (swipeRefreshLayout.isRefreshing()) {
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }, 1000);
         });
 
     }
