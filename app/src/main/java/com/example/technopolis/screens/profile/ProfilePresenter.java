@@ -41,6 +41,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private BackPressDispatcher backPressDispatcher;
 
     private Thread thread;
+    private boolean isDataUpdated = false;
 
     public ProfilePresenter(String userName, String backButtonText, ProfileService profileService,
                             ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster,
@@ -90,6 +91,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
             if (thread != null && !thread.isInterrupted()) {
                 if (userProfile != null) {
                     mainThreadPoster.post(() -> {
+                        isDataUpdated = true;
                         onItemLoaded(userProfile);
                         ProfileFragment.handler.sendMessage(ProfileFragment.handler.obtainMessage());
                     });
@@ -110,7 +112,10 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
 //        Показываем кнопку "Выйти", если имеем дело с профилем пользователя
             if (userName.equals("")) {
-                view.showExitButton();
+                if (!isDataUpdated) {
+                    view.showExitButton();
+                    isDataUpdated = false;
+                }
             } else {
 //          Показываем имя пользователя в toolbar'e
                 view.showNameOnToolbar(userProfile.getFullName());
