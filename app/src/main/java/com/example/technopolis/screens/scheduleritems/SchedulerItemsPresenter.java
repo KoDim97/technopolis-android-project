@@ -96,7 +96,7 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
                     isFeedbackFragmentWasOpened = false;
                 }
             }
-            if (schedulerItems == null || schedulerItems.isEmpty()){
+            if (schedulerItems == null || schedulerItems.isEmpty()) {
                 schedulerItems = schedulerItemService.items();
             }
             if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
@@ -116,12 +116,23 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         int actualPosition = 0;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RESPONSE_FORMAT, new Locale("ru"));
         String date = simpleDateFormat.format(new Date());
+        String previousDate = null;
+        int amountOfLessonsInDay = 1;
         for (SchedulerItem schedulerItem : schedulerItems) {
-            if (date.compareTo(schedulerItem.getDate()) > 0) {
+            String schedulerDate = schedulerItem.getDate();
+            if (date.compareTo(schedulerDate) > 0) {
                 actualPosition++;
+            } else {
+                break;
             }
+            if (schedulerDate.equals(previousDate)) {
+                amountOfLessonsInDay++;
+            } else {
+                amountOfLessonsInDay = 1;
+            }
+            previousDate = schedulerDate;
         }
-        actualPosition--;
+        actualPosition -= amountOfLessonsInDay;
         actualPosition = Math.max(actualPosition, 0);
         return actualPosition;
     }
