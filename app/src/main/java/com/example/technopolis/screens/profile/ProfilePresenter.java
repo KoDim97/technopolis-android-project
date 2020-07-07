@@ -124,6 +124,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     public void onGroupButtonClicked(long id) {
         screenNavigator.toGroupList(id);
+        isDataUpdated = false;
     }
 
     @Override
@@ -286,6 +287,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         String url = formUrlFromUserName(username);
         if (apiHelper.isOnline()) {
             screenNavigator.toFeedBack(url);
+            isDataUpdated = false;
         } else {
             activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
         }
