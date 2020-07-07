@@ -74,7 +74,9 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
                 if (userProfile != null) {
                     mainThreadPoster.post(() -> onItemLoaded(userProfile));
                 } else {
-                    onBackPressed();
+                    if (!userName.equals("")) {
+                        mainThreadPoster.post(this::onBackPressed);
+                    }
                 }
             }
         });
@@ -85,7 +87,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         thread = new Thread(() -> {
             UserProfile userProfile = profileService.requestFromServer(userName);
             if (!apiHelper.showMessageIfExist(profileService.getApi(), screenNavigator, this::loadItem)) {
-                profileService.clear(userName);
+//                profileService.clear(userName);
                 if (thread != null && !thread.isInterrupted()) {
                     if (userProfile != null) {
                         mainThreadPoster.post(() -> {
