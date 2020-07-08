@@ -27,12 +27,11 @@
         android:id="@+id/activity_news__top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:background="@color/colorBlue"
         android:gravity="center"
         android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:layout_marginBottom="10dp"
-        >
+        android:paddingBottom="10dp">
 
         <RadioButton
             android:id="@+id/activity_news__radio_main"
@@ -60,33 +59,36 @@
             android:button="@android:color/transparent"
             android:fontFamily="@font/roboto_regular"
             android:gravity="center"
+            android:maxLines="1"
             android:paddingStart="20dp"
             android:paddingTop="5dp"
             android:paddingEnd="20dp"
             android:paddingBottom="5dp"
-            android:maxLines="1"
             android:text="@string/top_bar_button__sub"
             android:textAllCaps="false"
             android:textColor="@color/radio_flat_text_selector"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
     </RadioGroup>
 
-    <RelativeLayout
+    <ProgressBar
+        android:id="@+id/news_fragment__progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh_items"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <pl.droidsonroids.gif.GifImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/loading" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activity_news__news_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never" />
-    </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 </LinearLayout>

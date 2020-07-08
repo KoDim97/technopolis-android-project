@@ -13,11 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.technopolis.BaseActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.technopolis.R;
 import com.example.technopolis.profile.model.UserAccount;
 import com.example.technopolis.profile.model.UserContact;
@@ -25,13 +27,16 @@ import com.example.technopolis.profile.model.UserGroup;
 import com.example.technopolis.profile.model.UserProfile;
 import com.example.technopolis.screens.common.mvp.MvpViewObservableBase;
 
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Listener>
-        implements ProfileMvpView, View.OnLongClickListener, View.OnClickListener {
+        implements ProfileMvpView, View.OnClickListener {
 
     private final CircleImageView image;
     private final TextView name;
@@ -40,18 +45,25 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
     private final androidx.appcompat.widget.Toolbar toolbar;
     private final TextView toolbarTextView;
     private final LinearLayout groupsLinearLayout;
+    private final RelativeLayout marksRelativeLayout;
     private final LinearLayout contactsLinearLayout;
     private final LinearLayout accountsLinearLayout;
     private final LinearLayout profileWrapper;
-    private final FrameLayout profileContentContainer;
-
+    private final SwipeRefreshLayout profileContentContainer;
+    private final ProgressBar progressBar;
+    private final Map<Integer, String> textViewsUrls;
 
     private final float scale;
+
+    private List<Button> groupButtons = new LinkedList<>();
+    private List<TextView> contactTextViews = new LinkedList<>();
+    private List<TextView> accountTextViews = new LinkedList<>();
 
     public ProfileViewMvpImpl(LayoutInflater layoutInflater, ViewGroup parent) {
         setRootView(layoutInflater.inflate(R.layout.profile_fragment, parent, false));
         scale = getContext().getResources().getDisplayMetrics().density;
         profileContentContainer = findViewById(R.id.profile_content_container);
+        progressBar = findViewById(R.id.profile_fragment__progress);
         image = findViewById(R.id.profile_image);
         name = findViewById(R.id.profile_fullname);
         status = findViewById(R.id.profile_status);
@@ -59,10 +71,24 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         toolbar = findViewById(R.id.toolbar);
         toolbarTextView = findViewById(R.id.toolbar__text_view);
         groupsLinearLayout = findViewById(R.id.groups);
+        marksRelativeLayout = findViewById(R.id.marks);
         contactsLinearLayout = findViewById(R.id.contacts);
         accountsLinearLayout = findViewById(R.id.accounts);
         profileWrapper = findViewById(R.id.profile_wrapper);
 
+        textViewsUrls = new HashMap<>();
+    }
+
+    @Override
+    public void showProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+        profileContentContainer.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+        profileContentContainer.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -93,27 +119,48 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         status.setText(userProfile.getMainGroup());
 
         String aboutText = userProfile.getAbout();
-        if (aboutText.equals("null")) {
+        if (aboutText.equals("null") || aboutText.isEmpty()) {
             aboutText = getContext().getString(R.string.aboutPlaceholder);
         }
         about.setText(aboutText);
-        
+
+        if (userProfile.getUserName().equals("")) {
+            marksRelativeLayout.setOnClickListener(v -> onMarksClick(userProfile.getUserName()));
+        } else {
+            marksRelativeLayout.setVisibility(View.GONE);
+        }
+
 //        Добавляем кнопки для просмотра групп
         addGroupsButtons(userProfile.getGroups());
 //        Добавляем textView для контактов
         addContactsTextViews(userProfile.getContacts());
 //        Добавляем textView для аккаунтов
         addAccountsTextViews(userProfile.getAccounts());
+
+        hideProgress();
     }
 
-    @Override
-    public boolean onLongClick(View v) {
+    private void onMarksClick(String username) {
+        for (Listener listener : getListeners()) {
+            listener.onMarksClick((Activity) getContext(), username);
+        }
+    }
+
+    private void onContactClick(View v) {
+        TextView textView = (TextView) v;
+        String contactInfo = textView.getText().toString();
+        for (Listener listener : getListeners()) {
+            listener.onContactClick((Activity) getContext(), contactInfo);
+        }
+    }
+
+    private void onAccountClick(View v) {
         TextView textView = (TextView) v;
         String text = textView.getText().toString();
+        String name = textViewsUrls.get(textView.getId());
         for (Listener listener : getListeners()) {
-            listener.onLongClick((Activity) getContext(), text);
+            listener.onAccountClick((Activity) getContext(), text, name);
         }
-        return true;
     }
 
     @Override
@@ -123,10 +170,32 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
         }
     }
 
+    private int updateGroupsButtons(int length, List<UserGroup> groups) {
+        int accountsForUpdate = groupButtons.size();
+        if (accountsForUpdate > length) {
+            accountsForUpdate = length;
+        }
+        for (int i = 0; i < accountsForUpdate; ++i) {
+            Button contact = groupButtons.get(i);
+            String text = groups.get(i).getName();
+            contact.setVisibility(View.VISIBLE);
+            contact.setText(text);
+        }
+        if (groupButtons.size() > length) {
+            for (int i = length; i < groupButtons.size(); ++i) {
+                groupButtons.get(i).setVisibility(View.GONE);
+            }
+        }
+
+        return accountsForUpdate;
+    }
+
     private void addGroupsButtons(List<UserGroup> groups) {
         int length = groups.size();
 
-        for (int i = 0; i < length; i++) {
+        int groupsForUpdate = updateGroupsButtons(length, groups);
+
+        for (int i = groupsForUpdate; i < length; i++) {
 //            Подгатавливаем и вставляем новую кнопку перехода на список группы
             int style = R.attr.borderlessButtonStyle;
 
@@ -146,73 +215,143 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             button.setGravity(Gravity.CENTER_VERTICAL);
             button.setLayoutParams(params);
 //            Конвертируем px в dp
-            button.setPadding((int) (13 * scale + 0.5f), 0, 0, 0);
+            button.setPadding((int) (13 * scale + 0.5f), 0, 15, 0);
             button.setAllCaps(false);
             button.setId((int) groups.get(i).getId());
-
             button.setOnClickListener(this);
             groupsLinearLayout.addView(button);
+            groupButtons.add(button);
+        }
+
+        if (length == 0) {
+            groupsLinearLayout.setVisibility(View.GONE);
+        } else {
+            groupsLinearLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateContactsTextViews(List<UserContact> contacts) {
+        for (int i = 0; i < contactTextViews.size(); ++i) {
+            TextView contact = contactTextViews.get(i);
+            String text = contacts.get(i).getValue();
+            if (text.equals("") || text.equals("null")) {
+                contact.setVisibility(View.GONE);
+            } else {
+                contact.setVisibility(View.VISIBLE);
+                contact.setText(text);
+                Drawable icon = getContactsIcon(contacts.get(i));
+                contact.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+            }
         }
     }
 
     private void addContactsTextViews(List<UserContact> contacts) {
         int length = contacts.size();
 
-        for (int i = 0; i < length; i++) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    (int) (43 * scale + 0.5f)
-            );
+        updateContactsTextViews(contacts);
 
-            params.setMargins(0, (int) (1 * scale + 0.5f), 0, 0);
-            TextView contact = new TextView(getContext());
-            Drawable icon = getContactsIcon(contacts.get(i));
-            contact.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-            contact.setText(contacts.get(i).getValue());
-            contact.setBackgroundResource(R.color.colorWhite);
-            contact.setPadding((int) (12 * scale + 0.5f), 0, 0, 0);
-            contact.setCompoundDrawablePadding((int) (10 * scale + 0.5f));
-            contact.setAllCaps(false);
-            contact.setGravity(Gravity.CENTER_VERTICAL);
-            contact.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
-            contact.setLayoutParams(params);
-            contact.setOnLongClickListener(this);
-            contactsLinearLayout.addView(contact);
+        for (int i = contactTextViews.size(); i < length; i++) {
+            final String text = contacts.get(i).getValue();
+            if (!text.equals("") && !text.equals("null")) {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        (int) (43 * scale + 0.5f)
+                );
+
+                params.setMargins(0, (int) (1 * scale + 0.5f), 0, 0);
+                TextView contact = new TextView(getContext());
+                Drawable icon = getContactsIcon(contacts.get(i));
+                contact.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+                contact.setText(text);
+                contact.setBackgroundResource(R.color.colorWhite);
+                contact.setPadding((int) (12 * scale + 0.5f), 0, 0, 0);
+                contact.setCompoundDrawablePadding((int) (10 * scale + 0.5f));
+                contact.setAllCaps(false);
+                contact.setGravity(Gravity.CENTER_VERTICAL);
+                contact.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
+                contact.setLayoutParams(params);
+                contact.setOnClickListener(this::onContactClick);
+                contactsLinearLayout.addView(contact);
+                contactTextViews.add(contact);
+            }
+        }
+
+        if (length == 0) {
+            contactsLinearLayout.setVisibility(View.GONE);
+        } else {
+            contactsLinearLayout.setVisibility(View.VISIBLE);
         }
     }
 
     private Drawable getContactsIcon(UserContact contact) {
         Context context = getContext();
-        switch (contact.getName()) {
-            case "email":
-                return context.getDrawable(R.drawable.icons8_mail_96);
-            default:
-                return context.getDrawable(R.drawable.icons8_iphone_96);
+        if ("email".equals(contact.getName())) {
+            return context.getDrawable(R.drawable.icons8_mail_96);
         }
+        return context.getDrawable(R.drawable.icons8_iphone_96);
+    }
+
+    private int updateAccountsTextViews(int length, List<UserAccount> accounts) {
+        int accountsForUpdate = accountTextViews.size();
+        if (accountsForUpdate > length) {
+            accountsForUpdate = length;
+        }
+        for (int i = 0; i < accountsForUpdate; ++i) {
+            TextView account = accountTextViews.get(i);
+            account.setVisibility(View.VISIBLE);
+            Drawable icon = getAccountsIcon(accounts.get(i));
+            account.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+            account.setText(accounts.get(i).getValue());
+        }
+        if (accountTextViews.size() > length) {
+            for (int i = length; i < accountTextViews.size(); ++i) {
+                accountTextViews.get(i).setVisibility(View.GONE);
+            }
+        }
+
+        return accountsForUpdate;
     }
 
     private void addAccountsTextViews(List<UserAccount> accounts) {
         int length = accounts.size();
 
-        for (int i = 0; i < length; i++) {
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    (int) (43 * scale + 0.5f)
-            );
-            params.setMargins(0, (int) (1 * scale + 0.5f), 0, 0);
-            TextView account = new TextView(getContext());
-            Drawable icon = getAccountsIcon(accounts.get(i));
-            account.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-            account.setText(accounts.get(i).getValue());
-            account.setBackgroundResource(R.color.colorWhite);
-            account.setPadding((int) (12 * scale + 0.5f), 0, 0, 0);
-            account.setCompoundDrawablePadding((int) (10 * scale + 0.5f));
-            account.setAllCaps(false);
-            account.setGravity(Gravity.CENTER_VERTICAL);
-            account.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
-            account.setLayoutParams(params);
-            account.setOnLongClickListener(this);
-            accountsLinearLayout.addView(account);
+        int accountsForUpdate = updateAccountsTextViews(length, accounts);
+
+        for (int i = accountsForUpdate; i < length; i++) {
+            final String text = accounts.get(i).getValue();
+            if (!text.equals("") && !text.equals("null")) {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        (int) (43 * scale + 0.5f)
+                );
+
+                System.out.println(accounts.get(i).getName());
+                System.out.println(accounts.get(i).getValue());
+
+                params.setMargins(0, (int) (1 * scale + 0.5f), 0, 0);
+                TextView account = new TextView(getContext());
+                Drawable icon = getAccountsIcon(accounts.get(i));
+                account.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
+                account.setText(accounts.get(i).getValue());
+                account.setBackgroundResource(R.color.colorWhite);
+                account.setPadding((int) (12 * scale + 0.5f), 0, 0, 0);
+                account.setCompoundDrawablePadding((int) (10 * scale + 0.5f));
+                account.setAllCaps(false);
+                account.setGravity(Gravity.CENTER_VERTICAL);
+                account.setTextColor(getContext().getResources().getColor(R.color.colorBlack));
+                account.setLayoutParams(params);
+                account.setOnClickListener(this::onAccountClick);
+                account.setId(i);
+                textViewsUrls.put(account.getId(), accounts.get(i).getName());
+                accountsLinearLayout.addView(account);
+                accountTextViews.add(account);
+            }
+        }
+
+        if (length == 0) {
+            accountsLinearLayout.setVisibility(View.GONE);
+        } else {
+            accountsLinearLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -269,22 +408,14 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             exitDialog.setCancelable(true);
             exitDialog.show();
 
-            exitDialog.findViewById(R.id.exitButtonApprove).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    exitDialog.dismiss();
-                    for (Listener listener : getListeners()) {
-                        listener.onSignOutClicked();
-                    }
+            exitDialog.findViewById(R.id.exitButtonApprove).setOnClickListener(v1 -> {
+                exitDialog.dismiss();
+                for (Listener listener : getListeners()) {
+                    listener.onSignOutClicked();
+                }
 
-                }
             });
-            exitDialog.findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    exitDialog.dismiss();
-                }
-            });
+            exitDialog.findViewById(R.id.cancelButton).setOnClickListener(v1 -> exitDialog.dismiss());
         });
     }
 

@@ -11,12 +11,17 @@ import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.screens.common.nav.ScreenNavigator;
 import com.example.technopolis.user.service.AuthService;
 
+import java.net.HttpCookie;
+import java.util.ArrayList;
+import java.util.List;
+
 public class AuthorizationViewControllerImpl implements AuthorizationViewController {
     private final App app;
     private final AuthService authService;
     private final ScreenNavigator screenNavigator;
     private final BaseActivity activity;
     private final ApiHelper apiHelper;
+    private Thread thread;
 
     AuthorizationViewControllerImpl(@NonNull final BaseActivity activity) {
         this.activity = activity;
@@ -59,20 +64,41 @@ public class AuthorizationViewControllerImpl implements AuthorizationViewControl
     @Override
     public void enterBtnClick(@NonNull final String login, @NonNull final String password) {
         if (!app.isAuthorized()) {
-            final Thread thread = new Thread(() -> {
-                if (authService.CheckAuth(login, password)) {
-                    activity.runOnUiThread(() -> screenNavigator.changeAuthorized(true));
-                } else {
-                    Integer message = apiHelper.getMessage();
-                    if (message != null) {
+            if (thread == null || !thread.isAlive()) {
+                thread = new Thread(() -> {
+                    if (authService.CheckAuth(login, password)) {
+                        apiHelper.clear();
+
                         activity.runOnUiThread(() -> {
-                            Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                            screenNavigator.changeAuthorized(true);
+                            boolean isDomainSaved = false;
+                            List<String> cookies = new ArrayList<>();
+
+                            android.webkit.CookieManager webkitCookies = android.webkit.CookieManager.getInstance();
+                            for (HttpCookie cookie : app.provideCookieManager().getCookieStore().getCookies()) {
+                                if (!isDomainSaved) {
+                                    cookies.add(cookie.getDomain());
+                                    isDomainSaved = true;
+                                }
+                                String next = cookie.getName() + "=" + cookie.getValue();
+                                cookies.add(next);
+                                webkitCookies.setCookie(cookie.getDomain(), next);
+                            }
+
+                            app.provideSaveCookieController().saveCookies(cookies);
                         });
+                    } else {
+                        Integer message = apiHelper.getMessage();
+                        if (message != null) {
+                            activity.runOnUiThread(() -> {
+                                Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                        screenNavigator.changeAuthorized(false);
                     }
-                    screenNavigator.changeAuthorized(false);
-                }
-            });
-            thread.start();
+                });
+                thread.start();
+            }
         }
     }
 }

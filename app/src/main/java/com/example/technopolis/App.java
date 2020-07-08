@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.toolbox.Volley;
 import com.example.technopolis.api.ApiHelper;
@@ -14,6 +15,7 @@ import com.example.technopolis.group.repo.GroupItemRepoImpl;
 import com.example.technopolis.group.service.FindGroupItemService;
 import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.images.repo.ImagesRepoImpl;
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.news.repo.NewsItemRepository;
 import com.example.technopolis.news.repo.NewsItemRepositoryImpl;
 import com.example.technopolis.news.repo.NewsItemRepositoryImplSubs;
@@ -21,13 +23,24 @@ import com.example.technopolis.news.service.NewsItemService;
 import com.example.technopolis.profile.repo.UserProfileRepo;
 import com.example.technopolis.profile.repo.UserProfileRepoImpl;
 import com.example.technopolis.profile.service.ProfileService;
+import com.example.technopolis.save.SaveCookieController;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepo;
 import com.example.technopolis.scheduler.repo.SchedulerItemRepoImpl;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
+import com.example.technopolis.screens.common.nav.ScreenNavigator;
+import com.example.technopolis.screens.grouplist.GroupListPresenter;
+import com.example.technopolis.screens.newsitems.NewsItemsPresenter;
+import com.example.technopolis.screens.profile.ProfilePresenter;
+import com.example.technopolis.screens.scheduleritems.SchedulerItemsPresenter;
 import com.example.technopolis.user.model.User;
 import com.example.technopolis.user.service.AuthService;
 import com.example.technopolis.util.MainThreadPoster;
 import com.example.technopolis.util.ThreadPoster;
+
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.util.Map;
+import java.util.Stack;
 
 
 public class App extends Application {
@@ -36,6 +49,8 @@ public class App extends Application {
     private MailApi api;
     private ApiHelper apiHelper;
     private MainThreadPoster mainThreadPoster;
+    private CookieManager cookieManager;
+    private String feedbackURL;
 
     private User user;
     private AuthService authService;
@@ -53,10 +68,76 @@ public class App extends Application {
 
     private ImagesRepo imagesRepo;
 
+    private SaveCookieController saveCookieController;
+
     private static Application app;
+
+    private NewsItemsPresenter newsItemsPresenter;
+    private SchedulerItemsPresenter schedulerItemsPresenter;
+    private ProfilePresenter profilePresenter;
+    private GroupListPresenter groupListPresenter;
+
+    private Stack<Fragment> currentFragmentStack;
+    private Map<Integer, Integer> log;
+
+    public Map<Integer, Integer> getLog() {
+        return log;
+    }
+
+    public void setLog(Map<Integer, Integer> log) {
+        this.log = log;
+    }
+
+
+    public void setCurrentFragmentStack(Stack<Fragment> currentFragmentStack) {
+        this.currentFragmentStack = currentFragmentStack;
+    }
+
+    public Stack<Fragment> getCurrentFragmentStack() {
+        return currentFragmentStack;
+    }
+
+    public void setNewsItemsPresenter(NewsItemsPresenter newsItemsPresenter) {
+        this.newsItemsPresenter = newsItemsPresenter;
+    }
+
+    public void setSchedulerItemsPresenter(SchedulerItemsPresenter schedulerItemsPresenter) {
+        this.schedulerItemsPresenter = schedulerItemsPresenter;
+    }
+
+    public void setProfilePresenter(ProfilePresenter profilePresenter) {
+        this.profilePresenter = profilePresenter;
+    }
+
+    public void setGroupListPresenter(GroupListPresenter groupListPresenter) {
+        this.groupListPresenter = groupListPresenter;
+    }
+
+    public void updatePresentersArgs(ScreenNavigator screenNavigator, BaseActivity activity) {
+        if (schedulerItemsPresenter != null) {
+            schedulerItemsPresenter.onTurnScreen(screenNavigator, activity);
+        }
+        if (newsItemsPresenter != null) {
+            newsItemsPresenter.onTurnScreen(screenNavigator, activity);
+        }
+        if (profilePresenter != null) {
+            profilePresenter.onTurnScreen(screenNavigator, activity);
+        }
+        if (groupListPresenter != null) {
+            groupListPresenter.onTurnScreen(screenNavigator, activity);
+        }
+    }
 
     public void setImagesRepo(@NonNull final ImagesRepo imagesRepo) {
         this.imagesRepo = imagesRepo;
+    }
+
+    public void setFeedbackURL(String feedbackURL) {
+        this.feedbackURL = feedbackURL;
+    }
+
+    public String getFeedbackURL() {
+        return feedbackURL;
     }
 
     public void setUser(@NonNull final User user) {
@@ -79,6 +160,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         app = this;
+        CookieHandler.setDefault(provideCookieManager());
+        LogHelper.createLog("log");
     }
 
     public static Application getApplication() {
@@ -94,6 +177,13 @@ public class App extends Application {
         if (imagesRepo == null)
             imagesRepo = new ImagesRepoImpl();
         return imagesRepo;
+    }
+
+    public CookieManager provideCookieManager() {
+        if (cookieManager == null) {
+            cookieManager = new CookieManager();
+        }
+        return cookieManager;
     }
 
     public MailApi provideMailApi() {
@@ -188,13 +278,18 @@ public class App extends Application {
         return groupItemRepo;
     }
 
-
-
     public FindGroupItemService provideFindGroupItemService() {
         if (findGroupItemService == null) {
             findGroupItemService = new FindGroupItemService(provideGroupItemRepo(), provideMailApi(), provideImagesRepo());
         }
         return findGroupItemService;
+    }
+
+    public SaveCookieController provideSaveCookieController() {
+        if (saveCookieController == null) {
+            saveCookieController = new SaveCookieController(this);
+        }
+        return saveCookieController;
     }
 
     public boolean isAuthorized() {

@@ -14,14 +14,8 @@ import com.example.technopolis.R;
 
 public class AuthorizationFragment extends Fragment {
 
-    private final BaseActivity activity;
-
-    private AuthorizationFragment(@NonNull final BaseActivity activity) {
-        this.activity = activity;
-    }
-
-    public static Fragment newInstance(@NonNull final BaseActivity baseActivity) {
-        return new AuthorizationFragment(baseActivity);
+    public static Fragment newInstance() {
+        return new AuthorizationFragment();
     }
 
     @Override
@@ -35,6 +29,7 @@ public class AuthorizationFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.authorization, container, false);
+        BaseActivity activity = (BaseActivity) getActivity();
         activity.getRootViewController().setBarVisible(View.GONE);
         new AuthorizationViewInitializer(rootView, activity);
         return rootView;

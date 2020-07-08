@@ -1,7 +1,11 @@
 package com.example.technopolis.screens.common.nav;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -10,30 +14,37 @@ import androidx.fragment.app.FragmentManager;
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
+import com.example.technopolis.log.FeedbackEmail;
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.screens.authorization.AuthorizationFragment;
+import com.example.technopolis.screens.common.FeedbackFragment;
 import com.example.technopolis.screens.grouplist.GroupListFragment;
 import com.example.technopolis.screens.newsitems.NewsItemsFragment;
 import com.example.technopolis.screens.profile.ProfileFragment;
+import com.example.technopolis.screens.root.MenuRootViewInitializer;
 import com.example.technopolis.screens.scheduleritems.SchedulerFragment;
 import com.ncapdevi.fragnav.FragNavController;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Stack;
 import java.util.TreeMap;
 
 public class ScreenNavigator implements FragNavController.RootFragmentListener {
 
     private final FragNavController fragNavController;
     private final BaseActivity activity;
-    private final Map<Integer, Integer> log;
     private final App app;
+    private Map<Integer, Integer> log;
     private boolean pop = false;
-    private ArrayList<Fragment> fragments;
+    private static ArrayList<Fragment> fragments;
+    private int profileCounter = 0;
     private Fragment authorizationFragment;
+    private final int STACK_SIZE = 10;
 
     public ScreenNavigator(FragmentManager fragmentManager, Bundle savedInstanceState, @NonNull final BaseActivity activity) {
         this.activity = activity;
-        authorizationFragment = AuthorizationFragment.newInstance(activity);
+        authorizationFragment = AuthorizationFragment.newInstance();
         app = (App) activity.getApplication();
         if (app.isAuthorized())
             initListFragments();
@@ -45,10 +56,12 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
     }
 
     private void initListFragments() {
-        fragments = new ArrayList<>();
-        fragments.add(NewsItemsFragment.newInstance());
-        fragments.add(SchedulerFragment.newInstance());
-        fragments.add(ProfileFragment.newInstance());
+        if (fragments == null) {
+            fragments = new ArrayList<>();
+            fragments.add(SchedulerFragment.newInstance());
+            fragments.add(NewsItemsFragment.newInstance());
+            fragments.add(ProfileFragment.newInstance());
+        }
         if (app.provideApiHelper().isOnline()) {
             app.preload();
         }
@@ -92,8 +105,17 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         fragNavController.pushFragment(GroupListFragment.newInstance(id));
     }
 
+    public void toFeedBack(String url) {
+        fragNavController.pushFragment(FeedbackFragment.newInstance(url));
+        LogHelper.i(this, "opened feedback frag");
+    }
+
     public void toProfile(String username, String groupname) {
-        fragNavController.pushFragment(ProfileFragment.newInstance(username, groupname));
+        if (fragNavController.getCurrentStack().size() > STACK_SIZE) {
+            activity.runOnUiThread(() -> Toast.makeText(activity, R.string.stackError, Toast.LENGTH_SHORT).show());
+        } else {
+            fragNavController.pushFragment(ProfileFragment.newInstance(username, groupname));
+        }
     }
 
     public void onSaveInstanceState(Bundle outState) {
@@ -110,17 +132,66 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
             if (find) {
                 log.remove(i);
                 fragNavController.popFragment();
+                fragNavController.executePendingTransactions();
             } else if (log.get(i) == index) {
                 find = true;
             }
         }
     }
 
+    private void provideLogs() {
+        final Dialog logDialog = new Dialog(fragments.get(2).getContext(), R.style.ExitDialogAnimation);
+        logDialog.getWindow().getAttributes().windowAnimations = R.style.ExitDialogAnimation;
+        logDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.argb(50, 0, 0, 0)));
+        logDialog.setContentView(R.layout.log_popup_view);
+        logDialog.setCancelable(true);
+        logDialog.show();
+
+        logDialog.findViewById(R.id.sendButton).setOnClickListener(v12 -> {
+            logDialog.dismiss();
+            //send logs
+            new FeedbackEmail(activity)
+                    .setSubject("Feedback")
+                    .cacheAttach(LogHelper.FILENAME)
+                    .build()
+                    .send();
+        });
+        logDialog.findViewById(R.id.closeButton).setOnClickListener(v1 -> logDialog.dismiss());
+    }
+
+    public void setFragmentsStack(Stack<Fragment> fragmentsStack) {
+        fragNavController.clearStack();
+        boolean isFirst = true;
+        for (Fragment fragment : fragmentsStack) {
+            if (isFirst) {
+                isFirst = false;
+                continue;
+            }
+            fragNavController.pushFragment(fragment);
+        }
+        if (FeedbackFragment.isOpen && !((App) activity.getApplication()).provideApiHelper().isOnline()) {
+            fragNavController.popFragment();
+            activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_LONG).show());
+        }
+    }
+
+    public void setLog(Map<Integer, Integer> log) {
+        this.log = log;
+    }
+
+    public Stack<Fragment> provideCurrentStack() {
+        return fragNavController.getCurrentStack();
+    }
+
+    public Map<Integer, Integer> provideLog() {
+        return log;
+    }
+
     private Integer getIndexByMenuItem(@NonNull final MenuItem menuItem) {
         switch (menuItem.getItemId()) {
-            case R.id.navigation_news:
-                return 0;
             case R.id.navigation_schedule:
+                return 0;
+            case R.id.navigation_news:
                 return 1;
             case R.id.navigation_profile:
                 return 2;
@@ -134,7 +205,8 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
      *
      * @return true if fragment list contains @menuItem else false
      */
-    public boolean loadFragment(@NonNull final MenuItem menuItem) {
+
+    public synchronized boolean loadFragment(@NonNull final MenuItem menuItem) {
         final Integer index = getIndexByMenuItem(menuItem);
         if (index == null)
             return false;
@@ -145,17 +217,35 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
         //if were not on this fragment
         if (!log.containsValue(index)) {
+            LogHelper.i(this, "Switched to fragment " + index);
+            profileCounter = 0;
             log.put(log.size(), index);
             fragNavController.pushFragment(fragments.get(index));
+            fragNavController.executePendingTransactions();
+
             //if not root
         } else if (index != 0) {
+            LogHelper.i(this, "Switched to fragment " + index);
             deleteLoop(index);
+            if (index == 2) {
+                profileCounter++;
+            }
             //if root
         } else {
+            LogHelper.i(this, "Switched to fragment " + index);
+            profileCounter = 0;
             fragNavController.clearStack();
+            fragNavController.executePendingTransactions();
             log.clear();
             log.put(0, 0);
         }
+
+        if (profileCounter == 5) {
+            profileCounter = 0;
+            provideLogs();
+        }
+
+        MenuRootViewInitializer.currentNavElemIndex = index;
         return true;
     }
 

@@ -13,6 +13,7 @@ import com.example.technopolis.api.dto.ProfileDto;
 import com.example.technopolis.api.dto.SchedulerItemCheckInDto;
 import com.example.technopolis.api.dto.SchedulerItemDto;
 import com.example.technopolis.api.dto.StudentDto;
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.profile.model.UserAccount;
 import com.example.technopolis.profile.model.UserContact;
 import com.example.technopolis.profile.model.UserGroup;
@@ -57,10 +58,14 @@ public class MailApiImpl implements MailApi {
     }
 
     @Override
-    public void setProjectUrl(String string) {
-        projectUrl = string;
+    public void setProjectUrl(String url) {
+        projectUrl = url;
     }
 
+    @Override
+    public String getProjectUrl() {
+        return projectUrl;
+    }
 
     private Map<String, String> getAuthHeader() {
         Map<String, String> params = new HashMap<>();
@@ -100,8 +105,10 @@ public class MailApiImpl implements MailApi {
             // TODO: Handle error
             if (error.networkResponse == null) {
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+                LogHelper.i(this, "No internet on login");
             } else {
                 apiHelper.setMessage(INVALID_LOGIN_OR_PASSWORD_ERROR_MESSAGE);
+                LogHelper.i(this, "wrong pass");
             }
         });
 
@@ -109,7 +116,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(1500, TimeUnit.MILLISECONDS);
 
             String username = response.getString("username");
             String auth_token = response.getString("auth_token");
@@ -117,11 +124,15 @@ public class MailApiImpl implements MailApi {
             authDto = new AuthDto(auth_token, user_id, username);
             return authDto;
         } catch (TimeoutException e) {
-            apiHelper.setMessage(SERVER_ERROR_MESSAGE);
+            if (apiHelper.size() == 0) {
+                LogHelper.e(this, "timeout on login");
+            }
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         return null;
     }
@@ -135,9 +146,11 @@ public class MailApiImpl implements MailApi {
     public ProfileDto requestProfileDto(String username) {
         if (!apiHelper.isOnline()) {
             apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+            LogHelper.i(this, "no internet on profile");
             try {
                 Thread.sleep(500);
-            } catch (InterruptedException ignored) {}
+            } catch (InterruptedException ignored) {
+            }
             return null;
         }
 
@@ -149,9 +162,11 @@ public class MailApiImpl implements MailApi {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(), requestFuture, error -> {
             if (error.networkResponse == null) {
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+                LogHelper.i(this, "no internet on profile");
             } else {
                 if (error.networkResponse.statusCode == 401) {
                     apiHelper.setMessage(RELOAD_REQUEST);
+                    LogHelper.i(this, "401 refresh token on profile");
                 }
             }
         }) {
@@ -164,7 +179,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(3, TimeUnit.SECONDS);
             JSONObject activity = response.getJSONObject("activity");
 
 //            Convert JSONArray contacts to List<UserContact>
@@ -229,12 +244,15 @@ public class MailApiImpl implements MailApi {
             );
             return profileDto;
 
-        } catch (InterruptedException | TimeoutException e) {
+        } catch (TimeoutException e) {
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
+            LogHelper.e(this, "timeout on profile");
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         return null;
     }
@@ -268,7 +286,7 @@ public class MailApiImpl implements MailApi {
         queue.add(request);
 
         try {
-            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(3, TimeUnit.SECONDS);
             String name = response.getString("name");
             JSONArray students = response.getJSONArray("students");
             List<StudentDto> list = new ArrayList<>();
@@ -283,12 +301,15 @@ public class MailApiImpl implements MailApi {
                 list.add(new StudentDto(student_id, username, fullname, avatar_url, online, rating));
             }
             return new GroupDto(id, name, list);
-        } catch (InterruptedException | TimeoutException e) {
+        } catch (TimeoutException e) {
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
+            LogHelper.i(this, "timeout on group");
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         return null;
     }
@@ -327,7 +348,7 @@ public class MailApiImpl implements MailApi {
         queue.add(jsonArrayRequest);
 
         try {
-            JSONObject response = future.get(1, TimeUnit.SECONDS);
+            JSONObject response = future.get(3, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject one_new = results.getJSONObject(i);
@@ -353,13 +374,16 @@ public class MailApiImpl implements MailApi {
             }
 
 
-        } catch (InterruptedException | TimeoutException e) {
+        } catch (TimeoutException e) {
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
+
         return newsDtoList;
     }
 
@@ -396,7 +420,7 @@ public class MailApiImpl implements MailApi {
         queue.add(jsonArrayRequest);
 
         try {
-            JSONObject response = future.get(1, TimeUnit.SECONDS);
+            JSONObject response = future.get(3, TimeUnit.SECONDS);
             JSONArray results = response.getJSONArray("results");
             for (int i = 0; i < results.length(); i++) {
                 JSONObject one_new = results.getJSONObject(i);
@@ -422,12 +446,14 @@ public class MailApiImpl implements MailApi {
             }
 
 
-        } catch (InterruptedException | TimeoutException e) {
-           apiHelper.setMessage(SERVER_ERROR_MESSAGE);
+        } catch (TimeoutException e) {
+            apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         return newsDtoList;
     }
@@ -450,7 +476,7 @@ public class MailApiImpl implements MailApi {
 //            }
             if (error.networkResponse == null) {
                 apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
-            }else if (error.networkResponse.statusCode == 401) {
+            } else if (error.networkResponse.statusCode == 401) {
                 apiHelper.setMessage(RELOAD_REQUEST);
             }
         }) {
@@ -463,7 +489,7 @@ public class MailApiImpl implements MailApi {
         queue.add(jsonArrayRequest);
 
         try {
-            JSONArray response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONArray response = requestFuture.get(3, TimeUnit.SECONDS);
 
             int count = 0;
             while (count < response.length()) {
@@ -485,13 +511,14 @@ public class MailApiImpl implements MailApi {
                 items.add(schedulerItemDto);
                 ++count;
             }
-        } catch (InterruptedException | TimeoutException e) {
-            //apiHelper.setMessage(NETWORK_ERROR_MESSAGE);
+        } catch (TimeoutException e) {
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
         return items;
     }
@@ -524,7 +551,7 @@ public class MailApiImpl implements MailApi {
 
         SchedulerItemCheckInDto schedulerItemCheckInDto = null;
         try {
-            JSONObject response = requestFuture.get(1, TimeUnit.SECONDS);
+            JSONObject response = requestFuture.get(3, TimeUnit.SECONDS);
 
             schedulerItemCheckInDto = new SchedulerItemCheckInDto(
                     response.getInt("schedule_item"),
@@ -534,8 +561,10 @@ public class MailApiImpl implements MailApi {
             apiHelper.setMessage(SERVER_ERROR_MESSAGE);
         } catch (JSONException e) {
             apiHelper.setMessage(JSON_PARSE_ERROR);
-        } catch (ExecutionException | InterruptedException e) {
+        } catch (ExecutionException e) {
             apiHelper.setMessage(UNKNOWN_ERROR);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
 
         return schedulerItemCheckInDto;

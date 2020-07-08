@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -14,32 +13,34 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/schedule"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:fontFamily="@font/roboto_regular"
-            android:textColor="@color/colorWhite"/>
+            android:text="@string/schedule"
+            android:textColor="@color/colorWhite"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     </androidx.appcompat.widget.Toolbar>
 
-    <RelativeLayout
+    <ProgressBar
+        android:id="@+id/scheduler_fragment__progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swiperefresh_scheduler"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <pl.droidsonroids.gif.GifImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/loading"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"/>
-        
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/scheduler_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:overScrollMode="never"
-            />
-    </RelativeLayout>
+            android:overScrollMode="never" />
+      
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

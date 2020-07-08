@@ -15,13 +15,17 @@
     <string name="exit">Sign out</string>
     <string name="about">About</string>
     <string name="groups">Groups</string>
+    <string name="marks">Marks</string>
     <string name="contacts">Contacts</string>
     <string name="accounts">Accounts</string>
-    <string name="exit_confirmation" >Are you sure you want to exit?</string>>
+    <string name="exit_confirmation" >Are you sure you want to exit?</string>
+    <string name="log_confirmation" >Are you sure you want to send log via Email?</string>
+    <string name="send">Yes</string>
 
     <string name="authFailed">Invalid login or password</string>
     <string name="reloadRequest">Reload request</string>
     <string name="networkError">No connection</string>
+    <string name="stackError">Too many pages was opened</string>
     <string name="serverError">Server response error</string>
     <string name="jsonParseError">Can not parse server response</string>
     <string name="unknownError">Error</string>
@@ -30,5 +34,6 @@
 
     <string name="schedule_icon" translatable="false">\uf041</string>
 
+    <string name="choose_email_client">Choose an email client</string>
 
 </resources>

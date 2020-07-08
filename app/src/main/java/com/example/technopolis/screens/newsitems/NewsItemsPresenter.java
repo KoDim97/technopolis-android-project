@@ -1,8 +1,7 @@
 package com.example.technopolis.screens.newsitems;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.example.technopolis.App;
@@ -18,16 +17,16 @@ import com.example.technopolis.util.ThreadPoster;
 
 import java.util.List;
 
-public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
-        NewsItemsMvpView.Listener {
 
-    private final ScreenNavigator screenNavigator;
-    private final BackPressDispatcher backPressDispatcher;
+public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>, NewsItemsMvpView.Listener {
+
     private final NewsItemService newsItemService;
     private final ThreadPoster mainThreadPoster;
     private final Context context;
-    private final BaseActivity activity;
     private final ApiHelper apiHelper;
+    private ScreenNavigator screenNavigator;
+    private BackPressDispatcher backPressDispatcher;
+    private BaseActivity activity;
 
     private NewsItemsMvpView view;
     private Thread thread;
@@ -46,7 +45,14 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     @Override
     public void bindView(NewsItemsMvpView view) {
         this.view = view;
-        newsItems();
+        view.showProgress();
+    }
+
+    @Override
+    public void onTurnScreen(ScreenNavigator screenNavigator, BaseActivity activity) {
+        this.screenNavigator = screenNavigator;
+        this.activity = activity;
+        this.backPressDispatcher = activity;
     }
 
     public void updateDataNews() {
@@ -56,8 +62,13 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
             if (!apiHelper.showMessageIfExist(newsItemService.getApi(), screenNavigator, this::updateDataNews)) {
                 newsItemService.clearNews();
                 if (thread != null && !thread.isInterrupted()) {
-                    mainThreadPoster.post(() -> onItemsLoaded(newsItems));
+                    mainThreadPoster.post(() -> {
+                        onItemsLoaded(newsItems);
+                        NewsItemsFragment.handler.sendMessage(NewsItemsFragment.handler.obtainMessage());
+                    });
                 }
+            } else {
+                NewsItemsFragment.handler.sendMessage(NewsItemsFragment.handler.obtainMessage());
             }
         });
 
@@ -68,8 +79,10 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getNewsItems();
             if (!apiHelper.showMessageIfExist(newsItemService.getApi(), screenNavigator, this::newsItems)) {
-                if (!thread.isInterrupted()) {
-                    mainThreadPoster.post(() -> onItemsLoaded(newsItems));
+                if (thread != null && !thread.isInterrupted()) {
+                    mainThreadPoster.post(() -> {
+                        onItemsLoaded(newsItems);
+                    });
                 }
             }
         });
@@ -84,8 +97,13 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
             if (!apiHelper.showMessageIfExist(newsItemService.getApi(), screenNavigator, this::updateDataSubs)) {
                 newsItemService.clearSubs();
                 if (thread != null && !thread.isInterrupted()) {
-                    mainThreadPoster.post(() -> onItemsLoaded(newsItems));
+                    mainThreadPoster.post(() -> {
+                        onItemsLoaded(newsItems);
+                        NewsItemsFragment.handler.sendMessage(NewsItemsFragment.handler.obtainMessage());
+                    });
                 }
+            } else {
+                NewsItemsFragment.handler.sendMessage(NewsItemsFragment.handler.obtainMessage());
             }
         });
 
@@ -96,7 +114,7 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
         thread = new Thread(() -> {
             final List<NewsItem> newsItems = newsItemService.getSubsItems();
             if (!apiHelper.showMessageIfExist(newsItemService.getApi(), screenNavigator, this::subsItems)) {
-                if (!thread.isInterrupted()) {
+                if (thread != null && !thread.isInterrupted()) {
                     mainThreadPoster.post(() -> onItemsLoaded(newsItems));
                 }
             }
@@ -108,10 +126,11 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
     private void onItemsLoaded(List<NewsItem> newsItems) {
         // prepare to show
-        view.bindData(newsItems);
+        if (view != null) {
+            view.bindData(newsItems);
+        }
     }
 
-    @Override
     public void onStart() {
         view.registerListener(this);
         backPressDispatcher.registerListener(this);
@@ -125,7 +144,9 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
 
     @Override
     public void onDestroy() {
-        thread.interrupt();
+        if (thread != null) {
+            thread.interrupt();
+        }
         thread = null;
         view = null;
     }
@@ -138,9 +159,16 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>,
     @Override
     public void onNewsItemClicked(String url) {
         App app = (App) activity.getApplication();
+
         if (app.isAuthorized()) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            context.startActivity(browserIntent);
+            if (!apiHelper.isOnline()) {
+                activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
+            } else {
+//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//                context.startActivity(browserIntent);
+                screenNavigator.toFeedBack(url);
+            }
+
         }
     }
 }

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class SchedulerItemService {
     private static final Comparator<SchedulerItem> SCHEDULER_ITEM_BY_TIME_COMPARATOR =
-            (SchedulerItem i1, SchedulerItem i2) -> i1.getDate().compareTo(i2.getDate());
+            (SchedulerItem i1, SchedulerItem i2) -> i1.getStartTime().compareTo(i2.getStartTime());
 
 
     private final SchedulerItemRepo schedulerItemRepo;

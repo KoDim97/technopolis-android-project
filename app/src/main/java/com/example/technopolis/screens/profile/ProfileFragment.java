@@ -1,18 +1,23 @@
 package com.example.technopolis.screens.profile;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.technopolis.App;
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.profile.service.ProfileService;
 import com.example.technopolis.util.ThreadPoster;
 
@@ -23,8 +28,9 @@ public class ProfileFragment extends Fragment {
     private ProfilePresenter presenter;
     private static final String PROFILE_NAME = "user_name";
     private static final String BACK_BUTTON_TEXT = "back_button_text";
-
+    private SwipeRefreshLayout swipeRefreshLayout;
     private String userProfile;
+    public static Handler handler;
 
     public ProfileFragment() {
     }
@@ -54,10 +60,11 @@ public class ProfileFragment extends Fragment {
         Bundle arguments = getArguments();
         userProfile = arguments.getString(PROFILE_NAME);
         String backButtonText = arguments.getString(BACK_BUTTON_TEXT);
+
         presenter = new ProfilePresenter(userProfile, backButtonText, getProfileService(),
                 getBaseActivity().getScreenNavigator(), getMainThreadPoster(), getBaseActivity(),
                 getApiHelper());
-
+        ((App) getBaseActivity().getApplication()).setProfilePresenter(presenter);
     }
 
 
@@ -66,18 +73,32 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         ProfileViewMvpImpl view = new ProfileViewMvpImpl(inflater, container);
 
-
-//      set up good scroll
-        ScrollView scrollView = (ScrollView) view.getRootView().findViewById(R.id.profile_scroll_view);
-        OverScrollDecoratorHelper.setUpOverScroll(scrollView);
         if (userProfile.equals("")) {
             ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.VISIBLE);
         } else {
             ((BaseActivity) getContext()).getRootViewController().setBarVisible(View.GONE);
         }
 
-
         presenter.bindView(view);
+
+
+
+        swipeRefreshLayout = view.getRootView().findViewById(R.id.profile_content_container);
+
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            LogHelper.i(this, "Init refresh");
+            presenter.updateData();
+            handler = new Handler(){
+                @Override
+                public void handleMessage(@NonNull Message msg) {
+                    super.handleMessage(msg);
+                    swipeRefreshLayout.setRefreshing(false);
+                    LogHelper.i(this, "data refreshed");
+                }
+            };
+
+        });
+
         return view.getRootView();
     }
 

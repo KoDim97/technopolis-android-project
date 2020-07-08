@@ -1,11 +1,17 @@
 package com.example.technopolis.screens.scheduleritems;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.R;
 import com.example.technopolis.api.ApiHelper;
+import com.example.technopolis.log.LogHelper;
 import com.example.technopolis.scheduler.model.SchedulerItem;
 import com.example.technopolis.scheduler.service.SchedulerItemService;
 import com.example.technopolis.screens.common.mvp.MvpPresenter;
@@ -20,26 +26,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import me.everything.android.ui.overscroll.IOverScrollStateListener;
-import me.everything.android.ui.overscroll.IOverScrollUpdateListener;
-
-import static me.everything.android.ui.overscroll.IOverScrollState.STATE_BOUNCE_BACK;
-import static me.everything.android.ui.overscroll.IOverScrollState.STATE_DRAG_START_SIDE;
-
 public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpView>,
         BackPressedListener {
     private static final String RESPONSE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static boolean isFeedbackFragmentWasOpened = false;
 
-    private final ScreenNavigator screenNavigator;
-    private final BackPressDispatcher backPressDispatcher;
     private final SchedulerItemService schedulerItemService;
     private final ThreadPoster mainThreadPoster;
     private final ApiHelper apiHelper;
-    private final BaseActivity activity;
+    private ScreenNavigator screenNavigator;
+    private BackPressDispatcher backPressDispatcher;
+    private BaseActivity activity;
+    public Handler handler;
 
     private SchedulerItemsMvpView view;
     private Thread thread;
-    private float currentOverScrollOffset;
 
     public SchedulerItemsPresenter(ScreenNavigator screenNavigator, BaseActivity activity,
                                    SchedulerItemService schedulerItemService, ThreadPoster mainThreadPoster, ApiHelper apiHelper) {
@@ -54,43 +55,68 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
     @Override
     public void bindView(SchedulerItemsMvpView view) {
         this.view = view;
+        view.showProgress();
         setOnReloadListener();
         loadItems();
     }
 
+    @Override
+    public void onTurnScreen(ScreenNavigator screenNavigator, BaseActivity activity) {
+        this.screenNavigator = screenNavigator;
+        this.activity = activity;
+        this.backPressDispatcher = activity;
+    }
+
     private void setOnReloadListener() {
-        IOverScrollStateListener overScrollStateListener = (decor, oldState, newState) -> {
-            if (newState == STATE_BOUNCE_BACK) {
-                if (oldState == STATE_DRAG_START_SIDE && currentOverScrollOffset > 100) {
-                    thread = new Thread(() -> {
-                        final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
-                        if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
-                            final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-                            final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
-                            if (thread != null && !thread.isInterrupted()) {
-                                mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, 0));
-                            }
-                        }
-                    });
-                    thread.start();
-                }
+        SwipeRefreshLayout swipeRefreshLayout = view.getRootView().findViewById(R.id.swiperefresh_scheduler);
+        handler = new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                swipeRefreshLayout.setRefreshing(false);
+                LogHelper.i(this, "data refreshed");
             }
         };
-        IOverScrollUpdateListener overScrollUpdateListener = (decor, state, offset) -> {
-            currentOverScrollOffset = offset;
-        };
-        view.setOnReloadListener(overScrollStateListener, overScrollUpdateListener);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            new Thread(() -> {
+                final List<SchedulerItem> schedulerItems = schedulerItemService.requestFromApi();
+                if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
+                    final List<View.OnClickListener> listeners = createCheckInListeners(schedulerItems);
+                    final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems);
+                    final int actualDayPosition = calculateActualDayPosition(schedulerItems);
+                    if (thread != null && !thread.isInterrupted()) {
+                        mainThreadPoster.post(() -> {
+                            onItemsLoaded(schedulerItems, listeners, suppliers, actualDayPosition);
+                            handler.sendMessage(handler.obtainMessage());
+                        });
+                    }
+                } else {
+                    handler.sendMessage(handler.obtainMessage());
+                }
+            }).start();
+        });
+
     }
 
     private void loadItems() {
         thread = new Thread(() -> {
-            final List<SchedulerItem> schedulerItems = schedulerItemService.items();
+            List<SchedulerItem> schedulerItems = null;
+            if (isFeedbackFragmentWasOpened) {
+                schedulerItems = schedulerItemService.requestFromApi();
+                if (!schedulerItems.isEmpty()) {
+                    isFeedbackFragmentWasOpened = false;
+                }
+            }
+            if (schedulerItems == null || schedulerItems.isEmpty()) {
+                schedulerItems = schedulerItemService.items();
+            }
             if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                 final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-                final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
-                final List<View.OnClickListener> listeners = createListeners(schedulerItems);
+                final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems);
+                final List<View.OnClickListener> listeners = createCheckInListeners(schedulerItems);
+                final List<SchedulerItem> finalSchedulerItems = schedulerItems;
                 if (thread != null && !thread.isInterrupted()) {
-                    mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, actualDayPosition));
+                    mainThreadPoster.post(() -> onItemsLoaded(finalSchedulerItems, listeners, suppliers, actualDayPosition));
                 }
             }
         });
@@ -101,18 +127,31 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         int actualPosition = 0;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RESPONSE_FORMAT, new Locale("ru"));
         String date = simpleDateFormat.format(new Date());
+        String previousDate = null;
+        int amountOfLessonsInDay = 1;
         for (SchedulerItem schedulerItem : schedulerItems) {
-            if (date.compareTo(schedulerItem.getDate()) > 0) {
+            String schedulerDate = schedulerItem.getDate();
+            if (date.compareTo(schedulerDate) > 0) {
                 actualPosition++;
+            } else {
+                break;
             }
+            if (schedulerDate.equals(previousDate)) {
+                amountOfLessonsInDay++;
+            } else {
+                amountOfLessonsInDay = 1;
+            }
+            previousDate = schedulerDate;
         }
-        actualPosition--;
+        actualPosition -= amountOfLessonsInDay;
         actualPosition = Math.max(actualPosition, 0);
         return actualPosition;
     }
 
     private void onItemsLoaded(List<SchedulerItem> schedulerItems, List<View.OnClickListener> listeners, List<IsOnlineSupplier> suppliers, int actualPosition) {
-        view.bindData(schedulerItems, listeners, suppliers, actualPosition);
+        if (view != null) {
+            view.bindData(schedulerItems, listeners, suppliers, actualPosition);
+        }
     }
 
     @Override
@@ -129,7 +168,9 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
 
     @Override
     public void onDestroy() {
-        thread.interrupt();
+        if (thread != null) {
+            thread.interrupt();
+        }
         thread = null;
         view = null;
     }
@@ -139,15 +180,15 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
             final List<SchedulerItem> schedulerItems = schedulerItemService.checkInItem(id);
             if (!apiHelper.showMessageIfExist(schedulerItemService.getApi(), screenNavigator, this::loadItems)) {
                 final int actualDayPosition = calculateActualDayPosition(schedulerItems);
-                final List<View.OnClickListener> listeners = createListeners(schedulerItems);
-                final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems.size());
+                final List<View.OnClickListener> listeners = createCheckInListeners(schedulerItems);
+                final List<IsOnlineSupplier> suppliers = createEstimateSupplier(schedulerItems);
                 mainThreadPoster.post(() -> onItemsLoaded(schedulerItems, listeners, suppliers, actualDayPosition));
             }
         });
         thread.start();
     }
 
-    private List<View.OnClickListener> createListeners(List<SchedulerItem> items) {
+    private List<View.OnClickListener> createCheckInListeners(List<SchedulerItem> items) {
         List<View.OnClickListener> listeners = new ArrayList<>();
         for (SchedulerItem schedulerItem : items) {
             listeners.add(v -> {
@@ -161,15 +202,17 @@ public class SchedulerItemsPresenter implements MvpPresenter<SchedulerItemsMvpVi
         return listeners;
     }
 
-    private List<IsOnlineSupplier> createEstimateSupplier(final int count) {
+    private List<IsOnlineSupplier> createEstimateSupplier(List<SchedulerItem> items) {
         List<IsOnlineSupplier> suppliers = new ArrayList<>();
-        for (int i = 0; i < count; ++i) {
+        for (SchedulerItem schedulerItem : items) {
             suppliers.add(() -> {
                 if (!apiHelper.isOnline()) {
                     activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
-                    return false;
+                } else {
+                    String feedbackUrl = schedulerItem.getFeedbackUrl();
+                    screenNavigator.toFeedBack(feedbackUrl);
+                    isFeedbackFragmentWasOpened = true;
                 }
-                return true;
             });
         }
         return suppliers;

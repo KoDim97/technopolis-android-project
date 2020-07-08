@@ -74,6 +74,10 @@ public class ApiHelper {
         user.setAuth_token(authDto.getAuth_token());
     }
 
+    public int getSize() {
+        return messages.size();
+    }
+
     public void clear() {
         messages.clear();
     }

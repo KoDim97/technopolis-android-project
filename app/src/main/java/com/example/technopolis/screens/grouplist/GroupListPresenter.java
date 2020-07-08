@@ -1,7 +1,5 @@
 package com.example.technopolis.screens.grouplist;
 
-import android.widget.Toast;
-
 import com.example.technopolis.BaseActivity;
 import com.example.technopolis.api.ApiHelper;
 import com.example.technopolis.group.model.GroupItem;
@@ -15,17 +13,15 @@ import com.example.technopolis.util.ThreadPoster;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
-        GroupListMvpView.Listener {
+public class GroupListPresenter implements MvpPresenter<GroupListMvpView>, GroupListMvpView.Listener {
 
     private final long id;
-    private final ScreenNavigator screenNavigator;
-    private final BackPressDispatcher backPressDispatcher;
     private final FindGroupItemService findGroupItemService;
     private final ThreadPoster mainThreadPoster;
     private final ApiHelper apiHelper;
-    private final BaseActivity activity;
-
+    private ScreenNavigator screenNavigator;
+    private BackPressDispatcher backPressDispatcher;
+    private static String text;
     private GroupListMvpView view;
     private Thread thread;
 
@@ -36,17 +32,22 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
         this.backPressDispatcher = activity;
         this.findGroupItemService = findGroupItemService;
         this.mainThreadPoster = mainThreadPoster;
-        this.activity = activity;
         this.apiHelper = apiHelper;
     }
 
     @Override
     public void bindView(GroupListMvpView view) {
         this.view = view;
-        if (!findGroupItemService.isContain(id)){
+        if (!findGroupItemService.isContain(id)) {
             view.showProgress();
         }
         loadItems();
+    }
+
+    @Override
+    public void onTurnScreen(ScreenNavigator screenNavigator, BaseActivity activity) {
+        this.screenNavigator = screenNavigator;
+        this.backPressDispatcher = activity;
     }
 
     private void loadItems() {
@@ -68,12 +69,17 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
 
     private void onItemsLoaded(GroupItem groupItem) {
         // prepare to show
-        view.hideProgress();
-        view.bindData(groupItem);
+        if (view != null) {
+            view.hideProgress();
+            view.bindData(groupItem);
+        }
     }
 
     @Override
     public void onStart() {
+        if (GroupListPresenter.text != null) {
+            onFilterTextUpdated(GroupListPresenter.text);
+        }
         view.registerListener(this);
         backPressDispatcher.registerListener(this);
     }
@@ -87,32 +93,52 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
     @Override
     public void onDestroy() {
         // dispose all requests
-        thread.interrupt();
+        if (thread != null) {
+            thread.interrupt();
+        }
         thread = null;
         view = null;
     }
 
     @Override
     public boolean onBackPressed() {
+        GroupListPresenter.text = null;
         screenNavigator.navigateUp();
         return true;
+    }
+
+    private boolean checkWord(String[] split_str, String checkText) {
+        for (String word : split_str) {
+            if (word.length() >= checkText.length()) {
+                if (word.substring(0, checkText.length()).equals(checkText)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
     public void onFilterTextUpdated(String text) {
         thread = new Thread(() -> {
+            GroupListPresenter.text = text;
             GroupItem groupItem = findGroupItemService.findById(id);
             List<Student> students = groupItem.getStudents();
             List<Student> filteredStudent = new ArrayList<>();
 
-            if (text.length() != 0) {
+            if (text != null && text.length() != 0) {
                 for (Student student : students) {
                     String[] split_str = student.getFullname().toLowerCase().split(" ");
-                    String lowerCaseText = text.toLowerCase();
-                    for (String word : split_str) {
-                        if (word.substring(0, text.length()).equals(lowerCaseText)) {
+                    String[] lowerCaseText = text.toLowerCase().split(" ");
+                    if (lowerCaseText.length == 1) {
+                        if (checkWord(split_str, lowerCaseText[0])) {
                             filteredStudent.add(student);
-                            break;
+                        }
+                    } else {
+                        String name = lowerCaseText[0];
+                        String surname = lowerCaseText[1];
+                        if (checkWord(split_str, name) && checkWord(split_str, surname)) {
+                            filteredStudent.add(student);
                         }
                     }
                 }
@@ -136,6 +162,7 @@ public class GroupListPresenter implements MvpPresenter<GroupListMvpView>,
 
     @Override
     public void onBtnGoBackClicked() {
+        GroupListPresenter.text = null;
         screenNavigator.navigateUp();
     }
 }
