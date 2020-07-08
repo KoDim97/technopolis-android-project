@@ -34,8 +34,6 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
     private Button onActionButton;
     private ImageView acceptReportImageView;
 
-    private SchedulerItem schedulerItem;
-
     public SchedulerItemsRowMvpViewImpl(LayoutInflater layoutInflater, ViewGroup parent) {
 
         setRootView(layoutInflater.inflate(R.layout.scheduler_item_view, parent, false));
@@ -53,7 +51,6 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
 
     @Override
     public void bindData(SchedulerItem schedulerItem, View.OnClickListener listener, IsOnlineSupplier supplier) {
-        this.schedulerItem = schedulerItem;
         subjectNameTextView.setText(schedulerItem.getSubjectName());
         lessonNameTextView.setText(schedulerItem.getLessonName());
         lessonLocationTextView.setText(schedulerItem.getLocation());
@@ -79,18 +76,18 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
 
     private void bindActionButton(final SchedulerItem schedulerItem, final View.OnClickListener listener, final IsOnlineSupplier supplier) {
         if (!schedulerItem.getFeedbackUrl().equals("null")) {
-            setOnFeedback(schedulerItem, supplier);
+            setOnFeedback(supplier);
         } else if (schedulerItem.isAttended()) {
             setOnIsAttended();
         } else if (schedulerItem.isCheckInOpen()) {
-            setOnIsCheckedInOpen(schedulerItem, listener);
+            setOnIsCheckedInOpen(listener);
         } else {
             onActionButton.setVisibility(View.INVISIBLE);
             acceptReportImageView.setVisibility(View.INVISIBLE);
         }
     }
 
-    private void setOnFeedback(final SchedulerItem schedulerItem, final IsOnlineSupplier supplier) {
+    private void setOnFeedback(final IsOnlineSupplier supplier) {
         setButtonCharacteristics(
                 "Оценить",
                 ContextCompat.getDrawable(getContext(), R.drawable.scheduler_on_rate_element),
@@ -98,17 +95,7 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
         );
         onActionButton.setVisibility(View.VISIBLE);
         acceptReportImageView.setVisibility(View.INVISIBLE);
-        onActionButton.setOnClickListener(v -> {
-            supplier.openOnFeedbackView();
-//            if (supplier.openOnFeedbackView();) {
-//                Intent viewIntent = new Intent(
-//                        "android.intent.action.VIEW",
-//                        Uri.parse(schedulerItem.getFeedbackUrl())
-//                );
-//                startActivity(getContext(), viewIntent, new Bundle());
-//                setOnIsAttended();
-//            }
-        });
+        onActionButton.setOnClickListener(v -> supplier.openOnFeedbackView());
     }
 
     private void setOnIsAttended() {
@@ -116,7 +103,7 @@ public class SchedulerItemsRowMvpViewImpl extends MvpViewObservableBase implemen
         acceptReportImageView.setVisibility(View.VISIBLE);
     }
 
-    private void setOnIsCheckedInOpen(final SchedulerItem schedulerItem, final View.OnClickListener listener) {
+    private void setOnIsCheckedInOpen(final View.OnClickListener listener) {
         setButtonCharacteristics(
                 "Отметиться",
                 ContextCompat.getDrawable(getContext(), R.drawable.scheduler_on_present_element),

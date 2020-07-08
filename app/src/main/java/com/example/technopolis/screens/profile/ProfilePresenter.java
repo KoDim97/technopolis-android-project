@@ -1,8 +1,6 @@
 package com.example.technopolis.screens.profile;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -25,8 +23,8 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private static final String VK_APP_PACKAGE_ID = "com.vkontakte.android";
     private static final String FACEBOOK_APP_PACKAGE_ID = "com.facebook.katana";
     private static final String TELEGRAM_APP_PACKAGE_ID = "org.telegram.messenger";
-    private static final String  SKYPE_APP_PACKAGE_ID = "com.skype.raider";
-    private static final String  TAMTAM_APP_PACKAGE_ID = "chat.tamtam";
+    private static final String SKYPE_APP_PACKAGE_ID = "com.skype.raider";
+    private static final String TAMTAM_APP_PACKAGE_ID = "chat.tamtam";
     private static final String MAIL_RU_APP_PACKAGE_ID = "ru.mail.mailapp";
     private static final String GITHUB_APP_PACKAGE_ID = "com.github";
 
@@ -41,6 +39,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
     private BackPressDispatcher backPressDispatcher;
 
     private Thread thread;
+    private boolean isDataUpdated = false;
 
     public ProfilePresenter(String userName, String backButtonText, ProfileService profileService,
                             ScreenNavigator screenNavigator, ThreadPoster mainThreadPoster,
@@ -75,8 +74,31 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
                 if (userProfile != null) {
                     mainThreadPoster.post(() -> onItemLoaded(userProfile));
                 } else {
-                    onBackPressed();
+                    if (!userName.equals("")) {
+                        mainThreadPoster.post(this::onBackPressed);
+                    }
                 }
+            }
+        });
+        thread.start();
+    }
+
+    public void updateData() {
+        thread = new Thread(() -> {
+            UserProfile userProfile = profileService.requestFromServer(userName);
+            if (!apiHelper.showMessageIfExist(profileService.getApi(), screenNavigator, this::loadItem)) {
+//                profileService.clear(userName);
+                if (thread != null && !thread.isInterrupted()) {
+                    if (userProfile != null) {
+                        mainThreadPoster.post(() -> {
+                            isDataUpdated = true;
+                            onItemLoaded(userProfile);
+                            ProfileFragment.handler.sendMessage(ProfileFragment.handler.obtainMessage());
+                        });
+                    }
+                }
+            } else {
+                ProfileFragment.handler.sendMessage(ProfileFragment.handler.obtainMessage());
             }
         });
         thread.start();
@@ -91,7 +113,10 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
 //        Показываем кнопку "Выйти", если имеем дело с профилем пользователя
             if (userName.equals("")) {
-                view.showExitButton();
+                if (!isDataUpdated) {
+                    view.showExitButton();
+                    isDataUpdated = false;
+                }
             } else {
 //          Показываем имя пользователя в toolbar'e
                 view.showNameOnToolbar(userProfile.getFullName());
@@ -101,6 +126,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
     public void onGroupButtonClicked(long id) {
         screenNavigator.toGroupList(id);
+        isDataUpdated = false;
     }
 
     @Override
@@ -179,7 +205,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         List<ResolveInfo> resInfo = activity.getPackageManager().queryIntentActivities(intent, 0);
 
         boolean isContainApp = false;
-        for (ResolveInfo info: resInfo) {
+        for (ResolveInfo info : resInfo) {
             if (info.activityInfo == null) continue;
             if (packageName.equals(info.activityInfo.packageName)) {
                 isContainApp = true;
@@ -216,7 +242,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
 
         if (resInfo.isEmpty()) return;
 
-        for (ResolveInfo info: resInfo) {
+        for (ResolveInfo info : resInfo) {
             if (info.activityInfo == null) continue;
             if (isAppFromTheList(info)) {
                 intent.setPackage(info.activityInfo.packageName);
@@ -263,6 +289,7 @@ public class ProfilePresenter implements MvpPresenter<ProfileMvpView>, ProfileMv
         String url = formUrlFromUserName(username);
         if (apiHelper.isOnline()) {
             screenNavigator.toFeedBack(url);
+            isDataUpdated = false;
         } else {
             activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
         }

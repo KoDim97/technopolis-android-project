@@ -38,7 +38,7 @@ public class ProfileService {
         }
     }
 
-    private UserProfile requestFromServer(String userName) {
+    public UserProfile requestFromServer(String userName) {
         ProfileDto profileDto = api.requestProfileDto(userName);
         if (profileDto == null) {
             return null;
@@ -83,6 +83,10 @@ public class ProfileService {
 
         userProfileRepo.add(userProfile);
         return userProfile;
+    }
+
+    public void clear(String username) {
+        userProfileRepo.removeByUserName(username);
     }
 
     public MailApi getApi() {

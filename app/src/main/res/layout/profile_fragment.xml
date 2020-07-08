@@ -50,7 +50,7 @@
         android:visibility="gone"
         />
 
-    <FrameLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/profile_content_container"
         android:visibility="gone"
         android:layout_width="match_parent"
@@ -228,7 +228,7 @@
 
             </LinearLayout>
         </ScrollView>
-    </FrameLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
 
 
