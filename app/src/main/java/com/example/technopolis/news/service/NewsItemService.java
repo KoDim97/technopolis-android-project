@@ -3,13 +3,11 @@ package com.example.technopolis.news.service;
 import android.graphics.Bitmap;
 
 import com.example.technopolis.api.MailApi;
-import com.example.technopolis.api.dto.AuthDto;
 import com.example.technopolis.api.dto.NewsDto;
 import com.example.technopolis.images.repo.ImagesRepo;
 import com.example.technopolis.images.service.ImagesService;
 import com.example.technopolis.news.model.NewsItem;
 import com.example.technopolis.news.repo.NewsItemRepository;
-import com.example.technopolis.user.model.User;
 
 import java.util.List;
 
@@ -88,7 +86,7 @@ public class NewsItemService {
                             newsDto.getId(),
                             newsDto.getFullname(),
                             newsDto.getTitle(),
-                            newsDto.getBlog(),
+                            newsDto.getUsername(), newsDto.getBlog(),
                             newsDto.getPublish_date(),
                             imageUrl,
                             newsDto.getComments_count(),
@@ -118,7 +116,7 @@ public class NewsItemService {
                             newsDto.getId(),
                             newsDto.getFullname(),
                             newsDto.getTitle(),
-                            newsDto.getBlog(),
+                            newsDto.getUsername(), newsDto.getBlog(),
                             newsDto.getPublish_date(),
                             imageUrl,
                             newsDto.getComments_count(),

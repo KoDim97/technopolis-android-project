@@ -1,7 +1,10 @@
 package com.example.technopolis.screens.profile;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +56,15 @@ public class ProfileFragment extends Fragment {
         return fragment;
     }
 
+    public static Fragment newInstance(String username, Context context) {
+        Fragment fragment = new ProfileFragment();
+        Bundle args = new Bundle();
+        args.putString(PROFILE_NAME, username);
+        args.putString(BACK_BUTTON_TEXT, context.getString(R.string.back));
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +100,7 @@ public class ProfileFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             LogHelper.i(this, "Init refresh");
             presenter.updateData();
-            handler = new Handler(){
+            handler = new Handler(Looper.getMainLooper()){
                 @Override
                 public void handleMessage(@NonNull Message msg) {
                     super.handleMessage(msg);
