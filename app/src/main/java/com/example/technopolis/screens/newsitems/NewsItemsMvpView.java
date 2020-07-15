@@ -12,6 +12,8 @@ public interface NewsItemsMvpView extends MvpViewObservable<NewsItemsMvpView.Lis
 
         void onNewsItemClicked(String url);
 
+        void onAvatarClicked(String username);
+
     }
 
     void showProgress();

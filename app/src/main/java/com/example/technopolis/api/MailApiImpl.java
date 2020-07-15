@@ -354,6 +354,7 @@ public class MailApiImpl implements MailApi {
                 JSONObject one_new = results.getJSONObject(i);
                 long id = one_new.getLong("id");
                 String fullname = one_new.getJSONObject("author").getString("fullname");
+                String username = one_new.getJSONObject("author").getString("username");
                 String title = one_new.getString("title");
                 String blog = one_new.getString("blog");
                 String publish_date = one_new.getString("publish_date");
@@ -364,7 +365,7 @@ public class MailApiImpl implements MailApi {
                 newsDtoList.add(new NewsDto(
                         id,
                         fullname,
-                        title,
+                        username, title,
                         blog,
                         publish_date,
                         avatar_url,
@@ -426,6 +427,7 @@ public class MailApiImpl implements MailApi {
                 JSONObject one_new = results.getJSONObject(i);
                 long id = one_new.getLong("id");
                 String fullname = one_new.getJSONObject("author").getString("fullname");
+                String username = one_new.getJSONObject("author").getString("username");
                 String title = one_new.getString("title");
                 String blog = one_new.getString("blog");
                 String publish_date = one_new.getString("publish_date");
@@ -436,7 +438,7 @@ public class MailApiImpl implements MailApi {
                 newsDtoList.add(new NewsDto(
                         id,
                         fullname,
-                        title,
+                        username, title,
                         blog,
                         publish_date,
                         avatar_url,

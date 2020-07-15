@@ -80,6 +80,9 @@ class SaveNewsController {
             writer.write(item.getTitle().getBytes().length);
             writer.write(item.getTitle().getBytes());
 
+            writer.write(item.getUsername().getBytes().length);
+            writer.write(item.getUsername().getBytes());
+
             writer.write(item.getSection().getBytes().length);
             writer.write(item.getSection().getBytes());
 
@@ -137,6 +140,14 @@ class SaveNewsController {
             buf = new byte[sizeRead];
             if (reader.read(buf) != sizeRead)
                 return false;
+            final String username = new String(buf);
+
+            sizeRead = reader.read();
+            if (sizeRead == -1)
+                return false;
+            buf = new byte[sizeRead];
+            if (reader.read(buf) != sizeRead)
+                return false;
             final String section = new String(buf);
 
             sizeRead = reader.read();
@@ -171,7 +182,7 @@ class SaveNewsController {
                 return false;
             final String url = new String(buf);
 
-            newsItemRepository[0].add(new NewsItem(id, name, title, section, date, userpic, comments_number, url, repo.findById(userpic)));
+            newsItemRepository[0].add(new NewsItem(id, name, title, username, section, date, userpic, comments_number, url, repo.findById(userpic)));
         }
         reader.close();
         return true;

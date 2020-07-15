@@ -59,6 +59,13 @@ public class NewsItemsMvpViewImpl extends MvpViewObservableBase<NewsItemsMvpView
     }
 
     @Override
+    public void onAvatarClicked(String username) {
+        for (Listener listener : getListeners()) {
+            listener.onAvatarClicked(username);
+        }
+    }
+
+    @Override
     public void showProgress() {
         progressBar.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setVisibility(View.GONE);
