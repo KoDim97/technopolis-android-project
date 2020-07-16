@@ -302,6 +302,7 @@ public class ProfileViewMvpImpl extends MvpViewObservableBase<ProfileMvpView.Lis
             Drawable icon = getAccountsIcon(accounts.get(i));
             account.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
             account.setText(accounts.get(i).getValue());
+            textViewsUrls.put(account.getId(), accounts.get(i).getName());
         }
         if (accountTextViews.size() > length) {
             for (int i = length; i < accountTextViews.size(); ++i) {
