@@ -118,6 +118,14 @@ public class ScreenNavigator implements FragNavController.RootFragmentListener {
         }
     }
 
+    public void toProfile(String username) {
+        if (fragNavController.getCurrentStack().size() > STACK_SIZE) {
+            activity.runOnUiThread(() -> Toast.makeText(activity, R.string.stackError, Toast.LENGTH_SHORT).show());
+        } else {
+            fragNavController.pushFragment(ProfileFragment.newInstance(username, activity));
+        }
+    }
+
     public void onSaveInstanceState(Bundle outState) {
         fragNavController.onSaveInstanceState(outState);
     }

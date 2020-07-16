@@ -63,6 +63,11 @@ public class NewsItemsAdapter extends RecyclerView.Adapter<NewsItemsAdapter.News
         listener.onNewsItemClicked(url);
     }
 
+    @Override
+    public void onAvatarClicked(String username) {
+        listener.onAvatarClicked(username);
+    }
+
     public void bindData(List<NewsItem> newsItems) {
         items.clear();
         items.addAll(newsItems);

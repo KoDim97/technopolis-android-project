@@ -9,6 +9,8 @@ public interface NewsItemsRowMvpView extends MvpView {
 
         void onNewsItemClicked(String url);
 
+        void onAvatarClicked(String username);
+
     }
 
     void bindData(NewsItem newsItem);

@@ -10,7 +10,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/news_item__image"
+            android:id="@+id/news_item__image"
         android:layout_width="43dp"
         android:layout_height="43dp"
         app:layout_constraintStart_toStartOf="parent"

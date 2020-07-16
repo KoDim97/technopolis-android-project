@@ -41,6 +41,10 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
         avatarImage = findViewById(R.id.news_item__image);
 
         getRootView().setOnClickListener(v -> onNewsItemClicked());
+
+        getRootView().findViewById(R.id.news_item__image).setOnClickListener(v -> onAvatarClicked());
+
+        getRootView().findViewById(R.id.news_item__name).setOnClickListener(v -> onAvatarClicked());
     }
 
     @Override
@@ -71,4 +75,9 @@ public class NewsItemsRowMvpViewImpl extends MvpViewBase implements NewsItemsRow
     public void onNewsItemClicked() {
         listener.onNewsItemClicked(newsItem.getUrl());
     }
+
+    public void onAvatarClicked() {
+        listener.onAvatarClicked(newsItem.getUsername());
+    }
+
 }

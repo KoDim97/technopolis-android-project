@@ -2,6 +2,7 @@ package com.example.technopolis.screens.newsitems;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,7 +91,7 @@ public class NewsItemsFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(() -> {
             LogHelper.i(this, "Init refresh");
             method.run();
-            handler = new Handler(){
+            handler = new Handler(Looper.getMainLooper()) {
                 @Override
                 public void handleMessage(@NonNull Message msg) {
                     super.handleMessage(msg);

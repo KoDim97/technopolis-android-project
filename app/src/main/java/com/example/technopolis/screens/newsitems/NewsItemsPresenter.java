@@ -164,9 +164,21 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>, NewsI
             if (!apiHelper.isOnline()) {
                 activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
             } else {
-//                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//                context.startActivity(browserIntent);
                 screenNavigator.toFeedBack(url);
+            }
+
+        }
+    }
+
+    @Override
+    public void onAvatarClicked(String username) {
+        App app = (App) activity.getApplication();
+
+        if (app.isAuthorized()) {
+            if (!apiHelper.isOnline()) {
+                activity.runOnUiThread(() -> Toast.makeText(activity, R.string.networkError, Toast.LENGTH_SHORT).show());
+            } else {
+                screenNavigator.toProfile(username);
             }
 
         }
