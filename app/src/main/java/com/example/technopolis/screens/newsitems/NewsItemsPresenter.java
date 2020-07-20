@@ -1,7 +1,6 @@
 package com.example.technopolis.screens.newsitems;
 
 import android.content.Context;
-import android.os.Handler;
 import android.widget.Toast;
 
 import com.example.technopolis.App;
@@ -29,6 +28,11 @@ public class NewsItemsPresenter implements MvpPresenter<NewsItemsMvpView>, NewsI
     private BaseActivity activity;
 
     private NewsItemsMvpView view;
+
+    public Thread getThread() {
+        return thread;
+    }
+
     private Thread thread;
 
     public NewsItemsPresenter(ScreenNavigator screenNavigator, BaseActivity activity,

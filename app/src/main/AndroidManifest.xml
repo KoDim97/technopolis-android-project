@@ -27,7 +27,8 @@
 
         </provider>
         <activity android:name="com.example.technopolis.BaseActivity"
-                android:windowSoftInputMode="adjustPan">
+                android:windowSoftInputMode="adjustPan"
+                android:configChanges="orientation|screenSize">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -71,12 +71,14 @@ public class NewsItemsFragment extends Fragment {
             if (R.id.activity_news__radio_subs == checkedId) {
                 LogHelper.i(this, "Changed to subs");
                 isSubscriptions = true;
+                presenter.getThread().interrupt();
                 presenter.subsItems();
                 provideListener(presenter::updateDataSubs);
             } else {
                 if (checkSubs) {
                     isSubscriptions = false;
                     LogHelper.i(this, "Changed to news");
+                    presenter.getThread().interrupt();
                     presenter.newsItems();
                     provideListener(presenter::updateDataNews);
                 }

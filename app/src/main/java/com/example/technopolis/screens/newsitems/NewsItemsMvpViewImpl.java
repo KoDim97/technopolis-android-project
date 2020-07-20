@@ -26,6 +26,7 @@ public class NewsItemsMvpViewImpl extends MvpViewObservableBase<NewsItemsMvpView
     private final NewsItemsAdapter newsItemsAdapter;
     private final ProgressBar progressBar;
     private final SwipeRefreshLayout swipeRefreshLayout;
+    private final LinearLayoutManager linearLayoutManager;
 
     private final View view;
 
@@ -34,10 +35,10 @@ public class NewsItemsMvpViewImpl extends MvpViewObservableBase<NewsItemsMvpView
 
         progressBar = findViewById(R.id.news_fragment__progress);
         swipeRefreshLayout = findViewById(R.id.swiperefresh_items);
-
+        linearLayoutManager = new LinearLayoutManager(context);
         newsItemsAdapter = new NewsItemsAdapter(layoutInflater, this,app);
         rvNewsItems = findViewById(R.id.activity_news__news_list);
-        rvNewsItems.setLayoutManager(new LinearLayoutManager(context));
+        rvNewsItems.setLayoutManager(linearLayoutManager);
         rvNewsItems.setAdapter(newsItemsAdapter);
         view = getRootView();
 
@@ -80,6 +81,7 @@ public class NewsItemsMvpViewImpl extends MvpViewObservableBase<NewsItemsMvpView
     @Override
     public void bindData(List<NewsItem> newsItems) {
         newsItemsAdapter.bindData(newsItems);
+        linearLayoutManager.scrollToPosition(0);
         hideProgress();
         LogHelper.i(this, "bound data on news fragment");
     }
