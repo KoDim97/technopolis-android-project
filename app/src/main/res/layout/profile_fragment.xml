@@ -19,24 +19,27 @@
 
             <TextView
                 android:id="@+id/toolbar__text_view"
-                android:layout_width="wrap_content"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:autoSizeTextType="uniform"
                 android:fontFamily="@font/roboto_regular"
                 android:text="@string/profile"
-                android:autoSizeTextType="uniform"
+                android:textAlignment="center"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
 
         <TextView
             android:id="@+id/back_to_group"
-            android:layout_width="wrap_content"
+            android:layout_width="85dp"
             android:layout_height="match_parent"
             android:layout_marginStart="35dp"
+            android:ellipsize="end"
             android:fontFamily="@font/roboto_regular"
-            android:gravity="center"
-            android:text="АПО-41"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+
             android:textColor="@color/colorWhite"
             android:textSize="15sp"
             android:visibility="invisible" />
@@ -47,15 +50,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/profile_content_container"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorBackground">
+        android:background="@color/colorBackground"
+        android:visibility="gone">
 
 
         <ScrollView
@@ -175,15 +177,15 @@
                         android:paddingTop="11dp"
                         android:paddingBottom="11dp"
                         android:text="@string/marks"
-                        android:textSize="15sp"/>
+                        android:textSize="15sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
                         android:layout_marginTop="15dp"
                         android:paddingTop="10dp"
-                        android:src="@drawable/ic_mark_open"
-                        android:layout_alignParentEnd="true"/>
+                        android:src="@drawable/ic_mark_open" />
 
                 </RelativeLayout>
 
@@ -221,7 +223,7 @@
                         android:paddingLeft="13dp"
                         android:paddingTop="9dp"
                         android:paddingBottom="9dp"
-                        android:text="Аккаунты"
+                        android:text="@string/accounts"
                         android:textSize="13sp" />
 
                 </LinearLayout>

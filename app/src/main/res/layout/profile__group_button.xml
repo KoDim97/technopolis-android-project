@@ -2,7 +2,7 @@
 <Button
     android:id="@+id/group_button_template"
     style="?android:attr/borderlessButtonStyle"
-    android:layout_width="match_parent"
+    android:layout_width="50dp"
     android:layout_height="43dp"
     android:layout_marginTop="1dp"
     android:background="@color/colorWhite"

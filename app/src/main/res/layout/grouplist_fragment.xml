@@ -35,10 +35,14 @@ android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/grouplist_fragment__groupname"
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:textAlignment="center"
                     tools:text="АПО-41"
+                    android:text="javвапвапвапвапвапвапвпаa"
+                    android:singleLine="true"
+                    android:ellipsize="end"
                     android:fontFamily="@font/roboto_regular"
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp"
@@ -47,9 +51,10 @@ android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/grouplist_fragment__canceltext"
-                android:layout_width="wrap_content"
+                android:layout_width="75dp"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="center_vertical"
+                android:ellipsize="end"
                 android:textColor="@color/colorWhite"
                 android:fontFamily="@font/roboto_regular"
                 android:textSize="15sp"
